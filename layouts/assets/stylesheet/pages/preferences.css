@@ -1,0 +1,192 @@
+body {
+    width: 100dvw;
+    height: 100vh;
+    overflow: hidden;
+
+    background: linear-gradient(195deg, var(--white), 75%, var(--light-blue));
+}
+
+body > content {
+    display: flex;
+
+    height: calc(100vh - 8rem);
+
+    margin-top: var(--padding);
+}
+
+/******** Barre de préférences ********/
+body > content > aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: var(--gap);
+
+    width: 20%;
+    min-width: 380px;
+    height: 100%;
+
+    padding: var(--padding) var(--gap);
+
+    border-radius: 0 var(--extra-radius) 0 0;
+    background-color: var(--blue);
+}
+body > content > aside article {
+    display: block;
+    width: 100%;
+    height: fit-content;
+}
+body > content > aside header {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: var(--margin);
+
+    width: 100%;
+    height: fit-content;
+
+    margin-bottom: var(--gap);
+}
+body > content > aside header img {
+    width: var(--font-size-medium);
+}
+body > content > aside header h2 {
+    color: var(--white);
+}
+
+body > content > aside content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: calc(var(--margin) * 2 / 3);
+
+    width: 100%;
+    height: fit-content;
+
+    padding-left: calc(var(--font-size-medium) + var(--margin));
+}
+body > content > aside content a {
+    padding: calc(var(--margin) / 3) 0;
+
+    color: var(--white);
+    font-family: "Roboto";
+}
+body > content > aside content a.selected,
+body > content > aside content a:is(:hover, :focus) {
+    position: relative;
+    font-family: "Roboto Bold";
+}
+body > content > aside content a.selected::before {
+    content: '';
+    position: absolute;
+    top: calc(100% / 6);
+    left: calc( -1 * var(--font-size-medium));
+
+    display: block;
+    width: 3px;
+    height: calc(100% * 2 / 3);
+
+    border-radius: 1px;
+    background-color: var(--white);
+}
+
+/******** Main ********/
+body > content > main {
+    width: 80%;
+    height: 100%;
+}
+
+body > content > main .candidatures-menu {
+    top: 13rem;
+    width: 80%;
+}
+body > content > main .options_barre {
+    padding-top : 0;
+}
+
+#liste-utilisateurs .liste_items .table-wrapper table th:first-of-type {
+    padding-left: var(--padding);
+}
+#liste-utilisateurs .liste_items .table-wrapper table th:first-of-type::before {
+    content: "";
+    position: absolute;
+    left: var(--margin);
+    top: 50%;
+  
+    display: block;
+    width: var(--font-size-small);
+    height: var(--font-size-small);
+    z-index: 0;
+    
+    border-radius: var(--font-size-small);
+    transform: translateY(-50%);
+}
+#liste-utilisateurs .liste_items .table-wrapper table tbody tr.moderateur th:first-of-type::before {
+    background-color: var(--color2);
+}
+#liste-utilisateurs .liste_items .table-wrapper table tbody tr.administrateur th:first-of-type::before {
+    background-color: var(--color4);
+}
+#liste-utilisateurs .liste_items .table-wrapper table tbody tr.utilisateur th:first-of-type::before {
+    background-color: var(--color3);
+}
+#liste-utilisateurs .liste_items .table-wrapper table tbody tr.invite th:first-of-type::before {
+    background-color: var(--color5);
+}
+
+#profil-user {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--padding);
+
+    width: 100%;
+    height: calc(100vh - 8rem);
+
+    padding: 0 var(--padding) var(--padding);
+
+    overflow-y: scroll;
+}
+#profil-user .left,
+#profil-user .right  {
+    width: max(560px, calc(50% - 1.5rem));
+    padding-bottom: var(--gap);
+} 
+#profil-user .left {
+    height: fit-content;
+}
+#profil-user .right {
+    display: flex;
+    flex-direction: column;
+    gap: calc(2 * var(--gap));
+
+    height: auto;
+}
+#profil-user .left > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+
+    width: 100%; 
+    height: fit-content;
+
+    padding: var(--padding);
+
+    border-radius: var(--big-radius);
+    box-shadow: var(--small-bulle-shadow);
+    background-color: var(--white);
+}
+#profil-user .left > div content div {
+    display: flex;
+    min-width: 100%;
+}
+#profil-user .left > div content div h2,
+#profil-user .left > div content div p {
+    margin-bottom: 3px;
+}
+#profil-user .left > div content div p:first-of-type {
+    width: 25%;
+}
+#profil-user .left > div footer {
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}

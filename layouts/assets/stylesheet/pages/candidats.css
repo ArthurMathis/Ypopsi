@@ -1,0 +1,451 @@
+body{
+    width: 100dvw;
+    height: 100dvh;
+
+    overflow: hidden;
+
+    background: linear-gradient(175deg, var(--white), 75%, var(--light-blue));
+}
+
+/* Réglages de base */
+#menu-de-navigation {
+    background-color: transparent;
+}
+body > content {
+    display: flex;
+     
+    width: 100dvw;
+    height: calc(100% - 8rem);
+
+    padding-top: var(--gap);
+}
+
+/* On met en forme le bandeau latéral */
+aside {
+    display : flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    min-width: 520px;
+    height: calc(100dvh - 8rem);
+
+    padding: var(--padding);
+
+    border-radius: 0 var(--extra-radius) 0 0;
+    background-color: var(--blue);
+}
+aside * {
+    color: var(--white);
+}
+aside header, 
+aside section {
+    width: 100%;
+}
+aside p {
+    line-height: 1.4rem;
+}
+aside footer {
+    display: flex;
+    justify-content: right;
+    align-items: end;
+    gap: var(--margin);
+
+    width: 100%;
+}
+aside footer .action_button {
+    color: var(--white);
+    border-color: var(--white);
+
+    box-shadow: none;
+    transition:  box-shadow 250ms ease;
+}
+aside footer .action_button:hover {
+    box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.25);
+}
+aside header {
+    display: flex;
+    flex-direction: column;
+}
+aside header div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    height: fit-content;
+}
+aside header div p {
+    font-family: "Roboto Bold";
+    text-align: right;
+}
+aside section {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--margin) / 3);
+}
+aside header h2 {
+    font-size: 2.48rem;
+}
+aside header h3 {
+    font-size: var(--font-size-medium);
+}
+aside header .notation {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    gap: var(--margin);
+}
+aside header .notation .bille_notation {
+    display: block;
+    width: var(--font-size-standart);
+    height: var(--font-size-standart);
+}
+aside header .notation .bille_notation img {
+    height: 100%;
+    opacity: 0.25;
+}
+aside header .notation .bille_notation.active img {
+    opacity: 1;
+}
+aside section > div {
+    display: flex;
+    justify-content: space-between;
+}
+aside section > div > p:first-of-type {
+    font-family: 'Roboto Bold';
+}
+aside section > div > p:not(:first-of-type) {
+    text-align: end;
+}
+aside section > div > div {
+    max-width: 75%;
+    text-align: right;
+}
+
+/* Mise en forme de la barre de navigation intra page */
+.navbarre {
+    position: sticky;
+    top: 0;
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--margin);
+
+    height: fit-content;
+    z-index: 1;
+    padding: 0 var(--padding);
+
+    background: linear-gradient(175deg, var(--white), 75%, var(--light-blue));
+    background-attachment: fixed;
+}
+.navbarre p {
+    position: relative;
+
+    height: var(--gap);
+    padding: 0;
+
+    border: none;
+    color: var(--grey);
+    background-color: transparent;
+
+    cursor: pointer;
+
+    will-change: color;
+    transition: color ease 150ms;
+}
+.navbarre p::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    display: block;
+    width: 100%;
+    height: 2px;
+
+    background-color: var(--blue);
+
+    transform: scaleX(0);
+
+    will-change: transform;
+    transition: transform ease 150ms;
+}
+.navbarre p:hover {
+    color: var(--grey);
+    background-color: transparent;
+    box-shadow: none;
+}
+.navbarre p:hover::before,
+.navbarre p.active::before {
+    transform: scaleX(1);
+}
+.navbarre p.active {
+    color: var(--black);
+}
+
+/* Mise en page des onglets */
+body > content > main {
+    width: 70%;
+    height: calc(100% - var(--gap));
+    padding-right: var(--padding);
+
+    overflow-y: scroll;
+}
+main > section {
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--gap);
+
+    height: fit-content;
+
+    padding-top : var(--padding);
+    padding-left: var(--padding);
+    padding-bottom: var(--padding);
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+main section * {
+    line-height: 1.2rem;
+}
+main > section .bulles .bulle-container {
+    background-color: var(--blue-opacity);
+}
+main section .contrats_bulle,
+main section .propositions_bulle,
+main section .candidatures_bulle,
+main section .rendez_vous_bulle {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--gap) * 2 / 3);
+
+    width: clamp(480px, calc(50% - var(--margin)), 720px);
+    height: 360px;
+
+    padding: calc(var(--gap) * 2 / 3);
+
+    border-radius: var(--radius);
+    border: 2px solid var(--light-grey);
+    background-color: var(--white);
+    box-shadow: var(--small-bulle-shadow);
+
+}
+main section .contrats_bulle article p,  
+main section .propositions_bulle article p,  
+main section .candidatures_bulle article p {
+    position: relative;
+    width: fit-content;
+}
+main section .contrats_bulle article p::before,
+main section .propositions_bulle article p::before,
+main section .candidatures_bulle article p::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: calc(-1.5 * var(--margin));
+
+    display: block;
+    width: var(--font-size-standart);
+    height: var(--font-size-standart);
+
+    border-radius: 50%;
+
+    transform: translateY(-50%);
+}
+main section content div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    height: fit-content;
+}
+main section content div > p:first-of-type {
+    font-family: 'Roboto Bold';
+}
+/* On met en page les boutons de candidatures */
+main section .contrats_bulle footer,
+main section .propositions_bulle footer,
+main section .candidatures_bulle footer,
+main section .rendez_vous_bulle footer {
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+    gap: 15px;
+
+    margin-top: auto;
+}
+.reject-button, .accept-button {
+    position: relative;
+    width: var(--padding);
+    height: var(--padding);
+
+    padding: 0;
+
+    background-color: var(--blue);
+}
+.reject-button::before, 
+.reject-button::after, 
+.accept-button::before, 
+.accept-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: block;
+    width: 65%;
+    height: 4px;
+
+    background-color: var(--white);
+
+    transform: translate(-50%, -50%);
+}
+.reject-button::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.reject-button::after {
+    transform: translate(-50%, -50%) rotate(135deg);
+}
+.accept-button::before {
+    top: 60%;
+    left: 12.5%;
+
+    width: 30%;
+
+    transform: rotate(45deg);
+}
+.accept-button::after {
+    left: 25%;
+    transform: translateY(-30%) rotate(135deg);
+}
+
+/* On ajoute les codes couleurs */
+main section .contrats_bulle article p.a_venir::before {
+    background-color: var(--color4);
+}
+main section .contrats_bulle article p.termine::before {
+    background-color: var(--color3);
+}
+main section .contrats_bulle article p.en_cours::before {
+    background-color: var(--color2);
+}
+main section .contrats_bulle article p.refusee::before {
+    background-color: var(--color5);
+}
+main section .propositions_bulle article p.acceptee::before {
+    background-color: var(--color3);
+}
+main section .propositions_bulle article p.refusee::before {
+    background-color: var(--color5);
+}
+main section .propositions_bulle article p.en-attente::before {
+    background-color: var(--color2);
+}
+main section .candidatures_bulle article p.acceptee::before {
+    background-color: var(--color3);
+}
+main section .candidatures_bulle article p.refusee::before {
+    background-color: var(--color5);
+}
+main section .candidatures_bulle article p.en-attente::before {
+    background-color: var(--color2);
+}
+main section .candidatures_bulle article p.non-traitee::before {
+    background-color: var(--color4);
+}
+
+.grid {
+    display: flex;
+    justify-content: start;
+    gap: var(--gap);
+    flex-wrap: wrap;
+
+    width: 100%;
+}
+.grid .notation_bulle {
+    padding: calc(var(--gap) * 4 / 3) var(--gap);
+
+    border-radius: var(--radius);
+    border: 2px solid var(--light-grey);
+    background-color: var(--white);
+    box-shadow: var(--small-bulle-shadow);
+}
+.grid > .notation_bulle {
+    display: flex;
+    flex-direction: column;
+    gap: var(--margin);
+
+    width: 520px;
+    height: fit-content;
+}
+.grid article {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+
+    width: 520px;
+}
+.grid article .notation_bulle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    height: fit-content;
+}
+#carcatéristiques {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+    gap:var(--margin);
+}
+#carcatéristiques content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+    gap: calc(var(--margin) / 3);
+}
+#carcatéristiques content p {
+    margin-right: calc(var(--margin) / 2);
+}
+#carcatéristiques content input[type="checkbox"] {
+    cursor: default;
+}
+.grid .notation_bulle .notation {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    gap: calc(var(--margin) / 2);
+}
+.grid .notation_bulle .notation img {
+    opacity: 0.25;
+}
+.grid .notation_bulle .notation .bille_notation.active img {
+    opacity: 1;
+}
+
+/* Gestion des boutons d'ajout en bas de page */
+#edit_button,
+.add_button {
+    position: fixed;
+    bottom: var(--gap);
+    right: var(--padding);
+}
+#edit_button:is(:hover, :focus),
+.add_button:is(:hover, :focus) {
+    box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.85);
+}
+
+/* Gestion de la navigation intra onglets */
+.onglet {
+    display: none;
+}
+.onglet.active {
+    display: flex;
+}
