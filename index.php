@@ -18,7 +18,6 @@ env_start();
 if(isset($_SESSION['first log in']) && $_SESSION['first log in'] == true) {
     // On libère la mémoire
     unset($_SESSION['first log in']);
-    // header('Location: index.php?preferences=edit-password');
     alert_manipulation::alert([
         'title' => "Information importante",
         'msg' => "<p>Bienvenu, c'est votre première connexion !</p><p>Vous devez <b>modifier votre mot de passe</b> au plus vite.</p>",
@@ -81,7 +80,7 @@ if(isset($_SESSION['first log in']) && $_SESSION['first log in'] == true) {
             break;   
 
         default : 
-            $c->displayLogin();
+            $login->displayLogin();
             break;
     }
 
@@ -384,7 +383,7 @@ if(isset($_SESSION['first log in']) && $_SESSION['first log in'] == true) {
                 if(isset($_POST['travail_wk']))
                     $infos['travail nuit'] = true;
 
-               try {
+                try {
                     // On test la présence de la clé candidat    
                     if(isset($_GET['cle_candidat'])) 
                         $candidats->createProposition($_GET['cle_candidat'], $infos);
