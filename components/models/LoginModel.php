@@ -64,7 +64,7 @@ class LoginModel extends Model {
      * @param string $motdepasse The user's password
      * @return Utilisateurs|null The user, if the informations are corrects and null,  if they aren't
      */
-    private function verifyUser($identifiant, $motdepasse): ?Utilisateurs{
+    private function verifyUser($identifiant, $motdepasse): ?User{
         // On récupère les Utilisateurs
         $request = "SELECT * FROM Utilisateurs WHERE Identifiant_Utilisateurs = :nom";
         $params = [":nom" => $identifiant];
@@ -83,7 +83,7 @@ class LoginModel extends Model {
 
                 // On construit notre Utilisateur
                 try {
-                    $user = new Utilisateurs(
+                    $user = new User(
                         $users[$i]['Identifiant_Utilisateurs'], 
                         $users[$i]['Nom_Utilisateurs'],
                         $users[$i]['Prenom_Utilisateurs'],
@@ -92,7 +92,7 @@ class LoginModel extends Model {
                         $users[$i]['Cle_Etablissements'],
                         $users[$i]['Cle_Roles']
                     );
-                    $user->setcle($users[$i]['Id_Utilisateurs']);
+                    $user->setKey($users[$i]['Id_Utilisateurs']);
                     if($users[$i]['MotDePasseTemp_Utilisateurs'])
                         $user->setFirstLog();
 
