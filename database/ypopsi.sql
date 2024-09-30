@@ -83,6 +83,7 @@ CREATE TABLE Candidats (
   Telephone_Candidats VARCHAR(14) NOT NULL,
   Adresse_Candidats VARCHAR(256) NOT NULL,
   Ville_Candidats VARCHAR(64) NOT NULL,
+  CodePostal_Candidats VARCHAR(5) NOT NULL, 
   Displonibilte_Candidats DATE NOT NULL,
   VisiteMedicale_Candidats DATE DEFAULT NULL, 
   Description_Candidats TEXT DEFAULT NULL,

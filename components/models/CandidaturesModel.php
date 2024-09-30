@@ -66,7 +66,7 @@ class CandidaturesModel extends Model {
             if(1 < $coopt) throw new Exception("Il n'est possible de renseigner q'une prime de cooptation");
         }
         
-        } catch(InvalideCandidatExceptions $e) {
+        } catch(InvalideCandidateExceptions $e) {
             forms_manip::error_alert([
                 'msg' => $e
             ]);

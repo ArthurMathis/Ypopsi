@@ -55,7 +55,7 @@ class CandidaturesController extends Controller {
             );
             $candidat->setCle($search['Id_Candidats']);
             
-        } catch(InvalideCandidatExceptions $e) {
+        } catch(InvalideCandidateExceptions $e) {
             forms_manip::error_alert($e->getMessage());
         }
 

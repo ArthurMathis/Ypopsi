@@ -2,210 +2,379 @@
 
 require_once('Instants.php');
 
-class InvalideCandidatExceptions extends Exception {
+/**
+ * @brief Class representing one candidate's Exception
+ * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
+ */
+class InvalideCandidateExceptions extends Exception {
     public function __construct($message){
         parent::__construct($message);
     }
 }
 
-class Candidat {
-    private $nom, $prenom, $email, $telephone, $adresse, $ville, $code_postal, $cle = null, $disponibilite = null, $visite_medicale = null;
+/**
+ * @brief Class representing one candidate
+ * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
+ */
+class Candidate {
+    /**
+     * @brief Private attibute containing the candidate's key
+     * @var [type] His key
+     */
+    private $key = null;
+    /**
+     * @brief Private attribute containing the candidate's name
+     * @var [String] His name
+     */
+    private $name;
+    /**
+     * @brief Private attibute containing the candidate's firstname
+     * @var [String] His firstname
+     */
+    private $firstname;
+    /**
+     * @brief Private attibute containing the candidate's email address
+     * @var [String] His email address
+     */
+    private $email;
+    /**
+     * @brief Private attibute containing the candidate's phone number
+     * @var [String] His phone number
+     */
+    private $phone;
+    /**
+     * @brief Private attibute containing the candidate's address
+     * @var [String] His address
+     */
+    private $address;
+    /**
+     * @brief Private attibute containing the city where lives the candidate
+     * @var [String] The city
+     */
+    private $city;
+    /**
+     * @brief Private attibute containing the city's post code 
+     * @var [Integer] The post code
+     */
+    private $post_code;
+    /**
+     * @brief Private attibute containing the candidate's availability
+     * @var [Date] His availability
+     */
+    private $availability = null;
+    /**
+     * @brief Private attibute containing the candidate last medical visit date
+     * @var [Date] His last medical visit date
+     */
+    private $medical_visit = null;
 
-    public function __construct($nom, $prenom, $email, $telephone, $adresse, $ville, $code_postal) {
-        $this->setNom($nom);
-        $this->setPrenom($prenom);
+    /**
+     * @brief Class' construtor
+     * @param [String] $name The candidate's name
+     * @param [String] $firstname The candidate's firstname
+     * @param [String] $email The candidate's email address
+     * @param [String] $phone The candidate's phone number
+     * @param [String] $address The candidate's address
+     * @param [String] $city The city where the candidate lives
+     * @param [String] $post_code The city's post code
+     */
+    public function __construct($name, $firstname, $email, $phone, $address, $city, $post_code) {
+        $this->setName($name);
+        $this->setFirstname($firstname);
         $this->setEmail($email);
-        $this->settelephone($telephone);
-        $this->setAdresse($adresse);
-        $this->setVille($ville);
-        $this->setCodePostal($code_postal);
+        $this->setPhone($phone);
+        $this->setAddress($address);
+        $this->setCity($city);
+        $this->setPostCode($post_code);
     } 
 
-    public function getCle() { return $this->cle; }
-    public function getNom() { return $this->nom; }
-    public function getPrenom() { return $this->prenom; }
+    /**
+     * @brief Public method returning the candidate's key
+     * @return Integer 
+     */
+    public function getKey() { return $this->key; }
+    /**
+     * @brief Public method returning the candidate's name
+     * @return String
+     */
+    public function getName() { return $this->name; }
+    /**
+     * @brief Public method returning the candidate's firstname
+     * @return String
+     */
+    public function getFirstname() { return $this->firstname; }
+    /**
+     * @brief Public method returning the candidate's email address
+     * @return String
+     */
     public function getEmail() { return $this->email; }
-    public function getTelephone() { return $this->telephone; }
-    public function getAdresse() { return $this->adresse; }
-    public function getVille() { return $this->ville; }
-    public function getCodePostal() { return $this->code_postal; }
-    public function getDisponibilite() { return $this->disponibilite; }
-    public function getVisite_medicale() { return $this->visite_medicale; }
+    /**
+     * @brief Public method returning the candidate's phone number
+     * @return String
+     */
+    public function getPhone() { return $this->phone; }
+    /**
+     * @brief Public method returning the candidate's address
+     * @return String
+     */
+    public function getAddress() { return $this->address; }
+    /**
+     * @brief Public method returning the city where lives the candidate
+     * @return String
+     */
+    public function getCity() { return $this->city; }
+    /**
+     * @brief Public method returning the city's post code
+     * @return String
+     */
+    public function getPostCode() { return $this->post_code; }
+    /**
+     * @brief Public method returning the candidate's availability
+     * @return Date
+     */
+    public function getAvailability() { return $this->availability; }
+    /**
+     * @brief Public method returning the candidate last medical visit date
+     * @return Date
+     */
+    public function getMedicalVisit() { return $this->medical_visit; }
 
-    public function setCle($cle) { 
+    /**
+     * @brief Public method setting the candidate's key
+     * @param [Integer] $key The candidate's key
+     * @return void
+     */
+    public function setKey($key) { 
         // On vérifie la présence d'une clé
-        if($cle == null)
+        if($key == null)
             return;
 
         // On vérifie l'intégrité des données
-        elseif(!is_numeric($cle)) 
-            throw new InvalideCandidatExceptions("La clé d'un candidat doit être un entier !");
-        elseif($cle < 0)
-            throw new InvalideCandidatExceptions("La clé d'un candidat doit être strictement positive !");
+        elseif(!is_numeric($key)) 
+            throw new InvalideCandidateExceptions("La clé d'un candidat doit être un entier !");
+        elseif($key < 0)
+            throw new InvalideCandidateExceptions("La clé d'un candidat doit être strictement positive !");
 
         // On implémente    
-        else  $this->cle = $cle;
+        else  $this->key = $key;
     }
-    private function setNom($nom) { 
+    /**
+     * @brief Private method setting the candidate's name
+     * @param [String] $name
+     * @return void
+     */
+    private function setName($name) { 
         // On vérifie l'intégrité des données
-        if(empty($nom))
-            throw new InvalideCandidatExceptions("Le nom d'un candidat ne peut pas être vide !");
-        elseif(!is_string($nom))
-            throw new InvalideCandidatExceptions("Le nom d'un candidat doit être une chaine de carcatères !");
-        elseif(preg_match('/\d/', $nom))
-            throw new InvalideCandidatExceptions("Le nom d'un candidat ne peut pas contenir de nombres !");
-        elseif(preg_match('/[^\p{L}\p{M}\s\'-]/u', $nom))
-            throw new InvalideCandidatExceptions("Le nom d'un candidat ne peut pas contenir de carcatères spéciaux !");
+        if(empty($name))
+            throw new InvalideCandidateExceptions("Le nom d'un candidat ne peut pas être vide !");
+        elseif(!is_string($name))
+            throw new InvalideCandidateExceptions("Le nom d'un candidat doit être une chaine de carcatères !");
+        elseif(preg_match('/\d/', $name))
+            throw new InvalideCandidateExceptions("Le nom d'un candidat ne peut pas contenir de nombres !");
+        elseif(preg_match('/[^\p{L}\p{M}\s\'-]/u', $name))
+            throw new InvalideCandidateExceptions("Le nom d'un candidat ne peut pas contenir de carcatères spéciaux !");
 
         // On implémente    
-        else $this->nom = $nom;
+        else $this->name = $name;
     }
-    private function setPrenom($prenom) { 
+    /**
+     * @brief Private method setting the candidate's firstname
+     * @param [String] $firstname
+     * @return void
+     */
+    private function setFirstname($firstname) { 
         // On vérifie l'intégrité des données
-        if(empty($prenom))
-            throw new InvalideCandidatExceptions("Le prenom d'un candidat ne peut pas être vide !");
-        elseif(!is_string($prenom))
-            throw new InvalideCandidatExceptions("Le prenom d'un candidat doit être une chaine de carcatères !");
-        elseif(preg_match('/\d/', $prenom))
-            throw new InvalideCandidatExceptions("Le prenom d'un candidat ne peut pas contenir de nombres !");
-        elseif(preg_match('/[^\p{L}\p{M}\s\'-]/u', $prenom))
-            throw new InvalideCandidatExceptions("Le prenom d'un candidat ne peut pas contenir de carcatères spéciaux !");
+        if(empty($firstname))
+            throw new InvalideCandidateExceptions("Le prenom d'un candidat ne peut pas être vide !");
+        elseif(!is_string($firstname))
+            throw new InvalideCandidateExceptions("Le prenom d'un candidat doit être une chaine de carcatères !");
+        elseif(preg_match('/\d/', $firstname))
+            throw new InvalideCandidateExceptions("Le prenom d'un candidat ne peut pas contenir de nombres !");
+        elseif(preg_match('/[^\p{L}\p{M}\s\'-]/u', $firstname))
+            throw new InvalideCandidateExceptions("Le prenom d'un candidat ne peut pas contenir de carcatères spéciaux !");
 
         // On implémente    
-        else $this->prenom = $prenom;
+        else $this->firstname = $firstname;
     }
+    /**
+     * @brief Private method setting the candidate's email address
+     * @param [String] $email
+     * @return void
+     */
     private function setEmail($email) { 
         // On vérifie l'intégrité des données
         if(empty($email))
-            throw new InvalideCandidatExceptions("L'email d'un candidat ne peut être vide !");
+            throw new InvalideCandidateExceptions("L'email d'un candidat ne peut être vide !");
         elseif(!is_string($email))
-            throw new InvalideCandidatExceptions("L'email d'un candidat doit être une chaine de caractères !");
+            throw new InvalideCandidateExceptions("L'email d'un candidat doit être une chaine de caractères !");
         elseif(!filter_var($email, FILTER_VALIDATE_EMAIL))
-            throw new InvalideCandidatExceptions("L'email doit contenir un nom, un @ et une adresse ! (ex: nom.prenom@diaconat-mulhouse.fr)");
+            throw new InvalideCandidateExceptions("L'email doit contenir un nom, un @ et une adresse ! (ex: nom.prenom@diaconat-mulhouse.fr)");
         
         // On implémente
         else $this->email = $email;
     }
-    private function setTelephone($telephone) { 
+    /**
+     * @brief Private method setting the candidate's phone number
+     * @param [String] $phone
+     * @return void
+     */
+    private function setPhone($phone) { 
         // On vérifie l'intégrité des données
-        if(empty($telephone)) 
-            throw new InvalideCandidatExceptions("Le téléphone d'un utilisateur ne peut pas être vide !");
-        elseif(!is_string($telephone))
-            throw new InvalideCandidatExceptions("Un numero de téléphone doit être une chaine de carcatères composées de nombres et de points !");
+        if(empty($phone)) 
+            throw new InvalideCandidateExceptions("Le téléphone d'un utilisateur ne peut pas être vide !");
+        elseif(!is_string($phone))
+            throw new InvalideCandidateExceptions("Un numero de téléphone doit être une chaine de carcatères composées de nombres et de points !");
 
         // On implémente    
-        else $this->telephone = $telephone;
+        else $this->phone = $phone;
     }
-    private function setAdresse($adresse) { 
+    /**
+     * @brief Private method setting the candidate's address
+     * @param [String] $address
+     * @return void
+     */
+    private function setAddress($address) { 
         // On vérifie l'intégrité des données
-        if(empty($adresse))
-            throw new InvalideCandidatExceptions("L'adresse d'un candidat ne peut pas être vide !");
-        elseif(!is_string($adresse))
-            throw new InvalideCandidatExceptions("L'adresse d'un candidat doit être une chaine de carcatères !");
+        if(empty($address))
+            throw new InvalideCandidateExceptions("L'adresse d'un candidat ne peut pas être vide !");
+        elseif(!is_string($address))
+            throw new InvalideCandidateExceptions("L'adresse d'un candidat doit être une chaine de carcatères !");
         
         // On implémente
-        else $this->adresse = $adresse;
+        else $this->address = $address;
     }
-    private function setVille($ville) { 
+    /**
+     * @brief Private method setting the city where lives the candidate
+     * @param [String] $city
+     * @return void
+     */
+    private function setCity($city) { 
         // On vérifie l'intégrité des données
-        if(empty($ville))
-            throw new InvalideCandidatExceptions("La ville d'un candidat ne peut pas être vide !");
-        elseif(!is_string($ville))
-            throw new InvalideCandidatExceptions("La ville d'un candidat doit être une chaine de carcatères !");
-        elseif(preg_match('/\d/', $ville))
-            throw new InvalideCandidatExceptions("La ville d'un candidat ne peut pas contenir de nombres !");
-        elseif(preg_match('/[^\w\s]/', $ville))
-            throw new InvalideCandidatExceptions("La ville d'un candidat ne peut pas contenir de carcatères spéciaux !");
+        if(empty($city))
+            throw new InvalideCandidateExceptions("La ville d'un candidat ne peut pas être vide !");
+        elseif(!is_string($city))
+            throw new InvalideCandidateExceptions("La ville d'un candidat doit être une chaine de carcatères !");
+        elseif(preg_match('/\d/', $city))
+            throw new InvalideCandidateExceptions("La ville d'un candidat ne peut pas contenir de nombres !");
+        elseif(preg_match('/[^\w\s]/', $city))
+            throw new InvalideCandidateExceptions("La ville d'un candidat ne peut pas contenir de carcatères spéciaux !");
         
         // On implémente
-        else $this->ville = $ville;
+        else $this->city = $city;
     }
-    private function setCodePostal($code_postal) { 
+    /**
+     * @brief Private method setting the city's post code
+     * @param [String] $post_code
+     * @return void
+     */
+    private function setPostCode($post_code) { 
         // On vérifie l'intégrité des données
-        if(empty($code_postal))
-            throw new InvalideCandidatExceptions("Le code postale d'un cndidat ne peut être vide !");
-        elseif(!preg_match ("~^[0-9]{5}$~", $code_postal))
-            throw new InvalideCandidatExceptions("Le code postale doit être composé de cinq nombres uniquement !");
+        if(empty($post_code))
+            throw new InvalideCandidateExceptions("Le code postale d'un cndidat ne peut être vide !");
+        elseif(!preg_match ("~^[0-9]{5}$~", $post_code))
+            throw new InvalideCandidateExceptions("Le code postale doit être composé de cinq nombres uniquement !");
 
-        else $this->code_postal = $code_postal;
+        else $this->post_code = $post_code;
     }
-    public function setdisponibilite($disponibilite) { 
-        // On vérfiie l'intégrité des données
-        if(empty($disponibilite))
-            throw new InvalideCandidatExceptions("La disponibilité d'un candidat doit être remplie !");
-        elseif(!Instants::isDate($disponibilite))
-            throw new InvalideCandidatExceptions("La disponibilité d'un candidat doit être une date !");
+    /**
+     * @brief Public method setting the candidate's availability
+     * @param [Date] $availability
+     * @return void
+     */
+    public function setAvailability($availability) { 
+        // On vérifie l'intégrité des données
+        if(empty($availability))
+            throw new InvalideCandidateExceptions("La disponibilité d'un candidat doit être remplie !");
+        elseif(!Instants::isDate($availability))
+            throw new InvalideCandidateExceptions("La disponibilité d'un candidat doit être une date !");
         
         // On implémente
-        else $this->disponibilite = $disponibilite;
+        else $this->availability = $availability;
     }
-    public function setVisite($visite) {
+    /**
+     * @brief Public method setting the candidate last medical visit date
+     * @param [Date] $visite
+     * @return void
+     */
+    public function setMedicalVisit($visite) {
         // On vérifie l'intégrité des données
         if(empty($visite))
-            throw new InvalideCandidatExceptions("La visite médicale d'un candidat doit être remplie !");
+            throw new InvalideCandidateExceptions("La visite médicale d'un candidat doit être remplie !");
         elseif(!Instants::isDate($visite))
-            throw new InvalideCandidatExceptions("La visite médicale d'un candidat doit être une date !");
+            throw new InvalideCandidateExceptions("La visite médicale d'un candidat doit être une date !");
         
         // On implémente
-        else $this->visite_medicale = $visite;
+        else $this->medical_visit = $visite;
     }
 
+    /**
+     * @brief Public method returning the candidate's data in an array
+     * @return Array
+     */
     public function exportToSQL() {
         // Avec une visité médicale
-        if($this->getVisite_medicale())
+        if($this->getMedicalVisit())
             return [
-                "nom" => $this->getNom(),
-                "prenom" => $this->getPrenom(),
+                "nom" => $this->getName(),
+                "prenom" => $this->getFirstname(),
                 "email" => $this->getEmail(), 
-                "telephone" => $this->getTelephone(),
-                "adresse" => $this->getAdresse(),
-                "ville" => $this->getVille(),
-                "code_postal" => $this->getCodePostal(),
-                "disponibilite" => $this->getDisponibilite(),
-                "visite" => $this->getVisite_medicale()
+                "telephone" => $this->getPhone(),
+                "adresse" => $this->getAddress(),
+                "ville" => $this->getCity(),
+                "code_postal" => $this->getPostCode(),
+                "disponibilite" => $this->getAvailability(),
+                "visite" => $this->getMedicalVisit()
             ];
 
         // Sans    
         else 
             return [
-                "nom" => $this->getNom(),
-                "prenom" => $this->getPrenom(),
+                "nom" => $this->getName(),
+                "prenom" => $this->getFirstname(),
                 "email" => $this->getEmail(), 
-                "telephone" => $this->getTelephone(),
-                "adresse" => $this->getAdresse(),
-                "ville" => $this->getVille(),
-                "code_postal" => $this->getCodePostal(),
-                "disponibilite" => $this->getDisponibilite()
+                "telephone" => $this->getPhone(),
+                "adresse" => $this->getAddress(),
+                "ville" => $this->getCity(),
+                "code_postal" => $this->getPostCode(),
+                "disponibilite" => $this->getAvailability()
             ];
     }
+    /**
+     * @brief Public method returning the candidate's data in an array
+     * @return Array
+     */
     public function exportToSQL_update() {
         return [
-            "nom" => $this->getNom(),
-            "prenom" => $this->getPrenom(),
+            "nom" => $this->getName(),
+            "prenom" => $this->getFirstname(),
             "email" => $this->getEmail(), 
-            "telephone" => $this->getTelephone(),
-            "adresse" => $this->getAdresse(),
-            "ville" => $this->getVille(),
-            "code_postal" => $this->getCodePostal()
+            "telephone" => $this->getPhone(),
+            "adresse" => $this->getAddress(),
+            "ville" => $this->getCity(),
+            "code_postal" => $this->getPostCode()
         ];
     }
-    public function exportToSQL_cle() {
-        if($this->getCle() == null) {
-            throw new InvalideCandidatExceptions("La clé du candidat doit être implémentée avec une exporttation SQL !");
+    /**
+     * @brief Public method returning the candidate's data in an array
+     * @return Array
+     */
+    public function exportToSQL_Key() {
+        if($this->getKey() == null) {
+            throw new InvalideCandidateExceptions("La clé du candidat doit être implémentée avec une exporttation SQL !");
             exit;
         }
 
         return [
-            "id" => $this->getCle(),
-            "nom" => $this->getNom(),
-            "prenom" => $this->getPrenom(),
+            "id" => $this->getKey(),
+            "nom" => $this->getName(),
+            "prenom" => $this->getFirstname(),
             "email" => $this->getEmail(), 
-            "telephone" => $this->getTelephone(),
-            "adresse" => $this->getAdresse() ,
-            "ville" => $this->getVille(),
-            "code_postal" => $this->getCodePostal(),
-            "disponibilite" => $this->getDisponibilite(),
-            "visite" => $this->getVisite_medicale()
+            "telephone" => $this->getPhone(),
+            "adresse" => $this->getAddress(),
+            "ville" => $this->getCity(),
+            "code_postal" => $this->getPostCode(),
+            "disponibilite" => $this->getAvailability(),
+            "visite" => $this->getMedicalVisit()
         ];
     }
 }

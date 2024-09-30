@@ -55,7 +55,6 @@ class HomeModel extends Model {
         // On lance la requête
         return $this->get_request($request);
     }
-    /// Méthode publique récupérant les rendez-vous
     /**
      * Public method searching the metting list
      *

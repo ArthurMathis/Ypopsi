@@ -1271,7 +1271,7 @@ class CandidatsModel extends Model {
             unset($candidat['ville']);
             unset($candidat['code-postal']);
 
-        } catch(InvalideCandidatExceptions $e) {
+        } catch(InvalideCandidateExceptions $e) {
             forms_manip::error_alert([
                 'title' => "Erreur lors de la mise-à-jour du candidat",
                 'msg' => $e

@@ -105,7 +105,7 @@ class Contrat {
             throw new InvalideContratExceptions('La date de début de contratdoit être saisie dans une chaine de caractères !');
         // On vérifie que $date est une date
         elseif(!Instants::isDate($date))
-            throw new InvalideCandidatExceptions("La date de début de contrat doit être une date !");
+            throw new InvalideCandidateExceptions("La date de début de contrat doit être une date !");
         
         // On implémente 
         $this->date_debut = $date;
@@ -116,7 +116,7 @@ class Contrat {
             throw new InvalideContratExceptions('La date de fin de contrat doit être saisie !');
         // On vérifie que $date est une date
         elseif(!Instants::isDate($date))
-            throw new InvalideCandidatExceptions("La date de fin de contrat doit être une date !");
+            throw new InvalideCandidateExceptions("La date de fin de contrat doit être une date !");
         
         
         // On implémente 
@@ -139,7 +139,7 @@ class Contrat {
             throw new InvalideContratExceptions('La date de démission doit être saisie !');
         // On vérifie que $date est une date
         elseif(!Instants::isDate($date))
-            throw new InvalideCandidatExceptions("La date de démission doit être une date !");
+            throw new InvalideCandidateExceptions("La date de démission doit être une date !");
         
         
         // On implémente 
@@ -171,9 +171,9 @@ class Contrat {
     private function setCleCandidats($cle) {
         // On vérifie la présence d'une clé
         if($cle == null || !is_numeric($cle)) 
-            throw new InvalideCandidatExceptions("La clé d'un candidat doit être un entier !");
+            throw new InvalideCandidateExceptions("La clé d'un candidat doit être un entier !");
         elseif($cle < 0)
-            throw new InvalideCandidatExceptions("La clé d'un candidat doit être strictement positive !");
+            throw new InvalideCandidateExceptions("La clé d'un candidat doit être strictement positive !");
 
         // On implémente    
         else  $this->cle_candidats = $cle;
@@ -181,9 +181,9 @@ class Contrat {
     private function setCleInstants($cle) {
         // On vérifie la présence d'une clé
         if($cle == null || !is_numeric($cle)) 
-            throw new InvalideCandidatExceptions("La clé d'un instants doit être un entier !");
+            throw new InvalideCandidateExceptions("La clé d'un instants doit être un entier !");
         elseif($cle < 0)
-            throw new InvalideCandidatExceptions("La clé d'un instants doit être strictement positive !");
+            throw new InvalideCandidateExceptions("La clé d'un instants doit être strictement positive !");
 
         // On implémente    
         else  $this->cle_instants = $cle;
@@ -191,9 +191,9 @@ class Contrat {
     private function setCleServices($cle) {
         // On vérifie la présence d'une clé
         if($cle == null || !is_numeric($cle)) 
-            throw new InvalideCandidatExceptions("La clé d'un service doit être un entier !");
+            throw new InvalideCandidateExceptions("La clé d'un service doit être un entier !");
         elseif($cle < 0)
-            throw new InvalideCandidatExceptions("La clé d'un service doit être strictement positive !");
+            throw new InvalideCandidateExceptions("La clé d'un service doit être strictement positive !");
 
         // On implémente    
         else  $this->Cle_Services = $cle;
@@ -201,9 +201,9 @@ class Contrat {
     private function setClePostes($cle) {
         // On vérifie la présence d'une clé
         if($cle == null || !is_numeric($cle)) 
-            throw new InvalideCandidatExceptions("La clé d'un poste doit être un entier !");
+            throw new InvalideCandidateExceptions("La clé d'un poste doit être un entier !");
         elseif($cle < 0)
-            throw new InvalideCandidatExceptions("La clé d'un poste doit être strictement positive !");
+            throw new InvalideCandidateExceptions("La clé d'un poste doit être strictement positive !");
 
         // On implémente    
         else  $this->Cle_Postes = $cle;
@@ -211,9 +211,9 @@ class Contrat {
     private function setCleType($cle) {
         // On vérifie la présence d'une clé
         if($cle == null || !is_numeric($cle)) 
-            throw new InvalideCandidatExceptions("La clé d'un type de contrats doit être un entier !");
+            throw new InvalideCandidateExceptions("La clé d'un type de contrats doit être un entier !");
         elseif($cle < 0)
-            throw new InvalideCandidatExceptions("La clé d'un type de contrats doit être strictement positive !");
+            throw new InvalideCandidateExceptions("La clé d'un type de contrats doit être strictement positive !");
 
         // On implémente    
         else  $this->Cle_Type = $cle;
