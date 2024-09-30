@@ -841,3 +841,8 @@ INSERT INTO Types_d_actions (Intitule_Types_d_actions) VALUES
     ('Nouveau poste'), 
     ('Nouveau diplome')
 ;
+
+-- User de test --
+INSERT INTO Utilisateurs (Identifiant_Utilisateurs, Nom_Utilisateurs, Prenom_Utilisateurs, Email_Utilisateurs, MotDePasse_Utilisateurs, Cle_Roles, Cle_Etablissements) VALUES 
+	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$OXhYoJAc24F.YTPQjl8CkO3kHc1dZVtLFEF.c4cScOcjFIebOD7Dm', 1, 1)
+;    

@@ -46,6 +46,7 @@ CREATE TABLE Utilisateurs (
   Identifiant_Utilisateurs VARCHAR(64) NOT NULL,
   Nom_Utilisateurs VARCHAR(64) NOT NULL,
   Prenom_Utilisateurs VARCHAR(64) NOT NULL,
+  Email_Utilisateurs VARCHAR(64) NOT NULL, 
   MotDePasse_Utilisateurs VARCHAR(256) NOT NULL,
   MotDePasseTemp_Utilisateurs BOOLEAN DEFAULT 1,
 
