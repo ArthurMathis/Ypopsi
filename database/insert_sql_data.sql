@@ -1,10 +1,10 @@
 -- Fondation --
-INSERT INTO Poles (Intitule_Poles, Description_Poles) VALUES 
+INSERT INTO Poles (Titled_Poles, Description_Poles) VALUES 
     ("pspdsa", "Pole sud-Alsace"),
     ("pspdca", "Pole centre-Alsace"),
     ("pspdna", "Pole nord-Alsace")
 ;
-INSERT INTO Etablissements (Intitule_Etablissements, Adresse_Etablissements, Ville_Etablissements, CodePostal_Etablissements, Cle_Poles) VALUES
+INSERT INTO Establishments (Titled_Establishments, Address_Establishments, City_Establishments, PostCode_Establishments, Key_Poles) VALUES
     ("Clinique du Diaconat Roosevelt", "14 boulevard Roosevelt", "MULHOUSE", 68100, 1),
     ("Clinique du Diaconat Fonderie", "1 rue Saint Sauveur", "MULHOUSE", 68054, 1),
     ("Hôpital Albert Schweitzer", "201 Avenue d'Alsace", "COLMAR", 68000, 2),
@@ -20,7 +20,7 @@ INSERT INTO Etablissements (Intitule_Etablissements, Adresse_Etablissements, Vil
     ("Maison de retraite Saint Joseph", "10 rue de l'Abbé Bidaine", "GIROMAGNY", 90200, NULL),
     ("EHPAD les Violettes", "22 Faubourg de Mulhouse", "KINGERSHEIM", 68260, 1)
 ;
-INSERT INTO Services (Intitule_Services, Description_Services) VALUES 
+INSERT INTO Services (Titled_Services, Description_Services) VALUES 
     ("ACCUEIL", "Service d'accueil général des visiteurs et patients"),
     ("ACCUEIL 3", "Troisième unité d'accueil"),
     ("ACCUEIL INSCRIP ADMISSION", "Accueil et inscription pour l'admission des patients"),
@@ -220,7 +220,7 @@ INSERT INTO Services (Intitule_Services, Description_Services) VALUES
     ("AHS - ZONE DIVERS", ""),
     ("ACCUEIL - MR", "")
 ;
-INSERT INTO Appartenir_a (Cle_Services, Cle_Etablissements) VALUES
+INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
     -- Clinique du Diaconat Roosevelt -- 
     (177, 1),
     (23, 1),
@@ -561,7 +561,7 @@ INSERT INTO Appartenir_a (Cle_Services, Cle_Etablissements) VALUES
     (69, 14),
     (53, 14)
 ;
-INSERT INTO Postes (Intitule_Postes, IntituleFeminin_Postes) VALUES
+INSERT INTO Jobs (Titled_Jobs, TitledFeminin_Jobs) VALUES
     ("A.SOCIAL SPEC.ENFANCE INADAPT.", "ASSISTANTE SOCIALE SPEC.ENFANCE INADAPT."),
     ("ACCOMPAGNANT EDUCATIF SOCIAL", "ACCOMPAGNANTE EDUCATIVE ET SOCIAL"),
     ("ACCUEILLANT SOCIAL", "ACCUEILLANTE SOCIALE"),
@@ -752,20 +752,20 @@ INSERT INTO Postes (Intitule_Postes, IntituleFeminin_Postes) VALUES
 ;
 
 -- Recrutement --
-INSERT INTO Aides (Intitule_Aides) VALUES 
+INSERT INTO Helps (Titled_Helps) VALUES 
     ("Bourse d'étude"),
     ("Rachat de frais d'étude"),
     ("Prime de cooptation"),
     ("Rachat de contrat")
 ;
-INSERT INTO Types_de_contrats (Intitule_Types_de_contrats, Description_Types_de_contrats) VALUES 
+INSERT INTO Types_of_contracts (Titled_Types_of_contracts, Description_Types_of_contracts) VALUES 
     ('CDI', 'Contrat à durée indéterminée'), 
     ('CDD', 'Contrat à durée déterminée'), 
     ('Stage', 'Stage en entreprise'),
     ('Alternance', 'Formation réalisée en alternance'), 
     ('Interim', 'Mission réalisé par un prestatère')
 ;
-INSERT INTO sources (Intitule_Sources) VALUES 
+INSERT INTO sources (Titled_Sources) VALUES 
     ('Adecco'),
     ('Appel Médical'),
     ('Camo Gémo'),
@@ -799,19 +799,19 @@ INSERT INTO sources (Intitule_Sources) VALUES
 ;   
 
 -- Users --
-INSERT INTO Roles (Intitule_Roles) VALUES
+INSERT INTO Roles (Titled_Roles) VALUES
     ('Propriétaire'),
     ('Administrateur'),
     ('Modérateur'),
     ('Utilisateur'),
     ('Invité')
 ;
-INSERT INTO Types_d_actions (Intitule_Types_d_actions) VALUES 
+INSERT INTO Types_of_actions (Titled_Types_of_actions) VALUES 
     -- Connexions --
     ('Connexion'),
     ('Déconnexion'), 
 
-    -- Utilisateurs --
+    -- Users --
     ('Nouvel utilisateur'),
     ('Mise-à-jour utilisateur'), 
     ('Mise-à-jour mot de passe'), 
@@ -843,6 +843,6 @@ INSERT INTO Types_d_actions (Intitule_Types_d_actions) VALUES
 ;
 
 -- User de test --
-INSERT INTO Utilisateurs (Identifiant_Utilisateurs, Nom_Utilisateurs, Prenom_Utilisateurs, Email_Utilisateurs, MotDePasse_Utilisateurs, Cle_Roles, Cle_Etablissements) VALUES 
+INSERT INTO Users (Identifiant_Users, Name_Users, Firstanme_Users, Email_Users, Password_Users, Key_Roles, Key_Establishments) VALUES 
 	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$OXhYoJAc24F.YTPQjl8CkO3kHc1dZVtLFEF.c4cScOcjFIebOD7Dm', 1, 1)
 ;    
