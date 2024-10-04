@@ -793,10 +793,10 @@ if(isset($_SESSION['first log in']) && $_SESSION['first log in'] == true) {
                         throw new Exception("Le champs horaire doit être rempli !");
                     else {
                         // L'instant du rendez-vous
-                        $rdv_i = new Instants($rdv['date'], $rdv['time']);
+                        $rdv_i = new Moment($rdv['date'], $rdv['time']);
                         // L'instant actuel
-                        $cur_i = Instants::currentInstants();
-                        if($rdv_i->getDate() < $cur_i->getDate() || ($rdv_i->getDate() == $cur_i->getDate() && $rdv_i->getHeure() < $cur_i->getHeure()))
+                        $cur_i = Moment::currentMoment();
+                        if($rdv_i->getDate() < $cur_i->getDate() || ($rdv_i->getDate() == $cur_i->getDate() && $rdv_i->getHour() < $cur_i->getHour()))
                             throw new Exception("La date du rendez-vous est antérieure à aujourd'hui.");
                     }
 

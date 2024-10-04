@@ -1,7 +1,5 @@
 <?php
 
-require_once(COMPONENTS.DS.'FormsManip.php');
-
 /**
  * @brief Class representing one user's Exception
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
@@ -19,62 +17,63 @@ class InvalideUtilisateurExceptions extends Exception {
 class User {
     /**
      * @brief Private attribute containing the user's key
-     * @var [Integer] His key
+     * @var Int His key
      */
     private $key = null;
     /**
      * @brief Private attribute containing the user's identifier
-     * @var [String]
+     * @var String
      */
     private $identifier;
     /**
      * @brief Private attribute containing the user's name
-     * @var [String] His name
+     * @var String His name
      */
     private $name;
     /**
      * @brief Private attribute containing the user's firstname
-     * @var [String] His firstname
+     * @var String His firstname
      */
     private $firstname;
     /**
      * @brief Private attribute containing the user's email address
-     * @var [String] His email address
+     * @var String His email address
      */
     private $email;
     /**
      * @brief Private attribute containing the user's password
-     * @var [String] His password
+     * @var String His password
      */
     private $password; 
     /**
      * @brief Private attribute containing the establishment where works the user
-     * @var [String] The establishment 
+     * @var Int The establishment 
      */
     private $establishment;
     /**
      * @brief Private attribute containing the user's role
-     * @var [String] His role
+     * @var Int His role
      */
     private $role;
     /**
      * @brief Private attribute indicating if the user's password is by default
-     * @var boolean TRUE - if the password needs to be changed ; FALSE - if not
+     * @var Bool TRUE - if the password needs to be changed ; FALSE - if not
      */
     private $firstLog = false;
 
     /**
      * @brief Class' constructor
-     * @param [String] $identifier
-     * @param [String] $name
-     * @param [String] $firstname
-     * @param [String] $email
-     * @param [String] $password
-     * @param [String] $establishment
-     * @param [String] $role
+     * @param String $identifier
+     * @param String $name
+     * @param String $firstname
+     * @param String $email
+     * @param String $password
+     * @param Int $establishment
+     * @param Int $role
+     * @throws InvalideUtilisateurExceptions If the user's data is invalid
      */
     public function __construct($identifier, $name, $firstname, $email, $password, $establishment, $role) {
-        try{
+        // try{
             $this->setIdentifier($identifier);
             $this->setName($name);
             $this->setFirstname($firstname);
@@ -84,81 +83,64 @@ class User {
             $this->setRole($role);
 
         // On récupère les éventuelles erreurs
-        } catch(InvalideUtilisateurExceptions $e){
-            forms_manip::error_alert([
-                'title' => "Une erreur est survenue",
-                'msg' => $e->getMessage()
-            ]);
-        }
-    }
-
-    /**
-     * @brief Public static method creating and retuning a new user from the data array
-     * @param array $data The data array
-     * @return User
-     */
-    static public function makeUtilisateurs($data=[]) {
-        // On vérifie la présence des données
-        if(empty($data))
-            throw new Exception("Erreur lors de la génération de l'utilisateur. Tableau de données absent.");
-
-        // On vérifie l'intégrité des données
-        if(!isset($data['identifiant']) ||!isset($data['nom']) ||!isset($data['prenom']) || !isset($data['email']) || !isset($data['mot de passe']) ||!isset($data['etablissement']) || !isset($data['role']))
-            throw new Exception('Donnnées éronnées. Champs manquants.');
-
-        // On retourne le nouvel utilisateur
-        return new User($data['identifiant'], $data['nom'], $data['prenom'], $data['email'], $data['mot de passe'], $data['etablissement'], $data['role']);
+        // } catch(InvalideUtilisateurExceptions $e){
+        //     forms_manip::error_alert([
+        //         'title' => "Une erreur est survenue",
+        //         'msg' => $e->getMessage()
+        //     ]);
+        // }
     }
 
     /**
      * @brief Public method returning the user's key
-     * @return Integer 
+     * @return Int|NULL
      */
-    public function getKey(){ return $this->key; }
+    public function getKey(): ?int { return $this->key; }
     /**
      * @brief Public methog returning the user's identifier
      * @return String
      */
-    public function getIdentifier(){ return $this->identifier; }
+    public function getIdentifier(): string { return $this->identifier; }
     /**
      * @brief Public methog returning the user's name
      * @return String
      */
-    public function getName() { return $this->name; }
+    public function getName(): string { return $this->name; }
     /**
      * @brief Public methog returning the user's firstname
      * @return String
      */
-    public function getFirstname() { return $this->firstname; }
+    public function getFirstname(): string { return $this->firstname; }
     /**
      * @brief Public methog returning the user's email
      * @return String
      */
-    public function getEmail(){ return $this->email; }
+    public function getEmail(): string { return $this->email; }
     /**
      * @brief Public methog returning the user's password
      * @return String
      */
-    public function getPassword(){ return $this->password; }
+    public function getPassword(): string { return $this->password; }
     /**
      * @brief Public methog returning the user's establishment
-     * @return String
+     * @return Int
      */
-    public function getEstablishment(){ return $this->establishment; }
+    public function getEstablishment(): int { return $this->establishment; }
     /**
      * @brief Public methog returning the user's role
-     * @return String
+     * @return Interger
      */
-    public function getRole(){ return $this->role; }
+    public function getRole(): int { return $this->role; }
     /**
      * @brief Public methog returning if the user's password has been changed
-     * @return Boolean
+     * @return Bool
      */
-    public function getFirstLog() { return $this->firstLog; }
+    public function getFirstLog(): bool { return $this->firstLog; }
 
     /**
      * @brief Public method setting the user's key
-     * @param [Integer] $key His key
+     * @param Int $key His key
+     * @throws InvalideUtilisateurExceptions If the  key is invalid
      * @return void
      */
     public function setKey($key) {
@@ -174,23 +156,25 @@ class User {
     }
     /**
      * @brief Private method setting the user's identifier
-     * @param [String] $identifier His identifier
+     * @param String $identifier His identifier
+     * @throws InvalideUtilisateurExceptions If the identifier is invalid
      * @return void
      */
     private function setIdentifier($identifier){
         // On vérifie que l'indentifiant utilisateur est non-vide
-        if(empty($identifiant))
+        if(empty($identifier))
             throw new InvalideUtilisateurExceptions("L'identifiant d'un utilisateur ne peut être vide !");
         // On vérifie que le nom est un string
-        elseif(!is_string($identifiant))
+        elseif(!is_string($identifier) || is_numeric($identifier))
             throw new InvalideUtilisateurExceptions("L'identifiant d'un utilisateur doit être une chaine de caractères !");
         
             // On implémente
-        else $this->identifier = $identifiant;
+        else $this->identifier = $identifier;
     }
     /**
      * @brief Private method setting the user's name
-     * @param [String] $name His name
+     * @param String $name His name
+     * @throws InvalideUtilisateurExceptions If the name is invalid
      * @return void
      */
     private function setName($name) {
@@ -198,7 +182,7 @@ class User {
         if(empty($name))
             throw new InvalideUtilisateurExceptions("Le nom d'un utilisateur ne peut être vide !");
         // On vérifie que le nom est un string
-        elseif(!is_string($name))
+        elseif(!is_string($name)  || is_numeric($name))
             throw new InvalideUtilisateurExceptions("Le nom d'un utilisateur doit être une chaine de caractères !");
         
             // On implémente
@@ -206,7 +190,8 @@ class User {
     }
     /**
      * @brief Private method setting the user's firstname
-     * @param [String] $firstname His firstname
+     * @param String $firstname His firstname
+     * @throws InvalideUtilisateurExceptions If the firstname is invalid
      * @return void
      */
     private function setFirstname($firstname) {
@@ -214,7 +199,7 @@ class User {
         if(empty($firstname))
             throw new InvalideUtilisateurExceptions("Le prénom d'un utilisateur ne peut être vide !");
         // On vérifie que le prénom est un string
-        elseif(!is_string($firstname))
+        elseif(!is_string($firstname) || is_numeric($firstname))
             throw new InvalideUtilisateurExceptions("Le prénom d'un utilisateur doit être une chaine de caractères !");
         
             // On implémente
@@ -222,7 +207,8 @@ class User {
     }
     /**
      * @brief Private method setting the user's email address
-     * @param [String] $email His email
+     * @param String $email His email
+     * @throws InvalideUtilisateurExceptions If the email is invalid
      * @return void
      */
     private function setEmail($email){
@@ -230,7 +216,7 @@ class User {
         if(empty($email))
             throw new InvalideUtilisateurExceptions("L'email d'un utilisateur ne peut être vide !");
         // On vérifie que l'email est un string
-        elseif(!is_string($email))
+        elseif(!is_string($email) || is_numeric($email))
             throw new InvalideUtilisateurExceptions("L'email d'un utilisateur doit être une chaine de caractères !");
         elseif(!filter_var($email, FILTER_VALIDATE_EMAIL))
             throw new InvalideUtilisateurExceptions("L'email doit contenir un nom, un @ et une adresse ! (ex: nom.prenom@diaconat-mulhouse.fr)");
@@ -240,7 +226,8 @@ class User {
     }
     /**
      * @brief Private method setting the user's password
-     * @param [String] $password His password
+     * @param String $password His password
+     * @throws InvalideUtilisateurExceptions If the password is invalid
      * @return void
      */
     private function setPassword($password){
@@ -256,7 +243,8 @@ class User {
     }
     /**
      * @brief Private method setting the user's establishment
-     * @param [String] $establishment The establishment where the user works
+     * @param String $establishment The establishment where the user works
+     * @throws InvalideUtilisateurExceptions If the establishment is invalid
      * @return void
      */
     private function setEstablishment($establishment) {
@@ -272,10 +260,11 @@ class User {
     }
     /**
      * @brief Private method setting the user's role
-     * @param [String] $role His role
+     * @param Int $role His role
+     * @throws InvalideUtilisateurExceptions If the role is invalid
      * @return void
      */
-    private function setRole($role){
+    private function setRole($role) {
         // On vérifie que le role est non-vide
         if(empty($role))
             throw new InvalideUtilisateurExceptions("Le rôle d'un utilisateur ne peut être vide !");
@@ -292,35 +281,67 @@ class User {
      */
     public function setFirstLog() { $this->firstLog = true; }
 
+        /**
+     * @brief Public static method creating and retuning a new user from the data array
+     * @param Array $data The data array
+     * @throws InvalideUtilisateurExceptions If the data is invalid
+     * @return User
+     */
+    static public function makeUser($data=[]): ?User {
+        // Verifying the array's data integrity
+        if(empty($data))
+            throw new InvalideUtilisateurExceptions("Erreur lors de la génération de l'utilisateur. Tableau de données absent.");
+        if(!isset($data['identifier']) ||!isset($data['name']) ||!isset($data['firstname']) || !isset($data['email']) || !isset($data['password']) ||!isset($data['establishment']) || !isset($data['role']))
+            throw new InvalideUtilisateurExceptions('Donnnées éronnées. Champs manquants.');
+
+        // Creating the new user
+        $u = new User(
+            $data['identifier'], 
+            $data['name'], 
+            $data['firstname'], 
+            $data['email'], 
+            $data['password'], 
+            $data['establishment'], 
+            $data['role']
+        );
+
+        // Adding the user's key
+        if(isset($data['key']))
+            $u->setKey($data['key']);
+
+        return $u;
+    }
+
     /**
      * @brief Public method returning the user's data in a array
      * @return Array
      */
     public function exportToArray(): array {
         return [
-            'identifiant' => $this->getIdentifier(),
+            'identifier' => $this->getIdentifier(),
             'email' => $this->getEmail(),
-            'motdepasse' => $this->getPassword(),
+            'password' => $this->getPassword(),
             'role' => $this->getRole(),
-            'cle' => $this->getKey()
+            'key' => $this->getKey()
         ];
     }
     /**
      * @brief Public method returning the user's data in a array (created for SQL queries)
-     * @return Array
+     * @throws InvalideUtilisateurExceptions If the user's data is no complete
+     * @return Array|NULL
      */
     public function exportToSQL(): ?array {
         if($this->getName() == null || $this->getFirstname() == null) 
-            throw new Exception("Le nom et le prenom de l'utilisateur sont requis pour une exportation SQL.");
+            throw new InvalideUtilisateurExceptions("Le nom et le prenom de l'utilisateur sont requis pour une exportation SQL.");
         
         else return [
-            'identifiant' => $this->getIdentifier(),
-            'nom' => $this->getName(),
-            'prenom' => $this->getFirstname(),
+            'identifier' => $this->getIdentifier(),
+            'name' => $this->getName(),
+            'firstname' => $this->getFirstname(),
             'email' => $this->getEmail(),
-            'motdepasse' => password_hash($this->getPassword(), PASSWORD_DEFAULT),
-            'cle_etablissement' => $this->getEstablishment(),
-            'cle_role' => $this->getRole()
+            'password' => password_hash($this->getPassword(), PASSWORD_DEFAULT),
+            'key_establishment' => $this->getEstablishment(),
+            'key_role' => $this->getRole()
         ];
     } 
 }

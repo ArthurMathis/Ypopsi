@@ -144,15 +144,15 @@ CREATE TABLE Types_de_contrats (
   Description_Types_de_contrats TEXT DEFAULT NULL
 );
 CREATE TABLE Contrats (
-  Id_ INTEGER PRIMARY KEY AUTO_INCREMENT,
-  DateDebut_ DATE NOT NULL, 
-  DateFin_ DATE DEFAULT NULL,
-  DateProposition_ DATE NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  DateSignature_ DATE DEFAULT NULL, 
-  DateDemission_ DATE DEFAULT NULL,
-  Salaires_ INTEGER, 
-  TravailNuit_ BOOLEAN DEFAULT FALSE,
-  TravailWeekEnd_ BOOLEAN DEFAULT FALSE,
+  Id_Contrats INTEGER PRIMARY KEY AUTO_INCREMENT,
+  DateDebut_Contrats DATE NOT NULL, 
+  DateFin_Contrats DATE DEFAULT NULL,
+  DateProposition_Contrats DATE NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  DateSignature_Contrats DATE DEFAULT NULL, 
+  DateDemission_Contrats DATE DEFAULT NULL,
+  Salaires_Contrats INTEGER, 
+  TravailNuit_Contrats BOOLEAN DEFAULT FALSE,
+  TravailWeekEnd_Contrats BOOLEAN DEFAULT FALSE,
 
   Cle_Candidats INTEGER NOT NULL,
   Cle_Types_de_contrats INTEGER NOT NULL,
