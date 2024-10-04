@@ -1,237 +1,237 @@
 -- Fondation -- 
 CREATE TABLE Poles (
   Id_Poles INTEGER PRIMARY KEY AUTO_INCREMENT, 
-  Intitule_Poles VARCHAR(12) NOT NULL,
+  Titled_Poles VARCHAR(12) NOT NULL,
   Description_Poles VARCHAR(64) DEFAULT NULL
 );
-CREATE TABLE Etablissements (
-  Id_Etablissements INTEGER PRIMARY KEY AUTO_INCREMENT, 
-  Intitule_Etablissements VARCHAR(64) NOT NULL,
-  Adresse_Etablissements VARCHAR(256) NOT NULL,
-  Ville_Etablissements VARCHAR(64) NOT NULL,
-  CodePostal_Etablissements INTEGER NOT NULL,
-  Description_Etablissements TEXT,
+CREATE TABLE Establishments (
+  Id_Establishments INTEGER PRIMARY KEY AUTO_INCREMENT, 
+  Titled_Establishments VARCHAR(64) NOT NULL,
+  Address_Establishments VARCHAR(256) NOT NULL,
+  City_Establishments VARCHAR(64) NOT NULL,
+  PostCode_Establishments INTEGER NOT NULL,
+  Description_Establishments TEXT,
 
-  Cle_Poles INTEGER DEFAULT NULL,
+  Key_Poles INTEGER DEFAULT NULL,
 
-  FOREIGN KEY (Cle_Poles) REFERENCES Poles(Id_Poles)
+  FOREIGN KEY (Key_Poles) REFERENCES Poles(Id_Poles)
 );
 CREATE TABLE Services (
   Id_Services INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Intitule_Services VARCHAR(64) NOT NULL,
+  Titled_Services VARCHAR(64) NOT NULL,
   Description_Services TEXT
 );
-CREATE TABLE Appartenir_a (
-  Cle_Etablissements INTEGER NOT NULL,
-  Cle_Services INTEGER NOT NULL,
+CREATE TABLE Belong_to (
+  Key_Establishments INTEGER NOT NULL,
+  Key_Services INTEGER NOT NULL,
 
-  FOREIGN KEY (Cle_Etablissements) REFERENCES Etablissements(Id_Etablissements),
-  FOREIGN KEY (Cle_Services) REFERENCES Services(Id_Services),
+  FOREIGN KEY (Key_Establishments) REFERENCES Establishments(Id_Establishments),
+  FOREIGN KEY (Key_Services) REFERENCES Services(Id_Services),
 
-  PRIMARY KEY (Cle_Etablissements, Cle_Services)
+  PRIMARY KEY (Key_Establishments, Key_Services)
 );
-CREATE TABLE Postes (
-  Id_Postes INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Intitule_Postes VARCHAR(64) NOT NULL,
-  IntituleFeminin_Postes VARCHAR(64) NOT NULL
+CREATE TABLE Jobs (
+  Id_Jobs INTEGER PRIMARY KEY AUTO_INCREMENT,
+  Titled_Jobs VARCHAR(64) NOT NULL,
+  TitledFeminin_Jobs VARCHAR(64) NOT NULL
 );
 
--- Utilisateurs --
+-- Users --
 CREATE TABLE Roles (
   Id_Roles INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Intitule_Roles VARCHAR(32) NOT NULL
+  Titled_Roles VARCHAR(32) NOT NULL
 );
-CREATE TABLE Utilisateurs (
-  Id_Utilisateurs INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Identifiant_Utilisateurs VARCHAR(64) NOT NULL,
-  Nom_Utilisateurs VARCHAR(64) NOT NULL,
-  Prenom_Utilisateurs VARCHAR(64) NOT NULL,
-  Email_Utilisateurs VARCHAR(64) NOT NULL, 
-  MotDePasse_Utilisateurs VARCHAR(256) NOT NULL,
-  MotDePasseTemp_Utilisateurs BOOLEAN DEFAULT 1,
+CREATE TABLE Users (
+  Id_Users INTEGER PRIMARY KEY AUTO_INCREMENT,
+  Identifiant_Users VARCHAR(64) NOT NULL,
+  Name_Users VARCHAR(64) NOT NULL,
+  Firstanme_Users VARCHAR(64) NOT NULL,
+  Email_Users VARCHAR(64) NOT NULL, 
+  Password_Users VARCHAR(256) NOT NULL,
+  PasswordTemp_Users BOOLEAN DEFAULT 1,
 
-  Cle_Roles INTEGER NOT NULL,
-  Cle_Etablissements INTEGER NOT NULL,
+  Key_Roles INTEGER NOT NULL,
+  Key_Establishments INTEGER NOT NULL,
 
-  FOREIGN KEY (Cle_Roles) REFERENCES Roles(Id_Roles),
-  FOREIGN KEY (Cle_Etablissements) REFERENCES Etablissements(Id_Etablissements)
+  FOREIGN KEY (Key_Roles) REFERENCES Roles(Id_Roles),
+  FOREIGN KEY (Key_Establishments) REFERENCES Establishments(Id_Establishments)
 );
 
 -- Logs --
-CREATE TABLE Types_d_actions (
-  Id_Types_d_actions INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Intitule_Types_d_actions VARCHAR(32) NOT NULL
+CREATE TABLE Types_of_actions (
+  Id_Types_of_actions INTEGER PRIMARY KEY AUTO_INCREMENT,
+  Titled_Types_of_actions VARCHAR(32) NOT NULL
 );
 CREATE TABLE Actions (
   Id_Actions INTEGER PRIMARY KEY AUTO_INCREMENT,
   Description_Actions TEXT DEFAULT NULL,
-  Instant_Actions TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  Moment_Actions TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-  Cle_Utilisateurs INTEGER NOT NULL,
-  Cle_Types_d_actions INTEGER NOT NULL,
+  Key_Users INTEGER NOT NULL,
+  Key_Types_of_actions INTEGER NOT NULL,
 
-  FOREIGN KEY (Cle_Utilisateurs) REFERENCES Utilisateurs(Id_Utilisateurs),
-  FOREIGN KEY (Cle_Types_d_actions) REFERENCES Types_d_actions(Id_Types_d_actions)
+  FOREIGN KEY (Key_Users) REFERENCES Users(Id_Users),
+  FOREIGN KEY (Key_Types_of_actions) REFERENCES Types_of_actions(Id_Types_of_actions)
 );
 
--- Candidats --
-CREATE TABLE Candidats (
-  Id_Candidats INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Nom_Candidats VARCHAR(64) NOT NULL,
-  Prenom_Candidats VARCHAR(64) NOT NULL,
-  Email_Candidats VARCHAR(64) NOT NULL,
-  Telephone_Candidats VARCHAR(14) NOT NULL,
-  Adresse_Candidats VARCHAR(256) NOT NULL,
-  Ville_Candidats VARCHAR(64) NOT NULL,
-  CodePostal_Candidats VARCHAR(5) NOT NULL, 
-  Displonibilte_Candidats DATE NOT NULL,
-  VisiteMedicale_Candidats DATE DEFAULT NULL, 
-  Description_Candidats TEXT DEFAULT NULL,
-  Delete_Candidats BOOLEAN DEFAULT FALSE,
-  A_Candidats BOOLEAN DEFAULT FALSE, 
-  B_Candidats BOOLEAN DEFAULT FALSE, 
-  C_Candidats BOOLEAN DEFAULT FALSE
+-- Candidates --
+CREATE TABLE Candidates (
+  Id_Candidates INTEGER PRIMARY KEY AUTO_INCREMENT,
+  Name_Candidates VARCHAR(64) NOT NULL,
+  Firstanme_Candidates VARCHAR(64) NOT NULL,
+  Email_Candidates VARCHAR(64) NOT NULL,
+  Phone_Candidates VARCHAR(14) NOT NULL,
+  Address_Candidates VARCHAR(256) NOT NULL,
+  City_Candidates VARCHAR(64) NOT NULL,
+  PostCode_Candidates VARCHAR(5) NOT NULL, 
+  Availability_Candidates DATE NOT NULL,
+  MedicalVisit_Candidates DATE DEFAULT NULL, 
+  Description_Candidates TEXT DEFAULT NULL,
+  Delete_Candidates BOOLEAN DEFAULT FALSE,
+  A_Candidates BOOLEAN DEFAULT FALSE, 
+  B_Candidates BOOLEAN DEFAULT FALSE, 
+  C_Candidates BOOLEAN DEFAULT FALSE
 );
 CREATE TABLE Documents (
-  Id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Intitule VARCHAR(64) NOT NULL,
-  Adresse VARCHAR(256) NOT NULL,
+  Id_Documents INTEGER PRIMARY KEY AUTO_INCREMENT,
+  Titled_Documents VARCHAR(64) NOT NULL,
+  Address_Documents VARCHAR(256) NOT NULL,
 
-  Cle_Candidats INTEGER NOT NULL,
+  Key_Candidates INTEGER NOT NULL,
 
-  FOREIGN KEY (Cle_Candidats) REFERENCES Candidats(Id_Candidats)
+  FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id_Candidates)
 );
 
 -- Qualifications --
 CREATE TABLE Qualifications (
   Id_Qualifications INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Intitule_Qualifications VARCHAR(64) NOT NULL,
-  PersonelMedical_Qualifications BOOLEAN DEFAULT FALSE, 
+  Titled_Qualifications VARCHAR(64) NOT NULL,
+  MedicalStaff_Qualifications BOOLEAN DEFAULT FALSE, 
   Abreviation_Qualifications VARCHAR(12) NOT NULL
 );
-CREATE TABLE Obtenir (
-  Cle_Candidats INTEGER NOT NULL,
-  Cle_Qualifications INTEGER NOT NULL,
+CREATE TABLE Get (
+  Key_Candidates INTEGER NOT NULL,
+  Key_Qualifications INTEGER NOT NULL,
 
-  Annee_Obtenir INTEGER NOT NULL, 
+  Annee_Get INTEGER NOT NULL, 
 
-  FOREIGN KEY (Cle_Candidats) REFERENCES Candidats(Id_Candidats),
-  FOREIGN KEY (Cle_Qualifications) REFERENCES Qualifications(Id_Qualifications),
+  FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id_Candidates),
+  FOREIGN KEY (Key_Qualifications) REFERENCES Qualifications(Id_Qualifications),
 
-  PRIMARY KEY (Cle_Candidats, Cle_Qualifications)
+  PRIMARY KEY (Key_Candidates, Key_Qualifications)
 );
 
--- Aides --
-CREATE TABLE Aides (
-  Id_Aides INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Intitule_Aides VARCHAR(64) NOT NULL,
-  Description_Aides TEXT DEFAULT NULL
+-- Helps --
+CREATE TABLE Helps (
+  Id_Helps INTEGER PRIMARY KEY AUTO_INCREMENT,
+  Titled_Helps VARCHAR(64) NOT NULL,
+  Description_Helps TEXT DEFAULT NULL
 );
-CREATE TABLE Avoir_droit_a (
-  Cle_Candidats INTEGER NOT NULL,
-  Cle_Aides INTEGER NOT NULL,
+CREATE TABLE Have_the_right_to (
+  Key_Candidates INTEGER NOT NULL,
+  Key_Helps INTEGER NOT NULL,
 
-  FOREIGN KEY (Cle_Candidats) REFERENCES Candidats(Id_Candidats),
-  FOREIGN KEY (Cle_Aides) REFERENCES Aides(Id_Aides),
+  FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id_Candidates),
+  FOREIGN KEY (Key_Helps) REFERENCES Helps(Id_Helps),
 
-  PRIMARY KEY (Cle_Candidats, Cle_Aides)
-);
-
--- Contrats --
-CREATE TABLE Types_de_contrats (
-  Id_Types_de_contrats INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Intitule_Types_de_contrats VARCHAR(64) NOT NULL,
-  Description_Types_de_contrats TEXT DEFAULT NULL
-);
-CREATE TABLE Contrats (
-  Id_Contrats INTEGER PRIMARY KEY AUTO_INCREMENT,
-  DateDebut_Contrats DATE NOT NULL, 
-  DateFin_Contrats DATE DEFAULT NULL,
-  DateProposition_Contrats DATE NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  DateSignature_Contrats DATE DEFAULT NULL, 
-  DateDemission_Contrats DATE DEFAULT NULL,
-  Salaires_Contrats INTEGER, 
-  TravailNuit_Contrats BOOLEAN DEFAULT FALSE,
-  TravailWeekEnd_Contrats BOOLEAN DEFAULT FALSE,
-
-  Cle_Candidats INTEGER NOT NULL,
-  Cle_Types_de_contrats INTEGER NOT NULL,
-  Cle_Postes INTEGER NOT NULL,
-  Cle_Services INTEGER NOT NULL,
-  Cle_Etablissements INTEGER NOT NULL,
-
-  FOREIGN KEY (Cle_Candidats) REFERENCES Candidats(Id_Candidats),
-  FOREIGN KEY (Cle_Types_de_contrats) REFERENCES Types_de_contrats(Id_Types_de_contrats),
-  FOREIGN KEY (Cle_Postes) REFERENCES Postes(Id_Postes),
-  FOREIGN KEY (Cle_Services) REFERENCES Services(Id_Services),
-  FOREIGN KEY (Cle_Etablissements) REFERENCES Etablissements(Id_Etablissements)
+  PRIMARY KEY (Key_Candidates, Key_Helps)
 );
 
--- Besoins --
-CREATE TABLE Besoins (
-  Id_Besoins INTEGER PRIMARY KEY AUTO_INCREMENT,
-  DateDebut_Besoins DATE NOT NULL,
-  DateFin_Besoins DATE DEFAULT NULL,
-  HeureDebut_Besoins TIME DEFAULT NULL,
-  HeureFin_Besoins TIME DEFAULT NULL,
-  Description_Besoins TEXT DEFAULT NULL,
+-- Contracts --
+CREATE TABLE Types_of_contracts (
+  Id_Types_of_contracts INTEGER PRIMARY KEY AUTO_INCREMENT,
+  Titled_Types_of_contracts VARCHAR(64) NOT NULL,
+  Description_Types_of_contracts TEXT DEFAULT NULL
+);
+CREATE TABLE Contracts (
+  Id_Contracts INTEGER PRIMARY KEY AUTO_INCREMENT,
+  StartDate_Contracts DATE NOT NULL, 
+  EndDate_Contracts DATE DEFAULT NULL,
+  PropositionDate_Contracts DATE NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  SignatureDate_Contracts DATE DEFAULT NULL, 
+  ResignationDate_Contracts DATE DEFAULT NULL,
+  Salary_Contracts INTEGER, 
+  NightWork_Contracts BOOLEAN DEFAULT FALSE,
+  WeekEndWork_Contracts BOOLEAN DEFAULT FALSE,
 
-  Cle_Postes INTEGER NOT NULL,
-  Cle_Types_de_contrats INTEGER NOT NULL,
+  Key_Candidates INTEGER NOT NULL,
+  Key_Types_of_contracts INTEGER NOT NULL,
+  Key_Jobs INTEGER NOT NULL,
+  Key_Services INTEGER NOT NULL,
+  Key_Establishments INTEGER NOT NULL,
 
-  FOREIGN KEY (Cle_Postes) REFERENCES Postes(Id_Postes),
-  FOREIGN KEY (Cle_Types_de_contrats) REFERENCES Types_de_contrats(Id_Types_de_contrats)
+  FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id_Candidates),
+  FOREIGN KEY (Key_Types_of_contracts) REFERENCES Types_of_contracts(Id_Types_of_contracts),
+  FOREIGN KEY (Key_Jobs) REFERENCES Jobs(Id_Jobs),
+  FOREIGN KEY (Key_Services) REFERENCES Services(Id_Services),
+  FOREIGN KEY (Key_Establishments) REFERENCES Establishments(Id_Establishments)
+);
+
+-- Needs --
+CREATE TABLE Needs (
+  Id_Needs INTEGER PRIMARY KEY AUTO_INCREMENT,
+  StartDate_Needs DATE NOT NULL,
+  EndDate_Needs DATE DEFAULT NULL,
+  StartHour_Needs TIME DEFAULT NULL,
+  EndHour_Needs TIME DEFAULT NULL,
+  Description_Needs TEXT DEFAULT NULL,
+
+  Key_Jobs INTEGER NOT NULL,
+  Key_Types_of_contracts INTEGER NOT NULL,
+
+  FOREIGN KEY (Key_Jobs) REFERENCES Jobs(Id_Jobs),
+  FOREIGN KEY (Key_Types_of_contracts) REFERENCES Types_of_contracts(Id_Types_of_contracts)
 );
 CREATE TABLE Necessiter (
-  Cle_Besoins INTEGER NOT NULL,
-  Cle_Qualifications INTEGER NOT NULL,
+  Key_Needs INTEGER NOT NULL,
+  Key_Qualifications INTEGER NOT NULL,
 
-  FOREIGN KEY (Cle_Besoins) REFERENCES Besoins(Id_Besoins),
-  FOREIGN KEY (Cle_Qualifications) REFERENCES Qualifications(Id_Qualifications),
+  FOREIGN KEY (Key_Needs) REFERENCES Needs(Id_Needs),
+  FOREIGN KEY (Key_Qualifications) REFERENCES Qualifications(Id_Qualifications),
 
-  PRIMARY KEY (Cle_Besoins, Cle_Qualifications)
+  PRIMARY KEY (Key_Needs, Key_Qualifications)
 );
 
--- Candidatures 
+-- applications 
 CREATE TABLE Sources (
   Id_Sources INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Intitule_Sources VARCHAR(64) NOT NULL
+  Titled_Sources VARCHAR(64) NOT NULL
 );
-CREATE TABLE Candidatures (
-  Id_Candidatures INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Statut_Candidatures VARCHAR(24),
-  Instant_Candidatures TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE applications (
+  Id_applications INTEGER PRIMARY KEY AUTO_INCREMENT,
+  Status_applications VARCHAR(24),
+  Moment_applications TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-  Cle_Candidats INTEGER NOT NULL,
-  Cle_Postes INTEGER NOT NULL,
-  Cle_Types_de_contrats INTEGER NOT NULL,
-  Cle_Sources INTEGER NOT NULL,
-  Cle_Besoins INTEGER,
-  Cle_Etablissements INTEGER,
-  Cle_Services INTEGER,
+  Key_Candidates INTEGER NOT NULL,
+  Key_Jobs INTEGER NOT NULL,
+  Key_Types_of_contracts INTEGER NOT NULL,
+  Key_Sources INTEGER NOT NULL,
+  Key_Needs INTEGER,
+  Key_Establishments INTEGER,
+  Key_Services INTEGER,
 
-  FOREIGN KEY (Cle_Candidats) REFERENCES Candidats(Id_Candidats),
-  FOREIGN KEY (Cle_Postes) REFERENCES Postes(Id_Postes),
-  FOREIGN KEY (Cle_Types_de_contrats) REFERENCES Types_de_contrats(Id_Types_de_contrats),
-  FOREIGN KEY (Cle_Sources) REFERENCES Sources(Id_Sources),
-  FOREIGN KEY (Cle_Besoins) REFERENCES Besoins(Id_Besoins),
-  FOREIGN KEY (Cle_Etablissements) REFERENCES Etablissements(Id_Etablissements),
-  FOREIGN KEY (Cle_Services) REFERENCES Services(Id_Services)
+  FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id_Candidates),
+  FOREIGN KEY (Key_Jobs) REFERENCES Jobs(Id_Jobs),
+  FOREIGN KEY (Key_Types_of_contracts) REFERENCES Types_of_contracts(Id_Types_of_contracts),
+  FOREIGN KEY (Key_Sources) REFERENCES Sources(Id_Sources),
+  FOREIGN KEY (Key_Needs) REFERENCES Needs(Id_Needs),
+  FOREIGN KEY (Key_Establishments) REFERENCES Establishments(Id_Establishments),
+  FOREIGN KEY (Key_Services) REFERENCES Services(Id_Services)
 );
 
 -- Rendez-vous --
-CREATE TABLE Instants (
-  Id_Instants INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Date_Instants TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE Moments (
+  Id_Moments INTEGER PRIMARY KEY AUTO_INCREMENT,
+  Date_Moments TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE Avoir_rendez_vous_avec (
-  Cle_Utilisateurs INTEGER NOT NULL,
-  Cle_Candidats INTEGER NOT NULL,
-  Cle_Etablissements INTEGER NOT NULL,
-  Cle_Instants INTEGER NOT NULL,
+  Key_Users INTEGER NOT NULL,
+  Key_Candidates INTEGER NOT NULL,
+  Key_Establishments INTEGER NOT NULL,
+  Key_Moments INTEGER NOT NULL,
 
-  FOREIGN KEY (Cle_Utilisateurs) REFERENCES Utilisateurs(Id_Utilisateurs),
-  FOREIGN KEY (Cle_Candidats) REFERENCES Candidats(Id_Candidats),
-  FOREIGN KEY (Cle_Etablissements) REFERENCES Etablissements(Id_Etablissements),
-  FOREIGN KEY (Cle_Instants) REFERENCES Instants(Id_Instants)
+  FOREIGN KEY (Key_Users) REFERENCES Users(Id_Users),
+  FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id_Candidates),
+  FOREIGN KEY (Key_Establishments) REFERENCES Establishments(Id_Establishments),
+  FOREIGN KEY (Key_Moments) REFERENCES Moments(Id_Moments)
 );
