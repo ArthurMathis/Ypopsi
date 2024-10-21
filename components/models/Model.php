@@ -11,14 +11,14 @@ abstract class Model {
     private $connection;
 
     /**
-     * @brief Class' constructor
+     * Class' constructor
      */
     public function __construct() {
         $this->makeConnection();
     }
 
     /**
-     * @brief Protected method connecting the application to the database
+     * Protected method connecting the application to the database
      */
     protected function makeConnection() {
         try {
@@ -34,7 +34,7 @@ abstract class Model {
     
             $db_fetch = "$db_connection:host=$db_host;port=$db_port;dbname=$db_name";
 
-            $this->connection = new PDO($db_fetch, $db_user, $db_password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $this->connection = new PDO($db_fetch, $db_user, $db_password, Array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
         } catch(PDOException $e) {
@@ -43,21 +43,24 @@ abstract class Model {
         return $this->connection;
     }
     /**
-     * @brief Protected method returning the database connection
+     * Protected method returning the database connection
      */
     protected function getConnection() { return $this->connection; }
     /**
-     * @brief Protected method recording application logs
-     * @param integer $user_key The user identification key in the database
-     * @param string $action The action title
-     * @param string optionnal $description The action description 
-     * @return void
+     * Protected method recording application logs
+     * 
+     * @param Int $user_key The user identification key in the database
+     * @param String $action The action title
+     * @param String optionnal $description The action description 
+     * @return Void
      */
     protected function writeLogs(&$user_key, $action, $description=null) {
         try {
-            $action_type = $this->serachAction_type($action);
-            $instant_id = $this->inscriptInstants();
-            $this->inscriptAction($user_key, $action_type['Id_Types'], $instant_id['Id_Instants'], $description);
+            $this->inscriptActions(
+                $user_key, 
+                $this->serachType_of_action($action)['Id'], 
+                $description
+            );
 
         } catch (Exception $e) {
             forms_manip::error_alert([
@@ -72,15 +75,16 @@ abstract class Model {
     
 
     /**
-     * @brief Private method checking the request parameters
-     * @param string $request The SQL request
-     * @param array<string> $params The request data array
-     * @return boolean TRUE if the request executed successfully, FALSE otherwise
+     * Private method checking the request parameters
+     * 
+     * @param String $request The SQL request
+     * @param Array<String> $params The request data Array
+     * @return Boolean TRUE if the request executed successfully, FALSE otherwise
      */
-    private function test_data_request(&$request, &$params=[]): bool {
+    private function test_data_request(&$request, &$params=[]): Bool {
         if(empty($request) || !is_string($request)) 
             throw new Exception("La requête doit être passée en paramètre !");
-        elseif(!is_array($params))
+        elseif(!is_Array($params))
             throw new Exception("Les données de la requête doivent être passsée en paramètre !");
     
         return true;
@@ -88,13 +92,13 @@ abstract class Model {
     /**
      * Private method executing a GET request to the database
      *
-     * @param string $request The SQL request
-     * @param array<string> $params The request data parameters
-     * @param boolean $unique TRUE if the waiting result is one unique item, FALSE otherwise
-     * @param boolean $present TRUE if if the waiting result can't be null, FALSE otherwise
-     * @return array|null
+     * @param String $request The SQL request
+     * @param Array<String> $params The request data parameters
+     * @param Boolean $unique TRUE if the waiting result is one unique item, FALSE otherwise
+     * @param Boolean $present TRUE if if the waiting result can't be null, FALSE otherwise
+     * @return Array|null
      */
-    protected function get_request($request, $params = [], $unique=false, $present=false): ?array {
+    protected function get_request($request, $params = [], $unique=false, $present=false): ?Array {
         if(empty($unique) || !is_bool($unique) || empty($present) || !is_bool($present))  
             $present = false;
     
@@ -134,11 +138,11 @@ abstract class Model {
     /**
      * Private method executing a POST request to the database
      *
-     * @param string  $request The SQL request
-     * @param array<string>  $params The request data array
-     * @return boolean
+     * @param String  $request The SQL request
+     * @param Array<String>  $params The request data Array
+     * @return Boolean
      */
-    protected function post_request(&$request, $params): bool {
+    protected function post_request(&$request, $params): Bool {
         $res = true;
     
         if(!$this->test_data_request($request, $params)) 
@@ -162,7 +166,7 @@ abstract class Model {
     /**
      * Public method returning the users list to autocomplete items
      *
-     * @return void
+     * @return Void
      */
     public function getAutoCompletUtilisateurs() {
         // On initialise la requête
@@ -174,11 +178,11 @@ abstract class Model {
     /**
      * Public method returning the establishments list to autocomplete items
      *
-     * @return void
+     * @return Void
      */
     public function getAutoCompletEtablissements() {
         // On initialise la requête
-        $request = "SELECT Intitule_Etablissements FROM Etablissements ORDER BY Intitule_Etablissements";
+        $request = "SELECT titled FROM Establishments ORDER BY titled";
 
         // On lance la requête
         return $this->get_request($request, [], false, true);
@@ -186,16 +190,18 @@ abstract class Model {
     /**
      * Public method returning the candidate who have a job in the foundation list to autocomplete items
      *
-     * @return void
+     * @return Void
      */
-    public function getAutoCompletEmployer() {
+    public function getEmployee() {
         // On initialise la requête
         $request = "SELECT 
-        CONCAT(c.Nom_Candidats, ' ', c.Prenom_Candidats) AS text
-        FROM Candidats AS c
-        INNER JOIN Contrats AS con ON c.Id_Candidats = con.Cle_Candidats
-        WHERE con.Date_signature_Contrats IS NOT NULL
-        AND (con.Date_fin_Contrats IS NULL OR con.Date_fin_Contrats > CURDATE())";
+        CONCAT(c.Name, ' ', c.Firstname) AS text
+
+        FROM Candidates AS c
+        INNER JOIN Contracts AS con ON c.Id = con.Key_Candidates
+
+        WHERE con.SignatureDate IS NOT NULL
+        AND (con.EndDate IS NULL OR con.EndDate > CURDATE())";
     
         // On lance la requête
         return $this->get_request($request, []);
@@ -203,15 +209,15 @@ abstract class Model {
     /**
      * Public method returning the assistants list to autocomplete items
      *
-     * @return void
+     * @return Void
      */
-    public function getAides() {
+    public function getHelps() {
         // On inititalise la requête
         $request = "SELECT 
-        Id_Aides_au_recrutement AS id,
-        Intitule_Aides_au_recrutement AS text
+        Id AS id,
+        Titled AS text
 
-        FROM aides_au_recrutement";
+        FROM Helps";
         
         // On lance la requête
         return $this->get_request($request, [], false, true);
@@ -219,14 +225,14 @@ abstract class Model {
     /**
      * Public method returning the establishments list to autocomplete items
      *
-     * @return void
+     * @return Void
      */
-    public function getDiplomes() {
+    public function getQualifications() {
         // On initialise la requête
         $request = "SELECT
-        Intitule_Diplomes AS text
+        Titled AS text
         
-        FROM Diplomes";
+        FROM Qualifications";
 
         // On lance la requête
         return $this->get_request($request, [], false, true);
@@ -234,7 +240,7 @@ abstract class Model {
     /**
      * Public method returning the job lost to the autocomplete items
      *
-     * @return void
+     * @return Void
      */
     public function getAutoCompPostes() {
         // On inititalise la requête
@@ -246,7 +252,7 @@ abstract class Model {
     /**
      * Public method returning the services list to the autocomplete items
      *
-     * @return void
+     * @return Void
      */
     public function getAutoCompServices() {
         // On inititalise la requête
@@ -258,7 +264,7 @@ abstract class Model {
     /**
      * Public method returning the types of contracts list to the autocomplete items
      *
-     * @return void
+     * @return Void
      */
     public function getAutoCompTypesContrat() {
         // On initialise la requête
@@ -270,7 +276,7 @@ abstract class Model {
     /**
      * Public method returning the sources list to the autocomplete items
      *
-     * @return void
+     * @return Void
      */
     public function getAutoCompSources() {
         // On initialise la requête
@@ -282,7 +288,7 @@ abstract class Model {
     /**
      * Public method returning the role liste without the owner
      *
-     * @return void
+     * @return Void
      */
     public function getAccessibleRoles() {
         // ON initialise la requête
@@ -303,10 +309,10 @@ abstract class Model {
     /**
      * Public method searching one Instant in the database
      *
-     * @param integer $cle_instant The Instant's primary key 
-     * @return array
+     * @param Int $cle_instant The Instant's primary key 
+     * @return Array
      */
-    protected function searchInstant($cle_instant): array {
+    protected function searchInstant($cle_instant): Array {
         // On initialise la requête
         $request = "SELECT * FROM Instants WHERE Id_Instants = :cle";
         $params = ['cle' => $cle_instant];
@@ -317,10 +323,10 @@ abstract class Model {
     /**
      * Public method searching one establishment 
      *
-     * @param integer|string $etablissement The establishment primary key or intitule 
-     * @return array
+     * @param Int|String $etablissement The establishment primary key or intitule 
+     * @return Array
      */
-    protected function searchEtablissement($etablissement): array {
+    protected function searchEtablissement($etablissement): Array {
         if(is_numeric($etablissement)) 
             // On initialise la requête
             $request = "SELECT * FROM Etablissements WHERE Id_Etablissements = :etablissement";
@@ -340,10 +346,10 @@ abstract class Model {
     /**
      * Protected method searching one hub in the database
      *
-     * @param integer|string $pole The hub primary key or intitule
-     * @return array
+     * @param Int|String $pole The hub primary key or intitule
+     * @return Array
      */
-    protected function searchPole($pole): array {
+    protected function searchPole($pole): Array {
         if(is_numeric($pole)) {
             $request = "SELECT * FROM Poles WHERE Id_Poles = :cle";
             $params = [
@@ -364,10 +370,10 @@ abstract class Model {
     /**
      * Protected method searching one role in the database
      *
-     * @param integer|string $role The role primary key or intitule
-     * @return array
+     * @param Int|String $role The role primary key or intitule
+     * @return Array
      */
-    protected function searchRole($role): array {
+    protected function searchRole($role): Array {
         // On initialise la requête
         if(is_numeric($role)) {
             $request = "SELECT * FROM roles WHERE Id_Role = :Id";
@@ -387,17 +393,17 @@ abstract class Model {
         return $result;
     }
     /**
-     * @brief Protected method searching one action type in the database
+     * Protected method searching one action type in the database
      * @param Int|String $action The type primary key or intitule
      * @return Array
      */
-    protected function serachAction_type($action): array {
+    protected function serachType_of_action($action): Array {
         if($action == null) 
             throw new Exception("Données éronnées. La clé action ou son intitulé sont nécessaires pour rechercher une action !");
         elseif(is_numeric($action)) 
-            $request = "SELECT * FROM types_of_actions WHERE Id_Types_of_actions = :action";
+            $request = "SELECT * FROM types_of_actions WHERE Id = :action";
         elseif(is_string($action))
-            $request = "SELECT * FROM types_of_actions WHERE Titled_Types_of_actions = :action";
+            $request = "SELECT * FROM types_of_actions WHERE Titled = :action";
         else 
             throw new Exception('Type invlide. La clé action (int) ou son intitulé (string) sont nécessaires pour rechercher une action !');   
 
@@ -406,11 +412,11 @@ abstract class Model {
         return $this->get_request($request, $params, true, true);
     }
     /**
-     * @brief Protected method search one user in the database
+     * Protected method search one user in the database
      * @param Int|String $user The user primary key or intitule
      * @return Array
      */ 
-    protected function searchUser($user): array {
+    protected function searchUser($user): Array {
         if($user == null)
             throw new Exception("Le nom ou l'identifiant de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
 
@@ -443,10 +449,10 @@ abstract class Model {
     /**
      * Protected method searching one user according to his name
      *
-     * @param string $user The user name
-     * @return array
+     * @param String $user The user name
+     * @return Array
      */
-    protected function searchUserFromUsername($user): array {
+    protected function searchUserFromUsername($user): Array {
         if(empty($user) || !is_string($user))
             throw new Exception("Erreur lors de la récupération du nom d'utilisateur");
 
@@ -460,10 +466,10 @@ abstract class Model {
     /**
      * Protected method searching one application in the database
      *
-     * @param integer $application The application primary key
-     * @return array
+     * @param Int $application The application primary key
+     * @return Array
      */
-    protected function searchCandidature($application): array {
+    protected function searchCandidature($application): Array {
         // On initialise la requête
         $request = "SELECT * FROM Candidatures WHERE Id_candidatures = :cle";
         $params = ['cle' => $application];
@@ -475,10 +481,10 @@ abstract class Model {
     /**
      * Public method searching one candidate from one of his application in the database
      *
-     * @param integer $cle The application primary key
-     * @return array
+     * @param Int $cle The application primary key
+     * @return Array
      */
-    public function searchCandidatFromCandidature($cle): array {
+    public function searchCandidatFromCandidature($cle): Array {
         // On initialise la requête
         $request = "SELECT * 
         FROM Candidatures 
@@ -495,10 +501,10 @@ abstract class Model {
     /**
      * Public method searching one candidate from one of his contract in the database
      *
-     * @param integer $cle The contract primary key
-     * @return array
+     * @param Int $cle The contract primary key
+     * @return Array
      */
-    public function searchcandidatFromContrat($cle): array {
+    public function searchcandidatFromContrat($cle): Array {
         // On initialise la requête
         $request = "SELECT * 
         FROM Contrats 
@@ -514,11 +520,11 @@ abstract class Model {
     /**
      * Protected method searching one application from his candidate in the database
      *
-     * @param integer $cle_candidat The candidate primary key
-     * @param integer $cle_instant The instant primary key
-     * @return array
+     * @param Int $cle_candidat The candidate primary key
+     * @param Int $cle_instant The instant primary key
+     * @return Array
      */
-    protected function searchCandidatureFromCandidat($cle_candidat, $cle_instant): array {
+    protected function searchCandidatureFromCandidat($cle_candidat, $cle_instant): Array {
         // On vérifie l'intégrité des données
         if(empty($cle_candidat) || empty($cle_instant)) 
             throw new Exception ('Données éronnées. Pour rechercher une candidatures, lla clé candidat et la clé instant sont nécessaires !');
@@ -536,10 +542,10 @@ abstract class Model {
     /**
      * Protected method searching one degree in the database 
      *
-     * @param integer|string $diplome The degree primary key or intitule
-     * @return array
+     * @param Int|String $diplome The degree primary key or intitule
+     * @return Array
      */
-    protected function searchDiplome($diplome): array {
+    protected function searchDiplome($diplome): Array {
         // Si diplome est un ID
         if(is_numeric($diplome)) {
             // On initialise la requête
@@ -568,10 +574,10 @@ abstract class Model {
     /**
      * Protected method searching one type of contracts in the database 
      *
-     * @param integer|string $contrat The types of contracts primary key or intitule
-     * @return array
+     * @param Int|String $contrat The types of contracts primary key or intitule
+     * @return Array
      */
-    protected function searchTypeContrat($contrat): array {
+    protected function searchTypeContrat($contrat): Array {
         // Si contrat est un ID
         if(is_numeric($contrat)) {
             // On initialise la requête
@@ -596,10 +602,10 @@ abstract class Model {
     /**
      * Protected method one source in the database
      *
-     * @param integer|string $source The source primary key or intitule
-     * @return array
+     * @param Int|String $source The source primary key or intitule
+     * @return Array
      */
-    protected function searchSource($source): array {
+    protected function searchSource($source): Array {
         // On initialise la requête
         if(is_numeric($source)) {
             $request = "SELECT * FROM sources WHERE Id_Sources = :Id";
@@ -620,10 +626,10 @@ abstract class Model {
     /**
      * Protected method searching one job in the database
      *
-     * @param integer|string $job The job primary key or intitule
-     * @return array
+     * @param Int|String $job The job primary key or intitule
+     * @return Array
      */
-    protected function searchPoste($job): array {
+    protected function searchPoste($job): Array {
         // On initialise la requête
         if(is_numeric($job)) {
             $request = "SELECT * FROM Postes WHERE Id_Postes = :Id";
@@ -641,10 +647,10 @@ abstract class Model {
     /**
      * Protected method searching one service in the database
      *
-     * @param integer|string $service The service primary key or intitule
-     * @return array
+     * @param Int|String $service The service primary key or intitule
+     * @return Array
      */
-    protected function searchService($service): array {
+    protected function searchService($service): Array {
         // Si contrat est un ID
         if(is_numeric($service)) {
             // On initialise la requête
@@ -669,10 +675,10 @@ abstract class Model {
     /**
      * Protected method searching one assistance in the database
      *
-     * @param integer|string $aide The assistance primary key or intitule
-     * @return array
+     * @param Int|String $aide The assistance primary key or intitule
+     * @return Array
      */
-    protected function searchAide($aide): array {
+    protected function searchAide($aide): Array {
         // Si aide est un ID
         if(is_numeric($aide)) {
             // On initialise la requête
@@ -700,10 +706,10 @@ abstract class Model {
     /**
      * Protected method searching one Appliquer_a from its application
      *
-     * @param integer $cle The application primary key
-     * @return array
+     * @param Int $cle The application primary key
+     * @return Array
      */
-    protected function searchAppliquer_aFromCandidature($cle): array {
+    protected function searchAppliquer_aFromCandidature($cle): Array {
         // On initialise la requête
         $request = "SELECT * FROM Appliquer_a WHERE Cle_Candidatures = :cle";
         $params = ['cle' => $cle];
@@ -714,10 +720,10 @@ abstract class Model {
     /**
      * Protected method searching one Appliquer_a from its service
      *
-     * @param integer $cle the service primary key
-     * @return array
+     * @param Int $cle the service primary key
+     * @return Array
      */
-    protected function searchAppliquer_aFromService($cle): array {
+    protected function searchAppliquer_aFromService($cle): Array {
         // On initialise la requête
         $request = "SELECT * FROM Appliquer_a WHERE Cle_Services = :cle";
         $params = ['cle' => $cle];
@@ -728,10 +734,10 @@ abstract class Model {
     /**
      * Protected method searching one contract in the database
      *
-     * @param integer $cle_contrat The contract primary key
-     * @return array
+     * @param Int $cle_contrat The contract primary key
+     * @return Array
      */
-    protected function searchContrat(&$cle_contrat): array {
+    protected function searchContrat(&$cle_contrat): Array {
         if(empty($cle_contrat) || !is_numeric($cle_contrat))
             throw new Exception('Erreur lors de la recherche du contrat. La clé contrat doit être un nombre entier positif !');
 
@@ -748,35 +754,10 @@ abstract class Model {
     // METHODES D'INSCRIPTION DANS LA BASE DE DONNEES //
 
     /**
-     * Protected method registering and returning one Instant in the database
-     *
-     * @param string $jour The instant day
-     * @param string $heure The instant hour
-     * @return array
-     */
-    // protected function inscriptInstants($jour=null, $heure=null): array {
-    //     if(empty($jour) && empty($heure))
-    //         // On génère l'instant actuel (date et heure actuelles)
-    //         $instant = Instants::currentInstants();
-    //         
-    //     // On génère un instant    
-    //     else $instant = new Instants($jour, $heure);
-    // 
-    //     // J'enregistre mon instant dans la base de données
-    //     $request = "INSERT INTO Instants (Jour_Instants, Heure_Instants) VALUES (:jour, :heure)";
-    //     $params = $instant->exportToSQL();
-    //     $this->post_request($request, $params);
-    // 
-    //     // On récupère l'id de mon instant 
-    //     $request = "SELECT * FROM Instants WHERE Jour_Instants = :jour AND Heure_Instants = :heure";
-    // 
-    //     return $this->get_request($request, $params, true, true);
-    // }
-    /**
      * protected method registering one user in the database
      *
-     * @param array $user The user's data array
-     * @return void
+     * @param Array $user The user's data Array
+     * @return Void
      */
     protected function inscriptUtilisateurs($user=[]) {
         if(empty($user)) 
@@ -801,13 +782,11 @@ abstract class Model {
      * @throws Exception If the action's informtions is invalid or no complet
      * @return Void
      */
-    protected function inscriptAction(&$cle_user, &$cle_action, $description=null) {
+    protected function inscriptActions(&$key_user, &$key_action, $description=null) {
         try {
-            if(empty($cle_user) || !is_numeric($cle_user))
+            if(empty($key_user) || !is_numeric($key_user))
                 throw new Exception("La clé Utilisateur est nécessaire pour l'enregistrement d'une action !");
-            elseif(empty($cle_action) || !is_numeric($cle_action))
-                throw new Exception("La clé Action est nécessaire pour l'enregistrement d'une action !");
-            elseif(empty($cle_instant) || !is_numeric($cle_instant))
+            elseif(empty($key_action) || !is_numeric($key_action))
                 throw new Exception("La clé Action est nécessaire pour l'enregistrement d'une action !");
 
         } catch(Exception $e) {
@@ -817,18 +796,18 @@ abstract class Model {
         }
         
         if(!empty($description)) {
-            $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, Description_Actions) VALUES (:user_id, :type_id, :description)";
+            $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, Description) VALUES (:user_id, :type_id, :description)";
             $params = [
-                "user_id" => $cle_user,
-                "type_id" => $cle_action,
+                "user_id" => $key_user,
+                "type_id" => $key_action,
                 'description' => $description
             ];
 
         } else {
-            $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, ) VALUES (:user_id, :type_id)";
+            $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions) VALUES (:user_id, :type_id)";
             $params = [
-                "user_id" => $cle_user,
-                "type_id" => $cle_action,
+                "user_id" => $key_user,
+                "type_id" => $key_action,
             ];   
         }
 
@@ -838,7 +817,7 @@ abstract class Model {
      * Protected method registering one candidate ine the database
      *
      * @param Candidat $candidat The candidate's data 
-     * @return void
+     * @return Void
      */
     protected function inscriptCandidat(&$candidat) {
         // On initialise la requête
@@ -858,9 +837,9 @@ abstract class Model {
     /**
      * Protected method registering one Obtenir in the database
      *
-     * @param integer $cle_candidat The candidate's primary key
-     * @param integer $cle_diplome The degree primary key
-     * @return void
+     * @param Int $cle_candidat The candidate's primary key
+     * @param Int $cle_diplome The degree primary key
+     * @return Void
      */
     protected function inscriptObtenir($cle_candidat, $cle_diplome) {
         // On initialise la requête
@@ -876,9 +855,9 @@ abstract class Model {
     /**
      * Protected method regstering one Postuler_a in the database
      *
-     * @param integer $candidat The candidate's primary key
-     * @param integer $instant The instant primary key
-     * @return void
+     * @param Int $candidat The candidate's primary key
+     * @param Int $instant The instant primary key
+     * @return Void
      */
     protected function inscriptPostuler_a($candidat, $instant) {
         // On initialise la requête 
@@ -894,9 +873,9 @@ abstract class Model {
     /**
      * Protected method registering one Appliquer_a ine the database
      *
-     * @param integer $cle_candidature The application primary key
-     * @param integer $cle_service The service primary key
-     * @return void
+     * @param Int $cle_candidature The application primary key
+     * @param Int $cle_service The service primary key
+     * @return Void
      */
     protected function inscriptAppliquer_a($cle_candidature, $cle_service) {
         // On vérifie l'intégrité des données
@@ -923,10 +902,10 @@ abstract class Model {
     /**
      * Protected method registering one Avoir_droit_a in the database
      *
-     * @param integer $cle_candidat The candidate's primary key
-     * @param integer $cle_aide The assistance primary key
-     * @param integer $cle_coopteur The recommander's primary key
-     * @return void
+     * @param Int $cle_candidat The candidate's primary key
+     * @param Int $cle_aide The assistance primary key
+     * @param Int $cle_coopteur The recommander's primary key
+     * @return Void
      */
     protected function inscriptAvoir_droit_a($cle_candidat, $cle_aide, $cle_coopteur=null) {
         if(!empty($cle_coopteur)) {
@@ -953,9 +932,9 @@ abstract class Model {
     /**
      * Protected method registerin one Proposer_a in the database
      *
-     * @param integer $cle_candidat The candidate's primary key
-     * @param integer $cle_instant The instant primary key
-     * @return void
+     * @param Int $cle_candidat The candidate's primary key
+     * @param Int $cle_instant The instant primary key
+     * @return Void
      */
     protected function inscriptProposer_a($cle_candidat, $cle_instant) {
         // On initialise la requête
@@ -971,9 +950,9 @@ abstract class Model {
     /**
      * Protected method registering one mission in the database
      *
-     * @param integer $cle_service The sevice primary key
-     * @param integer $cle_poste The job primary key
-     * @return void
+     * @param Int $cle_service The sevice primary key
+     * @param Int $cle_poste The job primary key
+     * @return Void
      */
     protected function inscriptMission($cle_service, $cle_poste) {
         // On intitialise la requête 
@@ -989,11 +968,11 @@ abstract class Model {
     /**
      * Protected method registering one meeting in the database 
      *
-     * @param integer $cle_utilisateur The user's primary key (recruiter) 
-     * @param integer $cle_candidat The candidate's primary key
-     * @param integer $cle_etablissement The establishment primary key
-     * @param integer $cle_instants The instant primary key
-     * @return void
+     * @param Int $cle_utilisateur The user's primary key (recruiter) 
+     * @param Int $cle_candidat The candidate's primary key
+     * @param Int $cle_etablissement The establishment primary key
+     * @param Int $cle_instants The instant primary key
+     * @return Void
      */
     protected function inscriptAvoir_rendez_vous_avec($cle_utilisateur, $cle_candidat, $cle_etablissement, $cle_instants) {
         // On intitialise la requête 
@@ -1011,9 +990,9 @@ abstract class Model {
     /**
      * Protected method registering one job in the database
      *
-     * @param string $poste The job intitule
-     * @param string $description The job description
-     * @return void
+     * @param String $poste The job intitule
+     * @param String $description The job description
+     * @return Void
      */
     protected function inscriptPoste(&$poste, &$description) {
         // On initialise la requête
@@ -1029,9 +1008,9 @@ abstract class Model {
     /**
      * Protected method registering one service in the database
      *
-     * @param string $service The service intitule
-     * @param string $cle_etablissement The service description
-     * @return void
+     * @param String $service The service intitule
+     * @param String $cle_etablissement The service description
+     * @return Void
      */
     protected function inscriptService(&$service, $cle_etablissement) {
         // On initialise la requête 
@@ -1047,8 +1026,8 @@ abstract class Model {
     /**
      * Protected method registering one establishment
      *
-     * @param array<string> $infos The establishment data array 
-     * @return void
+     * @param Array<String> $infos The establishment data Array 
+     * @return Void
      */
     protected function inscriptEtablissement(&$infos=[]) {
         // On initialise la requête 
@@ -1068,9 +1047,9 @@ abstract class Model {
     /**
      * Protected method registering one hub in the database
      *
-     * @param string $intitule The hub intitule
-     * @param string $description The hub description
-     * @return void
+     * @param String $intitule The hub intitule
+     * @param String $description The hub description
+     * @return Void
      */
     protected function inscriptPole(&$intitule, &$description) {
         // On initialise la requête 
@@ -1086,8 +1065,8 @@ abstract class Model {
     /**
      * Protected method registering one degree in the database
      *
-     * @param string $diplome The degree intitule
-     * @return void
+     * @param String $diplome The degree intitule
+     * @return Void
      */
     protected function inscriptDiplome($diplome) {
         // On initialise la requête
@@ -1104,16 +1083,16 @@ abstract class Model {
     /**
      * Public method updating one user's password 
      *
-     * @param string $password The new user's password
-     * @return void
+     * @param String $password The new user's password
+     * @return Void
      */
     public function updatePassword(&$password) {
         // On initialise la requête
-        $request = "UPDATE Utilisateurs
-        SET MotDePasse_Utilisateurs = :password, MotDePassetemp_Utilisateurs = false
-        WHERE Id_Utilisateurs = :cle";
+        $request = "UPDATE Users
+        SET Password = :password, PasswordTemp = false
+        WHERE Id = :key";
         $params = [
-            'cle' => $_SESSION['user_key'],
+            'key' => $_SESSION['user_key'],
             'password' => password_hash($password, PASSWORD_DEFAULT)
         ];
         
@@ -1123,9 +1102,9 @@ abstract class Model {
     /**
      * Public method updating one user's data
      *
-     * @param integer $cle_utilisateur The user's primary key
-     * @param array<string> $user The user's data array
-     * @return void
+     * @param Int $cle_utilisateur The user's primary key
+     * @param Array<String> $user The user's data Array
+     * @return Void
      */
     public function updateUser($cle_utilisateur, $user=[]) {
         // On initialise la requête
@@ -1146,9 +1125,9 @@ abstract class Model {
     /**
      * public method updating one candidate's evaluation
      *
-     * @param integer $cle_candidat The candidate's primary key
-     * @param array $notation The candidate's data array
-     * @return void
+     * @param Int $cle_candidat The candidate's primary key
+     * @param Array $notation The candidate's data Array
+     * @return Void
      */
     public function updateNotation($cle_candidat, &$notation=[]) {
         // On initialise la requête
@@ -1170,9 +1149,9 @@ abstract class Model {
     /**
      * Public method updating a candidate's data
      *
-     * @param integer $cle_candidat The candidate's primary key
-     * @param array<string> $candidat The cadidate's data array
-     * @return void
+     * @param Int $cle_candidat The candidate's primary key
+     * @param Array<String> $candidat The cadidate's data Array
+     * @return Void
      */
     public function updateCandidat($cle_candidat, $candidat=[]) {
         // On initialise la requête
@@ -1196,11 +1175,11 @@ abstract class Model {
     /**
      * Public method updating one candidate's meeting
      *
-     * @param integer $cle_candidat The candidate's primary key
-     * @param integer $cle_utilisateur The user's primary key
-     * @param integer $cle_instant The instant primary key
-     * @param array $rdv The metting data array
-     * @return void
+     * @param Int $cle_candidat The candidate's primary key
+     * @param Int $cle_utilisateur The user's primary key
+     * @param Int $cle_instant The instant primary key
+     * @param Array $rdv The metting data Array
+     * @return Void
      */
     public function updateRendezVous($cle_candidat, $cle_utilisateur, $cle_instant, &$rdv=[]) {
         // On met-à-jour l'utilisateur
@@ -1232,10 +1211,10 @@ abstract class Model {
     /**
      * Protected method deleting one meeting
      *
-     * @param integer $cle_candidat The candidate's primary key
-     * @param integer $cle_utilisateur The use's primary key
-     * @param integer $cle_instant The instant primary key
-     * @return void
+     * @param Int $cle_candidat The candidate's primary key
+     * @param Int $cle_utilisateur The use's primary key
+     * @param Int $cle_instant The instant primary key
+     * @return Void
      */
     protected function deleteRendezVous($cle_candidat, $cle_utilisateur, $cle_instant) {
         // On initialise la requête
@@ -1255,8 +1234,8 @@ abstract class Model {
     /**
      * Protected method deleting one instant
      *
-     * @param integer $cle_instant The instant primary key
-     * @return void
+     * @param Int $cle_instant The instant primary key
+     * @return Void
      */
     protected function deleteInstant($cle_instant) {
         // On initialise la requête

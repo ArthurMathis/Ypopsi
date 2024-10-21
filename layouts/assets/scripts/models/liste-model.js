@@ -1,5 +1,5 @@
 /**
- * @brief Fonction téléchargeant le tableau de candidatures dans le script
+ *  Fonction téléchargeant le tableau de candidatures dans le script
  * @param {*} source 
  * @returns 
  */
@@ -8,7 +8,7 @@ function recupCandidatures(source) {
 }
 
 /**
- * @brief Fonction déterminant le code couleur des éléments d'un tableau selon un e liste de critères
+ *  Fonction déterminant le code couleur des éléments d'un tableau selon un e liste de critères
  * @param {*} items Le tableau
  * @param {*} criteres La liste de critères 
  * @param {*} index L'index de la colonne à partir de la quelle déterminer le code couleur
@@ -48,7 +48,7 @@ function setColor(items=[], criteres=[], index) {
     });
 }
 /**
- * @brief Fonction assignant un code couleur selon les diponibiltés
+ *  Fonction assignant un code couleur selon les diponibiltés
  * @param {*} items Le tableau de candidatures
  * @param {*} index La colonnes contenant les disponibilités
  */
@@ -70,7 +70,7 @@ function setColorDispo(items=[], index) {
 // FONCTIONS DE FILTRE //
 
 /**
- * @brief Fonction permettant de définir une liste de critères selon une liste de champs textuels 
+ *  Fonction permettant de définir une liste de critères selon une liste de champs textuels 
  * @param {*} champs La liste de champs de saisie
  * @param {*} criteres Le tableau de critères à implémenter
  */
@@ -96,7 +96,7 @@ function recupChamps(champs=[], criteres=[]) {
     }
 }
 /**
- * @brief Fonction permettant de définir une liste de critères selon une liste de checkbox
+ *  Fonction permettant de définir une liste de critères selon une liste de checkbox
  * @param {*} champs La liste de champs de saisie
  * @param {*} criteres Le tableau de critères à implémenter
  */
@@ -121,7 +121,7 @@ function recupCheckbox(champs=[], criteres=[]) {
         });
 }
 /**
- * @brief Fonction permettant de récupérer les données saisies dans les sélections de dates du formulaire
+ *  Fonction permettant de récupérer les données saisies dans les sélections de dates du formulaire
  * @param {*} liste_date la liste des dates
  * @returns 
  */
@@ -163,7 +163,7 @@ function recupChampsDate(champs=[], criteres=[]) {
 }
 
 /**
- * @brief Fonction permettant de filtrer un tableau selon un filtre à un critère
+ *  Fonction permettant de filtrer un tableau selon un filtre à un critère
  * @param {*} item La ligne du tableau
  * @param {*} index La colonne dans laquelle on effectue le filtre
  * @param {*} critere La valeur recherchée
@@ -188,7 +188,7 @@ function filtrerPar(item, index, critere) {
             );
 }
 /**
- * @brief Fonction permettant de filtrer un tableau selon un filtre à plusieurs critères
+ *  Fonction permettant de filtrer un tableau selon un filtre à plusieurs critères
  * @param {*} item La ligne du tableau
  * @param {*} index La colonne dans laquelle on effectue le filtre
  * @param {*} criteres La liste des valeurs recherchées
@@ -214,7 +214,7 @@ function filterParCriteres(item, index, criteres=[]) {
     return find;
 }
 /**
- * @brief Fonction permettant de filtrer les candidatures selon leur date de disponibilité
+ *  Fonction permettant de filtrer les candidatures selon leur date de disponibilité
  * @param {*} item La candidature
  * @param {*} index L'indice de la colonne contenant la disponibilité
  * @param {*} date_min La date minimale à respecter
@@ -255,7 +255,7 @@ function filtrerParDate(item, index, critere_date=[]) {
     return res;
 }
 /**
- * @brief Fonction permettant de filtrer un tableau d'élément selon une liste de critères
+ *  Fonction permettant de filtrer un tableau d'élément selon une liste de critères
  * @param {*} items Le tableau
  * @param {*} criteres La liste
  * @returns 
@@ -311,7 +311,7 @@ function multiFiltre(items, criteres=[]) {
 // FONCTIONS DE TRIS //
 
 /**
- * @brief Fonction permettant de réaliser le tri entre des entiers
+ *  Fonction permettant de réaliser le tri entre des entiers
  * @param {*} item1 La Ligne 1
  * @param {*} item2 La ligne 2
  * @param {*} index La colonne contenant les entiers à comparer
@@ -326,7 +326,7 @@ function trierSelonInteger(item1=[], item2=[], index) {
     return x1 - x2;
 }
 /**
- * @brief Fonction permettant de réaliser le tri entre des chaines de caractères
+ *  Fonction permettant de réaliser le tri entre des chaines de caractères
  * @param {*} item1 La Ligne 1
  * @param {*} item2 La ligne 2
  * @param {*} index La colonne contenant les chaines de caractères à comparer
@@ -341,7 +341,7 @@ function trierSelonString(item1=[], item2=[], index) {
     return s1.localeCompare(s2, 'fr', {sensitivity: 'base'});
 }
 /**
- * @brief Fonction permettant de réaliser le tri entre des dates
+ *  Fonction permettant de réaliser le tri entre des dates
  * @param {*} item1 La Ligne 1
  * @param {*} item2 La ligne 2
  * @param {*} index La colonne contenant les dates à comparer
@@ -357,7 +357,7 @@ function trierSelonDate(item1=[], item2=[], index) {
 }
 
 /**
- * @brief Fonction délclanchant le tri du tableau
+ *  Fonction délclanchant le tri du tableau
  * @param {*} items 
  * @param {*} index 
  * @param {*} croissant 

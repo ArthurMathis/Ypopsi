@@ -16,9 +16,9 @@ class CandidaturesController extends Controller {
     public function displaySaisieCandidat() {
         return $this->View->getSaisieCandidatContent(
             'Ypopsi - Nouveau candidat', 
-            $this->Model->getDiplomes(),
-            $this->Model->getAides(),
-            $this->Model->getAutoCompletEmployer()
+            $this->Model->getQualifications(),
+            $this->Model->getHelps(),
+            $this->Model->getEmployee()
         );
     }
     public function displaySaisieCandidature() {
@@ -44,7 +44,7 @@ class CandidaturesController extends Controller {
 
         // On l'enregistre dans la session
         try {
-            $candidat = new Candidat(
+            $candidat = new Candidate(
                 $search['Nom_Candidats'],
                 $search['Prenom_Candidats'],
                 $search['Email_Candidats'],
@@ -53,7 +53,7 @@ class CandidaturesController extends Controller {
                 $search['Ville_Candidats'],
                 $search['CodePostal_Candidats']
             );
-            $candidat->setCle($search['Id_Candidats']);
+            $candidat->setKey($search['Id_Candidats']);
             
         } catch(InvalideCandidateExceptions $e) {
             forms_manip::error_alert($e->getMessage());

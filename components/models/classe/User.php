@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @brief Class representing one user's Exception
+ *  Class representing one user's Exception
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class InvalideUtilisateurExceptions extends Exception {
@@ -11,58 +11,58 @@ class InvalideUtilisateurExceptions extends Exception {
 }
 
 /**
- * @brief Class representing one user
+ *  Class representing one user
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class User {
     /**
-     * @brief Private attribute containing the user's key
+     *  Private attribute containing the user's key
      * @var Int His key
      */
     private $key = null;
     /**
-     * @brief Private attribute containing the user's identifier
+     *  Private attribute containing the user's identifier
      * @var String
      */
     private $identifier;
     /**
-     * @brief Private attribute containing the user's name
+     *  Private attribute containing the user's name
      * @var String His name
      */
     private $name;
     /**
-     * @brief Private attribute containing the user's firstname
+     *  Private attribute containing the user's firstname
      * @var String His firstname
      */
     private $firstname;
     /**
-     * @brief Private attribute containing the user's email address
+     *  Private attribute containing the user's email address
      * @var String His email address
      */
     private $email;
     /**
-     * @brief Private attribute containing the user's password
+     *  Private attribute containing the user's password
      * @var String His password
      */
     private $password; 
     /**
-     * @brief Private attribute containing the establishment where works the user
+     *  Private attribute containing the establishment where works the user
      * @var Int The establishment 
      */
     private $establishment;
     /**
-     * @brief Private attribute containing the user's role
+     *  Private attribute containing the user's role
      * @var Int His role
      */
     private $role;
     /**
-     * @brief Private attribute indicating if the user's password is by default
+     *  Private attribute indicating if the user's password is by default
      * @var Bool TRUE - if the password needs to be changed ; FALSE - if not
      */
     private $firstLog = false;
 
     /**
-     * @brief Class' constructor
+     *  Class' constructor
      * @param String $identifier
      * @param String $name
      * @param String $firstname
@@ -92,53 +92,53 @@ class User {
     }
 
     /**
-     * @brief Public method returning the user's key
+     *  Public method returning the user's key
      * @return Int|NULL
      */
     public function getKey(): ?int { return $this->key; }
     /**
-     * @brief Public methog returning the user's identifier
+     *  Public methog returning the user's identifier
      * @return String
      */
     public function getIdentifier(): string { return $this->identifier; }
     /**
-     * @brief Public methog returning the user's name
+     *  Public methog returning the user's name
      * @return String
      */
     public function getName(): string { return $this->name; }
     /**
-     * @brief Public methog returning the user's firstname
+     *  Public methog returning the user's firstname
      * @return String
      */
     public function getFirstname(): string { return $this->firstname; }
     /**
-     * @brief Public methog returning the user's email
+     *  Public methog returning the user's email
      * @return String
      */
     public function getEmail(): string { return $this->email; }
     /**
-     * @brief Public methog returning the user's password
+     *  Public methog returning the user's password
      * @return String
      */
     public function getPassword(): string { return $this->password; }
     /**
-     * @brief Public methog returning the user's establishment
+     *  Public methog returning the user's establishment
      * @return Int
      */
     public function getEstablishment(): int { return $this->establishment; }
     /**
-     * @brief Public methog returning the user's role
+     *  Public methog returning the user's role
      * @return Interger
      */
     public function getRole(): int { return $this->role; }
     /**
-     * @brief Public methog returning if the user's password has been changed
+     *  Public methog returning if the user's password has been changed
      * @return Bool
      */
     public function getFirstLog(): bool { return $this->firstLog; }
 
     /**
-     * @brief Public method setting the user's key
+     *  Public method setting the user's key
      * @param Int $key His key
      * @throws InvalideUtilisateurExceptions If the  key is invalid
      * @return void
@@ -155,7 +155,7 @@ class User {
         else $this->key = $key;
     }
     /**
-     * @brief Private method setting the user's identifier
+     *  Private method setting the user's identifier
      * @param String $identifier His identifier
      * @throws InvalideUtilisateurExceptions If the identifier is invalid
      * @return void
@@ -172,7 +172,7 @@ class User {
         else $this->identifier = $identifier;
     }
     /**
-     * @brief Private method setting the user's name
+     *  Private method setting the user's name
      * @param String $name His name
      * @throws InvalideUtilisateurExceptions If the name is invalid
      * @return void
@@ -189,7 +189,7 @@ class User {
         else $this->name = $name;
     }
     /**
-     * @brief Private method setting the user's firstname
+     *  Private method setting the user's firstname
      * @param String $firstname His firstname
      * @throws InvalideUtilisateurExceptions If the firstname is invalid
      * @return void
@@ -206,7 +206,7 @@ class User {
         else $this->firstname = $firstname;
     }
     /**
-     * @brief Private method setting the user's email address
+     *  Private method setting the user's email address
      * @param String $email His email
      * @throws InvalideUtilisateurExceptions If the email is invalid
      * @return void
@@ -225,7 +225,7 @@ class User {
         else $this->email = $email;
     }
     /**
-     * @brief Private method setting the user's password
+     *  Private method setting the user's password
      * @param String $password His password
      * @throws InvalideUtilisateurExceptions If the password is invalid
      * @return void
@@ -242,7 +242,7 @@ class User {
         else $this->password = $password;
     }
     /**
-     * @brief Private method setting the user's establishment
+     *  Private method setting the user's establishment
      * @param String $establishment The establishment where the user works
      * @throws InvalideUtilisateurExceptions If the establishment is invalid
      * @return void
@@ -259,7 +259,7 @@ class User {
         else $this->establishment = $establishment;
     }
     /**
-     * @brief Private method setting the user's role
+     *  Private method setting the user's role
      * @param Int $role His role
      * @throws InvalideUtilisateurExceptions If the role is invalid
      * @return void
@@ -276,13 +276,13 @@ class User {
         else $this->role = $role;
     }
     /**
-     * @brief Public method turning on true the user's attribute firstLog
+     *  Public method turning on true the user's attribute firstLog
      * @return void
      */
     public function setFirstLog() { $this->firstLog = true; }
 
         /**
-     * @brief Public static method creating and retuning a new user from the data array
+     *  Public static method creating and retuning a new user from the data array
      * @param Array $data The data array
      * @throws InvalideUtilisateurExceptions If the data is invalid
      * @return User
@@ -313,7 +313,7 @@ class User {
     }
 
     /**
-     * @brief Public method returning the user's data in a array
+     *  Public method returning the user's data in a array
      * @return Array
      */
     public function exportToArray(): array {
@@ -326,7 +326,7 @@ class User {
         ];
     }
     /**
-     * @brief Public method returning the user's data in a array (created for SQL queries)
+     *  Public method returning the user's data in a array (created for SQL queries)
      * @throws InvalideUtilisateurExceptions If the user's data is no complete
      * @return Array|NULL
      */

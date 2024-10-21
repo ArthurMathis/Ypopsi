@@ -10,10 +10,11 @@ require_once(CLASSE.DS.'Moment.php');
  */
 class LoginModel extends Model {
     /**
-     * @brief Public method connecting the user to the application 
-     * @param string $identifiant The user's id (ex: name.f)
-     * @param string $motdepasse The user's password
-     * @return void
+     * Public method connecting the user to the application 
+     * 
+     * @param String $identifiant The user's id (ex: name.f)
+     * @param String $motdepasse The user's password
+     * @return Void
      */
     public function connectUser($identifiant, $motdepasse) {
         $user = $this->verifyUser($identifiant, $motdepasse);
@@ -29,13 +30,14 @@ class LoginModel extends Model {
         $this->writeLogs($_SESSION['user_key'], "Connexion");
     }
     /**
-     * @brief Public method disconnecting hte current user to the application
-     * @return void
+     * Public method disconnecting hte current user to the application
+     * 
+     * @return Void
      */
     public function deconnectUser() {
         try {
             if(isset($_SESSION['user_key']) && !empty($_SESSION['user_key']))
-                $this->writeLogs($_SESSION['user_key'], 'Deconnexion');
+                $this->writeLogs($_SESSION['user_key'], 'Déconnexion');
             else 
                 throw new Exception("Inscription des logs impossible. Les données de l'utilisateur sont introuvables...");
 
@@ -50,13 +52,14 @@ class LoginModel extends Model {
     }
 
     /**
-     * @brief Private method searching the user's informations
-     * @param string $identifier The user's id (ex: name.f)
-     * @param string $password The user's password
+     * Private method searching the user's informations
+     * 
+     * @param String $identifier The user's id (ex: name.f)
+     * @param String $password The user's password
      * @return Utilisateurs|null The user, if the informations are corrects and null,  if they aren't
      */
     private function verifyUser($identifier, $password): ?User{
-        $request = "SELECT * FROM Users WHERE Identifier_Users = :identifier";
+        $request = "SELECT * FROM Users WHERE Identifier = :identifier";
         $params = [":identifier" => $identifier];
         $users = $this->get_request($request, $params, false, true);
 
@@ -67,23 +70,23 @@ class LoginModel extends Model {
 
         // On fait défiler la table
         while($i < $size && !$find) {
-            if($users[$i]["Identifier_Users"] == $identifier && password_verify($password, $users[$i]["Password_Users"])) {
+            if($users[$i]["Identifier"] == $identifier && password_verify($password, $users[$i]["Password"])) {
                 // On implémente find
                 $find = true;
 
                 // On construit notre Utilisateur
                 try {
                     $user = new User(
-                        $users[$i]['Identifier_Users'], 
-                        $users[$i]['Name_Users'],
-                        $users[$i]['Firstname_Users'],
-                        $users[$i]['Email_Users'], 
+                        $users[$i]['Identifier'], 
+                        $users[$i]['Name'],
+                        $users[$i]['Firstname'],
+                        $users[$i]['Email'], 
                         $password, 
                         $users[$i]['Key_Establishments'],
                         $users[$i]['Key_Roles']
                     );
-                    $user->setKey($users[$i]['Id_Users']);
-                    if($users[$i]['PasswordTemp_Users'])
+                    $user->setKey($users[$i]['Id']);
+                    if($users[$i]['PasswordTemp'])
                         $user->setFirstLog();
 
                 // On récupère les éventuelles erreurs 

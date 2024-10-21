@@ -9,13 +9,13 @@ class CandidatsModel extends Model {
     public function getContent() {
         // On initialise la requête
         $request = "SELECT 
-            Id_Candidats AS Cle,
-            Nom_candidats AS Nom, 
-            Prenom_Candidats AS Prenom, 
-            Email_Candidats AS Email, 
-            Ville_Candidats AS Ville, 
-            Notations_Candidats AS Notation
-            FROM Candidats AS c";
+            Id AS Cle,
+            Name AS Nom, 
+            Firstname AS Prenom, 
+            Email AS Email, 
+            City AS Ville, 
+            Rating AS Notation
+            FROM Candidates";
     
         // On lance la requête
         $temp = $this->get_request($request);
@@ -42,8 +42,8 @@ class CandidatsModel extends Model {
         return [
             'candidat' => $candidats,
             'coopteur' => $this->searchCoopteur($index, 3), // 3 est l'id de la prime de cooptation... Corriger le code
-            'aide' => $this->getAides(),
-            'diplome' => $this->getDiplomes()
+            'aide' => $this->getHelps(),
+            'diplome' => $this->getQualifications()
         ];
     }
     /// Méthode publique retournant les donnnées d'un rendez-vous pour sa mise-à-jour
@@ -98,23 +98,23 @@ class CandidatsModel extends Model {
     public function getCandidats($index) {
         // On initialise la requête
         $request = "SELECT 
-        Id_Candidats AS id,
-        Nom_Candidats AS nom,
-        Prenom_Candidats AS prenom,
-        Telephone_Candidats AS telephone,
-        Email_Candidats AS email, 
-        Adresse_Candidats AS adresse,
-        Ville_Candidats AS ville,
-        CodePostal_Candidats AS code_postal,
-        Disponibilite_Candidats AS disponibilite,
-        Notations_Candidats AS notation,
-        Descriptions_Candidats AS description, 
-        A_Candidats AS a, 
-        B_Candidats AS b, 
-        C_Candidats AS c
+        Id AS id,
+        Nom AS nom,
+        Prenom AS prenom,
+        Telephone AS telephone,
+        Email AS email, 
+        Adresse AS adresse,
+        Ville AS ville,
+        CodePostal AS code_postal,
+        Disponibilite AS disponibilite,
+        Notations AS notation,
+        Descriptions AS description, 
+        A AS a, 
+        B AS b, 
+        C AS c
 
-        FROM candidats AS c
-        WHERE c.Id_Candidats = :cle";
+        FROM candidates
+        WHERE c.Id = :cle";
 
         $params = [
             "cle" => $index
@@ -275,25 +275,25 @@ class CandidatsModel extends Model {
     public function makeCandidat($index) {
         // On initialise la requête
         $request = "SELECT 
-        Id_Candidats AS id,
-        Nom_Candidats AS nom,
-        Prenom_Candidats AS prenom,
-        Telephone_Candidats AS telephone,
-        Email_Candidats AS email, 
-        Adresse_Candidats AS adresse,
-        Ville_Candidats AS ville,
-        CodePostal_Candidats AS code_postal,
-        Disponibilite_Candidats AS disponibilite,
-        Notations_Candidats AS notation
+        Id AS id,
+        Nom AS nom,
+        Prenom AS prenom,
+        Telephone AS telephone,
+        Email AS email, 
+        Adresse AS adresse,
+        Ville AS ville,
+        CodePostal AS code_postal,
+        Disponibilite AS disponibilite,
+        Notations AS notation
 
-        FROM candidats AS c
-        WHERE c.Id_Candidats = " . $index;
+        FROM candidats 
+        WHERE c.Id = " . $index;
 
         // On lance la requête
         $result = $this->get_request($request)[0];
 
         // On construit la candidat selon la recherche
-        $candidat = new Candidat(
+        $candidat = new Candidate(
             $result['nom'], 
             $result['prenom'], 
             $result['email'], 
@@ -302,7 +302,7 @@ class CandidatsModel extends Model {
             $result['ville'], 
             $result['code_postal']
         );
-        $candidat->setCle($result['id']);
+        $candidat->setKey($result['id']);
 
         return $candidat;
     }

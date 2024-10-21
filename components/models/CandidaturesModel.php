@@ -9,22 +9,22 @@ class CandidaturesModel extends Model {
     public function getCandidatures() {
         // On initialise la requête
         $request = "SELECT 
-        id_Candidats AS Cle,
-        Statut_Candidatures AS Statut, 
-        nom_candidats AS Nom, 
-        prenom_candidats AS Prenom, 
-        intitule_postes AS Poste,
-        email_candidats AS Email, 
-        telephone_candidats AS Telephone, 
-        intitule_sources AS Source, 
-        Disponibilite_Candidats AS Disponibilite
+        c.id AS Cle,
+        app.Status AS Statut, 
+        c.name AS Nom, 
+        c.firstname AS Prenom, 
+        j.titled AS Poste,
+        c.email AS Email, 
+        c.phone AS Telephone, 
+        s.titled AS Source, 
+        c.availability AS Disponibilite
 
-        FROM `candidatures` as c
-        INNER JOIN candidats as i on c.Cle_Candidats = i.Id_Candidats
-        INNER JOin postes as p on c.Cle_Postes = p.Id_Postes
-        INNER JOIN sources as s on c.Cle_Sources = s.Id_Sources
+        FROM Applications as app
+        INNER JOIN Candidates as c on app.Key_Candidates = c.Id
+        INNER JOin Jobs as j on app.Key_Jobs = j.Id
+        INNER JOIN sources as s on app.Key_Sources = s.Id
         
-        ORDER BY c.Id_Candidatures DESC";
+        ORDER BY app.Id DESC";
     
         // On lance la requête
         return $this->get_request($request);
@@ -32,26 +32,34 @@ class CandidaturesModel extends Model {
     
     protected function searchCandidatByConcat($name) {
         // On initalise la requête
-        $request = "SELECT * FROM Candidats
-        WHERE CONCAT(Nom_Candidats, ' ', Prenom_Candidats) = :candidat";
+        $request = "SELECT * FROM Candidates
+        WHERE CONCAT(Nom, ' ', Prenom) = :candidat";
         $params = ['candidat' => $name];
 
         // On lance la requête
         return $this->get_request($request, $params, true, true);
     }
 
-    /// Méthode publique vérifiant l'intégrité d'un candidat avant son inscription en base
-    public function verify_candidat(&$candidat=[], $diplomes=[], $aide=[], $visite_medicale, $coopteur) {
-        // On vérifie l'intégrité des données
+    /**
+     * Public method that checks if input data is honest before saving it to the database
+     *
+     * @param Array $candidate The array containing the candidate's data
+     * @param Array $qualifications The array containing the candidate's qualifications
+     * @param Array $helps The array containing the candidate's helps
+     * @param [type] $medical_visit 
+     * @param [type] $coopteur
+     * @return Void
+     */
+    public function verify_candidat(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) {
         try {
-            $candidat = new Candidat(
-                $candidat['nom'], 
-                $candidat['prenom'], 
-                $candidat['email'], 
-                $candidat['telephone'], 
-                $candidat['adresse'],
-                $candidat['ville'],
-                $candidat['code_postal']
+            $candidate = new Candidate(
+                $candidate['nom'], 
+                $candidate['prenom'], 
+                $candidate['email'], 
+                $candidate['telephone'], 
+                $candidate['adresse'],
+                $candidate['ville'],
+                $candidate['code_postal']
             );
             
             if(!empty($aide)) {
@@ -73,19 +81,15 @@ class CandidaturesModel extends Model {
         }
 
         
-
-        // On ajoute la visite médical
-        if(!empty($visite_medicale))
-            $candidat->setVisite($visite_medicale);
+        if(!empty($medical_visit))
+            $candidate->setMedicalVisit($medical_visit);
     
-        // On récupère la clé du coopteur
         if($coopteur)
             $coopteur = $this->searchCandidatByConcat($coopteur);
 
-        // On enregistre les données dans la session
-        $_SESSION['candidat'] = $candidat;
-        $_SESSION['diplomes'] = $diplomes;
-        $_SESSION['aide']     = $aide;
+        $_SESSION['candidat'] = $candidate;
+        $_SESSION['diplomes'] = $qualifications;
+        $_SESSION['aide']     = $helps;
         $_SESSION['coopteur'] = $coopteur;
     }
 

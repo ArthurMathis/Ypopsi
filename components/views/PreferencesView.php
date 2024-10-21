@@ -3,7 +3,7 @@
 require_once('View.php');
 
 /**
- * @brief Class générant les pages du menu préférences
+ *  Class générant les pages du menu préférences
  */
 class PreferencesView extends View {
     /// Méthode publique retournant la page principale du menu préférences

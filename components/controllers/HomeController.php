@@ -3,12 +3,12 @@
 require_once('Controller.php');
 
 /**
- * @brief Class representing the home page controller
+ *  Class representing the home page controller
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
 class HomeController extends Controller {
     /**
-     * @brief Class constructor
+     *  Class constructor
      */
     public function __construct() {
         $this->loadModel('HomeModel');
@@ -16,7 +16,7 @@ class HomeController extends Controller {
     }
 
     /**
-     * @brief Public function returning the home page 
+     *  Public function returning the home page 
      * @return void
      */
     public function displayHome() {

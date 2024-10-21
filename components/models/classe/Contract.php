@@ -3,7 +3,7 @@
 require_once('Moment.php');
 
 /**
- * @brief Class representing one contract's Exception
+ *  Class representing one contract's Exception
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class InvalideContractExceptions extends Exception {
@@ -13,83 +13,83 @@ class InvalideContractExceptions extends Exception {
 }
 
 /**
- * @brief Class representing one candidate's contract
+ *  Class representing one candidate's contract
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class Contract {
     /**
-     * @brief Private attribute containing the contract's key
+     *  Private attribute containing the contract's key
      * @var Int The contract's key
      */
     private $key = null;
     /**
-     * @brief Private attribute containing the candidate's key
+     *  Private attribute containing the candidate's key
      * @var Int The candidate's key
      */
     private $candidate;
     /**
-     * @brief Private attribute containing the establishment's key
+     *  Private attribute containing the establishment's key
      * @var Int The establishment's key
      */
     private $establishment;
     /**
-     * @brief Private attribute containing the service's key
+     *  Private attribute containing the service's key
      * @var Int The service's key
      */
     private $service;
     /**
-     * @brief Private attribute containing the job's key
+     *  Private attribute containing the job's key
      * @var Int The job's key
      */
     private $job;
     /**
-     * @brief Private attribute containing the contract's type
+     *  Private attribute containing the contract's type
      * @var Int The contract's type
      */
     private $type;
     /**
-     * @brief Private attribute containing the moment when begins the contract
+     *  Private attribute containing the moment when begins the contract
      * @var String The moment when begins the contract
      */
     private $start_date;
     /**
-     * @brief Private attribute containing the moment when ends the contract
+     *  Private attribute containing the moment when ends the contract
      * @var String The moment when ends the contract
      */
     private $end_date = null;
     /**
-     * @brief Private attribute containing the moment when the candidate signed the contract
+     *  Private attribute containing the moment when the candidate signed the contract
      * @var String The moment when the candidate signed the contract
      */
     private $signature = null;
     /**
-     * @brief Private attribute containing the moment when the candidate resigned the contract
+     *  Private attribute containing the moment when the candidate resigned the contract
      * @var String The moment when the candidate resigned the contract
      */
     private $resignation_date = null;
     /**
-     * @brief Private attribute containing the number of working hours in a week
+     *  Private attribute containing the number of working hours in a week
      * @var Int The number of working hours in a week
      */
     private $hourly_rate = null;
     /**
-     * @brief Private attribute containing the candidate's salary
+     *  Private attribute containing the candidate's salary
      * @var Int The candidate's salary
      */
     private $salary = null;
     /**
-     * @brief Private attribute notes if the candidate has to work the night or not
+     *  Private attribute notes if the candidate has to work the night or not
      * @var Bool TRUE - If he works the night ; FALSE - if not
      */
     private $night_work = false;
     /**
-     * @brief Private attribute notes if the candidate has to work the week-end or not
+     *  Private attribute notes if the candidate has to work the week-end or not
      * @var Bool TRUE - If he works the week-end ; FALSE - if not
      */
     private $wk_work = false;
 
     /**
-     * @brief Class' constructor
+     *  Class' constructor
      * @param Int|String $candidate The candidate's key
      * @param Int|String $job The job's key
      * @param Int|String $service The service's key
@@ -108,7 +108,7 @@ class Contract {
     }
 
     /**
-     * @brief Public static method creating a contract from an data array
+     *  Public static method creating a contract from an data array
      * @param array $infos The array which contains the contracts' data
      * @throws InvalideContractExceptions If the array is no completed or if teh data are invalid
      * @return Contract The contract made from the array
@@ -162,78 +162,78 @@ class Contract {
     }
 
     /**
-     * @brief Public method returning the contract's key
+     *  Public method returning the contract's key
      * @return Int|NULL
      */
     public function getKey(): ?int { return $this->key; }
     /**
-     * @brief Public method returning the candidate's key
+     *  Public method returning the candidate's key
      * @return Int
      */
     public function getCandidate(): int { return $this->candidate; }
     /**
-     * @brief Public method returning the establishment's key
+     *  Public method returning the establishment's key
      * @return Int
      */
     public function getEstablishment(): int { return $this->establishment; }
     /**
-     * @brief Public method returning the service's key 
+     *  Public method returning the service's key 
      * @return Int
      */
     public function getService(): int { return $this->service; }
     /**
-     * @brief Public method returning the job's key
+     *  Public method returning the job's key
      * @return Int
      */
     public function getJob(): int { return $this->job; }
     /**
-     * @brief Public method returning the type's key 
+     *  Public method returning the type's key 
      * @return Int
      */
     public function getType(): int { return $this->type; }
     /**
-     * @brief Public method returning the moment when begins the contract
+     *  Public method returning the moment when begins the contract
      * @return String
      */
     public function getStartDate(): string { return $this->start_date; }
     /**
-     * @brief Public method returning the moment when ends the contract
+     *  Public method returning the moment when ends the contract
      * @return String|NULL
      */
     public function getEndDate(): ?string { return $this->end_date; }
     /**
-     * @brief Public method returning the moment when the candidate signed the contract
+     *  Public method returning the moment when the candidate signed the contract
      * @return String|NULL
      */
     public function getSignature(): ?string { return $this->signature; }
     /**
-     * @brief Public method returning the moment when the candidate resigned the contract
+     *  Public method returning the moment when the candidate resigned the contract
      * @return String|NULL
      */
     public function getResignationDate(): ?string { return $this->resignation_date; }
     /**
-     * @brief Public method returning the number of working hours in a week
+     *  Public method returning the number of working hours in a week
      * @return Int
      */
     public function getHourlyRate(): ?int { return $this->hourly_rate; }
     /**
-     * @brief Public method returning the contract's salary
+     *  Public method returning the contract's salary
      * @return Int
      */
     public function getSalary(): ?int { return $this->salary; }
     /**
-     * @brief Public method returning if the candidate has to work the week-end or not
+     *  Public method returning if the candidate has to work the week-end or not
      * @return Bool
      */
     public function getNightWork(): bool { return $this->night_work; }
     /**
-     * @brief Public method returning if the candidate has to work the week-end or not
+     *  Public method returning if the candidate has to work the week-end or not
      * @return Bool
      */
     public function getWeekEndWork(): bool { return $this->wk_work; }
 
     /**
-     * @brief Public method setting the contract's key
+     *  Public method setting the contract's key
      * @param Int|String $key The contract's key
      * @throws InvalideContractExceptions If the key is invalid
      * @return void
@@ -247,7 +247,7 @@ class Contract {
         else $this->key = intval($key);
     }
     /**
-     * @brief Private method setting the candidate's key
+     *  Private method setting the candidate's key
      * @param Int|String $candidate The candidate's key  
      * @throws InvalideContractExceptions If the key is invalid
      * @return void
@@ -261,7 +261,7 @@ class Contract {
         else  $this->candidate = intval($candidate);
     }
     /**
-     * @brief Private method setting the establishment's key
+     *  Private method setting the establishment's key
      * @param Int|String $service The establishment's key  
      * @throws InvalideContractExceptions If the key is invalid
      * @return void
@@ -275,7 +275,7 @@ class Contract {
         else  $this->establishment = intval($establishment);
     }
     /**
-     * @brief Private method setting the service's key
+     *  Private method setting the service's key
      * @param Int|String $service The service's key  
      * @throws InvalideContractExceptions If the key is invalid
      * @return void
@@ -289,7 +289,7 @@ class Contract {
         else  $this->service = intval($service);
     }
     /**
-     * @brief Private method setting the job's key
+     *  Private method setting the job's key
      * @param Int|String $job The job's key  
      * @throws InvalideContractExceptions If the key is invalid
      * @return void
@@ -303,7 +303,7 @@ class Contract {
         else  $this->job = intval($job);
     }
     /**
-     * @brief Private method setting the job's key
+     *  Private method setting the job's key
      * @param Int|String $type The job's key  
      * @throws InvalideContractExceptions If the key is invalid
      * @return void
@@ -319,7 +319,7 @@ class Contract {
         else  $this->type = intval($type);
     }
     /**
-     * @brief Private method setting the moment when begins the contract
+     *  Private method setting the moment when begins the contract
      * @param String $start_date The moment when begins the contract
      * @throws InvalideContractExceptions If date is invalid
      * @return void
@@ -333,7 +333,7 @@ class Contract {
         $this->start_date = $start_date;
     }
     /**
-     * @brief Private method setting the moment when ends the contract
+     *  Private method setting the moment when ends the contract
      * @param String $start_date The moment when ends the contract
      * @throws InvalideContractExceptions If date is invalid
      * @return void
@@ -349,7 +349,7 @@ class Contract {
         $this->end_date = $end_date;
     }
     /**
-     * @brief Private method setting the moment when the candidate signed the contract
+     *  Private method setting the moment when the candidate signed the contract
      * @param String $signature The moment when the candidate signed the contract
      * @throws InvalideContractExceptions If date is invalid
      * @return void
@@ -369,7 +369,7 @@ class Contract {
         $this->signature = $signature;
     }
     /**
-     * @brief Private method setting the moment when the candidate resigned the contract
+     *  Private method setting the moment when the candidate resigned the contract
      * @param String $start_date The moment when the candidate resigned the contract
      * @throws InvalideContractExceptions If date is invalid
      * @return void
@@ -385,7 +385,7 @@ class Contract {
         $this->resignation_date = $resignation_date;
     }
     /**
-     * @brief Private method setting the contract's salary
+     *  Private method setting the contract's salary
      * @param Int|String $salary The contract's salary
      * @throws InvalideContractExceptions If salary is invalid
      * @return void
@@ -399,7 +399,7 @@ class Contract {
         else $this->salary = intval($salary);
     }
     /**
-     * @brief Private method setting the number of working hours in a week
+     *  Private method setting the number of working hours in a week
      * @param Int|String $salary The number of working hours in a week
      * @throws InvalideContractExceptions If hourly rate is invalid
      * @return void
@@ -413,18 +413,18 @@ class Contract {
         else $this->hourly_rate = intval($hourly_rate);
     }
     /**
-     * @brief Private method setting the attribute night_work on true
+     *  Private method setting the attribute night_work on true
      * @return void
      */
     private function setNightWork() { $this->night_work = true; }
     /**
-     * @brief Private method setting the attribute wk_work on true
+     *  Private method setting the attribute wk_work on true
      * @return void
      */
     private function setWeekEndWork() { $this->wk_work = true; }
     
     /**
-     * @brief Public method returning the contract's data in an array
+     *  Public method returning the contract's data in an array
      * @return array The array
      */
     public function exportToSQL(): array {

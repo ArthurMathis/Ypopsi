@@ -1,5 +1,5 @@
 /**
- * @brief Fonction affichant les éléments d'un tableau
+ * Fonction affichant les éléments d'un tableau
  * @param {*} items Le tableau à afficher
  * @returns 
  */
@@ -11,7 +11,7 @@ function resetLignes(items) {
         items[i].style.display = 'table-row';
 }
 /**
- * @brief Fonction cachant les ignes d'un tableau
+ * Fonction cachant les ignes d'un tableau
  * @param {*} items Les lignes à cacher
  * @returns 
  */
@@ -23,7 +23,7 @@ function retireLignes(items) {
         items[i].style.display = 'none';
 }
 /**
- * @brief Fonction affichant le nombre d'items présents dans le tableau
+ * Fonction affichant le nombre d'items présents dans le tableau
  * @param {*} nb_items Le nombre d'éléments présents
  * @returns 
  */
@@ -35,12 +35,12 @@ function afficheNbItems(item, nb_items) {
 }
 
 /**
- * @brief Fonction affichant un menu
+ * Fonction affichant un menu
  * @param {*} item Le menu
  */
 function montreMenu(item) { item.classList.add('active'); }
 /**
- * @brief Fonction cachant un menu
+ *  Fonction cachant un menu
  * @param {*} item Le menu
  */
 function cacheMenu(item) { item.classList.remove('active'); }
@@ -61,7 +61,7 @@ function hideHeader(items, index) {
     });
 }
 /**
- * @brief Fonction montrant une colonne du tableau
+ * Fonction montrant une colonne du tableau
  * @param {*} items Le tableau 
  * @param {*} index La colonne
  */
@@ -77,7 +77,7 @@ function showColumn(items, index) {
     }); 
 }
 /**
- * @brief Fonction cachant une colonne du tableau
+ * Fonction cachant une colonne du tableau
  * @param {*} items Le tableau 
  * @param {*} index La colonne à masquer
  */
@@ -93,7 +93,7 @@ function hideColumn(items, index) {
     });
 }
 /**
- * @brief Fonction cachant ou affichant les colonnes du tableau html selon le besoin du responsive
+ * Fonction cachant ou affichant les colonnes du tableau html selon le besoin du responsive
  * @param {*} width La largeur de la fenêtre
  * @param {*} entete L'entête du tableau 
  * @param {*} items Le contenu du tableau
@@ -117,7 +117,7 @@ function responsive(width, entete, items, sizes) {
 
 
 /**
- * @brief Fonction construisant un tablea selon une entete et un contenu
+ * Fonction construisant un tablea selon une entete et un contenu
  * @param {*} entete L'entête
  * @param {*} items Le contenu
  * @returns 
@@ -136,7 +136,7 @@ function createTable(table=null, items=[]) {
     table.appendChild(tbody);
 }
 /**
- * @brief Fonction deconstruisant un tableau
+ * Fonction deconstruisant un tableau
  * @param {*} table Le tableau
  * @returns 
  */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @brief Class representing one moment's Exception
+ *  Class representing one moment's Exception
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class InvalideMomentExceptions extends Exception {
@@ -16,18 +16,18 @@ class InvalideMomentExceptions extends Exception {
  */
 class Moment {
     /**
-     * @brief Private attribute containing the moment's date
+     *  Private attribute containing the moment's date
      * @var String The moment's date (Y-m-d)
      */
     private $date;
     /**
-     * @brief Private attribute containing the moment's hour
+     *  Private attribute containing the moment's hour
      * @var String The moment's hour (H:i:s)
      */
     private $hour;
 
     /**
-     * @brief Class constructor
+     *  Class constructor
      * @param Int $timestamp
      * @throws InvalideMomentExceptions If the timestamp is invalid
      */
@@ -37,17 +37,17 @@ class Moment {
     }
 
     /**
-     * @brief Public method returning the moment's date
+     *  Public method returning the moment's date
      * @return String (Y-m-d)
      */
     public function getDate(): String { return $this->date; }
     /**
-     * @brief Publuc method returniing moment's hour
+     *  Publuc method returniing moment's hour
      * @return String (H:i:s)
      */
     public function getHour(): String { return $this->hour; }
         /**
-     * @brief Public method calculing and returning the moment's timestamp
+     *  Public method calculing and returning the moment's timestamp
      * @return Int The moment's timestamp
      */
     public function getTimestamp(): int {
@@ -56,7 +56,7 @@ class Moment {
 
 
     /**
-     * @brief Private method setting the moment's date
+     *  Private method setting the moment's date
      * @param Int $timestamp The moment's timestamp
      * @throws InvalideMomentExceptions If the timestamp is invalid
      * @return void
@@ -68,7 +68,7 @@ class Moment {
         $this->date = date('Y-m-d', $timestamp);
     }
     /**
-     * @brief Private method setting the moment's hour
+     *  Private method setting the moment's hour
      * @param Int $timestamp The moment's timestamp
      * @throws InvalideMomentExceptions If the timestamp is invalid
      * @return void
@@ -81,7 +81,7 @@ class Moment {
     }
 
     /**
-     * @brief Public method comparing two moment
+     *  Public method comparing two moment
      * @param Int|String $timestamp The moemnt's timestamp
      * @throws InvalideMomentExceptions If the moment's timestamp is invalid
      * @return boolean TRUE - If this moment's timestamp is taller than the second timestamp ; FALSE - if not
@@ -93,7 +93,7 @@ class Moment {
         return intval($timestamp) < $this->getTimestamp();
     }
     /**
-     * @brief Public method comparing two moment
+     *  Public method comparing two moment
      * @param Int|String $timestamp The moemnt's timestamp
      * @throws InvalideMomentExceptions If the moment's timestamp is invalid
      * @return boolean  TRUE - If this moment's timestamp is equal to the second timestamp ; FALSE - if not
@@ -105,7 +105,7 @@ class Moment {
         return intval($timestamp) === $this->getTimestamp();
     }
     /**
-     * @brief Public method comparing two moment
+     *  Public method comparing two moment
      * @param Int|String $timestamp The moemnt's timestamp
      * @throws InvalideMomentExceptions If the moment's timestamp is invalid
      * @return boolean  TRUE - If this moment's timestamp is taller or equal to the second timestamp ; FALSE - if not
@@ -118,7 +118,7 @@ class Moment {
     }
 
     /**
-     * @brief Public static method returning if a string represents a date or not
+     *  Public static method returning if a string represents a date or not
      * @param String $dateString The string containing the date 
      * @param String $format The date format
      * @return Boolean TRUE - if the string is a date ; FALSE - if not
@@ -128,7 +128,7 @@ class Moment {
         return $dateTime && $dateTime->format($format) === $dateString;
     }
     /**
-     * @brief Public static method returning if a string represents an hour or not
+     *  Public static method returning if a string represents an hour or not
      * @param String $hourString The string containing the hour 
      * @param String $format The hour format
      * @return Boolean TRUE - if the string is an hour ; FALSE - if not
@@ -140,7 +140,7 @@ class Moment {
         return $dateTime && $dateTime->format($format) === $hourString;
     } 
     /**
-     * @brief Public static method returning if one timestamp is valid or not
+     *  Public static method returning if one timestamp is valid or not
      * @param Int|String $timestamp The timestamp
      * @return boolean TRUE - If it is valid ; FALSE - if not
      */
@@ -148,14 +148,14 @@ class Moment {
         return !(empty($timestamp) || !is_numeric($timestamp) || intval($timestamp) < 0);
     }
     /**
-     * @brief Public static method creating the current moment
+     *  Public static method creating the current moment
      * @return Moment The current moment
      */
     public static function currentMoment(): Moment {
         return new Moment(time());
     }
     /**
-     * @brief Public static method creating one moment from a date and an hour
+     *  Public static method creating one moment from a date and an hour
      * @param String $date The date
      * @param String $hour The hour
      * @throws InvalideMomentExceptions If the date or the hour is invalid

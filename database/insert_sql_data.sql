@@ -1,10 +1,10 @@
 -- Fondation --
-INSERT INTO Poles (Titled_Poles, Description_Poles) VALUES 
+INSERT INTO Poles (Titled, Description) VALUES 
     ("pspdsa", "Pole sud-Alsace"),
     ("pspdca", "Pole centre-Alsace"),
     ("pspdna", "Pole nord-Alsace")
 ;
-INSERT INTO Establishments (Titled_Establishments, Address_Establishments, City_Establishments, PostCode_Establishments, Key_Poles) VALUES
+INSERT INTO Establishments (Titled, Address, City, PostCode, Key_Poles) VALUES
     ("Clinique du Diaconat Roosevelt", "14 boulevard Roosevelt", "MULHOUSE", 68100, 1),
     ("Clinique du Diaconat Fonderie", "1 rue Saint Sauveur", "MULHOUSE", 68054, 1),
     ("Hôpital Albert Schweitzer", "201 Avenue d'Alsace", "COLMAR", 68000, 2),
@@ -20,7 +20,7 @@ INSERT INTO Establishments (Titled_Establishments, Address_Establishments, City_
     ("Maison de retraite Saint Joseph", "10 rue de l'Abbé Bidaine", "GIROMAGNY", 90200, NULL),
     ("EHPAD les Violettes", "22 Faubourg de Mulhouse", "KINGERSHEIM", 68260, 1)
 ;
-INSERT INTO Services (Titled_Services, Description_Services) VALUES 
+INSERT INTO Services (Titled, Description) VALUES 
     ("ACCUEIL", "Service d'accueil général des visiteurs et patients"),
     ("ACCUEIL 3", "Troisième unité d'accueil"),
     ("ACCUEIL INSCRIP ADMISSION", "Accueil et inscription pour l'admission des patients"),
@@ -561,7 +561,7 @@ INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
     (69, 14),
     (53, 14)
 ;
-INSERT INTO Jobs (Titled_Jobs, TitledFeminin_Jobs) VALUES
+INSERT INTO Jobs (Titled, TitledFeminin) VALUES
     ("A.SOCIAL SPEC.ENFANCE INADAPT.", "ASSISTANTE SOCIALE SPEC.ENFANCE INADAPT."),
     ("ACCOMPAGNANT EDUCATIF SOCIAL", "ACCOMPAGNANTE EDUCATIVE ET SOCIAL"),
     ("ACCUEILLANT SOCIAL", "ACCUEILLANTE SOCIALE"),
@@ -752,20 +752,20 @@ INSERT INTO Jobs (Titled_Jobs, TitledFeminin_Jobs) VALUES
 ;
 
 -- Recrutement --
-INSERT INTO Helps (Titled_Helps) VALUES 
+INSERT INTO Helps (Titled) VALUES 
     ("Bourse d'étude"),
     ("Rachat de frais d'étude"),
     ("Prime de cooptation"),
     ("Rachat de contrat")
 ;
-INSERT INTO Types_of_contracts (Titled_Types_of_contracts, Description_Types_of_contracts) VALUES 
+INSERT INTO Types_of_contracts (Titled, Description) VALUES 
     ('CDI', 'Contrat à durée indéterminée'), 
     ('CDD', 'Contrat à durée déterminée'), 
     ('Stage', 'Stage en entreprise'),
     ('Alternance', 'Formation réalisée en alternance'), 
     ('Interim', 'Mission réalisé par un prestatère')
 ;
-INSERT INTO sources (Titled_Sources) VALUES 
+INSERT INTO sources (Titled) VALUES 
     ('Adecco'),
     ('Appel Médical'),
     ('Camo Gémo'),
@@ -797,16 +797,69 @@ INSERT INTO sources (Titled_Sources) VALUES
     ('Vitalis'),
     ('1termed')
 ;   
+INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES 
+    ("Aide soignant D.E.", TRUE, "A.S."),
+    ("Autorisation ministérielle de plein exercice", TRUE, NULL),
+    ("Auxiliaire de puériculture D.E.", TRUE, "A.P."),
+    ("Baccalauréat général", FALSE, NULL),
+    ("Baccalauréat professionnel", FALSE, NULL),
+    ("BAFA", FALSE, NULL),
+    ("BEATEP", FALSE, NULL),
+    ("BEP", FALSE, NULL),
+    ("Brevet des Collèges", FALSE, NULL),
+    ("BTS", FALSE, NULL),
+    ("C.P. surveillant de nuit qualifié", FALSE, NULL),
+    ("CAFDES", FALSE, NULL),
+    ("CAFERUIS", FALSE, NULL),
+    ("CAFIME", FALSE, NULL),
+    ("CAP", FALSE, NULL),
+    ("Capacité de médecine de gérontologie", TRUE, NULL),
+    ("CFP", FALSE, "CFP"),
+    ("CFP M138", FALSE, "CFP M138"),
+    ("CPNE", FALSE, "CPNE"),
+    ("DAEU-A", FALSE, "DAEU-A"),
+    ("DALF C1", FALSE, "DALF C1"),
+    ("DE", FALSE, NULL),
+    ("DEES", FALSE, NULL),
+    ("DEFA", FALSE, NULL),
+    ("DEME", FALSE, NULL),
+    ("DESS", FALSE, NULL),
+    ("DEUST", FALSE, NULL),
+    ("Diplôme d'Etat de docteur en médecine", TRUE, "Médecin"),
+    ("Diplôme d'études spécialisées de médecine générale", TRUE, "Médecin"),
+    ("Diplôme d'état français de cadre de santé", TRUE, "C.S."),
+    ("Diplôme d'état français de masseur-kinesitherapeute", TRUE, "KINE"),
+    ("Diplôme d'état français de pédicure-podologue", TRUE, NULL),
+    ("Diplôme d'état français d'infirmier", TRUE, "I.D.E."),
+    ("Diplôme d'état français d'infirmier anesthésiste", TRUE, "I.A.D.E."),
+    ("Diplôme d'état français d'infirmier de bloc opératoire", TRUE, "I.B.O.D.E."),
+    ("Diplôme d'état français d'infirmier puericulteur", TRUE, "I.P."),
+    ("Diplôme équivalent d'un pays membre de l'EEE pour la profession de masseur-kinesitherapeute", TRUE, "KINE"),
+    ("Diplôme équivalent d'un pays membre de l'EEE pour la profession de pédicure-podologue", TRUE, NULL),
+    ("Diplôme équivalent d'un pays membre de l'EEE pour la profession d'infirmier", TRUE, "I.D.E."),
+    ("DPLG", FALSE, NULL),
+    ("DU RESMS", FALSE, NULL),
+    ("DUT", FALSE, NULL),
+    ("Licence", FALSE, NULL),
+    ("Licence Pro", FALSE, NULL),
+    ("Maitre apprentissage", FALSE, NULL),
+    ("Maitrise", FALSE, NULL),
+    ("Manipulateur d'électroradiologie médicale", TRUE, NULL),
+    ("Master", FALSE, NULL),
+    ("Master 1", FALSE, NULL),
+    ("Master 2", FALSE, NULL),
+    ("Sage Femme D.E.", TRUE, "S.F.");
+
 
 -- Users --
-INSERT INTO Roles (Titled_Roles) VALUES
+INSERT INTO Roles (Titled) VALUES
     ('Propriétaire'),
     ('Administrateur'),
     ('Modérateur'),
     ('Utilisateur'),
     ('Invité')
 ;
-INSERT INTO Types_of_actions (Titled_Types_of_actions) VALUES 
+INSERT INTO Types_of_actions (Titled) VALUES 
     -- Connexions --
     ('Connexion'),
     ('Déconnexion'), 
@@ -843,6 +896,6 @@ INSERT INTO Types_of_actions (Titled_Types_of_actions) VALUES
 ;
 
 -- User de test --
-INSERT INTO Users (Identifier_Users, Name_Users, Firstname_Users, Email_Users, Password_Users, Key_Roles, Key_Establishments) VALUES 
-	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$OXhYoJAc24F.YTPQjl8CkO3kHc1dZVtLFEF.c4cScOcjFIebOD7Dm', 1, 1)
+INSERT INTO Users (Identifier, Name, Firstname, Email, Password, Key_Roles, Key_Establishments) VALUES 
+	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$YjmR/M/Wkce8YvEyot8r8epdqAuhHENAI1Atd3tEzDwS6/GwL1eYe', 1, 1)
 ;    

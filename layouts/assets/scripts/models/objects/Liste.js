@@ -1,9 +1,9 @@
 /**
- * @brief Classe représentant un tableau HTML permettant l'apparition et la disparition dynamique de ses lignes
+ *  Classe représentant un tableau HTML permettant l'apparition et la disparition dynamique de ses lignes
  */
 class Liste {
     /**
-     * @brief Constructeur de la classe
+     *  Constructeur de la classe
      * @param id L'identifiant de la liste
      */
     constructor(id) {
@@ -21,7 +21,7 @@ class Liste {
     }
 
     /**
-     * @brief Méthode lançant la détection de visibilité
+     *  Méthode lançant la détection de visibilité
      */
     int() {
         this.items.forEach(item => {
@@ -29,7 +29,7 @@ class Liste {
         });
     }
     /**
-     * @brief Méthode affichant/cachant une ligne
+     *  Méthode affichant/cachant une ligne
      * @param entries La ligne
      */
     callback(entries) {

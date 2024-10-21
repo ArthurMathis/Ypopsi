@@ -5,7 +5,7 @@ require_once('Moment.php');
 define('REGEX', '/^(\d{2}\.){4}\d{2}$/');
 
 /**
- * @brief Class representing one candidate's Exception
+ *  Class representing one candidate's Exception
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class InvalideCandidateExceptions extends Exception {
@@ -15,63 +15,74 @@ class InvalideCandidateExceptions extends Exception {
 }
 
 /**
- * @brief Class representing one candidate
+ *  Class representing one candidate
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class Candidate {
     /**
-     * @brief Private attibute containing the candidate's key
+     * Private attibute containing the candidate's key
+     * 
      * @var Int His key
      */
     private $key = null;
     /**
-     * @brief Private attribute containing the candidate's name
+     * Private attribute containing the candidate's name
+     * 
      * @var String His name
      */
     private $name;
     /**
-     * @brief Private attibute containing the candidate's firstname
+     * Private attibute containing the candidate's firstname
+     * 
      * @var String His firstname
      */
     private $firstname;
     /**
-     * @brief Private attibute containing the candidate's email address
+     * Private attibute containing the candidate's email address
+     * 
      * @var String His email address
      */
     private $email;
     /**
-     * @brief Private attibute containing the candidate's phone number
+     * Private attibute containing the candidate's phone number
+     * 
      * @var String His phone number
      */
     private $phone;
     /**
-     * @brief Private attibute containing the candidate's address
+     * Private attibute containing the candidate's address
+     * 
      * @var String His address
      */
     private $address;
     /**
-     * @brief Private attibute containing the city where lives the candidate
+     * Private attibute containing the city where lives the candidate
+     * 
      * @var String The city
      */
     private $city;
     /**
-     * @brief Private attibute containing the city's post code 
+     * Private attibute containing the city's post code 
+     * 
      * @var String The post code
      */
     private $post_code;
     /**
-     * @brief Private attibute containing the candidate's availability
+     * Private attibute containing the candidate's availability
+     * 
      * @var String His availability
      */
     private $availability = null;
     /**
-     * @brief Private attibute containing the candidate last medical visit date
+     * Private attibute containing the candidate last medical visit date
+     * 
      * @var String His last medical visit date
      */
     private $medical_visit = null;
 
     /**
-     * @brief Class' construtor
+     * Class' construtor
+     * 
      * @param String $name The candidate's name
      * @param String $firstname The candidate's firstname
      * @param String $email The candidate's email address
@@ -91,58 +102,69 @@ class Candidate {
     } 
 
     /**
-     * @brief Public method returning the candidate's key
+     * Public method returning the candidate's key
+     * 
      * @return Integer 
      */
     public function getKey(): ?int { return $this->key; }
     /**
-     * @brief Public method returning the candidate's name
+     * Public method returning the candidate's name
+     * 
      * @return String
      */
     public function getName(): string { return $this->name; }
     /**
-     * @brief Public method returning the candidate's firstname
+     * Public method returning the candidate's firstname
+     * 
      * @return String
      */
     public function getFirstname(): string { return $this->firstname; }
     /**
-     * @brief Public method returning the candidate's email address
+     * Public method returning the candidate's email address
+     * 
      * @return String
      */
     public function getEmail(): string { return $this->email; }
     /**
-     * @brief Public method returning the candidate's phone number
+     * Public method returning the candidate's phone number
+     * 
      * @return String
      */
     public function getPhone(): string { return $this->phone; }
     /**
-     * @brief Public method returning the candidate's address
+     * Public method returning the candidate's address
+     * 
      * @return String
      */
     public function getAddress(): string { return $this->address; }
     /**
-     * @brief Public method returning the city where lives the candidate
+     * Public method returning the city where lives the candidate
+     * 
      * @return String
      */
     public function getCity(): string { return $this->city; }
     /**
-     * @brief Public method returning the city's post code
+     * Public method returning the city's post code
+     * 
      * @return String
      */
     public function getPostCode(): string { return $this->post_code; }
     /**
-     * @brief Public method returning the candidate's availability
+     * Public method returning the candidate's availability
+     * 
      * @return String
      */
     public function getAvailability(): ?string { return $this->availability; }
     /**
-     * @brief Public method returning the candidate last medical visit date
+     * Public method returning the candidate last medical visit date
+     * 
      * @return String
      */
     public function getMedicalVisit(): ?string { return $this->medical_visit; }
 
     /**
-     * @brief Public method setting the candidate's key
+     * Public method setting the candidate's key
+     * 
      * @param Int $key The candidate's key
      * @thorws InvalideCandidateExceptions If the key's is not integred
      * @return void
@@ -160,7 +182,8 @@ class Candidate {
         else  $this->key = $key;
     }
     /**
-     * @brief Private method setting the candidate's name
+     * Private method setting the candidate's name
+     * 
      * @param String $name
      * @return void
      */
@@ -179,7 +202,8 @@ class Candidate {
         else $this->name = $name;
     }
     /**
-     * @brief Private method setting the candidate's firstname
+     * Private method setting the candidate's firstname
+     * 
      * @param String $firstname
      * @return void
      */
@@ -198,7 +222,8 @@ class Candidate {
         else $this->firstname = $firstname;
     }
     /**
-     * @brief Private method setting the candidate's email address
+     * Private method setting the candidate's email address
+     * 
      * @param String $email
      * @return void
      */
@@ -215,7 +240,8 @@ class Candidate {
         else $this->email = $email;
     }
     /**
-     * @brief Private method setting the candidate's phone number
+     * Private method setting the candidate's phone number
+     * 
      * @param String $phone
      * @return void
      */
@@ -234,7 +260,8 @@ class Candidate {
     }
     
     /**
-     * @brief Private method setting the candidate's address
+     * Private method setting the candidate's address
+     * 
      * @param String $address
      * @return void
      */
@@ -249,7 +276,8 @@ class Candidate {
         else $this->address = $address;
     }
     /**
-     * @brief Private method setting the city where lives the candidate
+     * Private method setting the city where lives the candidate
+     * 
      * @param String $city
      * @return void
      */
@@ -268,7 +296,8 @@ class Candidate {
         else $this->city = $city;
     }
     /**
-     * @brief Private method setting the city's post code
+     * Private method setting the city's post code
+     * 
      * @param String $post_code
      * @return void
      */
@@ -282,7 +311,8 @@ class Candidate {
         else $this->post_code = $post_code;
     }
     /**
-     * @brief Public method setting the candidate's availability
+     * Public method setting the candidate's availability
+     * 
      * @param String $availability
      * @return void
      */
@@ -297,7 +327,8 @@ class Candidate {
         else $this->availability = $availability;
     }
     /**
-     * @brief Public method setting the candidate last medical visit date
+     * Public method setting the candidate last medical visit date
+     * 
      * @param String $visite
      * @return void
      */
@@ -313,7 +344,8 @@ class Candidate {
     }
 
     /**
-     * @brief Public method returning the candidate's data in an array
+     * Public method returning the candidate's data in an array
+     * 
      * @throws InvalideCandidateExceptions If the candidte's availability is not completed
      * @return Array
      */
@@ -339,7 +371,7 @@ class Candidate {
         return $array;
     }
     /**
-     * @brief Public method returning the candidate's data in an array
+     *  Public method returning the candidate's data in an array
      * @return Array
      */
     public function exportToSQL_update(): array {
@@ -354,7 +386,7 @@ class Candidate {
         ];
     }
     /**
-     * @brief Public method returning the candidate's data in an array
+     *  Public method returning the candidate's data in an array
      * @return Array
      */
     public function exportToSQL_Key(): array {
