@@ -1,7 +1,7 @@
 <?php
 
 require_once('Controller.php');
-require_once(CLASSE.DS.'Candidats.php');
+require_once(CLASSE.DS.'Candidate.php');
 
 class CandidaturesController extends Controller {
     public function __construct() {

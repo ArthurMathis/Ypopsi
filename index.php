@@ -15,9 +15,9 @@ session_start();
 // On récupère les infos de connexion à la base de données
 env_start();
 
-if(isset($_SESSION['first log in']) && $_SESSION['first log in'] == true) {
+if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
     // On libère la mémoire
-    unset($_SESSION['first log in']);
+    unset($_SESSION['first_log_in']);
     alert_manipulation::alert([
         'title' => "Information importante",
         'msg' => "<p>Bienvenu, c'est votre première connexion !</p><p>Vous devez <b>modifier votre mot de passe</b> au plus vite.</p>",

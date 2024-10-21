@@ -34,7 +34,7 @@ class LoginController extends Controller {
         $this->Model->connectUser($identifiant, $motdepasse);
         alert_manipulation::alert([
             'title' => 'Connexion réussie',
-            'msg' => 'Bienvene ' . strtoupper($_SESSION['user_nom']) . ' ' . forms_manip::nameFormat($_SESSION['user_prenom']),
+            'msg' => 'Bienvene ' . strtoupper($_SESSION['user_name']) . ' ' . forms_manip::nameFormat($_SESSION['user_firstname']),
             'direction' => 'index.php'
         ]);
     }

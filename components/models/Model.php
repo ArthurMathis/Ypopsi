@@ -11,14 +11,14 @@ abstract class Model {
     private $connection;
 
     /**
-     * Class constructor
+     * @brief Class' constructor
      */
     public function __construct() {
         $this->makeConnection();
     }
 
     /**
-     * Protected method connecting the application to the database
+     * @brief Protected method connecting the application to the database
      */
     protected function makeConnection() {
         try {
@@ -43,12 +43,11 @@ abstract class Model {
         return $this->connection;
     }
     /**
-     * Protected method returning the database connection
+     * @brief Protected method returning the database connection
      */
     protected function getConnection() { return $this->connection; }
     /**
-     * Protected method recording application logs
-     *
+     * @brief Protected method recording application logs
      * @param integer $user_key The user identification key in the database
      * @param string $action The action title
      * @param string optionnal $description The action description 
@@ -56,13 +55,8 @@ abstract class Model {
      */
     protected function writeLogs(&$user_key, $action, $description=null) {
         try {
-            // On récupère le type d'action
             $action_type = $this->serachAction_type($action);
-
-            // On génère l'instant actuel (date et heure actuelles)
             $instant_id = $this->inscriptInstants();
-
-            // On ajoute l'action à la base de données
             $this->inscriptAction($user_key, $action_type['Id_Types'], $instant_id['Id_Instants'], $description);
 
         } catch (Exception $e) {
@@ -78,28 +72,17 @@ abstract class Model {
     
 
     /**
-     * Private method checking the request parameters
-     *
+     * @brief Private method checking the request parameters
      * @param string $request The SQL request
      * @param array<string> $params The request data array
      * @return boolean TRUE if the request executed successfully, FALSE otherwise
      */
     private function test_data_request(&$request, &$params=[]): bool {
-        // On vérifie l'intégrité des données
-        try {
-
-        } catch(Exception $e) {
-            forms_manip::error_alert([
-                'msg' => 'Les données de la requête à la base de données sont erronnées. ' . $e->getMessage()
-            ]);
-        }
-        // On vérifie l'intégrité des paramètres
         if(empty($request) || !is_string($request)) 
             throw new Exception("La requête doit être passée en paramètre !");
         elseif(!is_array($params))
             throw new Exception("Les données de la requête doivent être passsée en paramètre !");
     
-        // Aucune alerte, on valide les données    
         return true;
     }
     /**
@@ -112,20 +95,13 @@ abstract class Model {
      * @return array|null
      */
     protected function get_request($request, $params = [], $unique=false, $present=false): ?array {
-        // On vérifie le paramètre uniquue
-        if(empty($unique) || !is_bool($unique)) 
-            $unique = false;
-        // On vérifie le paramètre uniquue
-        if(empty($present) || !is_bool($present)) 
+        if(empty($unique) || !is_bool($unique) || empty($present) || !is_bool($present))  
             $present = false;
     
-        // On vérifie l'intégrité des paramètres
         if($this->test_data_request($request, $params)) try {
-            // On prépare la requête
             $query = $this->getConnection()->prepare($request);
             $query->execute($params);
-    
-            // On récupère le résultat de la requête
+
             if($unique) 
                 $result = $query->fetch(PDO::FETCH_ASSOC);
             else 
@@ -133,12 +109,11 @@ abstract class Model {
 
             if(empty($result)) {
                 if($present) 
-                    // throw new Exception('Aucun résultat correspondant...');
                     throw new Exception("Requête: " . $request ."\nAucun résultat correspondant");
                 
-                else return null;
-
-            // On retourne le résultat de la requête         
+                else 
+                    return null;
+    
             } else 
                 return $result;
     
@@ -164,19 +139,15 @@ abstract class Model {
      * @return boolean
      */
     protected function post_request(&$request, $params): bool {
-        // On déclare une variable tampon
         $res = true;
     
-        // On vérifie l'intégrité des paramètres
         if(!$this->test_data_request($request, $params)) 
             $res = false;
     
         else try {
-            // On prépare la requête
             $query = $this->getConnection()->prepare($request);
             $query->execute($params);
-    
-        // On vérifie qu'il n'y a pas eu d'erreur lors de l'éxécution de la requête    
+
         } catch(PDOException $e){
             forms_manip::error_alert([
                 'title' => 'Erreur lors de la requête à la base de données',
@@ -184,7 +155,6 @@ abstract class Model {
             ]);
         } 
     
-        // On retourne le résultat
         return $res;
     }
 
@@ -355,7 +325,7 @@ abstract class Model {
             // On initialise la requête
             $request = "SELECT * FROM Etablissements WHERE Id_Etablissements = :etablissement";
         
-         elseif(is_string($etablissement)) 
+        elseif(is_string($etablissement)) 
             // On initialise la requête
             $request = "SELECT * FROM Etablissements WHERE Intitule_Etablissements = :etablissement";
 
@@ -417,34 +387,28 @@ abstract class Model {
         return $result;
     }
     /**
-     * Protected method searching one action type in the database
-     *
-     * @param integer|string $action The type primary key or intitule
-     * @return array
+     * @brief Protected method searching one action type in the database
+     * @param Int|String $action The type primary key or intitule
+     * @return Array
      */
     protected function serachAction_type($action): array {
         if($action == null) 
             throw new Exception("Données éronnées. La clé action ou son intitulé sont nécessaires pour rechercher une action !");
-
         elseif(is_numeric($action)) 
-            $request = "SELECT * FROM types WHERE Id_Types = :action";
-
+            $request = "SELECT * FROM types_of_actions WHERE Id_Types_of_actions = :action";
         elseif(is_string($action))
-            $request = "SELECT * FROM types WHERE Intitule_Types = :action";
-
+            $request = "SELECT * FROM types_of_actions WHERE Titled_Types_of_actions = :action";
         else 
             throw new Exception('Type invlide. La clé action (int) ou son intitulé (string) sont nécessaires pour rechercher une action !');   
 
         $params = [ "action" => $action ];
 
-        // On lance la requête
         return $this->get_request($request, $params, true, true);
     }
     /**
-     * Protected method search one user in the database
-     *
-     * @param integer|string $user The user primary key or intitule
-     * @return array
+     * @brief Protected method search one user in the database
+     * @param Int|String $user The user primary key or intitule
+     * @return Array
      */ 
     protected function searchUser($user): array {
         if($user == null)
@@ -790,24 +754,24 @@ abstract class Model {
      * @param string $heure The instant hour
      * @return array
      */
-    protected function inscriptInstants($jour=null, $heure=null): array {
-        if(empty($jour) && empty($heure))
-            // On génère l'instant actuel (date et heure actuelles)
-            $instant = Instants::currentInstants();
-            
-        // On génère un instant    
-        else $instant = new Instants($jour, $heure);
-
-        // J'enregistre mon instant dans la base de données
-        $request = "INSERT INTO Instants (Jour_Instants, Heure_Instants) VALUES (:jour, :heure)";
-        $params = $instant->exportToSQL();
-        $this->post_request($request, $params);
-
-        // On récupère l'id de mon instant 
-        $request = "SELECT * FROM Instants WHERE Jour_Instants = :jour AND Heure_Instants = :heure";
-
-        return $this->get_request($request, $params, true, true);
-    }
+    // protected function inscriptInstants($jour=null, $heure=null): array {
+    //     if(empty($jour) && empty($heure))
+    //         // On génère l'instant actuel (date et heure actuelles)
+    //         $instant = Instants::currentInstants();
+    //         
+    //     // On génère un instant    
+    //     else $instant = new Instants($jour, $heure);
+    // 
+    //     // J'enregistre mon instant dans la base de données
+    //     $request = "INSERT INTO Instants (Jour_Instants, Heure_Instants) VALUES (:jour, :heure)";
+    //     $params = $instant->exportToSQL();
+    //     $this->post_request($request, $params);
+    // 
+    //     // On récupère l'id de mon instant 
+    //     $request = "SELECT * FROM Instants WHERE Jour_Instants = :jour AND Heure_Instants = :heure";
+    // 
+    //     return $this->get_request($request, $params, true, true);
+    // }
     /**
      * protected method registering one user in the database
      *
@@ -830,14 +794,14 @@ abstract class Model {
     /**
      * Protected method registering one action in the database
      *
-     * @param integer $cle_user The user's primary key
-     * @param integer $cle_action The action primary key
-     * @param integer $cle_instant The instant primary key
-     * @param string $description The action description
-     * @return void
+     * @param Int $cle_user The user's primary key
+     * @param Int $cle_action The action primary key
+     * @param Int $cle_instant The instant primary key
+     * @param String $description The action description
+     * @throws Exception If the action's informtions is invalid or no complet
+     * @return Void
      */
-    protected function inscriptAction(&$cle_user, &$cle_action, &$cle_instant, $description=null) {
-        // On vérifie l'intégrité des données
+    protected function inscriptAction(&$cle_user, &$cle_action, $description=null) {
         try {
             if(empty($cle_user) || !is_numeric($cle_user))
                 throw new Exception("La clé Utilisateur est nécessaire pour l'enregistrement d'une action !");
@@ -852,29 +816,22 @@ abstract class Model {
             ]);
         }
         
-        // Sans description
         if(!empty($description)) {
-            // On ajoute l'action à la base de données
-            $request = "INSERT INTO Actions (Cle_Utilisateurs, Cle_Types, Cle_Instants, Description_Actions) VALUES (:user_id, :type_id, :instant_id, :description)";
+            $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, Description_Actions) VALUES (:user_id, :type_id, :description)";
             $params = [
                 "user_id" => $cle_user,
                 "type_id" => $cle_action,
-                "instant_id" => $cle_instant,
                 'description' => $description
             ];
 
-        // Avec description    
         } else {
-            // On ajoute l'action à la base de données
-            $request = "INSERT INTO Actions (Cle_Utilisateurs, Cle_Types, Cle_Instants) VALUES (:user_id, :type_id, :instant_id)";
+            $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, ) VALUES (:user_id, :type_id)";
             $params = [
                 "user_id" => $cle_user,
                 "type_id" => $cle_action,
-                "instant_id" => $cle_instant
             ];   
         }
 
-        // On lance la requête
         $this->post_request($request, $params);
     }
     /**

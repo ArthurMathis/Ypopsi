@@ -43,9 +43,9 @@ CREATE TABLE Roles (
 );
 CREATE TABLE Users (
   Id_Users INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Identifiant_Users VARCHAR(64) NOT NULL,
+  Identifier_Users VARCHAR(64) NOT NULL,
   Name_Users VARCHAR(64) NOT NULL,
-  Firstanme_Users VARCHAR(64) NOT NULL,
+  Firstname_Users VARCHAR(64) NOT NULL,
   Email_Users VARCHAR(64) NOT NULL, 
   Password_Users VARCHAR(256) NOT NULL,
   PasswordTemp_Users BOOLEAN DEFAULT 1,
@@ -78,7 +78,7 @@ CREATE TABLE Actions (
 CREATE TABLE Candidates (
   Id_Candidates INTEGER PRIMARY KEY AUTO_INCREMENT,
   Name_Candidates VARCHAR(64) NOT NULL,
-  Firstanme_Candidates VARCHAR(64) NOT NULL,
+  Firstname_Candidates VARCHAR(64) NOT NULL,
   Email_Candidates VARCHAR(64) NOT NULL,
   Phone_Candidates VARCHAR(14) NOT NULL,
   Address_Candidates VARCHAR(256) NOT NULL,
@@ -197,7 +197,7 @@ CREATE TABLE Sources (
   Id_Sources INTEGER PRIMARY KEY AUTO_INCREMENT,
   Titled_Sources VARCHAR(64) NOT NULL
 );
-CREATE TABLE applications (
+CREATE TABLE Applications (
   Id_applications INTEGER PRIMARY KEY AUTO_INCREMENT,
   Status_applications VARCHAR(24),
   Moment_applications TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -224,7 +224,7 @@ CREATE TABLE Moments (
   Id_Moments INTEGER PRIMARY KEY AUTO_INCREMENT,
   Date_Moments TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-CREATE TABLE Avoir_rendez_vous_avec (
+CREATE TABLE Have_a_meet_with (
   Key_Users INTEGER NOT NULL,
   Key_Candidates INTEGER NOT NULL,
   Key_Establishments INTEGER NOT NULL,

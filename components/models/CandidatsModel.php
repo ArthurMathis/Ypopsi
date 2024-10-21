@@ -1,8 +1,8 @@
 <?php 
 
 require_once('Model.php');
-require_once(CLASSE.DS.'Instants.php');
-require_once(CLASSE.DS.'Contrats.php');
+require_once(CLASSE.DS.'Moment.php');
+require_once(CLASSE.DS.'Contract.php');
 
 class CandidatsModel extends Model {
     /// Méthode publique récupérant dans la base de données la liste des candidats

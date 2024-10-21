@@ -1,9 +1,9 @@
 <?php 
 
 require_once(MODELS.DS.'Model.php');
-require_once(CLASSE.DS.'Instants.php');
-require_once(CLASSE.DS.'Candidats.php');
-require_once(CLASSE.DS.'Utilisateurs.php');
+require_once(CLASSE.DS.'Moment.php');
+require_once(CLASSE.DS.'Candidate.php');
+require_once(CLASSE.DS.'User.php');
 require_once(COMPONENTS.DS.'Passwordgenerator.php');
 
 class PreferencesModel extends Model {
@@ -370,7 +370,7 @@ class PreferencesModel extends Model {
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour mot de passe",
-            strtoupper($_SESSION['user_nom']) . " " . forms_manip::nameFormat($_SESSION['user_prenom']) . " a mis-à-jour son mot de passe"
+            strtoupper($_SESSION['user_name']) . " " . forms_manip::nameFormat($_SESSION['user_firstname']) . " a mis-à-jour son mot de passe"
         );
     }
     public function updateUserLogs($cle_utilisateur) {

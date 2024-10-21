@@ -843,6 +843,6 @@ INSERT INTO Types_of_actions (Titled_Types_of_actions) VALUES
 ;
 
 -- User de test --
-INSERT INTO Users (Identifiant_Users, Name_Users, Firstanme_Users, Email_Users, Password_Users, Key_Roles, Key_Establishments) VALUES 
+INSERT INTO Users (Identifier_Users, Name_Users, Firstname_Users, Email_Users, Password_Users, Key_Roles, Key_Establishments) VALUES 
 	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$OXhYoJAc24F.YTPQjl8CkO3kHc1dZVtLFEF.c4cScOcjFIebOD7Dm', 1, 1)
 ;    
