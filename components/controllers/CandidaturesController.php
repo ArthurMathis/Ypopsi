@@ -24,55 +24,55 @@ class CandidaturesController extends Controller {
     public function displaySaisieCandidature() {
         return $this->View->getSaisieCandidatureContent(
             "Ypopsi - Recherche d'un candidat", 
-            $this->Model->getAutoCompPostes(),
+            $this->Model->getAutoCompJobs(),
             $this->Model->getAutoCompServices(),
-            $this->Model->getAutoCompTypesContrat(),
+            $this->Model->getAutoCompTypesContracts(),
             $this->Model->getAutoCompSources()
         );
     }
 
-    /// Méthode publique vérifiant les données d'un candidat avant la redirection vers le formulaire de saisie de candidature
-    public function checkCandidat(&$candidat=[], $diplomes=[], $aide=[], $visite_medicale, $coopteur) {
-        // On contruit le nouveau candidat
-        $this->Model->verify_candidat($candidat, $diplomes, $aide, $visite_medicale, $coopteur);
-        // On redirige la page
+    /**
+     * Public method checking the new candidate's data, before redirecting the user to the application form
+     *
+     * @param Array $candidate The new candidate's data array
+     * @param Array $qualifications The new candidate's qualifications array
+     * @param Array $helps The new candidate's elps array
+     * @param Date $medical_visit The expiration date of the new candidate's medical examination
+     * @param Int $coopteur The employee co-opting the new candidate
+     * @return Void
+     */
+    public function checkCandidat(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) {
+        $this->Model->verify_candidat($candidate, $qualifications, $helps, $medical_visit, $coopteur);
         header('Location: index.php?candidatures=saisie-candidature');
     }
-    public function findCandidat($nom, $prenom, $email=null, $telephone=null) {
-        // On récupère le candidat dans la base de données
-        $search = $this->Model->searchCandidat($nom, $prenom, $email, $telephone);
-
-        // On l'enregistre dans la session
+    public function findCandidat($name, $firstname, $email=null, $phone=null) {
+        $search = $this->Model->searchCandidat($name, $firstname, $email, $phone);
         try {
-            $candidat = new Candidate(
-                $search['Nom_Candidats'],
-                $search['Prenom_Candidats'],
-                $search['Email_Candidats'],
-                $search['Telephone_Candidats'],
-                $search['Adresse_Candidats'],
-                $search['Ville_Candidats'],
-                $search['CodePostal_Candidats']
+            $candidate = new Candidate(
+                $search['name'],
+                $search['firstname'],
+                $search['email'],
+                $search['phone'],
+                $search['address'],
+                $search['city'],
+                $search['postcode']
             );
-            $candidat->setKey($search['Id_Candidats']);
+            $candidate->setKey($search['Id']);
             
         } catch(InvalideCandidateExceptions $e) {
             forms_manip::error_alert($e->getMessage());
         }
 
-        $_SESSION['candidat'] = $candidat;
+        $_SESSION['candidat'] = $candidate;
 
-        // On redirige la page
         header('Location: index.php?candidatures=saisie-candidature');
     }
 
-    public function createCandidature($candidat, &$candidature=[], &$diplomes=[], &$aide=[], $coopteur) {
-        // On ajoute la disponibilité
-        $candidat->setDisponibilite($candidature['disponibilite']);
-
-        if($candidat->getCle() === null) {
-            // On test la présence du candidat dans la base de données
+    public function createCandidature($candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
+        $candidate->setAvailability($application['availability']);
+        if($candidate->getKey() === null) {
             try {
-                $search = $this->Model->searchcandidat($candidat->getNom(), $candidat->getPrenom(), $candidat->getEmail());
+                $search = $this->Model->searchCandidate($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
 
             } catch(Exception $e) {
                 forms_manip::error_alert([
@@ -82,22 +82,18 @@ class CandidaturesController extends Controller {
             }
             
             if(empty($search)) {
-                // On ajoute le candidat à la base de données
-                $this->Model->createCandidat($candidat, $diplomes, $aide, $coopteur);
+                $this->Model->createCandidat($candidate, $qualifications, $helps, $coopteur);
 
-            // On met à jour sa disponibilité
             } else 
-                // On ajoute la clé de Candidats
-                $candidat->setCle($search['Id_Candidats']);
+                $candidate->setKey($search['Id']);
         }
 
-        // On inscrit la candidature
-        $this->Model->inscriptCandidature($candidat, $candidature);
-        // On redirige la page
+        $this->Model->inscriptCandidature($candidate, $application);
+        
         alert_manipulation::alert([
             'title' => 'Candidat inscript !',
-            'msg' => strtoupper($candidat->getNom()) . " " . forms_manip::nameFormat($candidat->getPrenom()) . " a bien été inscrit(e).",
-            'direction' => "index.php?candidats=" . $candidat->getCle()
+            'msg' => strtoupper($candidate->getNom()) . " " . forms_manip::nameFormat($candidate->getPrenom()) . " a bien été inscrit(e).",
+            'direction' => "index.php?candidats=" . $candidate->getCle()
         ]);
     }
 }

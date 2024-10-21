@@ -448,7 +448,7 @@ class CandidatsModel extends Model {
             $instant = $this->inscriptInstants()['Id_Instants'];
 
             // On ajoute la date de signature
-            $contrat['signature'] = Instants::currentInstants()->getdate();
+            $contrat['signature'] = Moment::currentInstants()->getdate();
 
             // On récupère les informations relatives au poste
             $poste = $this->searchPoste($contrat['poste']);
@@ -467,7 +467,7 @@ class CandidatsModel extends Model {
             $contrat['cle type'] = isset($contrat['type']) && is_numeric($contrat['type']) ? $contrat['type'] : $this->searchTypeContrat($contrat['type_de_contrat'])['Id_Types_de_contrats'];
 
             // On génère le contrat
-            $contrat = Contrat::makeContrat($contrat);
+            $contrat = Contract::makeContrat($contrat);
         
         } catch(Exception $e) {
             forms_manip::error_alert([
@@ -758,7 +758,7 @@ class CandidatsModel extends Model {
                         "cle_poste" => $contrats['cle poste'],
                         "cle_types" => $contrats['cle types']
                     ];
-                   
+        
                 // Requête sans taux horaire hebdomadaire     
                 } else {
                     // On initialise la requête
@@ -918,7 +918,7 @@ class CandidatsModel extends Model {
                         "cle_poste" => $contrats['cle poste'],
                         "cle_types" => $contrats['cle types']
                     ];
-                     
+                    
                 // Requête sans taux horaire hebdomadaire     
                 } else {
                     // On initialise la requête
@@ -1175,7 +1175,7 @@ class CandidatsModel extends Model {
     /// Méthode publique ajoutant une signature à un contrat
     public function addSignature($cle) {
         // On génère l'instant actuel
-        $instant = Instants::currentInstants()->getDate();
+        $instant = Moment::currentInstants()->getDate();
 
         // On initialise la requête
         $request = "UPDATE Contrats SET Date_signature_Contrats = :date WHERE Id_Contrats = :contrat";
@@ -1341,7 +1341,7 @@ class CandidatsModel extends Model {
     }
 
     /// Méthode protégée recherchant un candidat dans la base de données
-    private function searchcandidat($cle_candidat) {
+    private function searchCandidat($cle_candidat) {
         if(empty($cle_candidat) || !is_numeric($cle_candidat)) 
             throw new Exception('Erreur lors de la recherche du candidat. La clé candidat doit être un nombre entier positif !');
 

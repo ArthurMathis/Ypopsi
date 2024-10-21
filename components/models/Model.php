@@ -242,9 +242,9 @@ abstract class Model {
      *
      * @return Void
      */
-    public function getAutoCompPostes() {
+    public function getAutoCompJobs() {
         // On inititalise la requête
-        $request = "SELECT Intitule_Postes FROM Postes ORDER BY Intitule_Postes";
+        $request = "SELECT titled FROM jobs ORDER BY titled";
         
         // On lance la requête
         return $this->get_request($request, [], false, true);
@@ -256,7 +256,7 @@ abstract class Model {
      */
     public function getAutoCompServices() {
         // On inititalise la requête
-        $request = "SELECT Intitule_Services FROM Services ORDER BY Intitule_Services";
+        $request = "SELECT titled FROM Services ORDER BY titled";
         
         // On lance la requête
         return $this->get_request($request, [], false, true);
@@ -266,9 +266,9 @@ abstract class Model {
      *
      * @return Void
      */
-    public function getAutoCompTypesContrat() {
+    public function getAutoCompTypesContracts() {
         // On initialise la requête
-        $request = "SELECT Intitule_Types_de_contrats FROM Types_de_contrats ORDER BY Intitule_Types_de_contrats";
+        $request = "SELECT titled FROM Types_of_contracts ORDER BY titled";
 
         // On lance la requête
         return $this->get_request($request, [], false, true);
@@ -280,7 +280,7 @@ abstract class Model {
      */
     public function getAutoCompSources() {
         // On initialise la requête
-        $request = "SELECT Intitule_Sources FROM Sources ORDER BY Intitule_Sources";
+        $request = "SELECT titled FROM Sources ORDER BY titled";
 
         // On lance la requête
         return $this->get_request($request, [], false, true);
@@ -306,20 +306,6 @@ abstract class Model {
 
     // METHODES DE RECHERCHE DANS LA BASE DE DONNEES //
 
-    /**
-     * Public method searching one Instant in the database
-     *
-     * @param Int $cle_instant The Instant's primary key 
-     * @return Array
-     */
-    protected function searchInstant($cle_instant): Array {
-        // On initialise la requête
-        $request = "SELECT * FROM Instants WHERE Id_Instants = :cle";
-        $params = ['cle' => $cle_instant];
-
-        // On récupère le résultat
-        return $this->get_request($request, $params, true, true);
-    }
     /**
      * Public method searching one establishment 
      *
@@ -678,29 +664,24 @@ abstract class Model {
      * @param Int|String $aide The assistance primary key or intitule
      * @return Array
      */
-    protected function searchAide($aide): Array {
+    protected function searchHelps($aide): Array {
         // Si aide est un ID
         if(is_numeric($aide)) {
-            // On initialise la requête
-            $request = "SELECT * FROM Aides_au_recrutement WHERE Id_Aides_au_recrutement = :id";
+            $request = "SELECT * FROM Helps WHERE Id = :id";
             $params = ["id" => $aide];
 
-            // On lance la requête
             $result = $this->get_request($request, $params, true, true);
         
         // Si aide est un intitule    
         } elseif(is_string($aide)) {
-            // On intitialise la requête
-            $request = "SELECT * FROM Aides_au_recrutement WHERE Intitule_Aides_au_recrutement = :intitule";
-            $params = ["intitule" => $aide];
+            $request = "SELECT * FROM Helps WHERE titled = :titled";
+            $params = ["titled" => $aide];
 
-            // On lance la requête
             $result = $this->get_request($request, $params, true);
 
         } else 
             new Exception("La saisie de l'aide est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");        
 
-        // On retourne le résultat
         return $result;
     }
     /**

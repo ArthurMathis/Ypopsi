@@ -4,6 +4,8 @@ require_once(MODELS.DS.'Model.php');
 require_once(CLASSE.DS.'Moment.php');
 require_once(CLASSE.DS.'Candidate.php');
 
+define("COOPTATION", "Prime de cooptation");
+
 class CandidaturesModel extends Model {
     /// Méthode publique retourant la liste des candidatures 
     public function getCandidatures() {
@@ -46,33 +48,31 @@ class CandidaturesModel extends Model {
      * @param Array $candidate The array containing the candidate's data
      * @param Array $qualifications The array containing the candidate's qualifications
      * @param Array $helps The array containing the candidate's helps
-     * @param [type] $medical_visit 
-     * @param [type] $coopteur
+     * @param Date $medical_visit The expiration date of the new candidate's medical examination
+     * @param Int $coopteur The employee co-opting the new candidate
      * @return Void
      */
-    public function verify_candidat(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) {
+    public function verify_candidat(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) { 
         try {
             $candidate = new Candidate(
-                $candidate['nom'], 
-                $candidate['prenom'], 
+                $candidate['name'], 
+                $candidate['firstname'], 
                 $candidate['email'], 
-                $candidate['telephone'], 
-                $candidate['adresse'],
-                $candidate['ville'],
-                $candidate['code_postal']
+                $candidate['phone'], 
+                $candidate['address'],
+                $candidate['city'],
+                $candidate['post code']
             );
             
-            if(!empty($aide)) {
-            $i = 0;
-            $size = count($aide);
-            $coopt = 0;
-            while($i < $size) {
-                if($aide[$i] == $this->searchAide('Prime de cooptation')['Id_Aides_au_recrutement']) 
-                    $coopt++; 
-                $i++;
+            if(!empty($helps)) {
+                $coopt = 0;
+                $id = $this->searchHelps(COOPTATION)['Id'];
+                foreach($helps as $item) 
+                    if($item === $id)
+                        $coopt++;
+                if(1 < $coopt) 
+                    throw new Exception("Il n'est possible de renseigner q'une prime de cooptation");
             }
-            if(1 < $coopt) throw new Exception("Il n'est possible de renseigner q'une prime de cooptation");
-        }
         
         } catch(InvalideCandidateExceptions $e) {
             forms_manip::error_alert([
@@ -87,37 +87,28 @@ class CandidaturesModel extends Model {
         if($coopteur)
             $coopteur = $this->searchCandidatByConcat($coopteur);
 
-        $_SESSION['candidat'] = $candidate;
-        $_SESSION['diplomes'] = $qualifications;
-        $_SESSION['aide']     = $helps;
-        $_SESSION['coopteur'] = $coopteur;
+        $_SESSION['candidate']      = $candidate;
+        $_SESSION['qualifications'] = $qualifications;
+        $_SESSION['helps']          = $helps;
+        $_SESSION['coopteur']       = $coopteur;
     }
 
     /// Méthode publique générant un candidat et inscrivant les logs
-    public function createCandidat(&$candidat, $diplomes=[], $aide=[], $coopteur) {
-        // On inscrit le candidat
+    public function createCandidat(&$candidate, $diplomes=[], $aide=[], $coopteur) {
         $this->inscriptCandidat($candidat);
+        $candidate->setKey($this->searchCandidate($candidat->getName(), $candidat->getFirstname(), $candidat->getEmail())['Id_Candidats']);
 
-        // On récupère l'Id du candidat
-        $search = $this->searchcandidat($candidat->getNom(), $candidat->getPrenom(), $candidat->getEmail());
-        
-        // On ajoute la clé de Candidats
-        $candidat->setCle($search['Id_Candidats']);
-
-        // On enregistre les diplomes
-        if(!empty($diplomes)) foreach($diplomes as $item) {
-            $this->inscriptObtenir($candidat->getCle(), $this->searchDiplome($item)['Id_Diplomes']);
-        }
-
-        // On enregistre les aides
+        if(!empty($diplomes)) 
+            foreach($diplomes as $item) 
+                $this->inscriptObtenir($candidat->getCle(), $this->searchDiplome($item)['Id_Diplomes']);
+    
         if($aide != null) foreach($aide as $item) 
             $this->inscriptAvoir_droit_a($candidat->getCle(), $item, $item == 3 ? $coopteur['Id_Candidats'] : null);
             
-        // On enregistre les logs
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Nouveau candidat", 
-            "Inscription du candidat " . strtoupper($candidat->getNom()) . " " . forms_manip::nameFormat($candidat->getPrenom())
+            "Inscription du candidat " . strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname())
         );
     }
     /// Méthode publique générant une nouvelle aide
@@ -131,41 +122,22 @@ class CandidaturesModel extends Model {
     }
 
     /// Méthode publique inscrivant une candidature et les logs
-    public function inscriptCandidature(&$candidat, $candidatures=[]) {
-        // On iscrit la candidature 
+    public function inscriptCandidature(&$candidate, $application=[]) {
         try {
-            // On inscrit l'instant 
-            $instant = $this->inscriptInstants()['Id_Instants'];
-
-            // Si la clé n'est pas présente
-            if($candidat->getCle() == null) {
-                // On récupère la clé du candidat 
-                $search = $this->searchCandidat($candidat->getNom(), $candidat->getPrenom(), $candidat->getEmail())['Id_Candidats'];
-                $candidat->setCle($search);           
+            if($candidate->getKey() == null) {
+                $search = $this->searchCandidate($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail())['Id_Candidats'];
+                $candidate->setKey($search);           
             }
 
-            // On récupère le type de contrat
-            $contrat = $this->searchTypeContrat($candidatures['type de contrat'])['Id_Types_de_contrats'];
-
-            // On récupère la source
-            $source = $this->searchSource($candidatures["source"])['Id_Sources'];
-
-            // On récupère le poste
-            $poste = $this->searchPoste($candidatures["poste"])['Id_Postes'];
-
-            // On inscrit la demande de poste
-            $this->inscriptPostuler_a($candidat->getCle(), $instant);
-
             // On ajoute l'action à la base de données
-            $request = "INSERT INTO Candidatures (Statut_Candidatures, Cle_Candidats, Cle_Instants, Cle_Sources, Cle_Postes, Cle_Types_de_contrats) 
-                        VALUES (:statut, :candidat, :instant, :source, :poste, :contrat)";
+            $request = "INSERT INTO Applications (status, key_candidates, key_jobs, key_types_of_contracts, key_sources) 
+                        VALUES (:status, :candidate, :job, :contract, :source)";
             $params = [
-                "statut" => 'Non-traitée', 
-                "candidat" => $candidat->getCle(), 
-                "instant" => $instant, 
-                "source" => $source, 
-                "poste" => $poste,
-                "contrat" => $contrat
+                "status" => 'Non-traitée', 
+                "candidate" => $candidate->getKey(), 
+                "job" => $this->searchPoste($application["job"])['Id'], 
+                "contract" => $this->searchTypeContrat($application['type of contract'])['Id'], 
+                "source" => $this->searchSource($application["source"])['Id']
             ];
         
             // On ajoute la base de données
@@ -210,24 +182,24 @@ class CandidaturesModel extends Model {
     }
 
     /// Méthode publique récupérant un candidat de la base de données depuis son nom et son prénom
-    public function searchCandidat($nom, $prenom, $email=null, $telephone=null) {
+    public function searchCandidate($name, $firstname, $email=null, $phone=null) {
         if($email != null) {
             // On récupère le candidats
-            $request = "SELECT * FROM Candidats WHERE Nom_Candidats = :nom AND Prenom_Candidats = :prenom AND Email_Candidats = :email";
+            $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
             $params = [
-                ":nom" => $nom,
-                ":prenom" => $prenom, 
+                ":name" => $name,
+                ":firstname" => $firstname, 
                 ":email" => $email
             ];
             $candidats = $this->get_request($request, $params, true);
 
-        } elseif($telephone != null) {
+        } elseif($phone != null) {
             // On récupère le candidats
-            $request = "SELECT * FROM Candidats WHERE Nom_Candidats = :nom AND Prenom_Candidats = :prenom AND Telephone_Candidats = :telephone";
+            $request = "SELECT * FROM Candidates WHERE name = :nom AND firstname = :prenom AND phone = :phone";
             $params = [
-                ":nom" => $nom,
-                ":prenom" => $prenom, 
-                ":telephone" => $telephone
+                ":name" => $name,
+                ":firstname" => $firstname, 
+                ":phone" => $phone
             ];
             $candidats = $this->get_request($request, $params, true);
 

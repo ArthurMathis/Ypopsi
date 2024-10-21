@@ -17,7 +17,7 @@
             <input type="text" id="type_de_contrat" name="type_de_contrat" placeholder="Type de contrat" autocomplete="off">
             <article></article>
         </div>
-        <input type="Date" id="disponibilite" name="disponibilite" min="<?php echo Instants::currentInstants()->getDate(); ?>">
+        <input type="Date" id="disponibilite" name="disponibilite" min="<?php echo Moment::currentMoment()->getDate(); ?>">
         <div class="autocomplete">
             <input type="text" id="source" name="source" placeholder="Sources" autocomplete="off">
             <article></article>
@@ -27,16 +27,17 @@
 </form>
 
 <script>
+    
     console.log('On lance la récupération des tableaux PHP.');
 
     // On récupère les données depuis PHP
-    const postes = <?php echo json_encode(array_map(function($c) { return $c['Intitule_Postes']; }, $poste)); ?>;
-    const services = <?php echo json_encode(array_map(function($c) {  return $c['Intitule_Services'];  }, $service)); ?>;
-    const typeContrat = <?php echo json_encode(array_map(function($c) { return $c['Intitule_Types_de_contrats']; }, $typeContrat)); ?>;
-    const source = <?php echo json_encode(array_map(function($c) { return $c['Intitule_Sources']; }, $source)); ?>;
+    const jobs = <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $poste)); ?>;
+    const services = <?php echo json_encode(array_map(function($c) {  return $c['titled'];  }, $service)); ?>;
+    const typeContract = <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $typeContrat)); ?>;
+    const source = <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $source)); ?>;
     // On prépare les AutoCompletes
-    new AutoComplete(document.getElementById('poste'), postes);
+    new AutoComplete(document.getElementById('poste'), jobs);
     new AutoComplete(document.getElementById('service'), services);
-    new AutoComplete(document.getElementById('type_de_contrat'), typeContrat);
+    new AutoComplete(document.getElementById('type_de_contrat'), typeContract);
     new AutoComplete(document.getElementById('source'), source);
 </script>

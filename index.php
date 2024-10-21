@@ -121,19 +121,20 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 // On récupère les données du formulaire
                 try {
                     // On récupère le contenu du formulaire d'inscription
-                    $candidat = [
-                        'nom'           => forms_manip::nameFormat($_POST["nom"]), 
-                        'prenom'        => forms_manip::nameFormat($_POST["prenom"]), 
+                    $candidate = [
+                        'name'          => forms_manip::nameFormat($_POST["nom"]), 
+                        'firstname'     => forms_manip::nameFormat($_POST["prenom"]), 
                         'email'         => $_POST["email"], 
-                        'telephone'     => forms_manip::numberFormat($_POST["telephone"]), 
-                        'adresse'       => $_POST["adresse"],
-                        'ville'         => forms_manip::nameFormat($_POST["ville"]), 
-                        'code_postal'   => $_POST['code-postal']
+                        'phone'         => forms_manip::numberFormat($_POST["telephone"]), 
+                        'address'       => $_POST["adresse"],
+                        'city'          => forms_manip::nameFormat($_POST["ville"]), 
+                        'post code'     => $_POST['code-postal']
                     ];
-                    $diplomes           = isset($_POST["diplome"]) ? $_POST["diplome"] : null;
-                    $aide               = isset($_POST["aide"]) ? $_POST["aide"] : null;
-                    $coopteur           = isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null;
-                    $visite_medicale    = isset($_POST["visite_medicale"][0]) ? $_POST["visite_medicale"][0] : null;
+
+                    $qualifications = isset($_POST["diplome"]) ? $_POST["diplome"] : null;
+                    $helps          = isset($_POST["aide"]) ? $_POST["aide"] : null;
+                    $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null;
+                    $medical_visit  = isset($_POST["visite_medicale"][0]) ? $_POST["visite_medicale"][0] : null;
 
                 } catch(Exception $e) {
                     forms_manip::error_alert([
@@ -144,17 +145,17 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On vérifie l'intégrité des données
                 try {    
-                    if(empty($candidat['nom'])) {
+                    if(empty($candidate['name'])) {
                         throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
-                    } elseif(empty($candidat['prenom'])) {
+                    } elseif(empty($candidate['firstname'])) {
                         throw new Exception("Le champs prenom doit être rempli par une chaine de caractères !");
-                    } elseif(empty($candidat['email'])) {
+                    } elseif(empty($candidate['email'])) {
                         throw new Exception("Le champs email doit être rempli par une chaine de caractères !");
-                    } elseif(empty($candidat['adresse'])) {
+                    } elseif(empty($candidate['address'])) {
                         throw new Exception("Le champs adresse doit être rempli par une chaine de caractères !");
-                    } elseif(empty($candidat['ville'])) {
+                    } elseif(empty($candidate['city'])) {
                         throw new Exception("Le champs ville doit être rempli par une chaine de caractères !");
-                    } elseif(empty($candidat['code_postal'])) {
+                    } elseif(empty($candidate['post code'])) {
                         throw new Exception("Le champs code postal doit être rempli par une chaine de caractères !");
                     }
                 
@@ -166,7 +167,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     ]);
                 }
                 // On génère le candidat        
-                $candidatures->checkCandidat($candidat, $diplomes, $aide, $visite_medicale, $coopteur);
+                $candidatures->checkCandidat($candidate, $qualifications, $helps, $medical_visit, $coopteur);
                 break;
 
             // On inscrit une nouvelle candidature
@@ -178,11 +179,11 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 // On récupère les données du formulaire
                 try { 
                     // On récupère le contenu des champs
-                    $candidature = [
-                        'poste'             => forms_manip::nameFormat($_POST["poste"]), 
+                    $application = [
+                        'job'               => forms_manip::nameFormat($_POST["poste"]), 
                         'service'           => $_POST["service"], 
-                        'type de contrat'   => $_POST["type_de_contrat"],
-                        'disponibilite'     => $_POST["disponibilite"], 
+                        'type of contract'  => $_POST["type_de_contrat"],
+                        'availability'      => $_POST["disponibilite"], 
                         'source'            => forms_manip::nameFormat($_POST["source"])
                     ];
 
@@ -196,11 +197,11 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On vérifie l'intégrité des données  
                 try {
-                    if(empty($candidature['poste'])) 
+                    if(empty($application['job'])) 
                         throw new Exception("Le champs poste doit être rempli par une chaine de caractères");
-                    elseif(empty($candidature['disponibilite'])) 
+                    elseif(empty($application['availability'])) 
                         throw new Exception("Le champs disponibilité doit être rempli par une chaine de caractères");
-                    elseif(empty($candidature['source'])) 
+                    elseif(empty($application['source'])) 
                         throw new Exception("Le champs source doit être rempli par une chaine de caractères");
 
                 // On récupère les éventuelles erreurs
@@ -212,13 +213,13 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 }
                 
                 // On récupère le candidat
-                $candidat = $_SESSION['candidat'];
-                $diplomes = isset($_SESSION['diplomes']) && !empty($_SESSION['diplomes']) ? $_SESSION['diplomes'] : null;
-                $aide = isset($_SESSION['aide']) && !empty($_SESSION['aide']) ? $_SESSION['aide'] : null;
+                $candidate = $_SESSION['candidate'];
+                $qualifications = isset($_SESSION['qualifications']) && !empty($_SESSION['diplomes']) ? $_SESSION['diplomes'] : null;
+                $helps = isset($_SESSION['helps']) && !empty($_SESSION['aide']) ? $_SESSION['aide'] : null;
                 $coopteur = isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null; 
 
                 // On génère la candidature
-                $candidatures->createCandidature($candidat, $candidature, $diplomes, $aide, $coopteur);
+                $candidatures->createCandidature($candidate, $application, $qualifications, $helps, $coopteur);
 
                 // Libérer la mémoire !!
                 break;
