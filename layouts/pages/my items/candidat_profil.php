@@ -1,26 +1,28 @@
+<?php define("ETOILE", "layouts/assets/img/etoile.svg"); ?>
+
 <aside>
     <header>
         <div>
-            <h2><?= $item['candidat']['nom']; ?></h2>
-            <?php if(empty($item['candidat']['notation'])) : ?>
+            <h2><?= $item['candidate']['name']; ?></h2>
+            <?php if(empty($item['candidate']['rating'])) : ?>
                 <p>Aucun notation renseignée</p>
             <?php else: ?>    
                 <li class="notation">
-                    <ul class="bille_notation <?php if(0 < $item['candidat']['notation']) echo "active"; ?>"><img src="layouts/assets/img/etoile.svg"></ul>
-                    <ul class="bille_notation <?php if(1 < $item['candidat']['notation']) echo "active"; ?>"><img src="layouts/assets/img/etoile.svg"></ul>
-                    <ul class="bille_notation <?php if(2 < $item['candidat']['notation']) echo "active"; ?>"><img src="layouts/assets/img/etoile.svg"></ul>
-                    <ul class="bille_notation <?php if(3 < $item['candidat']['notation']) echo "active"; ?>"><img src="layouts/assets/img/etoile.svg"></ul>
-                    <ul class="bille_notation <?php if(4 < $item['candidat']['notation']) echo "active"; ?>"><img src="layouts/assets/img/etoile.svg"></ul>
+                    <ul class="bille_notation <?php if(0 < $item['candidate']['rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                    <ul class="bille_notation <?php if(1 < $item['candidate']['rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                    <ul class="bille_notation <?php if(2 < $item['candidate']['rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                    <ul class="bille_notation <?php if(3 < $item['candidate']['rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                    <ul class="bille_notation <?php if(4 < $item['candidate']['rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
                 </li>
             <?php endif ?>  
         </div>
         <div>
-            <h2><?= $item['candidat']['prenom']; ?></h2>
-            <?php if($item['candidat']['a'] || $item['candidat']['b'] || $item['candidat']['c']): ?>
+            <h2><?= $item['candidate']['firstname']; ?></h2>
+            <?php if($item['candidate']['a'] || $item['candidate']['b'] || $item['candidate']['c']): ?>
                 <p>Alerte notation !</p>
             <?php endif ?>
         </div>
-        <h3><?= $item['candidatures'][0]['type_de_contrat']; ?></h3>
+        <h3><?= $item['applications'][0]['type_de_contrat']; ?></h3>
         <p><?= forms_manip::nameFormat($item['candidatures'][0]['statut']); ?></p>  
     </header>
     <section>

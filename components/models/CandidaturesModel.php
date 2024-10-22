@@ -4,8 +4,6 @@ require_once(MODELS.DS.'Model.php');
 require_once(CLASSE.DS.'Moment.php');
 require_once(CLASSE.DS.'Candidate.php');
 
-define("COOPTATION", "Prime de cooptation");
-
 /**
  * The model responsible for processing applications
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
@@ -55,7 +53,7 @@ class CandidaturesModel extends Model {
     }
     /**
      * Public method searching a candidate with his name, his firstnam and his email address or his phone number
-     *
+     * 
      * @param String $name The candidate's name
      * @param String $firstname The candidate's firstname
      * @param String $email The candidate's email
@@ -63,28 +61,13 @@ class CandidaturesModel extends Model {
      * @return The candidate
      */
     public function searchCandidate($name, $firstname, $email=null, $phone=null): ?Array {
-        if($email != null) {
-            $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
-            $params = [
-                ":name" => $name,
-                ":firstname" => $firstname, 
-                ":email" => $email
-            ];
-            $candidate = $this->get_request($request, $params, true);
-
-        } elseif($phone != null) {
-            $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND phone = :phone";
-            $params = [
-                ":name" => $name,
-                ":firstname" => $firstname, 
-                ":phone" => $phone
-            ];
-            $candidate = $this->get_request($request, $params, true);
-
-        } else 
-            throw new Exception("Imposssible d'effectuer la requête sans email ou numéro de téléphone !");
-        
-        return $candidate;
+        $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
+        $params = [
+            ":name" => $name,
+            ":firstname" => $firstname, 
+            ":email" => $email
+        ];
+        return $this->get_request($request, $params, true);
     }
 
     /**
@@ -111,7 +94,7 @@ class CandidaturesModel extends Model {
             
             if(!empty($helps)) {
                 $coopt = 0;
-                $id = $this->searchHelps(COOPTATION)['id'];
+                $id = $this->searchHelps(COOPTATION)['Id'];
                 foreach($helps as $item) 
                     if($item === $id)
                         $coopt++;
@@ -152,7 +135,7 @@ class CandidaturesModel extends Model {
         if(!empty($qualifications)) 
             foreach($qualifications as $item) 
                 $this->inscriptGetQualifications($candidate->getKey(), $this->searchQualifications($item)['id']);
-
+    
         if(!empty($helps)) 
             foreach($helps as $item) 
                 $this->inscriptHaveTheRightTo($candidate->getKey(), $this->searchHelps($item)['id']);
@@ -164,37 +147,46 @@ class CandidaturesModel extends Model {
         );
     }
 
-    /// Méthode publique inscrivant une candidature et les logs
+    /**
+     * Public method registering one application and the logs
+     * 
+     * TODO : Recherche d'un besoin ==> $this->searchNeed($application['needs'])['Id];
+     * 
+     * @param Candidate $candidate The object containing the candidate's data
+     * @param Array $application The array containing the application's data
+     * @return Void
+     */
     public function inscriptCandidature(&$candidate, $application=[]) {
         try {
             if($candidate->getKey() == null) 
-                $candidate->setKey($this->searchCandidate($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail())['Id_Candidats']);           
+                $candidate->setKey($this->searchCandidate($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail())['Id']); 
 
             $request = "INSERT INTO Applications (status, key_candidates, key_jobs, key_types_of_contracts, key_sources";
             $values_request = "VALUES (:status, :candidate, :job, :contract, :source";
             $params = [
                 "status" => 'Non-traitée', 
                 "candidate" => $candidate->getKey(), 
-                "job" => $this->searchPoste($application["job"])['id'], 
-                "contract" => $this->searchTypesOfContracts($application['type of contract'])['id'], 
-                "source" => $this->searchSource($application["source"])['id']
+                "job" => $this->searchJob($application["job"])['Id'], 
+                "contract" => $this->searchTypesOfContracts($application['type of contract'])['Id'], 
+                "source" => $this->searchSource($application["source"])['Id']
             ];
+
             if(isset($application['needs'])) {
                 $request .= ", key_needs";
                 $values_request .= ", :needs";
-                $params["needs"] = $application['needs'];
+                $params["needs"] = $application['needs']; // TODO : Recherche du besoin à réaliser !! // 
             }
             if(isset($application['establishment'])) {
                 $request .= ", key_establishment";
                 $values_request .= ", :establishment";
-                $params["establishment"] = $application['establishment'];
+                $params["establishment"] = $this->searchEstablishment($application['establishment'])['Id'];
             }
             if(isset($application['service'])) {
-                $request .= ", key_service";
+                $request .= ", key_services";
                 $values_request .= ", :service";
-                $params["service"] = $application['service'];
+                $params["service"] = $this->searchService($application['service'])['Id'];
             }
-            $request .= ") " . $values_request;
+            $request .= ")" . $values_request . ")";
             unset($values_request);
         
             $this->post_request($request, $params);

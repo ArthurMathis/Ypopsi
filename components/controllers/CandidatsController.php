@@ -15,11 +15,9 @@ class CandidatController extends Controller {
         $this->View->getContent('Candidats', $items);
     }
     /// Méthode publique affichant la page candidat
-    public function displayCandidat($Cle_Candidat) {
-        // Récupération d'un candidat
-        $item = $this->Model->getContentCandidat($Cle_Candidat);
-        // On retourne lapage du candidat
-        return $this->View->getContentCandidat("Candidat " . $item['candidat']['nom'] . ' ' . $item['candidat']['prenom'], $item);
+    public function displayCandidat($Key_candidate) {
+        $item = $this->Model->getContentCandidate($Key_candidate);
+        return $this->View->getContentCandidat("Candidat " . $item['candidate']['name'] . ' ' . $item['candidate']['firstname'], $item);
     }
 
     /// Méthode publique affichant le formulaire de saisie d'une candidature

@@ -79,24 +79,25 @@ class CandidaturesController extends Controller {
      */
     public function createCandidature(&$candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
         $candidate->setAvailability($application['availability']);
-        if($candidate->getKey() === null) {
-            try {
+        try {
+            if($candidate->getKey() === null) {
                 $search = $this->Model->searchCandidate($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
+                var_dump($search); 
 
                 if(empty($search)) 
                     $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);
                 else 
                     $candidate->setKey($search['Id']);
+            }
+            
+            $this->Model->inscriptCandidature($candidate, $application);
 
-                $this->Model->inscriptCandidature($candidate, $application);
-
-            } catch(Exception $e) {
-                forms_manip::error_alert([
-                    'title' => "Erreur lors de l'inscription de la candidature",
-                    'msg' => $e
-                ]);
-            } 
-        }
+        } catch(Exception $e) {
+            forms_manip::error_alert([
+                'title' => "Erreur lors de l'inscription de la candidature",
+                'msg' => $e
+            ]);
+        } 
         
         alert_manipulation::alert([
             'title' => 'Candidat inscript !',

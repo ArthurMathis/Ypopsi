@@ -4,10 +4,15 @@ require_once('Model.php');
 require_once(CLASSE.DS.'Moment.php');
 require_once(CLASSE.DS.'Contract.php');
 
+
+
 class CandidatsModel extends Model {
-    /// Méthode publique récupérant dans la base de données la liste des candidats
+    /**
+     * Public method returning the liste of candidates 
+     *
+     * @return Void
+     */
     public function getContent() {
-        // On initialise la requête
         $request = "SELECT 
             Id AS Cle,
             Name AS Nom, 
@@ -15,33 +20,31 @@ class CandidatsModel extends Model {
             Email AS Email, 
             City AS Ville, 
             Rating AS Notation
+
             FROM Candidates";
     
-        // On lance la requête
         $temp = $this->get_request($request);
-    
-        // On traite les données
-        if(!empty($temp)) foreach ($temp as &$obj) 
-            if ($obj['Notation'] == null) 
-                $obj['Notation'] = "Aucune notation";  
+
+        if(!empty($temp)) 
+            foreach ($temp as &$obj) 
+                if ($obj['Notation'] == null) 
+                    $obj['Notation'] = "Aucune notation";  
         unset($obj);
-    
-        // On retourne la liste
+
         return $temp;
     }
     /// Méthode publique récupérant les données d'un candidat pour sa mise-à-jour
-    public function getEditCandidatContent($index) {
-        // On vérifie l'intégrité des données
-        if(!is_numeric($index))
+    public function getEditCandidatContent($key_candidate) {
+        if(!is_numeric($key_candidate))
             throw new Exception("L'index n'est pas valide. Veullez saisir un entier !");
 
-        $candidats = $this->getCandidats($index);
-        array_push($candidats, ['diplomes' => $this->getCandidatDiplomes($index)]);
-        array_push($candidats, ['aides' => $this->getCandidatAides($index)]);
+        $candidats = $this->getCandidate($key_candidate);
+        array_push($candidats, ['diplomes' => $this->getCandidatesFromQualifications($key_candidate)]);
+        array_push($candidats, ['aides' => $this->getHelpsFromCandidates($key_candidate)]);
 
         return [
             'candidat' => $candidats,
-            'coopteur' => $this->searchCoopteur($index, 3), // 3 est l'id de la prime de cooptation... Corriger le code
+            'coopteur' => $this->searchCoopter($key_candidate),
             'aide' => $this->getHelps(),
             'diplome' => $this->getQualifications()
         ];
@@ -74,195 +77,205 @@ class CandidatsModel extends Model {
         return $this->get_request($request, $params, true, true);
     }
     /// Méthode publique retournant la fiche profil d'un candidat
-    public function getContentCandidat($index) {
-        // On vérifie l'intégrité des données
-        if(!is_numeric($index))
-            throw new Exception("L'index n'est pas valide. Veullez saisir un entier !");
+    public function getContentCandidate($key_candidate) {
+        $candidate = $this->getCandidate($key_candidate);
+        array_push($candidate, ['qualifications' => $this->getCandidatesFromQualifications($key_candidate)]);
 
-        $candidats = $this->getCandidats($index);
-        array_push($candidats, ['diplomes' => $this->getCandidatDiplomes($index)]);
-
-        $coopteur = $this->searchCoopteur($index, 3);
-        if(!empty($coopteur)) $coopteur = $coopteur['text'];
+        $employee = $this->searchCoopter($key_candidate);
+        if(!empty($employee)) 
+            $employee = $employee['text'];
 
         return [
-            'candidat' => $candidats,
-            'aide' => $this->getCandidatAides($index),
-            'coopteur' => $coopteur, 
-            'candidatures' => $this->getCandidatures($index),
-            'contrats' => $this->getContrats($index),
-            'rendez-vous' => $this->getRendezVous($index)
+            'candidate' => $candidate,
+            'helps' => $this->getHelpsFromCandidates($key_candidate),
+            'employee' => $employee, 
+            'applications' => $this->getApplicationsFromCandidates($key_candidate),
+            'contracts' => $this->getContractsFromcandidates($key_candidate),
+            'meeting' => $this->getMeetingFromCandidates($key_candidate)
         ];
     }
-    /// Méthode privée retournant un candidat selon son Id 
-    public function getCandidats($index) {
-        // On initialise la requête
+    /**
+     * Public method searching and returning one candidate from his primary key
+     *
+     * @param Int $key_candidate The candidte's primary key
+     * @return Array|NULL
+     */
+    public function getCandidate($key_candidate): ?Array {
+        if(empty($key_candidate) || !is_numeric($key_candidate))
+            throw new Exception("Erreur lors de la récupération du candidat.");
+
         $request = "SELECT 
-        Id AS id,
-        Nom AS nom,
-        Prenom AS prenom,
-        Telephone AS telephone,
-        Email AS email, 
-        Adresse AS adresse,
-        Ville AS ville,
-        CodePostal AS code_postal,
-        Disponibilite AS disponibilite,
-        Notations AS notation,
-        Descriptions AS description, 
-        A AS a, 
-        B AS b, 
-        C AS c
+        id,
+        name,
+        firstname,
+        phone,
+        email, 
+        address,
+        city,
+        postcode,
+        availability,
+        rating,
+        description, 
+        a, 
+        b, 
+        c
 
         FROM candidates
-        WHERE c.Id = :cle";
+        WHERE Id = :key";
 
-        $params = [
-            "cle" => $index
-        ];
+        $params = ["key" => $key_candidate];
 
-        // On lance la requête
         return $this->get_request($request, $params)[0];
     }
-    /// Méthode privée retournant la liste des diplômes obetnus par un candidat 
-    private function getCandidatDiplomes($index) {
-        // On initialise la requête
-        $request = "SELECT Intitule_Diplomes
+    /**
+     * Private method that searches and returns a candidate's qualifications based on its primary key
+     *
+     * @param Int $key_qualifications The candidate's primary key
+     * @return Array|NULL
+     */
+    private function getCandidatesFromQualifications($key_qualifications): ?Array {
+        $request = "SELECT 
+        Titled AS Intitule
 
-        FROM candidats AS c
-        INNER JOIN obtenir AS o ON c.Id_candidats = o.Cle_Candidats
-        INNER JOIN diplomes AS d on o.Cle_Diplomes = d.Id_Diplomes
+        FROM candidates AS c
+        INNER JOIN Get_qualifications AS g ON c.Id = g.Key_Candidates
+        INNER JOIN Qualifications AS q on g.Key_Qualifications = q.Id
         
-        WHERE c.Id_Candidats = :cle";
-        $params = ['cle' => $index];
+        WHERE c.Id = :key";
+        $params = ['key' => $key_qualifications];
 
-        // On lance la requête
         return $this->get_request($request, $params);
     }
-    /// Méthode privée retournant la liste des candidatures d'un candidat 
-    private function getCandidatures($index) {
-        // On initialise la requête
+    /**
+     * Private method searching and returning the liste of candidate's applications
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Array
+     */
+    private function getApplicationsFromCandidates($key_candidate): Array {
         $request = "SELECT 
-        Id_Candidatures AS cle,
-        Statut_Candidatures AS statut, 
-        Intitule_Sources AS source, 
-        Intitule_Types_de_contrats AS type_de_contrat,
-        Jour_Instants AS date,
-        Intitule_Postes AS poste,
-        Intitule_Services AS service,
-        Intitule_Etablissements AS etablissement
+        app.Id AS cle,
+        app.Status AS statut, 
+        s.titled AS source, 
+        t.titled AS type_de_contrat,
+        app.moment AS date,
+        j.titled AS poste,
+        serv.titled AS service,
+        e.titled AS etablissement
         
-        FROM candidatures AS c
-        INNER JOIN instants AS i ON c.Cle_Instants = i.Id_Instants
-        INNER JOIN sources AS s ON c.Cle_Sources = s.Id_Sources
-        INNER JOIN postes AS p ON c.Cle_Postes = p.Id_Postes
-        INNER JOIN types_de_contrats AS t ON c.Cle_Types_de_contrats = t.Id_Types_de_contrats
-        LEFT JOIN appliquer_a AS app ON c.Id_candidatures = app.Cle_Candidatures
-        LEFT JOIN services as serv ON app.Cle_Services = serv.Id_Services
-        LEFT JOIN etablissements AS e ON serv.Cle_Etablissements = e.id_Etablissements
+        FROM Applications AS app
+        INNER JOIN Sources AS s ON app.key_sources = s.Id
+        INNER JOIN Jobs AS j ON app.key_jobs = j.Id
+        INNER JOIN Types_of_contracts AS t ON app.Key_Types_of_contracts = t.Id
+        LEFT JOIN Services as serv ON app.Key_Services = serv.Id
+        LEFT JOIN Establishments AS e ON app.Key_Establishments = e.id
 
-        WHERE c.Cle_Candidats = :cle";
-        $params = [
-            'cle' => $index
-        ];
+        WHERE app.Key_Candidates = :cle";
+        $params = ['cle' => $key_candidate];
 
-        // On lance la requête
+        $temp = $this->get_request($request, $params);
+        if(!empty($temp))
+            foreach($temp as $item)
+                $item["date"] = (new DateTime($item["date"]))->format('d/m/Y');
+
+        return $temp;
+    }
+    /**
+     * Private method searching and returning the liste of candidate's contrtacts
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Array|NULL
+     */ 
+    private function getContractsFromcandidates($key_candidate): ?Array {
+        $request = "SELECT 
+        c.Id AS cle,
+        j.titled AS poste,
+        s.titled AS service,
+        e.titled AS etablissement,
+        c.Salary AS salaire,
+        c.HourlyRate AS heures,
+        c.NightWork AS nuit,
+        c.WeekEndWork AS week_end,
+        c.StartDate AS date_debut,
+        c.EndDate AS date_fin,
+        c.ResignationDate AS demission,
+        t.titled AS type_de_contrat,
+        c.PropositionDate AS proposition,
+        c.SignatureDate AS signature 
+
+        FROM Contracts as c
+        INNER JOIN Jobs AS j ON c.Key_Jobs = j.Id
+        INNER JOIN Services AS s ON c.Key_services = s.Id
+        INNER JOIN Establishments AS e ON c.Key_Establishments = e.Id
+        INNER JOIN Types_of_contracts AS t ON c.Key_Types_of_contracts = t.Id
+
+        WHERE c.Key_Candidates = :key";
+        $params = ['key' => $key_candidate];
+
         return $this->get_request($request, $params);
     }
-    /// Méthode privée retournant la liste des contrats d'un candidat 
-    private function getContrats($index) {
-        // On initialise la requête 
+    /**
+     * Private method searching and returning the list of appointments of a candidate
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Array|NULL
+     */
+    private function getMeetingFromCandidates($key_candidate): ?Array {
         $request = "SELECT 
-        Id_Contrats AS cle,
-        Intitule_Postes AS poste,
-        Intitule_Services AS service,
-        Intitule_Etablissements AS etablissement,
-        Salaires_Contrats AS salaire,
-        Nombre_heures_hebdomadaires_Contrats AS heures,
-        Travail_de_nuit_Contrats AS nuit,
-        Travail_week_end_Contrats AS week_end,
-        Date_debut_Contrats AS date_debut,
-        Date_fin_Contrats AS date_fin,
-        Date_demission_Contrats AS demission,
-        Intitule_Types_de_contrats AS type_de_contrat,
-        Jour_Instants AS proposition,
-        Statut_Proposition AS statut,
-        date_signature_Contrats AS signature 
-
-        FROM contrats as c
-        INNER JOIN Missions AS m ON c.Cle_Services = m.Cle_Services AND c.Cle_Postes = m.Cle_Postes
-        INNER JOIN Postes AS p ON c.Cle_Postes = p.Id_Postes
-        INNER JOIN Services AS s ON c.Cle_Services = s.Id_Services
-        INNER JOIN Etablissements AS e ON s.Cle_Etablissements = e.Id_Etablissements
-        INNER JOIN instants AS i ON c.Cle_Instants = i.Id_Instants
-        INNER JOIN Types_de_contrats AS t ON c.Cle_Types_de_contrats = t.Id_Types_de_contrats
-
-        WHERE c.Cle_Candidats = :cle";
-        $params = [
-            'cle' => $index
-        ];
-
-        // On lance la requête
-        return $this->get_request($request, $params);
-    }
-    /// Méthode privée retournant la liste des rendez-vous d'un candidat 
-    private function getRendezVous($index) {
-        // On initialise la requête 
-        $request = "SELECT 
-        Nom_Utilisateurs AS nom,
-        Prenom_Utilisateurs AS prenom,
-        Jour_Instants AS date,
-        Heure_Instants AS heure,
-        Intitule_Etablissements AS etablissement,
-        Compte_rendu_Avoir_rendez_vous_avec AS description,
-
-        Id_Utilisateurs AS cle_utilisateur,
-        Cle_Candidats AS cle_candidat,
-        Id_Instants AS cle_instant
-
-        FROM  avoir_rendez_vous_avec AS rdv
-        INNER JOIN utilisateurs AS u ON rdv.Cle_Utilisateurs = u.Id_Utilisateurs
-        INNER JOIN instants AS i  ON rdv.Cle_Instants = i.Id_Instants
-        INNER JOIN Etablissements AS e ON e.Id_Etablissements = rdv.Cle_Etablissements
-
-        WHERE rdv.Cle_Candidats = :cle";
-        $params = [
-            'cle' => $index
-        ];
-
-        // On lance la requête
+        u.Name AS nom,
+        u.Firstname AS prenom,
+        m.Date AS date,
+        e.Titled AS etablissement,
+        meet.Description AS description
+    
+        FROM  Have_a_meet_with AS meet
+        INNER JOIN Users AS u ON meet.Key_Users = u.Id
+        INNER JOIN Moments AS m ON meet.Key_Moments = m.Id
+        INNER JOIN Establishments AS e ON e.Id = meet.Key_Establishments
+    
+        WHERE meet.Key_Candidates = :key";
+        $params = ['key' => $key_candidate];
+    
         return $this->get_request($request, $params);
     }
 
-    /// Méthode privée retournant la liste des aides au recrutement
-    private function getCandidatAides($index) {
-        // On initialise la requête
+    /**
+     * Private method searching and returning the candidte's helps
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Array|NULL
+     */
+    private function getHelpsFromCandidates($key_candidate): ?Array {
         $request = "SELECT 
-        Intitule_Aides_au_recrutement AS intitule 
+        Titled AS intitule 
 
-        FROM Aides_au_recrutement AS aide
-        INNER JOIN Avoir_droit_a AS avoir ON aide.Id_Aides_au_recrutement = avoir.Cle_Aides_au_recrutement
-        WHERE avoir.Cle_candidats = " . $index;
+        FROM Helps
+        INNER JOIN Have_the_right_to AS have ON helps.Id = have.Key_Helps
+        WHERE have.Key_Candidates = " . $key_candidate;
 
-        // On lance la requête
         $result = $this->get_request($request);
     
-        return empty($result) ? null : $result[0];
+        return empty($this->get_request($request)) ? null : $result[0];
     }
-    private function searchCoopteur($cle_candidat, $cle_prime) {
-        // On initialise la requête
+    /**
+     * Private method searching and returning the employee who advices the candidate
+     *
+     * @param int $key_candidate The candidte's primary key
+     * @return Array|NULL The array containing the employee's data
+     */
+    private function searchCoopter($key_candidate): ?Array {
         $request = "SELECT 
-        CONCAT(c.Nom_Candidats, ' ', c.Prenom_Candidats) AS text
+        CONCAT(c.Name, ' ', c.Firstname) AS text
 
-        FROM Avoir_droit_a AS a
-        INNER JOIN Candidats AS c ON a.Cle_Coopteur = c.Id_Candidats
+        FROM Have_the_right_to AS have
+        INNER JOIN Candidates AS c ON have.Key_Employee = c.Id
         
-        WHERE a.Cle_Candidats = :cle AND a.Cle_Aides_au_recrutement = :prime";
+        WHERE have.Key_Candidates = :key_candidate AND have.Key_Helps = :key_help";
         $params = [
-            'cle' => $cle_candidat,
-            'prime' => $cle_prime
+            'key_candidate' => $key_candidate,
+            'key_help' => $this->searchHelps(COOPTATION)['Id']
         ];
 
-        // On lance la requête
         return $this->get_request($request, $params, true, false);
     }
     public function getTypeContrat($cle_candidature) {
@@ -316,7 +329,7 @@ class CandidatsModel extends Model {
         } catch(Exception $e) {
             forms_manip::error_alert($e);
         }
-           
+
         // On initialise la requête
         $request = "UPDATE Candidatures SET Statut_Candidatures = :statut WHERE Id_Candidatures = :cle";
         $params = [
@@ -403,7 +416,7 @@ class CandidatsModel extends Model {
         // On inscrit la proposition
         $this->inscriptProposer_a($contrat->getCleCandidats(), $contrat->getCleInstants());
         $this->verifyMission($contrat->getCleServices(), $contrat->getClePostes());
-   
+
         // On enregistre le contrat 
         $this->inscriptContrats($contrat->exportToSQL());
         unset($contrat);

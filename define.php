@@ -53,3 +53,5 @@ define('ADMIN', 2);
 define('MOD', 3);
 define('USER', 4);
 define('INVITE', 5);
+
+define("COOPTATION", "Prime de cooptation");

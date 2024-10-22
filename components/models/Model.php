@@ -58,7 +58,7 @@ abstract class Model {
         try {
             $this->inscriptActions(
                 $user_key, 
-                $this->serachTypesOfActions($action)['id'], 
+                $this->serachTypesOfActions($action)['Id'], 
                 $description
             );
 
@@ -309,24 +309,19 @@ abstract class Model {
     /**
      * Public method searching one establishment 
      *
-     * @param Int|String $etablissement The establishment primary key or intitule 
+     * @param Int|String $establishment The establishment primary key or intitule 
      * @return Array
      */
-    protected function searchEtablissement($etablissement): Array {
-        if(is_numeric($etablissement)) 
-            // On initialise la requête
-            $request = "SELECT * FROM Etablissements WHERE Id_Etablissements = :etablissement";
-        
-        elseif(is_string($etablissement)) 
-            // On initialise la requête
-            $request = "SELECT * FROM Etablissements WHERE Intitule_Etablissements = :etablissement";
+    protected function searchEstablishment($establishment): Array {
+        if(is_numeric($establishment)) 
+            $request = "SELECT * FROM Establishments WHERE Id = :establishment";
+        elseif(is_string($establishment)) 
+            $request = "SELECT * FROM Establishments WHERE Titled = :establishment";
+        else 
+            throw new Exception("Type invalide. La clé primaire (int) ou son intitulé (string) sont nécessaires pour rechercher un établissment !");
 
-        // On prépare les paramètres de la requête
-        $params = [
-            'etablissement' => $etablissement
-        ];
-        
-        // On lance la requête
+        $params = ['establishment' => $establishment];
+
         return $this->get_request($request, $params, true, true);
     }
     /**
@@ -392,7 +387,7 @@ abstract class Model {
         elseif(is_string($action))
             $request = "SELECT * FROM Types_of_actions WHERE Titled = :action";
         else 
-            throw new Exception('Type invlide. La clé action (int) ou son intitulé (string) sont nécessaires pour rechercher une action !');   
+            throw new Exception('Type invalide. La clé action (int) ou son intitulé (string) sont nécessaires pour rechercher une action !');   
 
         $params = [ "action" => $action ];
 
@@ -579,22 +574,16 @@ abstract class Model {
      * @return Array
      */
     protected function searchSource($source): Array {
-        // On initialise la requête
-        if(is_numeric($source)) {
-            $request = "SELECT * FROM sources WHERE Id_Sources = :Id";
-            $params = ["Id" => $source];
-
-        } elseif(is_string($source)) {
-            $request = "SELECT * FROM sources WHERE Intitule_Sources = :Intitule";
-            $params = ["Intitule" => $source];
-        } else 
+        if(is_numeric($source)) 
+            $request = "SELECT * FROM sources WHERE Id = :source";
+        elseif(is_string($source)) 
+            $request = "SELECT * FROM sources WHERE Titled = :source";
+        else 
             throw new Exception("La saisie de la source est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
+        
+        $params = ["source" => $source];
 
-        // On lance la requête
-        $result = $this->get_request($request, $params, true, true);
-
-        // On retourne le rôle
-        return $result;
+        return $this->get_request($request, $params, true, true);
     }
     /**
      * Protected method searching one job in the database
@@ -602,19 +591,16 @@ abstract class Model {
      * @param Int|String $job The job primary key or intitule
      * @return Array
      */
-    protected function searchPoste($job): Array {
-        // On initialise la requête
-        if(is_numeric($job)) {
-            $request = "SELECT * FROM Postes WHERE Id_Postes = :Id";
-            $params = ["Id" => $job];
-            
-        } elseif(is_string($job)) {
-            $request = "SELECT * FROM Postes WHERE Intitule_Postes = :Intitule";
-            $params = ["Intitule" => $job];
-        } else 
+    protected function searchJob($job): Array {
+        if(is_numeric($job)) 
+            $request = "SELECT * FROM Jobs WHERE Id = :job";    
+        elseif(is_string($job)) 
+            $request = "SELECT * FROM Jobs WHERE Titled = :job";
+        else 
             throw new Exception("Erreur lors de la recherche de poste. La saisie du poste est mal typée. Il doit être un identifiant (entier positif) ou une chaine de caractères !");
+        
+        $params = ["job" => $job];
 
-        // On lance la requête
         return $this->get_request($request, $params, true, true);
     }
     /**
@@ -624,26 +610,16 @@ abstract class Model {
      * @return Array
      */
     protected function searchService($service): Array {
-        // Si contrat est un ID
-        if(is_numeric($service)) {
-            // On initialise la requête
-            $request = "SELECT * FROM Services WHERE Id_Services = :id";
-            $params = ['id' => $service];
-
-        // Si contrat est un intitulé    
-        } elseif(is_string($service)) {
-            // On initialise la requête
-            $request =  "SELECT * FROM Services WHERE Intitule_Services = :intitule";
-            $params = ['intitule' => $service];
-
-        } else 
+        if(is_numeric($service))
+            $request = "SELECT * FROM Services WHERE Id = :service";
+        elseif(is_string($service))
+            $request =  "SELECT * FROM Services WHERE Titled = :service";
+        else 
             throw new Exception("La saisie du type de contrat est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
-        
-        // On lance la requête
-        $result = $this->get_request($request, $params, true, true);
 
-        // On retourne le résultat
-        return $result;
+        $params = ['service' => $service];
+
+        return $this->get_request($request, $params, true, true);
     }
     /**
      * Protected method searching one assistance in the database
@@ -651,16 +627,16 @@ abstract class Model {
      * @param Int|String $aide The assistance primary key or intitule
      * @return Array
      */
-    protected function searchHelps($aide): Array {
-        if(is_numeric($aide)) {
+    protected function searchHelps($key_helps): Array {
+        if(is_numeric($key_helps)) {
             $request = "SELECT * FROM Helps WHERE Id = :id";
-            $params = ["id" => $aide];
+            $params = ["id" => $key_helps];
 
             $result = $this->get_request($request, $params, true, true);
-  
-        } elseif(is_string($aide)) {
+
+        } elseif(is_string($key_helps)) {
             $request = "SELECT * FROM Helps WHERE titled = :titled";
-            $params = ["titled" => $aide];
+            $params = ["titled" => $key_helps];
 
             $result = $this->get_request($request, $params, true);
 
