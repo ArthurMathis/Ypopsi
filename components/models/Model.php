@@ -58,7 +58,7 @@ abstract class Model {
         try {
             $this->inscriptActions(
                 $user_key, 
-                $this->serachType_of_action($action)['Id'], 
+                $this->serachTypesOfActions($action)['id'], 
                 $description
             );
 
@@ -380,16 +380,17 @@ abstract class Model {
     }
     /**
      * Protected method searching one action type in the database
+     * 
      * @param Int|String $action The type primary key or intitule
      * @return Array
      */
-    protected function serachType_of_action($action): Array {
+    protected function serachTypesOfActions($action): Array {
         if($action == null) 
             throw new Exception("Données éronnées. La clé action ou son intitulé sont nécessaires pour rechercher une action !");
         elseif(is_numeric($action)) 
-            $request = "SELECT * FROM types_of_actions WHERE Id = :action";
+            $request = "SELECT * FROM Types_of_actions WHERE Id = :action";
         elseif(is_string($action))
-            $request = "SELECT * FROM types_of_actions WHERE Titled = :action";
+            $request = "SELECT * FROM Types_of_actions WHERE Titled = :action";
         else 
             throw new Exception('Type invlide. La clé action (int) ou son intitulé (string) sont nécessaires pour rechercher une action !');   
 
@@ -399,6 +400,7 @@ abstract class Model {
     }
     /**
      * Protected method search one user in the database
+     * 
      * @param Int|String $user The user primary key or intitule
      * @return Array
      */ 
@@ -506,83 +508,68 @@ abstract class Model {
     /**
      * Protected method searching one application from his candidate in the database
      *
-     * @param Int $cle_candidat The candidate primary key
+     * @param Int $key_candidate The candidate's primary key
      * @param Int $cle_instant The instant primary key
      * @return Array
      */
-    protected function searchCandidatureFromCandidat($cle_candidat, $cle_instant): Array {
-        // On vérifie l'intégrité des données
-        if(empty($cle_candidat) || empty($cle_instant)) 
-            throw new Exception ('Données éronnées. Pour rechercher une candidatures, lla clé candidat et la clé instant sont nécessaires !');
-        
-        // On initialise la requête
-        $request = "SELECT * FROM candidatures WHERE Cle_Candidats = :candidat AND Cle_Instants = :instant";    
-        $params = [
-            "candidat" => $cle_candidat,
-            "instant" => $cle_instant
-        ];
-
-        // On retourne le résultat
-        return $this->get_request($request, $params, true, true);
-    }
+    // protected function searchApplicationFromCandidate($key_candidate, $cle_instant): Array {
+    //     if(empty($cle_candidat) || empty($cle_instant)) 
+    //         throw new Exception ('Données éronnées. Pour rechercher une candidatures, lla clé candidat et la clé instant sont nécessaires !');
+    //     
+    //     // On initialise la requête
+    //     $request = "SELECT * FROM candidatures WHERE Cle_Candidats = :candidat AND Cle_Instants = :instant";    
+    //     $params = [
+    //         "candidat" => $cle_candidat,
+    //         "instant" => $cle_instant
+    //     ];
+    // 
+    //     // On retourne le résultat
+    //     return $this->get_request($request, $params, true, true);
+    // }
     /**
      * Protected method searching one degree in the database 
      *
      * @param Int|String $diplome The degree primary key or intitule
      * @return Array
      */
-    protected function searchDiplome($diplome): Array {
-        // Si diplome est un ID
-        if(is_numeric($diplome)) {
-            // On initialise la requête
-            $request = "SELECT * FROM diplomes WHERE Id_Diplomes = :id";
-            $params = ["id" => $diplome];
+    protected function searchQualifications($qualification): Array {
+        if(is_numeric($qualification)) {
+            $request = "SELECT * FROM qualifications WHERE id = :id";
+            $params = ["id" => $qualification];
 
-            // On lance la requête
             $result = $this->get_request($request, $params, true, true);
 
-        // SI diplome est un intitule    
-        } elseif(is_string($diplome)) {
-            // On initialise la requête 
-            $request = "SELECT * FROM diplomes WHERE Intitule_Diplomes = :intitule";
-            $params = ["intitule" => $diplome];
+        } elseif(is_string($qualification)) {
+            $request = "SELECT * FROM qualifications WHERE id = :intitule";
+            $params = ["intitule" => $qualification];
 
-            // On lance la requête
             $result = $this->get_request($request, $params, true);
 
-        // En cas d'erreur de typage
         } else 
             throw new Exception("La saisie du diplome est mal typée. Il doit être un identifiant (entier positif) ou un echaine de caractères !");        
-        
-        // On retourne le résultat
+
         return $result;
     }
     /**
      * Protected method searching one type of contracts in the database 
      *
-     * @param Int|String $contrat The types of contracts primary key or intitule
-     * @return Array
+     * @param Int|String $contract The types of contracts primary key or intitule
+     * @return Array The array of Type of contract information
      */
-    protected function searchTypeContrat($contrat): Array {
-        // Si contrat est un ID
-        if(is_numeric($contrat)) {
-            // On initialise la requête
-            $request = "SELECT * FROM Types_de_contrats WHERE Id_Types_de_contrats = :id";
-            $params = ['id' => $contrat];
+    protected function searchTypesOfContracts($contract): Array {
+        if(is_numeric($contract)) {
+            $request = "SELECT * FROM Types_of_contracts WHERE Id = :id";
+            $params = ['id' => $contract];
 
-        // Si contrat est un intitulé    
-        } elseif(is_string($contrat)) {
-            // On initialise la requête
-            $request =  "SELECT * FROM Types_de_contrats WHERE Intitule_Types_de_contrats = :intitule";
-            $params = ['intitule' => $contrat];
+        } elseif(is_string($contract)) {
+            $request =  "SELECT * FROM Types_of_contracts WHERE titled = :titled";
+            $params = ['titled' => $contract];
 
         } else 
             throw new Exception("La saisie du type de contrat est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
         
-        // On lance la requête
         $result = $this->get_request($request, $params, true, true);
 
-        // On retourne le résultat
         return $result;
     }
     /**
@@ -665,14 +652,12 @@ abstract class Model {
      * @return Array
      */
     protected function searchHelps($aide): Array {
-        // Si aide est un ID
         if(is_numeric($aide)) {
             $request = "SELECT * FROM Helps WHERE Id = :id";
             $params = ["id" => $aide];
 
             $result = $this->get_request($request, $params, true, true);
-        
-        // Si aide est un intitule    
+  
         } elseif(is_string($aide)) {
             $request = "SELECT * FROM Helps WHERE titled = :titled";
             $params = ["titled" => $aide];
@@ -797,40 +782,37 @@ abstract class Model {
     /**
      * Protected method registering one candidate ine the database
      *
-     * @param Candidat $candidat The candidate's data 
+     * @param Candidatz $candidate The candidate's data 
      * @return Void
      */
-    protected function inscriptCandidat(&$candidat) {
-        // On initialise la requête
-        if($candidat->getVisite_medicale()) 
-            $request = "INSERT INTO Candidats (Nom_Candidats, Prenom_Candidats, Telephone_Candidats, Email_Candidats, 
-                Adresse_Candidats, Ville_Candidats, CodePostal_Candidats, Disponibilite_Candidats, VisiteMedicale_Candidats)
-                VALUES (:nom, :prenom, :telephone, :email, :adresse, :ville, :code_postal, :disponibilite, :visite)";
+    protected function inscriptCandidat(&$candidate) {
+        $request = "INSERT INTO Candidates (Name, Firstname, Phone, Email, Address, City, PostCode, Availability";
+        $values_request = " VALUES (:name, :firstname, :phone, :email, :address, :city, :post_code, :availability";
 
-        else 
-            $request = "INSERT INTO Candidats (Nom_Candidats, Prenom_Candidats, Telephone_Candidats, Email_Candidats, 
-                Adresse_Candidats, Ville_Candidats, CodePostal_Candidats, Disponibilite_Candidats)
-                VALUES (:nom, :prenom, :telephone, :email, :adresse, :ville, :code_postal, :disponibilite)";
+        if($candidate->getMedicalVisit()) {
+            $request .= " , MedicalVisit";
+            $values_request .= ", :visite";
+        }
 
-        // On lance  requête
-        $this->post_request($request, $candidat->exportToSQL());
+        $request .= ")" . $values_request . ")";
+        unset($values_request);
+
+        $this->post_request($request, $candidate->exportToSQL());
     }
     /**
-     * Protected method registering one Obtenir in the database
+     * Protected method registering one Get_qualfications in the database
      *
      * @param Int $cle_candidat The candidate's primary key
      * @param Int $cle_diplome The degree primary key
      * @return Void
      */
-    protected function inscriptObtenir($cle_candidat, $cle_diplome) {
-        // On initialise la requête
-        $request = "INSERT INTO obtenir (Cle_Candidats, Cle_Diplomes) VALUES (:candidat, :diplome)";
+    protected function inscriptGetQualifications($key_candidate, $key_qualification) {
+        $request = "INSERT INTO Get_qualifications (Key_Candidates, Key_Qualifications) VALUES (:key_candidate, :key_qualification)";
         $params = [
-            "candidat" => $cle_candidat, 
-            "diplome" => $cle_diplome
+            "key_candidate" => $key_candidate, 
+            "key_qualification" => $key_qualification
         ];
 
-        // On lance la requête
         $this->post_request($request, $params);
     }
     /**
@@ -881,33 +863,47 @@ abstract class Model {
         $this->post_request($request, $params);
     }
     /**
-     * Protected method registering one Avoir_droit_a in the database
+     * Protected method registering one Have_the_right_to in the database
      *
      * @param Int $cle_candidat The candidate's primary key
      * @param Int $cle_aide The assistance primary key
      * @param Int $cle_coopteur The recommander's primary key
      * @return Void
      */
-    protected function inscriptAvoir_droit_a($cle_candidat, $cle_aide, $cle_coopteur=null) {
-        if(!empty($cle_coopteur)) {
-            // On initialise la requête
-            $request = "INSERT INTO Avoir_droit_a (Cle_Candidats, Cle_Aides_au_recrutement, Cle_Coopteur) VALUES (:candidat, :aide, :coopteur)";
-            $params = [
-                'candidat' => $cle_candidat,
-                'aide' => $cle_aide,
-                'coopteur' => $cle_coopteur
-            ];
+    protected function inscriptHaveTheRightTo($key_candidate, $key_helps, $key_employee=null) {
+        $request = "INSERT INTO Have_the_right_to (Key_Candidates, Key_Helps";
+        $values_request = " VALUES (:key_candidate, :key_helps";
+        $params = [
+            'key_candidate' => $key_candidate,
+            'key_helps' => $key_helps
+        ];
 
-        } else {
-            // On initialise la requête
-            $request = "INSERT INTO Avoir_droit_a (Cle_Candidats, Cle_Aides_au_recrutement) VALUES (:candidat, :aide)";
-            $params = [
-                'candidat' => $cle_candidat,
-                'aide' => $cle_aide
-            ];
+        if(!empty($cle_coopteur)) {
+            $request .= ", Cle_Coopteur";
+            $values_request .= ", :key_employee";
+            $params['key_employee'] = $key_employee;
         }
+
+        $request .= ")" . $values_request . ")";
+        unset($values_request);
+
+
+        // if(!empty($cle_coopteur)) {
+        //     $request = "INSERT INTO Have_the_right_to (Key_Candidates, Key_Helps, Cle_Coopteur) VALUES (:key_candidate, :key_helps, :key_employee)";
+        //     $params = [
+        //         'key_candidate' => $key_candidate,
+        //         'key_helps' => $key_helps,
+        //         'key_employee' => $key_employee
+        //     ];
+        // 
+        // } else {
+        //     $request = "INSERT INTO Have_the_right_to (Key_Candidates, Key_Helps) VALUES (:key_candidate, :key_helps)";
+        //     $params = [
+        //         'key_candidate' => $key_candidate,
+        //         'key_helps' => $key_helps
+        //     ];
+        // }
         
-        // On lance la requête
         $this->post_request($request, $params);
     }
     /**

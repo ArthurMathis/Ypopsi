@@ -131,9 +131,11 @@ CREATE TABLE Helps (
 CREATE TABLE Have_the_right_to (
   Key_Candidates INTEGER NOT NULL,
   Key_Helps INTEGER NOT NULL,
+  Key_Employee INTEGER DEFAULT NULL,
 
   FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id),
   FOREIGN KEY (Key_Helps) REFERENCES Helps(Id),
+  FOREIGN KEY (Key_Employee) REFERENCES Candidates(Id),
 
   PRIMARY KEY (Key_Candidates, Key_Helps)
 );

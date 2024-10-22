@@ -136,15 +136,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null;
                     $medical_visit  = isset($_POST["visite_medicale"][0]) ? $_POST["visite_medicale"][0] : null;
 
-                } catch(Exception $e) {
-                    forms_manip::error_alert([
-                        'title' => "Erreur lors de l'inscription du candidat",
-                        'msg' => $e
-                    ]);
-                }
-
-                // On vérifie l'intégrité des données
-                try {    
                     if(empty($candidate['name'])) {
                         throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
                     } elseif(empty($candidate['firstname'])) {
@@ -158,15 +149,14 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     } elseif(empty($candidate['post code'])) {
                         throw new Exception("Le champs code postal doit être rempli par une chaine de caractères !");
                     }
-                
-                // On récupère les éventuelles erreurs    
+
                 } catch(Exception $e) {
                     forms_manip::error_alert([
                         'title' => "Erreur lors de l'inscription du candidat",
                         'msg' => $e
                     ]);
                 }
-                // On génère le candidat        
+
                 $candidatures->checkCandidat($candidate, $qualifications, $helps, $medical_visit, $coopteur);
                 break;
 
@@ -175,10 +165,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
-                    
-                // On récupère les données du formulaire
                 try { 
-                    // On récupère le contenu des champs
                     $application = [
                         'job'               => forms_manip::nameFormat($_POST["poste"]), 
                         'service'           => $_POST["service"], 
@@ -187,41 +174,28 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'source'            => forms_manip::nameFormat($_POST["source"])
                     ];
 
-                // On récupère les éventuelles erreurs    
-                } catch(Exception $e) {
-                    forms_manip::error_alert([
-                        'title' => "Erreur lors de l'inscription de la candidature",
-                        'msg' => $e
-                    ]);
-                }
-
-                // On vérifie l'intégrité des données  
-                try {
                     if(empty($application['job'])) 
                         throw new Exception("Le champs poste doit être rempli par une chaine de caractères");
                     elseif(empty($application['availability'])) 
                         throw new Exception("Le champs disponibilité doit être rempli par une chaine de caractères");
                     elseif(empty($application['source'])) 
                         throw new Exception("Le champs source doit être rempli par une chaine de caractères");
-
-                // On récupère les éventuelles erreurs
-                }  catch(Exception $e) {
+    
+                } catch(Exception $e) {
                     forms_manip::error_alert([
                         'title' => "Erreur lors de l'inscription de la candidature",
                         'msg' => $e
                     ]);
                 }
                 
-                // On récupère le candidat
                 $candidate = $_SESSION['candidate'];
                 $qualifications = isset($_SESSION['qualifications']) && !empty($_SESSION['diplomes']) ? $_SESSION['diplomes'] : null;
                 $helps = isset($_SESSION['helps']) && !empty($_SESSION['aide']) ? $_SESSION['aide'] : null;
                 $coopteur = isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null; 
 
-                // On génère la candidature
                 $candidatures->createCandidature($candidate, $application, $qualifications, $helps, $coopteur);
 
-                // Libérer la mémoire !!
+                // Libérer la mémoire !! //
                 break;
         
             // On renvoie à la page d'accueil    

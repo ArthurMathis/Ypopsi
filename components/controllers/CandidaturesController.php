@@ -36,9 +36,9 @@ class CandidaturesController extends Controller {
      *
      * @param Array $candidate The new candidate's data array
      * @param Array $qualifications The new candidate's qualifications array
-     * @param Array $helps The new candidate's elps array
+     * @param Array $helps The new candidate's helps array
      * @param Date $medical_visit The expiration date of the new candidate's medical examination
-     * @param Int $coopteur The employee co-opting the new candidate
+     * @param String $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
      * @return Void
      */
     public function checkCandidat(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) {
@@ -57,7 +57,7 @@ class CandidaturesController extends Controller {
                 $search['city'],
                 $search['postcode']
             );
-            $candidate->setKey($search['Id']);
+            $candidate->setKey($search['id']);
             
         } catch(InvalideCandidateExceptions $e) {
             forms_manip::error_alert($e->getMessage());
@@ -67,33 +67,41 @@ class CandidaturesController extends Controller {
 
         header('Location: index.php?candidatures=saisie-candidature');
     }
-
-    public function createCandidature($candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
+    /**
+     * Public method generating and registering a new application
+     *
+     * @param Candidate $candidate The object containing the candidate's data
+     * @param Array $application The array containing the application's data
+     * @param Array $qualifications The array containing the candidate's qualifications
+     * @param Array $helps The new candidate's helps array
+     * @param String $coopteur The employee's name who advises the new candidate 
+     * @return Void
+     */
+    public function createCandidature(&$candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
         $candidate->setAvailability($application['availability']);
         if($candidate->getKey() === null) {
             try {
                 $search = $this->Model->searchCandidate($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
+
+                if(empty($search)) 
+                    $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);
+                else 
+                    $candidate->setKey($search['Id']);
+
+                $this->Model->inscriptCandidature($candidate, $application);
 
             } catch(Exception $e) {
                 forms_manip::error_alert([
                     'title' => "Erreur lors de l'inscription de la candidature",
                     'msg' => $e
                 ]);
-            }
-            
-            if(empty($search)) {
-                $this->Model->createCandidat($candidate, $qualifications, $helps, $coopteur);
-
-            } else 
-                $candidate->setKey($search['Id']);
+            } 
         }
-
-        $this->Model->inscriptCandidature($candidate, $application);
         
         alert_manipulation::alert([
             'title' => 'Candidat inscript !',
-            'msg' => strtoupper($candidate->getNom()) . " " . forms_manip::nameFormat($candidate->getPrenom()) . " a bien été inscrit(e).",
-            'direction' => "index.php?candidats=" . $candidate->getCle()
+            'msg' => strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname()) . " a bien été inscrit(e).",
+            'direction' => "index.php?candidats=" . $candidate->getKey()
         ]);
     }
 }
