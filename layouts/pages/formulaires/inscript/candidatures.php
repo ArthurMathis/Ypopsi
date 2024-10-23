@@ -1,4 +1,4 @@
-<form class="small-form" method="post" action="index.php?candidatures=inscription-candidature">
+<form class="small-form" method="post" action="index.php?candidatures=inscript-application">
     <h3>Saisissez les informations de la candidature</h3>
     <section>
         <p>Emploi</p>

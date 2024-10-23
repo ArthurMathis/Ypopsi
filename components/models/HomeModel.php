@@ -59,31 +59,44 @@ class HomeModel extends Model {
     /**
      * Public method searching the metting list
      *
-     * @return void
+     * @return Array|NULL
      */
     public function getReductRendezVous(): ?Array {
-        // On initialise la requête
         $request = "SELECT 
         c.Name AS Nom, 
         c.Firstname AS Prenom,
-        m.Date as Moment
+        DATE_FORMAT(meet.Date, '%d/%m/%Y') AS Jour,
+        DATE_FORMAT(meet.Date, '%H:%i') AS Heure
         
-        FROM Have_a_meet_with AS meet
+        FROM Meetings AS meet
         INNER JOIN Candidates AS c ON meet.Key_Candidates = c.Id
-        INNER JOIN Moments AS m ON meet.Key_Moments = m.Id
         
         WHERE meet.Key_Users = :cle";
         $params = ['cle' => $_SESSION['user_key']];
 
-        // On lance la requête
-        $arr = $this->get_request($request, $params);
-
-        if(!empty($arr))
-            foreach ($arr as &$row) {
-                $row["Jour"] = date('d/m/Y', strtotime($row["Moment"]));
-                $row["Heure"] = date('H:i', strtotime($row["Moment"]));
-                unset($row["Moment"]);
-        }
-        return $arr;
+        return $this->get_request($request, $params);
     }
+    // public function getReductRendezVous(): ?Array {
+    //     $request = "SELECT 
+    //     c.Name AS Nom, 
+    //     c.Firstname AS Prenom,
+    //     meet.Date as Moment
+    //     
+    //     FROM Meetings AS meet
+    //     INNER JOIN Candidates AS c ON meet.Key_Candidates = c.Id
+    //     
+    //     WHERE meet.Key_Users = :cle";
+    //     $params = ['cle' => $_SESSION['user_key']];
+    // 
+    //     // On lance la requête
+    //     $arr = $this->get_request($request, $params);
+    // 
+    //     if(!empty($arr))
+    //         foreach ($arr as &$row) {
+    //             $row["Jour"] = date('d/m/Y', strtotime($row["Moment"]));
+    //             $row["Heure"] = date('H:i', strtotime($row["Moment"]));
+    //             unset($row["Moment"]);
+    //     }
+    //     return $arr;
+    // }
 }

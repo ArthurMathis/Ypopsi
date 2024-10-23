@@ -181,7 +181,7 @@ class CandidatsView extends View {
 
         if($compt === 0)
             echo "<h2>Aucun contrat enregistré</h2>";
-        $link = 'index.php?candidats=saisie-contrats&cle_candidat=' . $key_candidate;
+        $link = 'index.php?candidates=saisie-contrats&cle_candidat=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }
@@ -200,7 +200,7 @@ class CandidatsView extends View {
         else 
             echo "<h2>Aucune proposition enregistrée </h2>"; 
         
-        $link = 'index.php?candidats=saisie-propositions&cle_candidat=' . $key_candidate;
+        $link = 'index.php?candidates=saisie-propositions&cle_candidat=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }
@@ -217,7 +217,7 @@ class CandidatsView extends View {
             $this->getApplicationsBubble($obj);
         else echo "<h2>Aucune candidature enregistrée </h2>";
         
-        $link = 'index.php?candidats=saisie-candidatures&cle_candidat=' . $key_candidate;
+        $link = 'index.php?candidates=saisie-candidatures&cle_candidat=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php');  
         echo "</section>";
     }
@@ -230,11 +230,13 @@ class CandidatsView extends View {
      */
     protected function getMeetingsBoard(&$meetings, &$key_candidate) {
         echo '<section class="onglet">';
-        if(!empty($meetings)) foreach($meetings as $obj)
-            $this->getMeetingsBubble($obj);
-        else echo "<h2>Aucun rendez-vous enregistré </h2>"; 
+        if(!empty($meetings)) 
+            foreach($meetings as $obj)
+                $this->getMeetingsBubble($obj);
+        else 
+            echo "<h2>Aucun rendez-vous enregistré </h2>"; 
         
-        $link = 'index.php?candidats=saisie-rendez-vous&cle_candidat=' . $key_candidate;
+        $link = 'index.php?candidates=input-meeting&key_candidate=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }
@@ -382,24 +384,26 @@ class CandidatsView extends View {
         // On ajoute le pied de page
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant le formulaire d'ajout d'un contrat
-    public function GetContentRendezVous($title, $cle_candidat, $utilisateur=[], $etablissement=[]) {
-        // On ajoute l'entete de page
+    /**
+     * Public method returning the meeting's HTML form
+     *
+     * @param String $title The HTML page's title
+     * @param Int $key_candidate The candidate's primary key
+     * @param String $user_establishment The user's establishment
+     * @param Array $users
+     * @param Array $establisments
+     * @return Void
+     */
+    public function GetContentMeeting($title, $key_candidate, $user_establishment, $users=[], $establisments=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-
-        // On ajoute la barre de navigation
         $this->generateMenu(true);
 
-        $scripts = [
-            'models/objects/AutoComplet.js'
-        ];
+        $scripts = ['models/objects/AutoComplet.js'];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'rendez-vous.php';
+        include INSCRIPT_FORM.DS.'meeting.php';
         include FORMULAIRES.DS.'waves.php';
 
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
 

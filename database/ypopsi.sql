@@ -224,20 +224,16 @@ CREATE TABLE Applications (
 );
 
 -- Rendez-vous --
-CREATE TABLE Moments (
+CREATE TABLE Meetings (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-CREATE TABLE Have_a_meet_with (
+  Date TIMESTAMP NOT NULL,
   Description TEXT DEFAULT NULL, 
 
   Key_Users INTEGER NOT NULL,
   Key_Candidates INTEGER NOT NULL,
   Key_Establishments INTEGER NOT NULL,
-  Key_Moments INTEGER NOT NULL,
 
   FOREIGN KEY (Key_Users) REFERENCES Users(Id),
   FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id),
-  FOREIGN KEY (Key_Establishments) REFERENCES Establishments(Id),
-  FOREIGN KEY (Key_Moments) REFERENCES Moments(Id)
+  FOREIGN KEY (Key_Establishments) REFERENCES Establishments(Id)
 );

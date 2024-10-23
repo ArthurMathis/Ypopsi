@@ -140,9 +140,9 @@ abstract class Model {
      *
      * @param String  $request The SQL request
      * @param Array<String>  $params The request data Array
-     * @return Boolean
+     * @return Bool
      */
-    protected function post_request(&$request, $params): Bool {
+    protected function post_request(&$request, $params=[]): Bool {
         $res = true;
     
         if(!$this->test_data_request($request, $params)) 
@@ -166,13 +166,10 @@ abstract class Model {
     /**
      * Public method returning the users list to autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getAutoCompletUtilisateurs() {
-        // On initialise la requête
-        $request = "SELECT Identifiant_Utilisateurs FROM Utilisateurs ORDER BY Identifiant_Utilisateurs";
-
-        // On lance la requête
+    public function getAutoCompUsers(): Array {
+        $request = "SELECT CONCAT(Name, ' ', Firstname) as name FROM Users ORDER BY name";
         return $this->get_request($request, [], false, true);
     }
     /**
@@ -180,11 +177,8 @@ abstract class Model {
      *
      * @return Void
      */
-    public function getAutoCompletEtablissements() {
-        // On initialise la requête
+    public function getAutoCompEstablishments() {
         $request = "SELECT titled FROM Establishments ORDER BY titled";
-
-        // On lance la requête
         return $this->get_request($request, [], false, true);
     }
     /**
@@ -193,7 +187,6 @@ abstract class Model {
      * @return Void
      */
     public function getEmployee() {
-        // On initialise la requête
         $request = "SELECT 
         CONCAT(c.Name, ' ', c.Firstname) AS text
 
@@ -202,8 +195,7 @@ abstract class Model {
 
         WHERE con.SignatureDate IS NOT NULL
         AND (con.EndDate IS NULL OR con.EndDate > CURDATE())";
-    
-        // On lance la requête
+
         return $this->get_request($request, []);
     }
     /**
@@ -212,14 +204,7 @@ abstract class Model {
      * @return Void
      */
     public function getHelps() {
-        // On inititalise la requête
-        $request = "SELECT 
-        Id AS id,
-        Titled AS text
-
-        FROM Helps";
-        
-        // On lance la requête
+        $request = "SELECT Id AS id, Titled AS text FROM Helps";
         return $this->get_request($request, [], false, true);
     }
     /**
@@ -228,13 +213,7 @@ abstract class Model {
      * @return Void
      */
     public function getQualifications() {
-        // On initialise la requête
-        $request = "SELECT
-        Titled AS text
-        
-        FROM Qualifications";
-
-        // On lance la requête
+        $request = "SELECT Titled AS text FROM Qualifications";
         return $this->get_request($request, [], false, true);
     }
     /**
@@ -243,10 +222,7 @@ abstract class Model {
      * @return Void
      */
     public function getAutoCompJobs() {
-        // On inititalise la requête
         $request = "SELECT titled FROM jobs ORDER BY titled";
-        
-        // On lance la requête
         return $this->get_request($request, [], false, true);
     }
     /**
@@ -312,7 +288,7 @@ abstract class Model {
      * @param Int|String $establishment The establishment primary key or intitule 
      * @return Array
      */
-    protected function searchEstablishment($establishment): Array {
+    public function searchEstablishment($establishment): Array {
         if(is_numeric($establishment)) 
             $request = "SELECT * FROM Establishments WHERE Id = :establishment";
         elseif(is_string($establishment)) 
@@ -396,55 +372,24 @@ abstract class Model {
     /**
      * Protected method search one user in the database
      * 
-     * @param Int|String $user The user primary key or intitule
+     * @param Int|String $user The user's primary key or identifier
      * @return Array
      */ 
     protected function searchUser($user): Array {
         if($user == null)
             throw new Exception("Le nom ou l'identifiant de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
 
-        // On recherche l'Utilisateur via sont identifiant    
-        elseif(is_numeric($user)) {
-            // On initialise la requêre
-            $request = "SELECT * FROM Utilisateurs WHERE Id_Utilisateurs = :user";
-            $params = [
-                'user' => $user
-            ];
-    
-            // On lance la requête
+        $params = ['user' => $user];
+        if(is_numeric($user)) {
+            $request = "SELECT * FROM Users WHERE Id = :user";
             return $this->get_request($request, $params, true, true);
 
-        // On recherche l'utilisateur via son nom      
         } elseif(is_string($user)) {
-            // On initialise la requête 
-            $request = "SELECT * FROM Utilisateurs WHERE Nom_Utilisateurs = :user";
-            $params = [
-                'user' => $user
-            ];
+            $request = "SELECT * FROM Users WHERE Identifier = :user";
+            return $this->get_request($request, $params, true, true);
 
-            // On lance la requête
-            return $this->get_request($request, $params, false, true);
-
-        // Sinon    
         } else 
             throw new Exception("Le type n'a pas pu être reconnu. Le nom (string) ou l'identifiant (int) de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
-    }
-    /**
-     * Protected method searching one user according to his name
-     *
-     * @param String $user The user name
-     * @return Array
-     */
-    protected function searchUserFromUsername($user): Array {
-        if(empty($user) || !is_string($user))
-            throw new Exception("Erreur lors de la récupération du nom d'utilisateur");
-
-        // On initialise la requête 
-        $request = "SELECT * FROM Utilisateurs WHERE Identifiant_Utilisateurs = :user";
-        $params = ['user' => $user];
-
-        // On lance la requête
-        return $this->get_request($request, $params, false, true)[0];
     }
     /**
      * Protected method searching one application in the database
@@ -452,15 +397,45 @@ abstract class Model {
      * @param Int $application The application primary key
      * @return Array
      */
-    protected function searchCandidature($application): Array {
-        // On initialise la requête
-        $request = "SELECT * FROM Candidatures WHERE Id_candidatures = :cle";
-        $params = ['cle' => $application];
+    protected function searchApplication($application): Array {
+        $request = "SELECT * FROM Candidatures WHERE Id = :application";
+        $params = ['application' => $application];
 
-        // On lance la requête
         return $this->get_request($request, $params, true, true);
     }
-    /// Méthode publique recherchant un candidat dans la base de données depuis une de ses candidatures
+    /**
+     * Public method searching and returning one candidate from his primary key
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Array
+     */
+    public function searchCandidate($key_candidate): Array {
+        if(empty($key_candidate) || !is_numeric($key_candidate))
+            throw new Exception("Impossible de rechercher un candidat sans sa clé primaire !");
+
+        $request = "SELECT * FROM Candidates WHERE Id = :candidate";
+        $params = ['candidate' => $key_candidate];
+
+        return $this->get_request($request, $params, true, true);
+    }
+    /**
+     * Public method searching a candidate with his name, his firstnam and his email address or his phone number
+     * 
+     * @param String $name The candidate's name
+     * @param String $firstname The candidate's firstname
+     * @param String $email The candidate's email
+     * @param String $phone The candidate's phone number
+     * @return The candidate
+     */
+    public function searchCandidateByName($name, $firstname, $email): ?Array {
+        $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
+        $params = [
+            ":name" => $name,
+            ":firstname" => $firstname, 
+            ":email" => $email
+        ];
+        return $this->get_request($request, $params, true);
+    }
     /**
      * Public method searching one candidate from one of his application in the database
      *
@@ -500,27 +475,6 @@ abstract class Model {
         // On lance la requête
         return $this->get_request($request, $params, true, true);
     }
-    /**
-     * Protected method searching one application from his candidate in the database
-     *
-     * @param Int $key_candidate The candidate's primary key
-     * @param Int $cle_instant The instant primary key
-     * @return Array
-     */
-    // protected function searchApplicationFromCandidate($key_candidate, $cle_instant): Array {
-    //     if(empty($cle_candidat) || empty($cle_instant)) 
-    //         throw new Exception ('Données éronnées. Pour rechercher une candidatures, lla clé candidat et la clé instant sont nécessaires !');
-    //     
-    //     // On initialise la requête
-    //     $request = "SELECT * FROM candidatures WHERE Cle_Candidats = :candidat AND Cle_Instants = :instant";    
-    //     $params = [
-    //         "candidat" => $cle_candidat,
-    //         "instant" => $cle_instant
-    //     ];
-    // 
-    //     // On retourne le résultat
-    //     return $this->get_request($request, $params, true, true);
-    // }
     /**
      * Protected method searching one degree in the database 
      *
@@ -761,7 +715,7 @@ abstract class Model {
      * @param Candidatz $candidate The candidate's data 
      * @return Void
      */
-    protected function inscriptCandidat(&$candidate) {
+    protected function inscriptCandidate(&$candidate) {
         $request = "INSERT INTO Candidates (Name, Firstname, Phone, Email, Address, City, PostCode, Availability";
         $values_request = " VALUES (:name, :firstname, :phone, :email, :address, :city, :post_code, :availability";
 
@@ -862,23 +816,6 @@ abstract class Model {
 
         $request .= ")" . $values_request . ")";
         unset($values_request);
-
-
-        // if(!empty($cle_coopteur)) {
-        //     $request = "INSERT INTO Have_the_right_to (Key_Candidates, Key_Helps, Cle_Coopteur) VALUES (:key_candidate, :key_helps, :key_employee)";
-        //     $params = [
-        //         'key_candidate' => $key_candidate,
-        //         'key_helps' => $key_helps,
-        //         'key_employee' => $key_employee
-        //     ];
-        // 
-        // } else {
-        //     $request = "INSERT INTO Have_the_right_to (Key_Candidates, Key_Helps) VALUES (:key_candidate, :key_helps)";
-        //     $params = [
-        //         'key_candidate' => $key_candidate,
-        //         'key_helps' => $key_helps
-        //     ];
-        // }
         
         $this->post_request($request, $params);
     }
@@ -890,56 +827,46 @@ abstract class Model {
      * @return Void
      */
     protected function inscriptProposer_a($cle_candidat, $cle_instant) {
-        // On initialise la requête
         $request = "INSERT INTO Proposer_a (Cle_candidats, Cle_Instants) VALUES (:candidat, :instant)";
         $params = [
             'candidat' => $cle_candidat,
             'instant' => $cle_instant
         ];
 
-        // On lance la requête
-        $this->post_request($request, $params);
-    }
-    /**
-     * Protected method registering one mission in the database
-     *
-     * @param Int $cle_service The sevice primary key
-     * @param Int $cle_poste The job primary key
-     * @return Void
-     */
-    protected function inscriptMission($cle_service, $cle_poste) {
-        // On intitialise la requête 
-        $request = "INSERT INTO Missions (Cle_Services, Cle_Postes) VALUES (:cle_service, :cle_poste)";
-        $params = [
-            "cle_service" => $cle_service,
-            "cle_poste" => $cle_poste
-        ];
-
-        // On lance la requête
         $this->post_request($request, $params);
     }
     /**
      * Protected method registering one meeting in the database 
      *
-     * @param Int $cle_utilisateur The user's primary key (recruiter) 
-     * @param Int $cle_candidat The candidate's primary key
-     * @param Int $cle_etablissement The establishment primary key
-     * @param Int $cle_instants The instant primary key
+     * @param Int $key_user The user's primary key (recruiter) 
+     * @param Int $key_candidate The candidate's primary key
+     * @param Int $key_establishment The establishment primary key
+     * @param Int $moment The meeting's moment 
      * @return Void
      */
-    protected function inscriptAvoir_rendez_vous_avec($cle_utilisateur, $cle_candidat, $cle_etablissement, $cle_instants) {
-        // On intitialise la requête 
-        $request = "INSERT INTO Avoir_rendez_vous_avec (Cle_Utilisateurs, Cle_Candidats, Cle_Etablissements, Cle_Instants) VALUES (:cle_utilisateurs, :cle_candidats, :cle_etablissements, :cle_instants)";
+    protected function inscriptMeetings($key_user, $key_candidate, $key_establishment, $moment) {
+        $request = "INSERT INTO Meetings (Date, Key_Users, Key_Candidates, Key_Establishments) VALUES (:moment, :key_user, :key_candidate, :key_establishment)";
+        
         $params = [
-            ":cle_utilisateurs" => $cle_utilisateur, 
-            ":cle_candidats" => $cle_candidat, 
-            ":cle_etablissements" => $cle_etablissement, 
-            ":cle_instants" => $cle_instants
+            "moment" => date('Y-m-d H:i:s', $moment),
+            "key_user" => $key_user,
+            "key_candidate" => $key_candidate,
+            "key_establishment" => $key_establishment
         ];
-
-        // On lance la requête
+    
         $this->post_request($request, $params);
     }
+    // protected function inscriptMeetings($key_user, $key_candidate, $key_establishment, $moment) {
+    //     $request = "INSERT INTO Meetings (Key_Users, Key_Candidates, Key_Establishments, Date) VALUES (:key_user, :key_candidate, :key_establishment, :moment)";
+    //     $params = [
+    //         ":key_user" => $key_user, 
+    //         ":key_candidate" => $key_candidate, 
+    //         ":key_establishment" => $key_establishment, 
+    //         ":moment" => $moment
+    //     ];
+    // 
+    //     $this->post_request($request, $params);
+    // }
     /**
      * Protected method registering one job in the database
      *
@@ -948,14 +875,12 @@ abstract class Model {
      * @return Void
      */
     protected function inscriptPoste(&$poste, &$description) {
-        // On initialise la requête
         $request = "INSERT INTO Postes (Intitule_Postes, Description_Postes) VALUES (:poste, :description)";
         $params = [
             "poste" => $poste,
             "description" => $description
         ];
 
-        // On lance la requête
         $this->post_request($request, $params);
     }
     /**
@@ -1140,7 +1065,7 @@ abstract class Model {
         SET Cle_utilisateurs = :user, Cle_Etablissements = :etablissement
         WHERE Cle_Candidats = :candidat AND Cle_utilisateurs = :utilisateur AND Cle_Instants = :instant";
         $params = [
-            'user' => $this->searchUserFromUsername($rdv['recruteur'])['Id_Utilisateurs'],
+            'user' => $this->searchUser($rdv['recruteur'])['Id_Utilisateurs'],
             'etablissement' => $this->searchEtablissement($rdv['etablissement'])['Id_Etablissements'],
             'candidat' => $cle_candidat,
             'utilisateur' => $cle_utilisateur,

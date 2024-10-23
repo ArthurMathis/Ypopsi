@@ -52,6 +52,8 @@ class CandidaturesModel extends Model {
         );
     }
     /**
+     * ! méthode déplacée dans Model.php
+     * 
      * Public method searching a candidate with his name, his firstnam and his email address or his phone number
      * 
      * @param String $name The candidate's name
@@ -60,15 +62,15 @@ class CandidaturesModel extends Model {
      * @param String $phone The candidate's phone number
      * @return The candidate
      */
-    public function searchCandidate($name, $firstname, $email=null, $phone=null): ?Array {
-        $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
-        $params = [
-            ":name" => $name,
-            ":firstname" => $firstname, 
-            ":email" => $email
-        ];
-        return $this->get_request($request, $params, true);
-    }
+    // public function searchCandidate($name, $firstname, $email=null, $phone=null): ?Array {
+    //     $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
+    //     $params = [
+    //         ":name" => $name,
+    //         ":firstname" => $firstname, 
+    //         ":email" => $email
+    //     ];
+    //     return $this->get_request($request, $params, true);
+    // }
 
     /**
      * Public method that checks if input data is honest before saving it to the database
@@ -130,7 +132,7 @@ class CandidaturesModel extends Model {
      * @return Void
      */
     public function createCandidate(&$candidate, $qualifications=[], $helps=[], $coopteur=null) {
-        $this->inscriptCandidat($candidate);
+        $this->inscriptCandidate($candidate);
 
         if(!empty($qualifications)) 
             foreach($qualifications as $item) 
@@ -158,8 +160,8 @@ class CandidaturesModel extends Model {
      */
     public function inscriptCandidature(&$candidate, $application=[]) {
         try {
-            if($candidate->getKey() == null) 
-                $candidate->setKey($this->searchCandidate($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail())['Id']); 
+            if($candidate->getKey() === null) 
+                $candidate->setKey($this->searchCandidateByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail())['Id']); 
 
             $request = "INSERT INTO Applications (status, key_candidates, key_jobs, key_types_of_contracts, key_sources";
             $values_request = "VALUES (:status, :candidate, :job, :contract, :source";

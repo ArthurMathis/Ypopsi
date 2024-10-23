@@ -20,12 +20,13 @@ class LoginModel extends Model {
         $user = $this->verifyUser($identifiant, $motdepasse);
         
         $_SESSION['user_key']           = $user->getKey();
-        $_SESSION['user_identifiant']   = $user->getIdentifier();
-        $_SESSION['user_name']           = $user->getName();
-        $_SESSION['user_firstname']        = $user->getFirstname();
+        $_SESSION['user_identifier']    = $user->getIdentifier();
+        $_SESSION['user_name']          = $user->getName();
+        $_SESSION['user_firstname']     = $user->getFirstname();
         $_SESSION['user_email']         = $user->getEmail();
         $_SESSION['user_role']          = $user->getRole();
         $_SESSION['first_log_in']       = $user->getFirstLog();
+        $_SESSION['key_establishment']  = $user->getEstablishment();
 
         $this->writeLogs($_SESSION['user_key'], "Connexion");
     }
@@ -56,25 +57,19 @@ class LoginModel extends Model {
      * 
      * @param String $identifier The user's id (ex: name.f)
      * @param String $password The user's password
-     * @return Utilisateurs|null The user, if the informations are corrects and null,  if they aren't
+     * @return Utilisateurs|NULL The user, if the informations are corrects and null,  if they aren't
      */
     private function verifyUser($identifier, $password): ?User{
         $request = "SELECT * FROM Users WHERE Identifier = :identifier";
         $params = [":identifier" => $identifier];
         $users = $this->get_request($request, $params, false, true);
 
-        // On déclare les variables tampons
         $i = 0;
         $size = $users != null ? count($users) : 0;    
         $find = false;  
-
-        // On fait défiler la table
         while($i < $size && !$find) {
             if($users[$i]["Identifier"] == $identifier && password_verify($password, $users[$i]["Password"])) {
-                // On implémente find
                 $find = true;
-
-                // On construit notre Utilisateur
                 try {
                     $user = new User(
                         $users[$i]['Identifier'], 
@@ -89,7 +84,6 @@ class LoginModel extends Model {
                     if($users[$i]['PasswordTemp'])
                         $user->setFirstLog();
 
-                // On récupère les éventuelles erreurs 
                 } catch(InvalideUtilisateurExceptions $e) {
                     forms_manip::error_alert([
                         'title' => "Erreur d'identification",
@@ -97,13 +91,11 @@ class LoginModel extends Model {
                     ]);
                 }
 
-                // On retourne notre utilisateur, la connexion est validée
                 return $user;
             } 
-            // On implémnte l'index
             $i++;
         }
-        // Utilisateur introuvé, on signale l'erreur
+
         if($i == $size) 
             throw new Exception("Identifiant ou mot de passe incorrect !");
     }

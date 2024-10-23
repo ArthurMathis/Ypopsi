@@ -3,13 +3,19 @@
 require_once('Controller.php');
 
 class CandidatController extends Controller {
-    /// Constructeur de la classe
+    /**
+     * Class' constructor
+     */
     public function __construct() {
         $this->loadModel('CandidatsModel');
         $this->loadView('CandidatsView');
     }
 
-    /// Méthode publique affichant la liste des candidats inscrits dans la base de données
+    /**
+     * Public method generating the candidates' main page
+     *
+     * @return Void
+     */
     public function displayContent() {
         $items = $this->Model->getContent();
         $this->View->getContent('Candidats', $items);
@@ -64,13 +70,19 @@ class CandidatController extends Controller {
             $this->Model->getAutoCompTypesContrat()
         );
     }
-    /// Méthode publique affichant le formulaire de saisie d'un rendez-cous
-    public function getSaisieRendezVous($cle_candidat) {
-        return $this->View->GetContentRendezVous(
-            "Nouveau rendez-vous", 
-            $cle_candidat, 
-            $this->Model->getAutoCompletUtilisateurs(),
-            $this->Model->getAutoCompletEtablissements()
+    /**
+     * Public method returning the html form of inputing a meeting
+     *
+     * @param Int $key_candidate The candidate's primary ket
+     * @return View HTML page
+     */
+    public function getInputMeeting($key_candidate) {
+        return $this->View->GetContentMeeting(
+            "Nouveau rendez-vous",
+            $key_candidate,
+            $this->Model->searchEstablishment($_SESSION['key_establishment'])['Titled'], 
+            $this->Model->getAutoCompUsers(),
+            $this->Model->getAutoCompEstablishments()
         );
     }
     /// Méthode publique affichant le formulaire d'édition d'une notation
@@ -106,7 +118,7 @@ class CandidatController extends Controller {
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'La candidature a été rejettée',
-            'direction' => 'index.php?candidats=' . $this->Model->searchCandidatFromCandidature($cle)['Id_Candidats']
+            'direction' => 'index.php?candidates=' . $this->Model->searchCandidatFromCandidature($cle)['Id_Candidats']
         ]);
     }
 
@@ -117,7 +129,7 @@ class CandidatController extends Controller {
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'La proposition a été acceptée',
-            'direction' => 'index.php?candidats=' . $this->Model->searchcandidatFromContrat($cle)['Id_Candidats']
+            'direction' => 'index.php?candidates=' . $this->Model->searchcandidatFromContrat($cle)['Id_Candidats']
         ]);
     }
     /// Méthode publique donnant le statut refusée à une candidature
@@ -127,7 +139,7 @@ class CandidatController extends Controller {
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'La proposition a été rejettée',
-            'direction' => 'index.php?candidats=' . $this->Model->searchcandidatFromContrat($cle)['Id_Candidats']
+            'direction' => 'index.php?candidates=' . $this->Model->searchcandidatFromContrat($cle)['Id_Candidats']
         ]);
     }
     /// Méthode publique ajoutant une demissione à un contrat
@@ -136,7 +148,7 @@ class CandidatController extends Controller {
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'Le candidat a démissioné de son contrat',
-            'direction' => 'index.php?candidats=' . $this->Model->searchcandidatFromContrat($cle)['Id_Candidats']
+            'direction' => 'index.php?candidates=' . $this->Model->searchcandidatFromContrat($cle)['Id_Candidats']
         ]);
     }
 
@@ -147,7 +159,7 @@ class CandidatController extends Controller {
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'Le proposition a été générée',
-            'direction' => 'index.php?candidats=' . $cle
+            'direction' => 'index.php?candidates=' . $cle
         ]);
     }
     /// Méthode publique préparant les données d'une candidature pour la génération d'une porposition d'embauche 
@@ -178,15 +190,22 @@ class CandidatController extends Controller {
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'Le contrat a été générée',
-            'direction' => 'index.php?candidats=' . $cle_candidat
+            'direction' => 'index.php?candidates=' . $cle_candidat
         ]);
     }
-    public function createRendezVous($cle_candidat, &$rendezvous=[]) {
-        $this->Model->createRendezVous($cle_candidat, $rendezvous);
+    /**
+     * Public method generating a new meeting
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $meeting The array containing the meeting's data
+     * @return Void
+     */
+    public function createMeeting($key_candidate, &$meeting=[]) {
+        $this->Model->createMeeting($key_candidate, $meeting);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'Le rendez-vous a été générée',
-            'direction' => 'index.php?candidats=' . $cle_candidat
+            'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }
 
@@ -194,11 +213,11 @@ class CandidatController extends Controller {
     public function updateNotation($cle_candidat, &$notation=[]) {
         $this->Model->updateNotation($cle_candidat, $notation);
         $this->Model->updateNotationLogs($cle_candidat);
-        // header('Location: index.php?candidats=' . $cle_candidat);
+        // header('Location: index.php?candidates=' . $cle_candidat);
         alert_manipulation::alert([
             'title' => "Candidat mise-à-jour",
             'msg' => "Vous avez mis-à-jour la notation du candidat",
-            'direction' => 'index.php?candidats=' . $cle_candidat
+            'direction' => 'index.php?candidates=' . $cle_candidat
         ]);
     }
     /// Méthode publique mettant à jour le profil d'un candidat
@@ -213,7 +232,7 @@ class CandidatController extends Controller {
         alert_manipulation::alert([
             'title' => "Candidat mise-à-jour",
             'msg' => "Vous avez mis-à-jour les données personnelles du candidat",
-            'direction' => 'index.php?candidats=' . $cle_candidat
+            'direction' => 'index.php?candidates=' . $cle_candidat
         ]);
     }
     /// Méthode publique mettant à jour un rendez-vous
@@ -228,7 +247,7 @@ class CandidatController extends Controller {
         alert_manipulation::alert([
             'title' => "Rendez-vous mise-à-jour",
             'msg' => "Vous avez mis-à-jour le rendez-vous du candidat",
-            'direction' => 'index.php?candidats=' . $cle_candidat
+            'direction' => 'index.php?candidates=' . $cle_candidat
         ]);
     }
 
@@ -238,7 +257,7 @@ class CandidatController extends Controller {
         alert_manipulation::alert([
             'title' => "Rendez-vous annulé",
             'msg' => "Vous avez annulé le rendez-vous du candidat",
-            'direction' => 'index.php?candidats=' . $cle_candidat
+            'direction' => 'index.php?candidates=' . $cle_candidat
         ]);
     }
 }

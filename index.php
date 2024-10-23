@@ -113,7 +113,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 break;
 
             // On inscrit un nouveau candidat    
-            case 'inscription-candidat' : 
+            case 'inscript-candidate' : 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
@@ -161,7 +161,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 break;
 
             // On inscrit une nouvelle candidature
-            case 'inscription-candidature' :
+            case 'inscript-application' :
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
@@ -195,7 +195,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 $candidatures->createCandidature($candidate, $application, $qualifications, $helps, $coopteur);
 
-                // Libérer la mémoire !! //
+                // TODO : !! Libérer la mémoire !!
                 break;
         
             // On renvoie à la page d'accueil    
@@ -211,20 +211,16 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
     }
 
 
-} elseif(isset($_GET['candidats'])) {
-    // On déclare le controller de candidats
-    $candidats = new CandidatController();
+} elseif(isset($_GET['candidates'])) {
+    $candidates = new CandidatController();
 
-    // On vérifie s'il s'agit d'une clé de candidat
-    if(is_numeric($_GET['candidats'])) 
-        $candidats->displayCandidat($_GET['candidats']);
+    if(is_numeric($_GET['candidates'])) 
+        $candidates->displayCandidat($_GET['candidates']);
 
-    // Sinon, on sélectionne l'action
     else try { 
-        switch($_GET['candidats']) {
-            // On affiche la liste des candidats
+        switch($_GET['candidates']) {
             case 'home':
-                $candidats->displayContent();
+                $candidates->displayContent();
                 break;
 
             // On retourne le formulaire d'ajout d'une candidature    
@@ -234,7 +230,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On vérifie la présence de la clé candidat
                 if(isset($_GET['cle_candidat']) && is_numeric($_GET['cle_candidat']))
-                    $candidats->getSaisieCandidature($_GET['cle_candidat']);
+                    $candidates->getSaisieCandidature($_GET['cle_candidat']);
                 // On signale l'erreur    
                 else 
                     throw new Exception("La clé candidat n'a pas pu être réceptionnée");
@@ -247,7 +243,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On vérifie la présence de la clé candidat
                 if(isset($_GET['cle_candidat']) && is_numeric($_GET['cle_candidat']))
-                    $candidats->getSaisieProposition($_GET['cle_candidat']);
+                    $candidates->getSaisieProposition($_GET['cle_candidat']);
                 // On signale l'erreur  
                 else 
                     throw new Exception("La clé candidat n'a pas pu être réceptionnée");
@@ -260,7 +256,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On vérifie la présence de la clé candidat
                 if(isset($_GET['cle_candidat']) && is_numeric($_GET['cle_candidat']))
-                    $candidats->getSaisieContrats($_GET['cle_candidat']);
+                    $candidates->getSaisieContrats($_GET['cle_candidat']);
                 // On signale l'erreur 
                 else 
                     throw new Exception("La clé candidat n'a pas pu être récupérée !");
@@ -273,7 +269,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On vérifie la présence de la clé candidature
                 if(isset($_GET['cle_candidature']) && is_numeric($_GET['cle_candidature']))
-                    $candidats->getSaisiePropositionFromCandidature($_GET['cle_candidature']);
+                    $candidates->getSaisiePropositionFromCandidature($_GET['cle_candidature']);
                 // On signale l'erreur 
                 else 
                     throw new Exception("La clé n'a pas pu être détectée !");
@@ -286,21 +282,19 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On vérifie la présence de la clé candidature
                 if(isset($_GET['cle_candidature']) && is_numeric($_GET['cle_candidature']))
-                    $candidats->getSaisiePropositionFromEmptyCandidature($_GET['cle_candidature']);
+                    $candidates->getSaisiePropositionFromEmptyCandidature($_GET['cle_candidature']);
                 // On signale l'erreur
                 else 
                     throw new Exception("La clé n'a pas pu être détectée !");
                 break;    
 
-            // On affiche le formulaire d'ajout de rendez-vous    
-            case 'saisie-rendez-vous':
+            // Returning the html form of inputing a meeting
+            case 'input-meeting':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
-                // On vérifie la présence
-                if(isset($_GET['cle_candidat']))
-                    $candidats->getSaisieRendezVous($_GET['cle_candidat']);
-                // On signale 
+                if(isset($_GET['key_candidate']))
+                    $candidates->getInputMeeting($_GET['key_candidate']);
                 else 
                     throw new Exception("La clé candidat n'a pas pu être récupérée !");
                 break;    
@@ -361,7 +355,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 try {
                     // On test la présence de la clé candidat    
                     if(isset($_GET['cle_candidat'])) 
-                        $candidats->createProposition($_GET['cle_candidat'], $infos);
+                        $candidates->createProposition($_GET['cle_candidat'], $infos);
                     // On signale l'erreur
                     else 
                         throw new Exception("Clé candidat introuvable !");
@@ -415,7 +409,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 // On test la présence de la clé candidature
                 if(isset($_GET['cle_candidature'])) 
                     // On récupère la clé candidature    
-                    $candidats->createPropositionFromCandidature($_GET['cle_candidature'], $infos);
+                    $candidates->createPropositionFromCandidature($_GET['cle_candidature'], $infos);
                 // On signale l'erreur
                 else 
                     throw new Exception("Clé candidat introuvable !");
@@ -461,7 +455,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On test la présence de la clé candidature
                 if(isset($_GET['cle_candidature'])) 
-                    $candidats->createPropositionFromEmptyCandidature($_GET['cle_candidature'], $infos);
+                    $candidates->createPropositionFromEmptyCandidature($_GET['cle_candidature'], $infos);
                 // On signale l'erreur
                 else 
                     throw new Exception("Clé candidat introuvable !");
@@ -474,7 +468,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On test la présence de la clé candidature
                 if(isset($_GET['cle_candidature']) && !empty($_GET['cle_candidature']))
-                    $candidats->rejectCandidature($_GET['cle_candidature']);
+                    $candidates->rejectCandidature($_GET['cle_candidature']);
                 // On signale l'erreur
                 else 
                     throw new Exception("Clé de candidature est introuvable !");
@@ -487,7 +481,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On test la présence de la clé contrat
                 if(isset($_GET['cle_proposition']))
-                    $candidats->rejectProposition($_GET['cle_proposition']);
+                    $candidates->rejectProposition($_GET['cle_proposition']);
                 // On signale l'erreur
                 else 
                     throw new Exception("Clé de proposition est introuvable !");
@@ -539,7 +533,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On test la présence de la clé candidat    
                 if(isset($_GET['cle_candidat']))
-                    $candidats->createContrat($_GET['cle_candidat'], $infos);
+                    $candidates->createContrat($_GET['cle_candidat'], $infos);
                 // On signale l'erreur
                 else 
                     throw new Exception("La clé candidat est inrouvale !");
@@ -552,47 +546,42 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On test la présence de la clé contrat
                 if(isset($_GET['cle_proposition']))
-                    $candidats->acceptProposition($_GET['cle_proposition']);
+                    $candidates->acceptProposition($_GET['cle_proposition']);
                 // On signale l'erreur
                 else 
                     throw new Exception("La clé de contrat est introuvable !");
                 break; 
 
             // On construit un rendez-vous    
-            case 'inscript-rendez-vous':
+            case 'inscript-meeting':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
-                // On récupère le formulaire
-                $infos = [
-                    'recruteur' => $_POST['recruteur'],
-                    'etablissement' => $_POST['etablissement'],
-                    'date' => $_POST['date'],
-                    'time' => $_POST['time']
-                ];
-
-                // On vérifie l'intégrité des données
                 try {
-                    if(empty($infos['recruteur']))
+                    $data = [
+                        'recruteur' => $_POST['recruteur'],
+                        'etablissement' => $_POST['etablissement'],
+                        'date' => $_POST['date'],
+                        'time' => $_POST['time']
+                    ];
+
+                    if(empty($data['recruteur']))
                         throw new Exception("Le champs recruteur doit être rempli !");
-                    elseif(empty($infos['etablissement']))
+                    elseif(empty($data['etablissement']))
                         throw new Exception("Le champs etablissement doit être rempli !");
-                    elseif(empty($infos['date']))
+                    elseif(empty($data['date']))
                         throw new Exception("Le champs date doit être rempli !");
-                    elseif(empty($infos['time']))
+                    elseif(empty($data['time']))
                         throw new Exception("Le champs horaire doit être rempli !");
 
-                // On récupère les éventuelles erreurs        
                 } catch(Exception $e) {
                     forms_manip::error_alert([
                         'msg' => $e
                     ]);
                 }
 
-                // On test la présence de la clé candidat
-                if(isset($_GET['cle_candidat']))
-                    $candidats->createRendezVous($_GET['cle_candidat'], $infos);
-                // On signale l'erreur
+                if(isset($_GET['key_candidate']))
+                    $candidates->createMeeting($_GET['key_candidate'], $data);
                 else 
                     throw new Exception("La clé candidat est introuvale !");
 
@@ -605,7 +594,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On test la présence de la clé contrat
                 if(isset($_GET['cle_contrat']))
-                    $candidats->demissioneContrat($_GET['cle_contrat']);
+                    $candidates->demissioneContrat($_GET['cle_contrat']);
                 // On sigale l'erreur
                 else 
                     throw new Exception("La clé de contrat est introuvable !");
@@ -618,7 +607,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On test la présence de la clé candidat
                 if(isset($_GET['cle_candidat']))
-                    $candidats->getEditNotation($_GET['cle_candidat']);
+                    $candidates->getEditNotation($_GET['cle_candidat']);
                 // On signale l'erreur
                 else 
                     throw new Exception("La clé candidat est introuvable !");
@@ -630,14 +619,14 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On test la présence de la clé candidat
                 if(isset($_GET['cle_candidat']))
-                    $candidats->getEditCandidat($_GET['cle_candidat']);
+                    $candidates->getEditCandidat($_GET['cle_candidat']);
                 // On signale l'erreur
                 else 
                     throw new Exception("La clé candidat est introuvable !");
                 break; 
                 
             // On affiche le formulaire de mise-à-jour d'un rendez-vous 
-            case 'edit-rendez-vous':
+            case 'edit-meeting':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
@@ -657,7 +646,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     ]);
                 }
 
-                $candidats->getEditRensezVous($_GET['cle_candidat'], $_GET['cle_utilisateur'], $_GET['cle_instant']);
+                $candidates->getEditRensezVous($_GET['cle_candidat'], $_GET['cle_utilisateur'], $_GET['cle_instant']);
                 break;    
             
             // On met-à-jour la notation d'un candidat
@@ -685,7 +674,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On tets la présence de la clé candidat
                 if(isset($_GET['cle_candidat']))
-                    $candidats->updateNotation($_GET['cle_candidat'], $notation);
+                    $candidates->updateNotation($_GET['cle_candidat'], $notation);
                 // On signale l'erreur
                 else 
                     throw new Exception("La clé candidat est introuvable !");
@@ -721,7 +710,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On test la présence de la clé candidat
                 if(isset($_GET['cle_candidat']) && !empty($_GET['cle_candidat']) && is_numeric($_GET['cle_candidat']))
-                    $candidats->updateCandidat($_GET['cle_candidat'], $candidat);
+                    $candidates->updateCandidat($_GET['cle_candidat'], $candidat);
                 // On signale l'erreur
                 else 
                     throw new Exception("Impossible de modifier la notation du candidat, clé candidat est introuvable !");
@@ -782,11 +771,11 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     ]);
                 }
 
-                $candidats->updateRendezVous($_GET['cle_candidat'], $_GET['cle_utilisateur'], $_GET['cle_instant'], $rdv);
+                $candidates->updateRendezVous($_GET['cle_candidat'], $_GET['cle_utilisateur'], $_GET['cle_instant'], $rdv);
                 break;
                 
             // On annule un rendez-vous    
-            case 'delete-rendez-vous': 
+            case 'delete-meeting': 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
@@ -808,10 +797,9 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 }
 
                 // On annule le rendez-vous
-                $candidats->annulationRendezVous($_GET['cle_candidat'], $_GET['cle_utilisateur'], $_GET['cle_instant']);
+                $candidates->annulationRendezVous($_GET['cle_candidat'], $_GET['cle_utilisateur'], $_GET['cle_instant']);
                 break;    
-            
-            // L'action n'a pas pu être identifiée    
+
             default: 
                 throw new Exception("L'action n'a pas pu être identifiée !");
         } 

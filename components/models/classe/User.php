@@ -73,22 +73,13 @@ class User {
      * @throws InvalideUtilisateurExceptions If the user's data is invalid
      */
     public function __construct($identifier, $name, $firstname, $email, $password, $establishment, $role) {
-        // try{
-            $this->setIdentifier($identifier);
-            $this->setName($name);
-            $this->setFirstname($firstname);
-            $this->setEmail($email);
-            $this->setPassword($password);
-            $this->setEstablishment($establishment);
-            $this->setRole($role);
-
-        // On récupère les éventuelles erreurs
-        // } catch(InvalideUtilisateurExceptions $e){
-        //     forms_manip::error_alert([
-        //         'title' => "Une erreur est survenue",
-        //         'msg' => $e->getMessage()
-        //     ]);
-        // }
+        $this->setIdentifier($identifier);
+        $this->setName($name);
+        $this->setFirstname($firstname);
+        $this->setEmail($email);
+        $this->setPassword($password);
+        $this->setEstablishment($establishment);
+        $this->setRole($role);
     }
 
     /**
@@ -97,37 +88,44 @@ class User {
      */
     public function getKey(): ?int { return $this->key; }
     /**
-     *  Public methog returning the user's identifier
+     * Public methog returning the user's identifier
+     * 
      * @return String
      */
     public function getIdentifier(): string { return $this->identifier; }
     /**
-     *  Public methog returning the user's name
+     * Public methog returning the user's name
+     * 
      * @return String
      */
     public function getName(): string { return $this->name; }
     /**
-     *  Public methog returning the user's firstname
+     * Public methog returning the user's firstname
+     * 
      * @return String
      */
     public function getFirstname(): string { return $this->firstname; }
     /**
-     *  Public methog returning the user's email
+     * Public methog returning the user's email
+     * 
      * @return String
      */
     public function getEmail(): string { return $this->email; }
     /**
-     *  Public methog returning the user's password
+     * Public methog returning the user's password
+     * 
      * @return String
      */
     public function getPassword(): string { return $this->password; }
     /**
-     *  Public methog returning the user's establishment
+     * Public methog returning the user's establishment
+     * 
      * @return Int
      */
     public function getEstablishment(): int { return $this->establishment; }
     /**
-     *  Public methog returning the user's role
+     * Public methog returning the user's role
+     * 
      * @return Interger
      */
     public function getRole(): int { return $this->role; }

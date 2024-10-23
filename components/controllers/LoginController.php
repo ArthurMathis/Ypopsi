@@ -50,6 +50,5 @@ class LoginController extends Controller {
             'msg' => 'A bientot !',
             'direction' => 'index.php'
         ]);
-        // header('Location: index.php');
     }
 }

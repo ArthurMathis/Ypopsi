@@ -4,11 +4,19 @@ require_once('Controller.php');
 require_once(CLASSE.DS.'Candidate.php');
 
 class CandidaturesController extends Controller {
+    /**
+     * Class' constructor
+     */
     public function __construct() {
         $this->loadModel('CandidaturesModel');
         $this->loadView('CandidaturesView');
     }
 
+    /**
+     * Public method generating the applications' main page
+     *
+     * @return Void
+     */
     public function dispayCandidatures() {
         $items = $this->Model->getCandidatures();
         return $this->View->getContent("Candidatures", $items);
@@ -81,7 +89,7 @@ class CandidaturesController extends Controller {
         $candidate->setAvailability($application['availability']);
         try {
             if($candidate->getKey() === null) {
-                $search = $this->Model->searchCandidate($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
+                $search = $this->Model->searchCandidateByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
                 var_dump($search); 
 
                 if(empty($search)) 
@@ -102,7 +110,7 @@ class CandidaturesController extends Controller {
         alert_manipulation::alert([
             'title' => 'Candidat inscript !',
             'msg' => strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname()) . " a bien été inscrit(e).",
-            'direction' => "index.php?candidats=" . $candidate->getKey()
+            'direction' => "index.php?candidates=" . $candidate->getKey()
         ]);
     }
 }

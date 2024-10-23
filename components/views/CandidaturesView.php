@@ -14,7 +14,7 @@ class CandidaturesView extends View {
         $this->generateMenu();
         include BARRES.DS.'candidatures.php';
 
-        $this->getListesItems($titre, $items, $nb_items_max, 'main-liste');
+        $this->getListItems($titre, $items, $nb_items_max, 'main-liste');
 
 
         // On importe les scripts JavaScript

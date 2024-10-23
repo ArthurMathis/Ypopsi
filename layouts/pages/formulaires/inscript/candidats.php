@@ -1,4 +1,4 @@
-<form class="big-form" method="post" action="index.php?candidatures=inscription-candidat">
+<form class="big-form" method="post" action="index.php?candidatures=inscript-candidate">
     <div class="form-container">
         <h3>Saisissez les informations du candidat</h3>
         <section>

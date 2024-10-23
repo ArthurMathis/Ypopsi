@@ -213,17 +213,19 @@ class CandidatsModel extends Model {
      */
     private function getMeetingFromCandidates($key_candidate): ?Array {
         $request = "SELECT 
+        meet.Id AS key_meeting,
         u.Name AS nom,
         u.Firstname AS prenom,
-        m.Date AS date,
+        DATE(meet.Date) AS date,
+        DATE_FORMAT(meet.Date, '%H:%i') AS heure,
         e.Titled AS etablissement,
         meet.Description AS description
-    
-        FROM  Have_a_meet_with AS meet
+
+        FROM  Meetings AS meet
         INNER JOIN Users AS u ON meet.Key_Users = u.Id
-        INNER JOIN Moments AS m ON meet.Key_Moments = m.Id
+        INNER JOIN Candidates AS c ON meet.Key_Candidates = c.Id
         INNER JOIN Establishments AS e ON e.Id = meet.Key_Establishments
-    
+
         WHERE meet.Key_Candidates = :key";
         $params = ['key' => $key_candidate];
     
@@ -496,38 +498,31 @@ class CandidatsModel extends Model {
             "Nouveau contrat de " . strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats']) . " au poste de " . $poste['Intitule_Postes']
         );
     }
-    public function createRendezVous($cle_candidat, &$rendezvous=[]) {
-        try {
-            // On génère l'instant
-            $rendezvous['instant'] = $this->inscriptInstants($rendezvous['date'], $rendezvous['time'])['Id_Instants'];
+    /**
+     * Public method generating a new meeting
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $meeting The array containing the meeting's data
+     * @return Void
+     */
+    public function createMeeting($key_candidate, &$meeting=[]) {
+        $this->inscriptMeetings(
+            $this->searchUser($meeting['recruteur'])['Id'], 
+            $key_candidate, 
+            $this->searchEstablishment($meeting['etablissement'])['Id'], 
+            (new DateTime($meeting['date'] . ' ' . $meeting['time'], new DateTimeZone('Europe/Paris')))->getTimestamp()
+        );
 
-            // On récupère l'établissement
-            $rendezvous['cle etablissement'] = $this->searchEtablissement($rendezvous['etablissement'])['Id_Etablissements'];
-
-            // On récupère la clé de l'utilisateur
-            $rendezvous['recruteur'] = $rendezvous['recruteur'] == $_SESSION['user_identifiant'] ? $_SESSION['user_key'] : $this->searchUserFromUsername($rendezvous['recruteur'])['Id_Utilisateurs'];
-
-        // On récupère les éventuelles erreurs    
-        } catch(Exception $e) {
-            forms_manip::error_alert([
-                'title' => "Erreur lors de l'inscription du rendez-vous",
-                'msg' => $e
-            ]);
-        }
-
-        $this->inscriptAvoir_rendez_vous_avec($rendezvous['recruteur'], $cle_candidat, $rendezvous['cle etablissement'], $rendezvous['instant']);
-
-        // On enregistre les logs
-        $candidat = $this->searchcandidat($cle_candidat);
+        $candidate = $this->searchCandidate($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Nouveau rendez-vous", 
-            "Nouveau rendez-vous avec " . strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats']) . ", le " . $rendezvous['date']
+            "Nouveau rendez-vous avec " . strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . ", le " . $meeting['date']
         );
     }
 
     /// Méthode protégées inscrivant un contrat dans la base de données
-    // Remanier avec manipulation des strings (request divisé en insert + value) //
+    // TODO : Remanier avec manipulation des strings (request divisé en insert + value) //
     protected function inscriptContrats($contrats=[]) {
         // Requête avec date de fin de contrat
         if(isset($contrats['date fin'])) {
@@ -690,7 +685,6 @@ class CandidatsModel extends Model {
                         "date_debut" => $contrats['date debut'],
                         "date_fin" => $contrats['date fin'],
                         "salaire" => $contrats['salaire'],
-                        "nb_heures" => $contrats['nb heures'],
                         "signature" => $contrats['signature'],
                         "cle_candidat" => $contrats['cle candidat'],
                         "cle_instant" => $contrats['cle instant'],
@@ -701,7 +695,7 @@ class CandidatsModel extends Model {
                 }
 
             // Requête sans salaire avec travail de nuit
-            } if(isset($contrats['travail nuit'])) {
+            } elseif(isset($contrats['travail nuit'])) {
                 // Requête avec travail de week-end
                 if(isset($contrats['travail wk'])) {
                     // Requête avec taux horaire hebdomadaire
@@ -1344,16 +1338,17 @@ class CandidatsModel extends Model {
         );
     }
 
+    // ! Méthode à remplacer par public searchCandidate() déclarée dans Model.php
     /// Méthode protégée recherchant un candidat dans la base de données
-    private function searchCandidat($cle_candidat) {
-        if(empty($cle_candidat) || !is_numeric($cle_candidat)) 
-            throw new Exception('Erreur lors de la recherche du candidat. La clé candidat doit être un nombre entier positif !');
-
-        // On initialise la requête
-        $request = "SELECT * FROM Candidats WHERE Id_Candidats = :cle";
-        $params = ['cle' => $cle_candidat];
-
-        // On lance la requête
-        return $this->get_request($request, $params, true, true);
-    }
+    // private function searchCandidat($cle_candidat) {
+    //     if(empty($cle_candidat) || !is_numeric($cle_candidat)) 
+    //         throw new Exception('Erreur lors de la recherche du candidat. La clé candidat doit être un nombre entier positif !');
+    // 
+    //     // On initialise la requête
+    //     $request = "SELECT * FROM Candidats WHERE Id_Candidats = :cle";
+    //     $params = ['cle' => $cle_candidat];
+    // 
+    //     // On lance la requête
+    //     return $this->get_request($request, $params, true, true);
+    // }
 }
