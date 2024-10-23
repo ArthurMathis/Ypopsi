@@ -76,10 +76,15 @@ class CandidatsModel extends Model {
         // On lance la requête
         return $this->get_request($request, $params, true, true);
     }
-    /// Méthode publique retournant la fiche profil d'un candidat
-    public function getContentCandidate($key_candidate) {
+    /**
+     * Public method searching and returning the candidate's profil data 
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Array
+     */
+    public function getContentCandidate($key_candidate): Array {
         $candidate = $this->getCandidate($key_candidate);
-        array_push($candidate, ['qualifications' => $this->getCandidatesFromQualifications($key_candidate)]);
+        $candidate['qualifications'] = $this->getCandidatesFromQualifications($key_candidate);
 
         $employee = $this->searchCoopter($key_candidate);
         if(!empty($employee)) 
@@ -90,7 +95,7 @@ class CandidatsModel extends Model {
             'helps' => $this->getHelpsFromCandidates($key_candidate),
             'employee' => $employee, 
             'applications' => $this->getApplicationsFromCandidates($key_candidate),
-            'contracts' => $this->getContractsFromcandidates($key_candidate),
+            'contracts' => $this->getContractsFromCandidates($key_candidate),
             'meeting' => $this->getMeetingFromCandidates($key_candidate)
         ];
     }
@@ -104,24 +109,8 @@ class CandidatsModel extends Model {
         if(empty($key_candidate) || !is_numeric($key_candidate))
             throw new Exception("Erreur lors de la récupération du candidat.");
 
-        $request = "SELECT 
-        id,
-        name,
-        firstname,
-        phone,
-        email, 
-        address,
-        city,
-        postcode,
-        availability,
-        rating,
-        description, 
-        a, 
-        b, 
-        c
-
-        FROM candidates
-        WHERE Id = :key";
+        $request = "SELECT id, name, firstname, phone, email,  address, city, postcode, availability, rating, description,  a,  b,  c
+        FROM candidates WHERE Id = :key";
 
         $params = ["key" => $key_candidate];
 
@@ -170,7 +159,9 @@ class CandidatsModel extends Model {
         LEFT JOIN Services as serv ON app.Key_Services = serv.Id
         LEFT JOIN Establishments AS e ON app.Key_Establishments = e.id
 
-        WHERE app.Key_Candidates = :cle";
+        WHERE app.Key_Candidates = :cle
+
+        ORDER BY cle DESC";
         $params = ['cle' => $key_candidate];
 
         $temp = $this->get_request($request, $params);
@@ -186,7 +177,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array|NULL
      */ 
-    private function getContractsFromcandidates($key_candidate): ?Array {
+    private function getContractsFromCandidates($key_candidate): ?Array {
         $request = "SELECT 
         c.Id AS cle,
         j.titled AS poste,

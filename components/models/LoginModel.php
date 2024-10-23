@@ -85,7 +85,7 @@ class LoginModel extends Model {
                         $users[$i]['Key_Establishments'],
                         $users[$i]['Key_Roles']
                     );
-                    $user->setKey($users[$i]['id']);
+                    $user->setKey($users[$i]['Id']);
                     if($users[$i]['PasswordTemp'])
                         $user->setFirstLog();
 

@@ -1,6 +1,6 @@
 <section class="liste_items<?php if(isset($classe) && !empty($classe)) echo $classe ?>" <?php if(isset($id) && !empty($id)): ?>id="<?= $id; ?>"<?php endif ?>>
     <div class="entete">
-        <h2><?= $titre; ?></h2>
+        <h2><?= $title; ?></h2>
         <h3><?php 
             $size = empty($items) ? 0 : count($items); 
             echo $size;

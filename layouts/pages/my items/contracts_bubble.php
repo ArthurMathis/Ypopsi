@@ -7,10 +7,9 @@
     <article>
         <h3><?= $item['type_de_contrat']; ?></h3>
         <?php 
-            // On récupère la date actuelle
-            require_once(CLASSE.DS.'Instants.php');
-            $date = instants::currentInstants()->getDate();
-
+            require_once(CLASSE.DS.'Moment.php');
+            $date = Moment::currentMoment()->getDate();
+            
             if($item['demission']):
         ?>    
             <p class="refusee">Démission</p>

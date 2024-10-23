@@ -55,3 +55,5 @@ define('USER', 4);
 define('INVITE', 5);
 
 define("COOPTATION", "Prime de cooptation");
+
+define("ETOILE", "layouts/assets/img/etoile.svg");

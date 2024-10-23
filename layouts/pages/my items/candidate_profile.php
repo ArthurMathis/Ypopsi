@@ -1,5 +1,6 @@
-<?php define("ETOILE", "layouts/assets/img/etoile.svg"); ?>
-
+<script>
+    console.log(<?php echo json_encode($item); ?>);
+</script>
 <aside>
     <header>
         <div>
@@ -23,7 +24,7 @@
             <?php endif ?>
         </div>
         <h3><?= $item['applications'][0]['type_de_contrat']; ?></h3>
-        <p><?= forms_manip::nameFormat($item['candidatures'][0]['statut']); ?></p>  
+        <p><?= forms_manip::nameFormat($item['applications'][0]['statut']); ?></p>  
     </header>
     <section>
         <div>
@@ -40,7 +41,7 @@
         </div>
         <div>
             <p>Disponibilité</p>
-            <p><?= $item['candidat']['disponibilite']; ?></p>
+            <p><?= $item['candidate']['availability']; ?></p>
         </div>
         <div>
             <p>Service demandé</p>
@@ -60,43 +61,43 @@
         </div>
         <div>
             <p>Aide au recrutement</p>   
-            <?php if($item['aide'] == null): ?>
+            <?php if($item['helps'] == null): ?>
                 <p>Aucune aide au recrutement</p>
             <?php else: ?>
-                <p><?= $item['aide']['intitule']?></p>    
+                <p><?= $item['helps']['intitule']?></p>    
             <?php endif ?>  
         </div>
-        <?php if(isset($item['coopteur'])): ?>
+        <?php if(isset($item['employee'])): ?>
             <div>
                 <p>Coopteur</p>
-                <p><?= $item['coopteur']; ?></p>
+                <p><?= $item['employee']; ?></p>
             </div>
         <?php endif ?>
     </section>
     <section>
         <div>
             <p>Numéro de téléphone</p>
-            <p><?= $item['candidat']['telephone']; ?></p>
+            <p><?= $item['candidate']['phone']; ?></p>
         </div>
         <div>
             <p>Adresse email</p>
-            <p><?= $item['candidat']['email']; ?></p>
+            <p><?= $item['candidate']['email']; ?></p>
         </div>
         <div>
             <p>Adresse</p>
             <div>
-                <p><?= $item['candidat']['adresse']; ?></p>
-                <p><?= $item['candidat']['ville']; ?></p>
-                <p><?= $item['candidat']['code_postal']; ?></p>
+                <p><?= $item['candidate']['address']; ?></p>
+                <p><?= $item['candidate']['city']; ?></p>
+                <p><?= $item['candidate']['postcode']; ?></p>
             </div>
         </div>
     </section>
     <footer>
         <?php if($_SESSION['user_role'] != INVITE): ?>
-            <a class="circle_button reverse_color" href="mailto:<?= $item['candidat']['email']; ?>">
+            <a class="circle_button reverse_color" href="mailto:<?= $item['candidate']['email']; ?>">
                 <img src="layouts\assets\img\logo\white-paperplane.svg" alt="Logo d'envoi d'un courrier, représenté par un avion en papier">
             </a>
-            <a class="circle_button reverse_color" href="index.php?candidats=edit-candidat&cle_candidat=<?= $item['candidat']['id']; ?>">
+            <a class="circle_button reverse_color" href="index.php?candidats=edit-candidat&cle_candidat=<?= $item['candidate']['id']; ?>">
                 <img src="layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
             </a>  
         <?php endif ?>    

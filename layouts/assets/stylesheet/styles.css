@@ -827,7 +827,6 @@ button.cancel_button:is(:hover, :focus),
 .bulles .bulle-container {
   display: flex;
   flex-direction: column;
-  padding-top: 5px;
   border-radius: var(--radius);
   background-color: var(--blue);
 }

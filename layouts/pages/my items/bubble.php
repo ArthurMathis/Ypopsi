@@ -1,5 +1,5 @@
 <article class="bulles">
-    <h2><?= $titre; ?></h2>
+    <h2><?= $title; ?></h2>
     <?php if(!empty($items)): $size = count($items); ?>
         <p><?= $size;?> items</p>
         <?php $keys = array_keys($items[0]); ?>
