@@ -215,7 +215,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
     $candidates = new CandidatController();
 
     if(is_numeric($_GET['candidates'])) 
-        $candidates->displayCandidat($_GET['candidates']);
+        $candidates->displayCandidate($_GET['candidates']);
 
     else try { 
         switch($_GET['candidates']) {
@@ -629,15 +629,8 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             case 'edit-meeting':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
-
-                try {
-                    $candidates->getEditMeetings($_GET['key_meeting']);
-
-                } catch(Exception $e) {
-                    forms_manip::error_alert([
-                        'msg' => $e
-                    ]);
-                }
+                else 
+                    $candidates->getEditMeetings($_GET['key_meeting']); 
                 break;    
             
             // On met-à-jour la notation d'un candidat
@@ -742,30 +735,12 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 break;
                 
-            // On annule un rendez-vous    
+            // Deleting a meeting
             case 'delete-meeting': 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
-
-                // On vérifie l'intégrité des données
-                try {
-                    if(!isset($_GET['cle_candidat']) || empty($_GET['cle_candidat']) || !is_numeric($_GET['cle_candidat']))
-                        throw new Exception("La clé candidat doit être un nombre entier positif !");
-                    elseif(!isset($_GET['cle_utilisateur']) || empty($_GET['cle_utilisateur']) || !is_numeric($_GET['cle_utilisateur']))
-                        throw new Exception("La clé utilisateur doit être un nombre entier positif !");
-                    elseif(!isset($_GET['cle_instant']) || empty($_GET['cle_instant']) || !is_numeric($_GET['cle_instant']))
-                        throw new Exception("La clé instant doit être un nombre entier positif !");
-
-                // On récupère les éventuelles erreurs        
-                } catch(Exception $e) {
-                    forms_manip::error_alert([
-                        'title' => "Erreur lors de la suppression du rendez-vous",
-                        'msg' => $e
-                    ]);
-                }
-
-                // On annule le rendez-vous
-                $candidates->annulationRendezVous($_GET['cle_candidat'], $_GET['cle_utilisateur'], $_GET['cle_instant']);
+                else
+                    $candidates->deleteMeeting($_GET['key_meeting'], $_GET['key_candidate']);
                 break;    
 
             default: 

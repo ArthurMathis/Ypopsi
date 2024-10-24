@@ -21,8 +21,8 @@ class CandidatController extends Controller {
         $this->View->getContent('Candidats', $items);
     }
     /// Méthode publique affichant la page candidat
-    public function displayCandidat($Key_candidate) {
-        $item = $this->Model->getContentCandidatee($Key_candidate);
+    public function displayCandidate($Key_candidate) {
+        $item = $this->Model->getContentCandidate($Key_candidate);
         return $this->View->getContentCandidate("Candidat " . $item['candidate']['name'] . ' ' . $item['candidate']['firstname'], $item);
     }
 
@@ -266,12 +266,12 @@ class CandidatController extends Controller {
     }
 
     /// Méthode publique annulant un rendez-vous
-    public function annulationRendezVous($cle_candidat, $cle_utilisateur, $cle_instant) {
-        $this->Model->annulationRendezVous($cle_utilisateur, $cle_candidat, $cle_instant);
+    public function deleteMeeting($key_meeting, $key_candidate) {
+        $this->Model->deletingMeeting($key_meeting);
         alert_manipulation::alert([
             'title' => "Rendez-vous annulé",
             'msg' => "Vous avez annulé le rendez-vous du candidat",
-            'direction' => 'index.php?candidates=' . $cle_candidat
+            'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }
 }

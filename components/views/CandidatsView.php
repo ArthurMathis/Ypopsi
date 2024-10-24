@@ -150,7 +150,7 @@ class CandidatsView extends View {
      * @param Array $item The meeting's data array
      * @return Void
      */
-    protected function getMeetingsBubble($item=[]) { include(MY_ITEMS.DS.'meetings_bubble.php'); }
+    protected function getMeetingsBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'meetings_bubble.php'); }
 
     /**
      * Protected method generating the candidate's contracts tab
@@ -223,7 +223,7 @@ class CandidatsView extends View {
         echo '<section class="onglet">';
         if(!empty($meetings)) 
             foreach($meetings as $obj)
-                $this->getMeetingsBubble($obj);
+                $this->getMeetingsBubble($obj, $key_candidate);
         else 
             echo "<h2>Aucun rendez-vous enregistré </h2>"; 
         

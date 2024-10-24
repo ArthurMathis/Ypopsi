@@ -392,18 +392,6 @@ abstract class Model {
             throw new Exception("Le type n'a pas pu être reconnu. Le nom (string) ou l'identifiant (int) de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
     }
     /**
-     * Protected method searching one application in the database
-     *
-     * @param Int $application The application primary key
-     * @return Array
-     */
-    protected function searchApplication($application): Array {
-        $request = "SELECT * FROM Candidatures WHERE Id = :application";
-        $params = ['application' => $application];
-
-        return $this->get_request($request, $params, true, true);
-    }
-    /**
      * Public method searching and returning one candidate from his primary key
      *
      * @param Int $key_candidate The candidate's primary key
@@ -474,7 +462,7 @@ abstract class Model {
 
         // On lance la requête
         return $this->get_request($request, $params, true, true);
-    }
+    }  
     /**
      * Protected method searching one degree in the database 
      *
@@ -498,6 +486,30 @@ abstract class Model {
             throw new Exception("La saisie du diplome est mal typée. Il doit être un identifiant (entier positif) ou un echaine de caractères !");        
 
         return $result;
+    }
+    /**
+     * Public method searching and returning one meeting
+     *
+     * @param Int $key_meeting The meeting's primary key
+     * @return Array The array containing the meeting's data
+     */
+    public function searchMeeting($key_meeting): Array {
+        $request = "SELECT * FROM Meetings WHERE Id = :key_meeting";
+        $params = ['key_meeting' => $key_meeting];
+
+        return $this->get_request($request, $params, true, true);
+    }
+    /**
+     * Protected method searching one application in the database
+     *
+     * @param Int $application The application primary key
+     * @return Array
+     */
+    protected function searchApplication($application): Array {
+        $request = "SELECT * FROM Candidatures WHERE Id = :application";
+        $params = ['application' => $application];
+
+        return $this->get_request($request, $params, true, true);
     }
     /**
      * Protected method searching one type of contracts in the database 
@@ -1080,26 +1092,16 @@ abstract class Model {
     // METHODES DE SUPPRESSION //
 
     /**
-     * Protected method deleting one meeting
+     * protected method deleting one meeting
      *
-     * @param Int $cle_candidat The candidate's primary key
-     * @param Int $cle_utilisateur The use's primary key
-     * @param Int $cle_instant The instant primary key
+     * @param Int $key_meeting The meeting's primary key
      * @return Void
      */
-    protected function deleteRendezVous($cle_candidat, $cle_utilisateur, $cle_instant) {
-        // On initialise la requête
-        $request = "DELETE FROM Avoir_rendez_vous_avec
-        WHERE Cle_Candidats = :candidat
-        AND Cle_Utilisateurs = :utilisateur
-        AND Cle_Instants = :instant";
-        $params = [
-            'candidat' => $cle_candidat,
-            'utilisateur' => $cle_utilisateur,
-            'instant' => $cle_instant
-        ];
+    protected function deleteMeeting($key_meeting) {
+        $request = "DELETE FROM Meetings
+        WHERE Id = :key_meeting";
+        $params = ['key_meeting' => $key_meeting];
 
-        // On lance la requête
         $this->post_request($request, $params);
     }
     /**

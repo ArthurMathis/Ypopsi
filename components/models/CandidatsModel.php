@@ -81,7 +81,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array
      */
-    public function getContentCandidatee($key_candidate): Array {
+    public function getContentCandidate($key_candidate): Array {
         $candidate = $this->getCandidate($key_candidate);
         $candidate['qualifications'] = $this->getCandidatesFromQualifications($key_candidate);
 
@@ -1216,27 +1216,15 @@ class CandidatsModel extends Model {
         );
     }
     /// Méthode supprimant un rendez-vous
-    public function annulationRendezVous($cle_utilisateur, $cle_candidat, $cle_instant) {
-        // On supprime le rendez-vous
-        $this->deleteRendezVous($cle_candidat, $cle_utilisateur, $cle_instant);
-        unset($cle_utilisateur);
-
-        // On récupère les informations du rendez-vous
-        $candidat = $this->searchCandidat($cle_candidat);
-        unset($cle_candidat);
-        $instant = $this->searchInstant($cle_instant);
-        
-        // On enregistre les logs
+    public function deletingMeeting($key_meeting) {
+        $meeting = $this->searchMeeting($key_meeting);
+        $candidate = $this->searchcandidate($meeting['Key_Users']); 
+        $this->deleteMeeting($key_meeting);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Annulation rendez-vous",
-            strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats']) . " a annulé son rendez-vous du " . $instant['Jour_Instants']
+            strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " a annulé son rendez-vous du " . date('Y m d', strtotime($meeting['Date']))
         );
-        unset($candidat);
-        unset($instant);
-
-        // On suprime l'instant du rendez-vous
-        $this->deleteInstant($cle_instant);
     }
     /// Méthode protégée vérifiant qu'une mission est dans la base de données
     protected function verifyMission($cle_service, $cle_poste) {
