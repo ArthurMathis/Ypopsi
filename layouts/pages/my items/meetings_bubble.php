@@ -1,4 +1,4 @@
-<div class="rendez_vous_bulle">
+<div class="meeting_bubble">
     <header>
         <h2><?php echo forms_manip::majusculeFormat($item['nom']) . ' ' . $item['prenom']; ?></h2>
         <p><?= $item['etablissement'] ?></p>
@@ -25,10 +25,10 @@
     </content>
     <footer>
         <?php if($_SESSION['user_role'] != INVITE): ?>
-            <a class="circle_button" href="index.php?candidats=delete-meeting&key_meeting=<?= $item['key_meeting']; ?>">
+            <a class="circle_button" href="index.php?candidates=delete-meeting&key_meeting=<?= $item['key_meeting']; ?>">
                 <img src="layouts\assets\img\logo\white-trash.svg" alt="Logo de suppression du rendez-vous, représenté par une poubelle">
             </a>
-            <a class="circle_button" href="index.php?candidats=edit-meeting&&key_meeting=<?= $item['key_meeting']; ?>">
+            <a class="circle_button" href="index.php?candidates=edit-meeting&key_meeting=<?= $item['key_meeting']; ?>">
                 <img src="layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du rendez-vous, représenté par un carnet et un stylo">
             </a>
         <?php endif ?>

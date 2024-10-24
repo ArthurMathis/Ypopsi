@@ -22,8 +22,8 @@ class CandidatController extends Controller {
     }
     /// Méthode publique affichant la page candidat
     public function displayCandidat($Key_candidate) {
-        $item = $this->Model->getContentCandidate($Key_candidate);
-        return $this->View->getContentCandidat("Candidat " . $item['candidate']['name'] . ' ' . $item['candidate']['firstname'], $item);
+        $item = $this->Model->getContentCandidatee($Key_candidate);
+        return $this->View->getContentCandidate("Candidat " . $item['candidate']['name'] . ' ' . $item['candidate']['firstname'], $item);
     }
 
     /// Méthode publique affichant le formulaire de saisie d'une candidature
@@ -97,14 +97,18 @@ class CandidatController extends Controller {
             $this->Model->getEditCandidatContent($cle_candidat)
         );
     }
-    /// Méthode publique affichant le formulaire d'édition d'un rendez-vous
-    public function getEditRensezVous($cle_candidat, $cle_utilisateur, $cle_instant) {
-        return $this->View->getEditRendezVous(
-            $cle_candidat, 
-            $cle_utilisateur, 
-            $cle_instant,
-            $this->Model->getEditRendezVousContent($cle_candidat, $cle_utilisateur, $cle_instant)
-        );
+    /**
+     * Méthode publique renvoyant le formulaire d'édition de la réunion
+     *
+     * @param Int $key_meeting The meeting's primary key
+     * @return View HTML Page
+     */
+    public function getEditMeetings($key_meeting) { 
+        return $this->View->getEditMeeting(
+            $this->Model->getEditMeetingContent($key_meeting),
+            $this->Model->getAutoCompUsers(),
+            $this->Model->getAutoCompEstablishments()
+        ); 
     }
 
     /// Méthode publique donnant le statut acceptée à une candidature
@@ -235,19 +239,29 @@ class CandidatController extends Controller {
             'direction' => 'index.php?candidates=' . $cle_candidat
         ]);
     }
-    /// Méthode publique mettant à jour un rendez-vous
-    public function updateRendezVous($cle_candidat, $cle_utilisateur, $cle_instant, &$rdv=[]) {
-        // On met à jour le candidat
-        $this->Model->updateRendezVous($cle_candidat, $cle_utilisateur, $cle_instant, $rdv);
+    /**
+     * Public method updating the meeting
+     *
+     * @param Int $key_meeting The meeting's primary key
+     * @param Int $key_candidate The candidate's key
+     * @param Array $rdv
+     * @return Void
+     */
+    public function updateMeeting($key_meeting, $key_candidate, &$meeting=[]) {
+        $this->Model->updateMeeting(
+            $key_meeting, 
+            $this->Model->searchUser($meeting['employee'])['Id'], 
+            $key_candidate, 
+            $this->Model->searchEstablishment($meeting['establishment'])['Id'], 
+            $meeting['date'], 
+            $meeting['description']
+        );
+        $this->Model->updateMeetingLogs($key_candidate);
 
-        // On enregistre les logs
-        $this->Model->updateRendezVousLogs($cle_candidat);
-
-        // On redirige la page
         alert_manipulation::alert([
             'title' => "Rendez-vous mise-à-jour",
             'msg' => "Vous avez mis-à-jour le rendez-vous du candidat",
-            'direction' => 'index.php?candidates=' . $cle_candidat
+            'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }
 

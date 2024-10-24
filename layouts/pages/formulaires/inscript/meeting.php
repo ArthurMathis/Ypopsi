@@ -1,5 +1,3 @@
-<script>console.log(<?php echo json_encode($_SESSION); ?>);</script>
-
 <form method="post" action="index.php?candidates=inscript-meeting&key_candidate=<?= $key_candidate; ?>">
     <h3>Saissisez les informations du rendez-vous</h3>
     <section>
@@ -16,7 +14,7 @@
     <section class="double-items">
         <div class="input-container">
             <label for="date">Date</label>
-            <input type="date" name="date" id="date" min="<?php echo Moment::currentMoment()->getDate(); ?>">
+            <input type="date" name="date" id="date" min="<?= Moment::currentMoment()->getDate(); ?>">
         </div>
         <div class="input-container">
             <label for="time">Horaire</label>
@@ -27,8 +25,6 @@
 </form>
 
 <script>
-    console.log('On lance la récupération des tableaux PHP.');  
-
     const recruteur = <?php echo json_encode(array_map(function($c) { return $c['name']; }, $users)); ?>;
     const etablissement = <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $establisments)); ?>;
 

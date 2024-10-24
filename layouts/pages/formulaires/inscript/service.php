@@ -12,8 +12,6 @@
 </form>
 
 <script>
-    console.log('On lance la récupération des tableaux PHP.');  
-
     // On récupère les donnéesdepuis PHP
     const etablissements = <?php echo json_encode(array_map(function($c) { return $c['Intitule_Etablissements']; }, $etablissements)); ?>;
     // On prépare les AutoCompletes 

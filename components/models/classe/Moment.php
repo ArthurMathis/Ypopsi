@@ -1,5 +1,7 @@
 <?php
 
+define('FR', 'Europe/Paris');
+
 /**
  *  Class representing one moment's Exception
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
@@ -164,7 +166,23 @@ class Moment {
     public static function fromDate($date, $hour = '12:00:00'): ?Moment {
         if(!Moment::isDate($date) || !Moment::isHour($hour))
             throw new InvalideMomentExceptions('Impossible de générer le moment sans date');
+        
+        return new Moment((new DateTime($date . ' ' . $hour, new DateTimeZone(FR)))->getTimestamp());
+    }
+    /**
+     * Public static method returning the moment's date(Y-m-d H:i:s) 
+     * 
+     * * Using the method for the SQL requests
+     * 
+     * @param String $date The moment's date
+     * @param String $hour The moment's time
+     * @throws InvalideMomentExceptions If the InvalideMomentExceptions are invalids
+     * @return String|NULL The date
+     */
+    public static function getTimestampFromDate($date, $hour = '12:00:00'): ?String {
+        if(!Moment::isDate($date) || !Moment::isHour($hour))
+            throw new InvalideMomentExceptions('Impossible de générer le moment sans date');
 
-        return new Moment(strtotime($date . ' ' . $hour));
+        return date('Y-m-d H:i:s', (new DateTime($date . ' ' . $hour, new DateTimeZone(FR)))->getTimestamp());
     }
 }

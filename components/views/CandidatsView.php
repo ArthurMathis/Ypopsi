@@ -4,17 +4,17 @@ require_once('View.php');
 
 class CandidatsView extends View {
     /**
-     * Private method generating a contracts list
+     * Private method generating the list of the candidate's contracts
      *
      * @param Array $contrats The array containing the contracts to the list
      * @param Int $nb_items_max The maximum number of elements
-     * @return void
+     * @return Void
      */
     private function makeContractsList($contracts=[], $nb_items_max) {
         if(empty($contracts)) 
             return;
 
-        $contracts_bulles = [];
+        $contracts_bubbles = [];
         foreach($contracts as $c) if(!empty($c['signature'])){
             $date = Moment::currentMoment()->getDate();
             if($date < $c['date_debut'])
@@ -30,68 +30,59 @@ class CandidatsView extends View {
                 'Type de contrat' => $c['type_de_contrat']
             ];
             
-            array_push($contracts_bulles, $new_c);
+            array_push($contracts_bubbles, $new_c);
         }
 
-        if(empty($contracts_bulles))
-            return;
-
-        $this->getBubble('Contrats', $contracts_bulles, $nb_items_max, null, null);
+        $this->getBubble('Contrats', $contracts_bubbles, $nb_items_max, null, null);
     }
-    /// Méthode privée générant une liste de contrats
-    private function makeOffersList($propositions=[], $nb_items_max) {
-        // On teste la présence de données
-        if(empty($propositions)) 
+    /**
+     * Private method generating the list of the candidate's offers
+     *
+     * @param Array $offers The array containing the offers to the list
+     * @param Int $nb_items_max The maximum number of elements
+     * @return Void
+     */
+    private function makeOffersList($offers=[], $nb_items_max) {
+        if(empty($offers)) 
             return;
 
-        // Le nouveau tableaux de propositions
-        $propositions_bulles = [];
-
-        // On construit le tableaux de contrats simplifiés
-        foreach($propositions as $p) if(empty($p['signature'])) {
+        $offers_bubbles = [];
+        foreach($offers as $p) if(empty($p['signature'])) {
             $new_p = [
                 'Statut' => empty($p['statut']) ? 'en attente' : 'refusée',
                 'Poste' => $p['poste'],
                 'Type de contrat' => $p['type_de_contrat']
             ];
-            array_push($propositions_bulles, $new_p);
+            array_push($offers_bubbles, $new_p);
         }
 
-        // On vérifie la présence d'items dans la liste
-        if(empty($propositions_bulles))
-            return;
-        
-        // On génère la bulle
-        $this->getBubble("Propositions d'embauche", $propositions_bulles, $nb_items_max, null, null);
+        $this->getBubble("Propositions d'embauche", $offers_bubbles, $nb_items_max, null, null);
     }
-    /// Méthode privée généranr une liste de candidatures
-    private function makeApplicationsList($candidatures=[], $nb_items_max) {
-        // On teste la présence de données
-        if(empty($candidatures)) 
+    /**
+     * Private method generating the list of the candidate's applications
+     *
+     * @param Array $offers The array containing the applications to the list
+     * @param Int $nb_items_max The maximum number of elements
+     * @return Void
+     */
+    private function makeApplicationsList($applications=[], $nb_items_max) {
+        if(empty($applications)) 
             return;
 
-        // Le nouveau tableaux de candidatures
-        $candidatures_bulles = [];
-
-        // On construit le tableaux de candidatures simplifiées
-        foreach($candidatures as $c) {
+        $applications_bubbles = [];
+        foreach($applications as $c) {
             $new_c = [
                 'Statut' => $c['statut'],
                 'Poste' => $c['poste'],
                 'Type de contrat' => $c['type_de_contrat']
             ];
-            array_push($candidatures_bulles, $new_c);
+            array_push($applications_bubbles, $new_c);
         }
 
-        // On vérifie la présence d'items dans la liste
-        if(empty($candidatures_bulles))
-            return;
-
-        // On génère la bulle
-        $this->getBubble("Candidatures", $candidatures_bulles, $nb_items_max, null, null);
+        $this->getBubble("Candidatures", $applications_bubbles, $nb_items_max, null, null);
     }
     /**
-     * Private method generating the candidate's list of meetingd
+     * Private method generating the candidate's list of meetings
      *
      * @param Array $meetings Te array containing the candidate's meetings
      * @param Int $nb_items_max The maximum number of elements in the list
@@ -259,7 +250,7 @@ class CandidatsView extends View {
      * @param Array $item The candidate's data
      * @return Void
      */
-    public function getContentCandidat($title, &$item=[]) {
+    public function getContentCandidate($title, &$item=[]) {
         $this->generateCommonHeader($title, [PAGES_STYLES.DS.'candidats.css']);
 
         $buttons = ['Tableau de bord', 'Contrats', 'Propositions', 'Candidatures', 'Rendez-vous', 'Notation'] ;
@@ -449,18 +440,14 @@ class CandidatsView extends View {
         // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
-    public function getEditRendezVous($cle_candidat, $cle_utilisateur, $cle_instant, $item=[]) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader('Ypopsi - Mise-à-jour rendez-vous', [FORMS_STYLES.DS.'small-form.css']);
-
-        // On ajoute les barres de navigation
+    public function getEditMeeting($meeting=[], $users=[], $establisments=[]) {
+        // $this->generateCommonHeader('Ypopsi - Mise-à-jour rendez-vous', [FORMS_STYLES.DS.'small-form.css']);
+        $this->generateCommonHeader('Ypopsi - Mise-à-jour rendez-vous', [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true);
 
-        // On ajoute le formulaire de connexion
-        include EDIT_FORM.DS.'rendez-vous.php';
+        include EDIT_FORM.DS.'meeting.php';
         include FORMULAIRES.DS.'waves.php';
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
 }

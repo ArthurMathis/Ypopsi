@@ -217,7 +217,7 @@ main > section .bulles .bulle-container {
 main section .contrats_bulle,
 main section .propositions_bulle,
 main section .candidatures_bulle,
-main section .rendez_vous_bulle {
+main section .meeting_bubble {
     display: flex;
     flex-direction: column;
     gap: calc(var(--gap) * 2 / 3);
@@ -270,7 +270,7 @@ main section content div > p:first-of-type {
 main section .contrats_bulle footer,
 main section .propositions_bulle footer,
 main section .candidatures_bulle footer,
-main section .rendez_vous_bulle footer {
+main section .meeting_bubble footer {
     display: flex;
     justify-content: right;
     align-items: flex-end;

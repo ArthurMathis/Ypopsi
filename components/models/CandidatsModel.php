@@ -49,31 +49,30 @@ class CandidatsModel extends Model {
             'diplome' => $this->getQualifications()
         ];
     }
-    /// Méthode publique retournant les donnnées d'un rendez-vous pour sa mise-à-jour
-    public function getEditRendezVousContent($cle_candidat, $cle_utilisateur, $cle_instant) {
-        if(empty($cle_candidat) || empty($cle_utilisateur) || empty($cle_instant))
-            throw new Exception("La récupération des données du rendez-vous nécessite la présence de la clé candidat, utilisateur et instant.");
-
-        // On initialise la requête
-        $request = "SELECT 
-        Identifiant_Utilisateurs AS Recruteur,
-        Intitule_Etablissements AS Etablissement,
-        Jour_Instants AS Date,
-        Heure_Instants AS Horaire
-
-        FROM Avoir_rendez_vous_avec AS rdv
-        INNER JOIN Utilisateurs AS u ON rdv.Cle_Utilisateurs = u.Id_Utilisateurs
-        INNER JOIN Instants AS i ON rdv.Cle_Instants = i.Id_Instants
-        INNER JOIN Etablissements AS e ON rdv.Cle_Etablissements =e.Id_Etablissements
+    /**
+     * Public method search and returning the meeting's data
+     *
+     * @param Int $key_meeting The meeting's primary key
+     * @return Array
+     */
+    public function getEditMeetingContent($key_meeting): Array {
+        $request = "SELECT
+        m.Id AS key_meeting,
+        c.Id AS key_candidate,
+        u.Identifier AS Recruteur,
+        e.Titled AS Etablissement,
+        DATE_FORMAT(m.Date, '%Y-%m-%d') AS Date, 
+        DATE_FORMAT(m.Date, '%H:%i') AS Horaire,
+        m.Description AS description
         
-        WHERE rdv.Cle_Candidats = :candidat AND rdv.Cle_Utilisateurs = :utilisateur AND rdv.Cle_Instants = :instant";
-        $params = [
-            'candidat' => $cle_candidat,
-            'utilisateur' => $cle_utilisateur,
-            'instant' => $cle_instant
-        ];
+        FROM Meetings AS m
+        INNER JOIN Users AS u ON m.Key_Users = u.Id
+        INNER JOIN Candidates AS c ON m.Key_Candidates = c.Id
+        INNER JOIN Establishments AS e ON m.Key_Establishments = e.Id
+        
+        WHERE m.Id = :key_meeting";
+        $params = ['key_meeting' => $key_meeting];
 
-        // On lance la requête
         return $this->get_request($request, $params, true, true);
     }
     /**
@@ -82,7 +81,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array
      */
-    public function getContentCandidate($key_candidate): Array {
+    public function getContentCandidatee($key_candidate): Array {
         $candidate = $this->getCandidate($key_candidate);
         $candidate['qualifications'] = $this->getCandidatesFromQualifications($key_candidate);
 
@@ -1326,15 +1325,12 @@ class CandidatsModel extends Model {
         );
     }
     /// Méthode publique enregistrant les logs de la mise-à-jour d'un rendez-vous
-    public function updateRendezVousLogs($cle_candidat) {
-        // On récupère les informations du candidat
-        $candidat = $this->searchcandidat($cle_candidat);
-
-        // On enregistre les logs
+    public function updateMeetingLogs($key_candidate) {
+        $candidat = $this->searchcandidate($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour rendez-vous",
-            "Mise-à-jour du rendez-vous de " . strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats'])
+            "Mise-à-jour du rendez-vous de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname'])
         );
     }
 

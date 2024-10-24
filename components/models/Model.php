@@ -370,12 +370,12 @@ abstract class Model {
         return $this->get_request($request, $params, true, true);
     }
     /**
-     * Protected method search one user in the database
+     * Public method search one user in the database
      * 
      * @param Int|String $user The user's primary key or identifier
      * @return Array
      */ 
-    protected function searchUser($user): Array {
+    public function searchUser($user): Array {
         if($user == null)
             throw new Exception("Le nom ou l'identifiant de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
 
@@ -846,7 +846,6 @@ abstract class Model {
      */
     protected function inscriptMeetings($key_user, $key_candidate, $key_establishment, $moment) {
         $request = "INSERT INTO Meetings (Date, Key_Users, Key_Candidates, Key_Establishments) VALUES (:moment, :key_user, :key_candidate, :key_establishment)";
-        
         $params = [
             "moment" => date('Y-m-d H:i:s', $moment),
             "key_user" => $key_user,
@@ -1053,33 +1052,27 @@ abstract class Model {
     /**
      * Public method updating one candidate's meeting
      *
-     * @param Int $cle_candidat The candidate's primary key
-     * @param Int $cle_utilisateur The user's primary key
-     * @param Int $cle_instant The instant primary key
-     * @param Array $rdv The metting data Array
+     * @param Int $key_meeting The meeting's primary key
+     * @param Int $key_user
+     * @param Int $key_candidate
+     * @param Int $key_establishment
+     * @param Int $moment
+     * @param Int $description
      * @return Void
      */
-    public function updateRendezVous($cle_candidat, $cle_utilisateur, $cle_instant, &$rdv=[]) {
-        // On met-à-jour l'utilisateur
-        $request = "UPDATE Avoir_rendez_vous_avec
-        SET Cle_utilisateurs = :user, Cle_Etablissements = :etablissement
-        WHERE Cle_Candidats = :candidat AND Cle_utilisateurs = :utilisateur AND Cle_Instants = :instant";
+    public function updateMeeting($key_meeting, $key_user, $key_candidate, $key_establishment, $moment, $description) {
+        $request = "UPDATE Meetings
+        SET Key_Users = :key_user, Key_Candidates = :key_candidate, Key_Establishments = :key_establishment, Date = :moment, Description = :description
+        WHERE Id = :key_meeting";
         $params = [
-            'user' => $this->searchUser($rdv['recruteur'])['Id_Utilisateurs'],
-            'etablissement' => $this->searchEtablissement($rdv['etablissement'])['Id_Etablissements'],
-            'candidat' => $cle_candidat,
-            'utilisateur' => $cle_utilisateur,
-            'instant' => $cle_instant 
+            'key_meeting' => $key_meeting,
+            'key_user' => $key_user,
+            'key_candidate' => $key_candidate,
+            'key_establishment' => $key_establishment,
+            'moment' => $moment,
+            'description' => $description
         ];
-        $this->post_request($request, $params);
 
-        // On met-à-jour la date et l'heure
-        $request = "UPDATE Instants
-        SET Jour_Instants = :date, Heure_Instants = :time";
-        $params = [
-            'date' => $rdv['date'],
-            'time' => $rdv['time']
-        ];
         $this->post_request($request, $params);
     }
 
