@@ -4,22 +4,21 @@
 <aside>
     <header>
         <div>
-            <h2><?= $item['candidate']['name']; ?></h2>
-            <?php if(empty($item['candidate']['rating'])) : ?>
-                <p>Aucun notation renseignée</p>
+            <h2><?= $item['candidate']['Gender'] ? 'M' : 'Mme'; ?>. <?= $item['candidate']['Name']; ?> <?= $item['candidate']['Firstname']; ?></h2>
+            <?php if(empty($item['candidate']['Rating'])) : ?>
+                <p>Aucune notation</p>
             <?php else: ?>    
                 <li class="notation">
-                    <ul class="bille_notation <?php if(0 < $item['candidate']['rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
-                    <ul class="bille_notation <?php if(1 < $item['candidate']['rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
-                    <ul class="bille_notation <?php if(2 < $item['candidate']['rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
-                    <ul class="bille_notation <?php if(3 < $item['candidate']['rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
-                    <ul class="bille_notation <?php if(4 < $item['candidate']['rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                    <ul class="bille_notation <?php if(0 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                    <ul class="bille_notation <?php if(1 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                    <ul class="bille_notation <?php if(2 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                    <ul class="bille_notation <?php if(3 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                    <ul class="bille_notation <?php if(4 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
                 </li>
             <?php endif ?>  
         </div>
         <div>
-            <h2><?= $item['candidate']['firstname']; ?></h2>
-            <?php if($item['candidate']['a'] || $item['candidate']['b'] || $item['candidate']['c']): ?>
+            <?php if($item['candidate']['A'] || $item['candidate']['B'] || $item['candidate']['C']): ?>
                 <p>Alerte notation !</p>
             <?php endif ?>
         </div>
@@ -30,8 +29,8 @@
         <div>
             <p>Diplômes</p>
             <div>
-                <?php if(isset($item['candidat'][0]['diplomes']) && 0 < count($item['candidat'][0]['diplomes'])): ?>
-                    <?php foreach($item['candidat'][0]['diplomes'] as $obj): ?>
+                <?php if(isset($item['candidate'][0]['diplomes']) && 0 < count($item['candidate'][0]['diplomes'])): ?>
+                    <?php foreach($item['candidate'][0]['diplomes'] as $obj): ?>
                         <p><?= $obj['Intitule_Diplomes']; ?></p>
                     <?php endforeach ?>   
                 <?php else : ?>
@@ -41,7 +40,7 @@
         </div>
         <div>
             <p>Disponibilité</p>
-            <p><?= $item['candidate']['availability']; ?></p>
+            <p><?= $item['candidate']['Availability']; ?></p>
         </div>
         <div>
             <p>Service demandé</p>
@@ -77,27 +76,27 @@
     <section>
         <div>
             <p>Numéro de téléphone</p>
-            <p><?= $item['candidate']['phone']; ?></p>
+            <p><?= $item['candidate']['Phone']; ?></p>
         </div>
         <div>
             <p>Adresse email</p>
-            <p><?= $item['candidate']['email']; ?></p>
+            <p><?= $item['candidate']['Email']; ?></p>
         </div>
         <div>
             <p>Adresse</p>
             <div>
-                <p><?= $item['candidate']['address']; ?></p>
-                <p><?= $item['candidate']['city']; ?></p>
-                <p><?= $item['candidate']['postcode']; ?></p>
+                <p><?= $item['candidate']['Address']; ?></p>
+                <p><?= $item['candidate']['City']; ?></p>
+                <p><?= $item['candidate']['PostCode']; ?></p>
             </div>
         </div>
     </section>
     <footer>
         <?php if($_SESSION['user_role'] != INVITE): ?>
-            <a class="circle_button reverse_color" href="mailto:<?= $item['candidate']['email']; ?>">
+            <a class="circle_button reverse_color" href="mailto:<?= $item['candidate']['Email']; ?>">
                 <img src="layouts\assets\img\logo\white-paperplane.svg" alt="Logo d'envoi d'un courrier, représenté par un avion en papier">
             </a>
-            <a class="circle_button reverse_color" href="index.php?candidats=edit-candidat&cle_candidat=<?= $item['candidate']['id']; ?>">
+            <a class="circle_button reverse_color" href="index.php?candidats=edit-candidat&cle_candidat=<?= $item['candidate']['Id']; ?>">
                 <img src="layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
             </a>  
         <?php endif ?>    

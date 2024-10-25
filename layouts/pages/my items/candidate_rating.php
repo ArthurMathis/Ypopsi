@@ -23,25 +23,25 @@
         <content>
             <div>
                 <p for="a">A</p>
-                <input type="checkbox" name="a" id="a" disabled <?php if($candidate['a']) echo 'checked'; ?>>
+                <input type="checkbox" name="a" id="a" disabled <?php if($candidate['A']) echo 'checked'; ?>>
             </div>
             <div>
                 <p for="b">B</p>
-                <input type="checkbox" name="b" id="b" disabled <?php if($candidate['b']) echo 'checked'; ?>>
+                <input type="checkbox" name="b" id="b" disabled <?php if($candidate['B']) echo 'checked'; ?>>
             </div>
             <div>
                 <p for="c">C</p>
-                <input type="checkbox" name="c" id="c" disabled <?php if($candidate['c']) echo 'checked'; ?>>
+                <input type="checkbox" name="c" id="c" disabled <?php if($candidate['C']) echo 'checked'; ?>>
             </div>
         </content>
     </div>
 </article>
 <div class="notation_bulle">
     <h2>Remarque</h2>
-    <?php if(isset($candidate['description']) && empty($candidate['description'])): ?>
+    <?php if(isset($candidate['Description']) && empty($candidate['Description'])): ?>
         <p style="color: var(--grey)">Aucun descriptif enregistré</p>
     <?php else: ?>
-        <p><?= $candidate['description']; ?></p>
+        <p><?= $candidate['Description']; ?></p>
     <?php endif ?>    
 </div>
 </div>

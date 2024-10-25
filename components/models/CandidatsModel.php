@@ -82,12 +82,13 @@ class CandidatsModel extends Model {
      * @return Array
      */
     public function getContentCandidate($key_candidate): Array {
-        $candidate = $this->getCandidate($key_candidate);
+        // $candidate = $this->getCandidate($key_candidate);
+        $candidate = $this->searchcandidate($key_candidate);
         $candidate['qualifications'] = $this->getCandidatesFromQualifications($key_candidate);
 
         $employee = $this->searchCoopter($key_candidate);
         if(!empty($employee)) 
-            $employee = $employee['text'];
+            $employee = $employee['text']; 
 
         return [
             'candidate' => $candidate,
@@ -100,21 +101,23 @@ class CandidatsModel extends Model {
     }
     /**
      * Public method searching and returning one candidate from his primary key
+     * 
+     * ! Utiliser la méthode Model::searchCandidate
      *
      * @param Int $key_candidate The candidte's primary key
      * @return Array|NULL
      */
-    public function getCandidate($key_candidate): ?Array {
-        if(empty($key_candidate) || !is_numeric($key_candidate))
-            throw new Exception("Erreur lors de la récupération du candidat.");
-
-        $request = "SELECT id, name, firstname, phone, email,  address, city, postcode, availability, rating, description,  a,  b,  c
-        FROM candidates WHERE Id = :key";
-
-        $params = ["key" => $key_candidate];
-
-        return $this->get_request($request, $params)[0];
-    }
+    // public function getCandidate($key_candidate): ?Array {
+    //     if(empty($key_candidate) || !is_numeric($key_candidate))
+    //         throw new Exception("Erreur lors de la récupération du candidat.");
+    // 
+    //     $request = "SELECT id, name, firstname, phone, email,  address, city, postcode, availability, rating, description,  a,  b,  c
+    //     FROM candidates WHERE Id = :key";
+    // 
+    //     $params = ["key" => $key_candidate];
+    // 
+    //     return $this->get_request($request, $params)[0];
+    // }
     /**
      * Private method that searches and returns a candidate's qualifications based on its primary key
      *

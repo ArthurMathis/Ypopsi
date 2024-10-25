@@ -131,9 +131,11 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     } elseif(empty($_POST['code-postal'])) {
                         throw new Exception("Le champs code postal doit être rempli par une chaine de caractères !");
                     }
+
                     $candidate = [
                         'name'          => forms_manip::nameFormat($_POST["nom"]), 
                         'firstname'     => forms_manip::nameFormat($_POST["prenom"]), 
+                        'gender'        => $_POST['genre'],
                         'email'         => $_POST["email"], 
                         'phone'         => forms_manip::numberFormat($_POST["telephone"]), 
                         'address'       => $_POST["adresse"],

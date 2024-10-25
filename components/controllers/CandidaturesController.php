@@ -60,6 +60,7 @@ class CandidaturesController extends Controller {
             $candidate = new Candidate(
                 $search['name'],
                 $search['firstname'],
+                $search['gender'],
                 $search['email'],
                 $search['phone'],
                 $search['address'],

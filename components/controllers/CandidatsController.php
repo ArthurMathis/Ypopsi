@@ -23,7 +23,7 @@ class CandidatController extends Controller {
     /// Méthode publique affichant la page candidat
     public function displayCandidate($Key_candidate) {
         $item = $this->Model->getContentCandidate($Key_candidate);
-        return $this->View->getContentCandidate("Candidat " . $item['candidate']['name'] . ' ' . $item['candidate']['firstname'], $item);
+        return $this->View->getContentCandidate("Candidat " . $item['candidate']['Name'] . ' ' . $item['candidate']['Firstname'], $item);
     }
 
     /**

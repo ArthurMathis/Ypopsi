@@ -67,6 +67,7 @@ class CandidaturesModel extends Model {
             $candidate = new Candidate(
                 $candidate['name'], 
                 $candidate['firstname'], 
+                $candidate['gender'],
                 $candidate['email'], 
                 $candidate['phone'], 
                 $candidate['address'],

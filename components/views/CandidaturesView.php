@@ -45,7 +45,7 @@ class CandidaturesView extends View {
         include(COMMON.DS.'import-scripts.php');
 
         // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'candidats.php';
+        include INSCRIPT_FORM.DS.'candidates.php';
         include FORMULAIRES.DS.'waves.php';
 
         // On ajoute le pied de page

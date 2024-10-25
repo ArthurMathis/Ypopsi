@@ -2,9 +2,16 @@
     <div class="form-container">
         <h3>Saisissez les informations du candidat</h3>
         <section>
-            <p>Coordonnées</p>
+            <p>Informations personnes</p>
             <input type="text" id="nom" name="nom" placeholder="Nom">
             <input type="text" id="prenom" name="prenom" placeholder="Prénom">
+            <select id="genre" name="genre">
+                <option value="Homme" selected>Homme</option>
+                <option value="Femme">Femme</option>
+            </select>
+        </section>
+        <section>
+            <p>Coordonnées</p>
             <input type="email" id="email" name="email" placeholder="Adresse email">
             <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone">
         </section>

@@ -728,8 +728,8 @@ abstract class Model {
      * @return Void
      */
     protected function inscriptCandidate(&$candidate) {
-        $request = "INSERT INTO Candidates (Name, Firstname, Phone, Email, Address, City, PostCode, Availability";
-        $values_request = " VALUES (:name, :firstname, :phone, :email, :address, :city, :post_code, :availability";
+        $request = "INSERT INTO Candidates (Name, Firstname, Gender, Phone, Email, Address, City, PostCode, Availability";
+        $values_request = " VALUES (:name, :firstname, :gender, :phone, :email, :address, :city, :post_code, :availability";
 
         if($candidate->getMedicalVisit()) {
             $request .= " , MedicalVisit";
