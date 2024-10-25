@@ -52,23 +52,16 @@ class CandidaturesView extends View {
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant le formulaire de saisie d'une candidature
-    public function getSaisieCandidatureContent($title, $poste=[], $service=[], $typeContrat=[], $source=[]) {
-        // On ajoute l'entete de page
+    public function getInputApplicationContent($title, $job=[], $service=[], $establishment=[], $typeOfContract=[], $source=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-
-        // On ajoute la barre de navigation
         $this->generateMenu(true);
 
-        $scripts = [
-            'models/objects/AutoComplet.js'
-        ];
+        $scripts = ['models/objects/AutoComplet.js'];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'candidatures.php';
+        include INSCRIPT_FORM.DS.'applications.php';
         include FORMULAIRES.DS.'waves.php';
 
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
 }

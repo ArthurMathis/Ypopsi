@@ -26,12 +26,15 @@ class CandidatController extends Controller {
         return $this->View->getContentCandidate("Candidat " . $item['candidate']['name'] . ' ' . $item['candidate']['firstname'], $item);
     }
 
-    /// Méthode publique affichant le formulaire de saisie d'une candidature
-    public function getSaisieCandidature($cle_candidat) { 
-        // On vérifie l'intégrité du candidat
-        $_SESSION['candidat'] = $this->Model->makeCandidat($cle_candidat);
-        // On redirige la page
-        header('Location: index.php?candidatures=saisie-candidature');
+    /**
+     * Public method testing the candidate's data and returning the application's html form
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Void
+     */
+    public function getInputApplication($key_candidate) { 
+        $_SESSION['candidate'] = $this->Model->makeCandidate($key_candidate);
+        header('Location: index.php?applications=input-applications');
     }
     /// Méthode publique affichant le formulaire de saisie d'une proposition
     public function getSaisieProposition($cle_candidat) {

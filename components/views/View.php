@@ -32,7 +32,7 @@ class View {
             ],
             [
                 "intitule" => "Candidatures",
-                "action" => "index.php?candidatures=home",
+                "action" => "index.php?applications=home",
                 "logo" => LOGO.DS."white-candidature.svg"
             ],
             // [

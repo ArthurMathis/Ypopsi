@@ -208,7 +208,8 @@ class CandidatsView extends View {
             $this->getApplicationsBubble($obj);
         else echo "<h2>Aucune candidature enregistrée </h2>";
         
-        $link = 'index.php?candidates=saisie-candidatures&cle_candidat=' . $key_candidate;
+        // $link = 'index.php?applications=input-applications&key_candidate=' . $key_candidate;
+        $link = 'index.php?candidates=input-applications&key_candidate=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php');  
         echo "</section>";
     }

@@ -51,26 +51,6 @@ class CandidaturesModel extends Model {
             true
         );
     }
-    /**
-     * ! méthode déplacée dans Model.php
-     * 
-     * Public method searching a candidate with his name, his firstnam and his email address or his phone number
-     * 
-     * @param String $name The candidate's name
-     * @param String $firstname The candidate's firstname
-     * @param String $email The candidate's email
-     * @param String $phone The candidate's phone number
-     * @return The candidate
-     */
-    // public function searchCandidate($name, $firstname, $email=null, $phone=null): ?Array {
-    //     $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
-    //     $params = [
-    //         ":name" => $name,
-    //         ":firstname" => $firstname, 
-    //         ":email" => $email
-    //     ];
-    //     return $this->get_request($request, $params, true);
-    // }
 
     /**
      * Public method that checks if input data is honest before saving it to the database
@@ -82,7 +62,7 @@ class CandidaturesModel extends Model {
      * @param String $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
      * @return Void
      */
-    public function verify_candidat(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) { 
+    public function verifyCandidate(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) { 
         try {
             $candidate = new Candidate(
                 $candidate['name'], 
@@ -158,7 +138,7 @@ class CandidaturesModel extends Model {
      * @param Array $application The array containing the application's data
      * @return Void
      */
-    public function inscriptCandidature(&$candidate, $application=[]) {
+    public function inscriptApplication(&$candidate, $application=[]) {
         try {
             if($candidate->getKey() === null) 
                 $candidate->setKey($this->searchCandidateByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail())['Id']); 

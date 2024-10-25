@@ -84,32 +84,32 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             break;
     }
 
-} elseif(isset($_GET['candidatures'])) {
+} elseif(isset($_GET['applications'])) {
     // On déclare le controller de candidatures
-    $candidatures = new CandidaturesController();
+    $applications = new CandidaturesController();
 
     try {
         // On sélectionne l'action
-        switch($_GET['candidatures']) {
+        switch($_GET['applications']) {
             // On affiche la page liste des candidatures
             case 'home' :
-                $candidatures->dispayCandidatures();
+                $applications->dispayCandidatures();
                 break; 
 
             // On affiche le formulaire d'inscription d'un candidat
-            case 'saisie-nouveau-candidat': 
+            case 'input-candidate': 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
-                $candidatures->displaySaisieCandidat();
+                $applications->displaySaisieCandidat();
                 break;
 
             // On affiche le formulaire d'inscription d'une candidature    
-            case 'saisie-candidature' : 
+            case 'input-applications' : 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
-                $candidatures->displaySaisieCandidature();
+                $applications->displayInputApplications();
                 break;
 
             // On inscrit un nouveau candidat    
@@ -117,10 +117,20 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
-                    
-                // On récupère les données du formulaire
                 try {
-                    // On récupère le contenu du formulaire d'inscription
+                    if(empty($_POST["nom"])) {
+                        throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
+                    } elseif(empty($_POST["prenom"])) {
+                        throw new Exception("Le champs prenom doit être rempli par une chaine de caractères !");
+                    } elseif(empty($_POST["email"])) {
+                        throw new Exception("Le champs email doit être rempli par une chaine de caractères !");
+                    } elseif(empty($_POST["adresse"])) {
+                        throw new Exception("Le champs adresse doit être rempli par une chaine de caractères !");
+                    } elseif(empty($_POST["ville"])) {
+                        throw new Exception("Le champs ville doit être rempli par une chaine de caractères !");
+                    } elseif(empty($_POST['code-postal'])) {
+                        throw new Exception("Le champs code postal doit être rempli par une chaine de caractères !");
+                    }
                     $candidate = [
                         'name'          => forms_manip::nameFormat($_POST["nom"]), 
                         'firstname'     => forms_manip::nameFormat($_POST["prenom"]), 
@@ -136,19 +146,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null;
                     $medical_visit  = isset($_POST["visite_medicale"][0]) ? $_POST["visite_medicale"][0] : null;
 
-                    if(empty($candidate['name'])) {
-                        throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
-                    } elseif(empty($candidate['firstname'])) {
-                        throw new Exception("Le champs prenom doit être rempli par une chaine de caractères !");
-                    } elseif(empty($candidate['email'])) {
-                        throw new Exception("Le champs email doit être rempli par une chaine de caractères !");
-                    } elseif(empty($candidate['address'])) {
-                        throw new Exception("Le champs adresse doit être rempli par une chaine de caractères !");
-                    } elseif(empty($candidate['city'])) {
-                        throw new Exception("Le champs ville doit être rempli par une chaine de caractères !");
-                    } elseif(empty($candidate['post code'])) {
-                        throw new Exception("Le champs code postal doit être rempli par une chaine de caractères !");
-                    }
+                    $applications->checkCandidate($candidate, $qualifications, $helps, $medical_visit, $coopteur);
 
                 } catch(Exception $e) {
                     forms_manip::error_alert([
@@ -157,50 +155,51 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     ]);
                 }
 
-                $candidatures->checkCandidat($candidate, $qualifications, $helps, $medical_visit, $coopteur);
                 break;
 
             // On inscrit une nouvelle candidature
-            case 'inscript-application' :
+            case 'inscript-applications' :
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
                 try { 
+                    if(empty($_POST["poste"])) 
+                        throw new Exception("Le champs poste doit être rempli par une chaine de caractères");
+                    elseif(empty($_POST["disponibilite"])) 
+                        throw new Exception("Le champs disponibilité doit être rempli par une chaine de caractères");
+                    elseif(empty($_POST["source"])) 
+                        throw new Exception("Le champs source doit être rempli par une chaine de caractères");
+
                     $application = [
                         'job'               => forms_manip::nameFormat($_POST["poste"]), 
                         'service'           => $_POST["service"], 
+                        'establisment'      => $_POST["etablissement"],
                         'type of contract'  => $_POST["type_de_contrat"],
                         'availability'      => $_POST["disponibilite"], 
                         'source'            => forms_manip::nameFormat($_POST["source"])
                     ];
 
-                    if(empty($application['job'])) 
-                        throw new Exception("Le champs poste doit être rempli par une chaine de caractères");
-                    elseif(empty($application['availability'])) 
-                        throw new Exception("Le champs disponibilité doit être rempli par une chaine de caractères");
-                    elseif(empty($application['source'])) 
-                        throw new Exception("Le champs source doit être rempli par une chaine de caractères");
-    
+                    $candidate = $_SESSION['candidate'];
+                    $qualifications = isset($_SESSION['qualifications']) && !empty($_SESSION['diplomes']) ? $_SESSION['diplomes'] : null;
+                    $helps = isset($_SESSION['helps']) && !empty($_SESSION['aide']) ? $_SESSION['aide'] : null;
+                    $coopteur = isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null; 
+
+                    $applications->createApplication($candidate, $application, $qualifications, $helps, $coopteur);
+
+                    // TODO : !! Libérer la mémoire !!
+        
                 } catch(Exception $e) {
                     forms_manip::error_alert([
                         'title' => "Erreur lors de l'inscription de la candidature",
                         'msg' => $e
                     ]);
                 }
-                
-                $candidate = $_SESSION['candidate'];
-                $qualifications = isset($_SESSION['qualifications']) && !empty($_SESSION['diplomes']) ? $_SESSION['diplomes'] : null;
-                $helps = isset($_SESSION['helps']) && !empty($_SESSION['aide']) ? $_SESSION['aide'] : null;
-                $coopteur = isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null; 
 
-                $candidatures->createCandidature($candidate, $application, $qualifications, $helps, $coopteur);
-
-                // TODO : !! Libérer la mémoire !!
                 break;
         
             // On renvoie à la page d'accueil    
             default : 
-                $candidatures->dispayCandidatures();
+                $applications->dispayCandidatures();
                 break;
         }
 
@@ -223,17 +222,15 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 $candidates->displayContent();
                 break;
 
-            // On retourne le formulaire d'ajout d'une candidature    
-            case 'saisie-candidatures': 
+            // Returning the html form of inputing an application  
+            case 'input-applications': 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
 
-                // On vérifie la présence de la clé candidat
-                if(isset($_GET['cle_candidat']) && is_numeric($_GET['cle_candidat']))
-                    $candidates->getSaisieCandidature($_GET['cle_candidat']);
-                // On signale l'erreur    
+                if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
+                    $candidates->getInputApplication($_GET['key_candidate']);
                 else 
-                    throw new Exception("La clé candidat n'a pas pu être réceptionnée");
+                    throw new Exception("La clé candidat n'a pas pu être réceptionné");
                 break;
             
             // On retourne le formulaire d'ajout d'une proposition d'embauche    

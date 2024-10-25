@@ -29,12 +29,13 @@ class CandidaturesController extends Controller {
             $this->Model->getEmployee()
         );
     }
-    public function displaySaisieCandidature() {
-        return $this->View->getSaisieCandidatureContent(
+    public function displayInputApplications() {
+        return $this->View->getInputApplicationContent(
             "Ypopsi - Recherche d'un candidat", 
             $this->Model->getAutoCompJobs(),
             $this->Model->getAutoCompServices(),
-            $this->Model->getAutoCompTypesContracts(),
+            $this->Model->getAutoCompEstablishments(),
+            $this->Model->getAutoCompTypesOfContracts(),
             $this->Model->getAutoCompSources()
         );
     }
@@ -49,9 +50,9 @@ class CandidaturesController extends Controller {
      * @param String $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
      * @return Void
      */
-    public function checkCandidat(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) {
-        $this->Model->verify_candidat($candidate, $qualifications, $helps, $medical_visit, $coopteur);
-        header('Location: index.php?candidatures=saisie-candidature');
+    public function checkCandidate(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) {
+        $this->Model->verifyCandidate($candidate, $qualifications, $helps, $medical_visit, $coopteur);
+        header('Location: index.php?applications=input-applications');
     }
     public function findCandidat($name, $firstname, $email=null, $phone=null) {
         $search = $this->Model->searchCandidat($name, $firstname, $email, $phone);
@@ -73,7 +74,7 @@ class CandidaturesController extends Controller {
 
         $_SESSION['candidat'] = $candidate;
 
-        header('Location: index.php?candidatures=saisie-candidature');
+        header('Location: index.php?applications=input-offers');
     }
     /**
      * Public method generating and registering a new application
@@ -85,7 +86,7 @@ class CandidaturesController extends Controller {
      * @param String $coopteur The employee's name who advises the new candidate 
      * @return Void
      */
-    public function createCandidature(&$candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
+    public function createApplication(&$candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
         $candidate->setAvailability($application['availability']);
         try {
             if($candidate->getKey() === null) {
@@ -98,7 +99,7 @@ class CandidaturesController extends Controller {
                     $candidate->setKey($search['Id']);
             }
             
-            $this->Model->inscriptCandidature($candidate, $application);
+            $this->Model->inscriptApplication($candidate, $application);
 
         } catch(Exception $e) {
             forms_manip::error_alert([
@@ -106,7 +107,7 @@ class CandidaturesController extends Controller {
                 'msg' => $e
             ]);
         } 
-        
+
         alert_manipulation::alert([
             'title' => 'Candidat inscript !',
             'msg' => strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname()) . " a bien été inscrit(e).",

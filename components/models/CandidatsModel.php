@@ -275,41 +275,25 @@ class CandidatsModel extends Model {
         return $this->searchTypeContrat($candidature['Cle_Types_de_contrats'])['Intitule_Types_de_contrats'];
     }
     
-
-    /// Méthode publique construisant un candidat selon son Id
-    public function makeCandidat($index) {
-        // On initialise la requête
-        $request = "SELECT 
-        Id AS id,
-        Nom AS nom,
-        Prenom AS prenom,
-        Telephone AS telephone,
-        Email AS email, 
-        Adresse AS adresse,
-        Ville AS ville,
-        CodePostal AS code_postal,
-        Disponibilite AS disponibilite,
-        Notations AS notation
-
-        FROM candidats 
-        WHERE c.Id = " . $index;
-
-        // On lance la requête
-        $result = $this->get_request($request)[0];
-
-        // On construit la candidat selon la recherche
-        $candidat = new Candidate(
-            $result['nom'], 
-            $result['prenom'], 
-            $result['email'], 
-            $result['telephone'],
-            $result['adresse'], 
-            $result['ville'], 
-            $result['code_postal']
+    /**
+     * Public method building an candidate from his primary key
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Candidate
+     */
+    public function makeCandidate($key_candidate): Candidate {
+        $result = $this->searchCandidate($key_candidate);
+        $candidate = new Candidate(
+            $result['Name'], 
+            $result['Firstname'], 
+            $result['Email'], 
+            $result['Phone'],
+            $result['Address'], 
+            $result['City'], 
+            $result['PostCode']
         );
-        $candidat->setKey($result['id']);
-
-        return $candidat;
+        $candidate->setKey($result['Id']);
+        return $candidate;
     }
 
     /// Méthode publique implémentant le statut d'une candidature
@@ -1215,7 +1199,12 @@ class CandidatsModel extends Model {
             strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats']) . " a démissioné de son travail de " . forms_manip::nameFormat($this->searchPoste($this->searchContrat($cle)['Cle_Postes'])['Intitule_Postes'])
         );
     }
-    /// Méthode supprimant un rendez-vous
+    /**
+     * Public function deleting a meeting and registering the linked logs
+     *
+     * @param Int $key_meeting The meeting's primary key
+     * @return Void
+     */
     public function deletingMeeting($key_meeting) {
         $meeting = $this->searchMeeting($key_meeting);
         $candidate = $this->searchcandidate($meeting['Key_Users']); 

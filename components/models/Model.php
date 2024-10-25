@@ -242,7 +242,7 @@ abstract class Model {
      *
      * @return Void
      */
-    public function getAutoCompTypesContracts() {
+    public function getAutoCompTypesOfContracts() {
         // On initialise la requête
         $request = "SELECT titled FROM Types_of_contracts ORDER BY titled";
 
