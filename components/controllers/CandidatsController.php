@@ -88,11 +88,14 @@ class CandidatController extends Controller {
             $this->Model->getAutoCompEstablishments()
         );
     }
-    /// Méthode publique affichant le formulaire d'édition d'une notation
-    public function getEditNotation($cle_candidat) {
-        return $this->View->getEditNotation(
-            $this->Model->getCandidats($cle_candidat)
-        );
+    /**
+     * Public method returning the ratingd HTML form
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Void
+     */
+    public function getEditRating($key_candidate) {
+        return $this->View->getEditRating($this->Model->searchCandidate($key_candidate));
     }
     /// Méthode publique affichant le formulaire d'édition d'un candidat
     public function getEditCandidat($cle_candidat) {
@@ -116,16 +119,20 @@ class CandidatController extends Controller {
 
     /// Méthode publique donnant le statut acceptée à une candidature
     public function acceptCandidature($cle) {
-        $this->Model->setCandidatureStatut('Acceptée', $cle);
+        $this->Model->setApplicationStatus('Acceptée', $cle);
     }
-    /// Méthode publique donnant le statut refusée à une candidature
-    public function rejectCandidature($cle) {
-        // On refuse la candidature
-        $this->Model->rejectCandidature($cle);
+    /**
+     * Public method dismissing an application
+     *
+     * @param Int $key_applications The application's primary key
+     * @return Void
+     */
+    public function dismissApplications($key_applications) {
+        $this->Model->dismissApplications($key_applications);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'La candidature a été rejettée',
-            'direction' => 'index.php?candidates=' . $this->Model->searchCandidatFromCandidature($cle)['Id_Candidats']
+            'direction' => 'index.php?candidates=' . $this->Model->searchCandidateFromApplication($key_applications)['Id']
         ]);
     }
 
@@ -216,15 +223,20 @@ class CandidatController extends Controller {
         ]);
     }
 
-    /// Méthode publique mettant à jour la notation d'un candidat
-    public function updateNotation($cle_candidat, &$notation=[]) {
-        $this->Model->updateNotation($cle_candidat, $notation);
-        $this->Model->updateNotationLogs($cle_candidat);
-        // header('Location: index.php?candidates=' . $cle_candidat);
+    /**
+     * Public method updating a candidte's rating
+     *
+     * @param Int $key_candidate
+     * @param Array $rating
+     * @return Void
+     */
+    public function updateRating($key_candidate, &$rating=[]) {
+        $this->Model->updateRating($key_candidate, $rating);
+        $this->Model->updateRatingLogs($key_candidate);
         alert_manipulation::alert([
             'title' => "Candidat mise-à-jour",
             'msg' => "Vous avez mis-à-jour la notation du candidat",
-            'direction' => 'index.php?candidates=' . $cle_candidat
+            'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }
     /// Méthode publique mettant à jour le profil d'un candidat

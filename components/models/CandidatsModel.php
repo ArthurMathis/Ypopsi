@@ -289,6 +289,7 @@ class CandidatsModel extends Model {
         $candidate = new Candidate(
             $result['Name'], 
             $result['Firstname'], 
+            $result['Gender'],
             $result['Email'], 
             $result['Phone'],
             $result['Address'], 
@@ -299,24 +300,24 @@ class CandidatsModel extends Model {
         return $candidate;
     }
 
-    /// Méthode publique implémentant le statut d'une candidature
-    public function setCandidatureStatut($statut, $cle) {
-        try {
-            if(empty($statut) || !is_string($statut))
-                throw new Exception('Statut invalide !');
+    /**
+     * Public method updating the application's status
+     *
+     * @param String $status The new application's status
+     * @param Int $key_application The application's primary key
+     * @throws Exception If the status is invalid
+     * @return Void
+     */
+    public function setApplicationStatus($status, $key_application) {
+        if(empty($status) || !is_string($status))
+            throw new Exception('Statut invalide !');
 
-        } catch(Exception $e) {
-            forms_manip::error_alert($e);
-        }
-
-        // On initialise la requête
-        $request = "UPDATE Candidatures SET Statut_Candidatures = :statut WHERE Id_Candidatures = :cle";
+        $request = "UPDATE Applications SET Status = :status WHERE Id = :key_application";
         $params = [
-            'statut' => $statut,
-            'cle' => $cle
+            'status' => $status,
+            'key_application' => $key_application
         ];
 
-        // On exécute la requête
         $this->post_request($request, $params);
     }
     /// Méthode publique implémentant le statut d'une proposition
@@ -332,20 +333,20 @@ class CandidatsModel extends Model {
         $this->post_request($request, $params);
     }
 
-    /// Méthpode publique refusant une candidature et inscrivant les logs
-    public function rejectCandidature(&$cle_candidature) {
-        // On implémente le statut de la candidature
-        $this->setCandidatureStatut('Refusée', $cle_candidature);
-
-        // On récupère les informations de la candidature
-        $candidat = $this->searchCandidatFromCandidature($cle_candidature);
-
-        // On enregistre les logs
+    /**
+     * Public method dismissing an application and registering the logs
+     *
+     * @param Int $key_application The application's primary key
+     * @return Void
+     */
+    public function dismissApplications(&$key_application) {
+        $this->setApplicationStatus('Refusée', $key_application);
+        $candidat = $this->searchCandidateFromApplication($key_application);
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Refus candidature", 
-            "Refus de la candidature de " . strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats']) . 
-            " au poste de " . forms_manip::nameFormat($this->searchPoste($this->searchCandidature($cle_candidature)['Cle_Postes'])['Intitule_Postes'])
+            "Refus de la candidature de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname']) . 
+            " au poste de " . forms_manip::nameFormat($this->searchJob($this->searchApplication($key_application)['Key_Jobs'])['Titled'])
         );
     }
     /// Méthode publique refusant une proposition et inscrivant les logs
@@ -419,7 +420,7 @@ class CandidatsModel extends Model {
         $propositions['type_de_contrat'] = $candidature['Cle_Types_de_contrats'];
 
         // On récupère la clé candidat
-        $cle_candidat = $this->searchCandidatFromCandidature($cle_candidature)['Cle_Candidats'];
+        $cle_candidat = $this->searchCandidateFromApplication($cle_candidature)['Cle_Candidats'];
     }
     /// Méthode construisant une nouvelle proposition d'embauche depuis une cnadidature sans service et l'inscrivant dans la base de données
     public function createPropositionsFromEmptyCandidature($cle_candidature, &$propositions=[], &$cle_candidat) {
@@ -431,7 +432,7 @@ class CandidatsModel extends Model {
         $propositions['type_de_contrat'] = $candidature['Cle_Types_de_contrats'];
 
         // On récupère la clé candidat
-        $cle_candidat = $this->searchCandidatFromCandidature($cle_candidature)['Cle_Candidats'];
+        $cle_candidat = $this->searchCandidateFromApplication($cle_candidature)['Cle_Candidats'];
     }
     /// Méthode construisant nouveau contrat et l'inscrivant dans la base de données
     public function createContrats($cle_candidats, &$contrat=[]) {
@@ -1280,16 +1281,18 @@ class CandidatsModel extends Model {
         unset($candidat);
     }
 
-    /// Méthode publique enregistrant les logs de la mise-à-jour de la notation d'un candidat
-    public function updateNotationLogs($cle_candidat) {
-        // On récupère les informations du candidat
-        $candidat = $this->searchcandidat($cle_candidat);
-
-        // On enregistre les logs
+    /**
+     * Public function registering the update candidte's rating logs
+     *
+     * @param Int $key_candidate
+     * @return Void
+     */
+    public function updateRatingLogs($key_candidate) {
+        $candidat = $this->searchcandidate($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour notation",
-            "Mise-à-jour de la notation de " . strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats'])
+            "Mise-à-jour de la notation de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname'])
         );
     }
     /// Méthode publique enregistrant les logs de la mise-à-jour d'un candidat

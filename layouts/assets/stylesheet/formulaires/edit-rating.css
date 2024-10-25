@@ -9,7 +9,7 @@ textarea {
 
 .etoile-container {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     gap: var(--margin);
     width: 100%;
@@ -34,8 +34,4 @@ textarea {
 }
 .etoile-container input[type="checkbox"]:is(:checked, .selected)::after {
     opacity: 1;
-}
-
-.double-items {
-    justify-content: center;
 }

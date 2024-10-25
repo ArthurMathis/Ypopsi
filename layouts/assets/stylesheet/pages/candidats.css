@@ -41,9 +41,6 @@ aside header,
 aside section {
     width: 100%;
 }
-aside p {
-    line-height: 1.4rem;
-}
 aside footer {
     display: flex;
     justify-content: right;
@@ -69,7 +66,7 @@ aside header {
 aside header div {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 
     width: 100%;
     height: fit-content;
@@ -77,6 +74,9 @@ aside header div {
 aside header div p {
     font-family: "Roboto Bold";
     text-align: right;
+}
+aside header > p {
+    line-height: var(--font-size-medium);
 }
 aside section {
     display: flex;
@@ -88,6 +88,10 @@ aside header h2 {
 }
 aside header h3 {
     font-size: var(--font-size-medium);
+}
+aside header article {
+    padding: var(--margin) 0;
+    text-wrap: nowrap;
 }
 aside header .notation {
     display: flex;
@@ -111,15 +115,14 @@ aside section > div {
     display: flex;
     justify-content: space-between;
 }
-aside section > div > p:first-of-type {
-    font-family: 'Roboto Bold';
-}
-aside section > div > p:not(:first-of-type) {
-    text-align: end;
-}
 aside section > div > div {
     max-width: 75%;
     text-align: right;
+}aside section > div > p:first-of-type {
+    font-family: 'Roboto Medium';
+}
+aside section > div > p:not(:first-of-type) {
+    text-align: end;
 }
 
 /* Mise en forme de la barre de navigation intra page */

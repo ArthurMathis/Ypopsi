@@ -99,7 +99,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche le formulaire d'inscription d'un candidat
             case 'input-candidate': 
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $applications->displaySaisieCandidat();
                 break;
@@ -107,7 +107,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche le formulaire d'inscription d'une candidature    
             case 'input-applications' : 
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $applications->displayInputApplications();
                 break;
@@ -115,7 +115,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On inscrit un nouveau candidat    
             case 'inscript-candidate' : 
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 try {
                     if(empty($_POST["nom"])) {
@@ -162,7 +162,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On inscrit une nouvelle candidature
             case 'inscript-applications' :
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 try { 
                     if(empty($_POST["poste"])) 
@@ -227,7 +227,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // Returning the html form of inputing an application  
             case 'input-applications': 
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
                     $candidates->getInputApplication($_GET['key_candidate']);
@@ -238,7 +238,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On retourne le formulaire d'ajout d'une proposition d'embauche    
             case 'saisie-propositions' :
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On vérifie la présence de la clé candidat
                 if(isset($_GET['cle_candidat']) && is_numeric($_GET['cle_candidat']))
@@ -251,7 +251,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On retourne le fomulaire d'ajout d'un contrat    
             case 'saisie-contrats':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On vérifie la présence de la clé candidat
                 if(isset($_GET['cle_candidat']) && is_numeric($_GET['cle_candidat']))
@@ -264,7 +264,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On retourne le formulaire d'ajout d'une proposition dans le cas où elle se construit à partir d'une candidature    
             case 'saisie-propositions-from-candidature':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On vérifie la présence de la clé candidature
                 if(isset($_GET['cle_candidature']) && is_numeric($_GET['cle_candidature']))
@@ -277,7 +277,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On retounre le formulaire d'ajout d'une proposition dans le cas pù elle se construit à partir d'une candidature sans service
             case 'saisie-propositions-from-empty-candidature':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On vérifie la présence de la clé candidature
                 if(isset($_GET['cle_candidature']) && is_numeric($_GET['cle_candidature']))
@@ -290,7 +290,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // Returning the html form of inputing a meeting
             case 'input-meeting':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 if(isset($_GET['key_candidate']))
                     $candidates->getInputMeeting($_GET['key_candidate']);
@@ -301,7 +301,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On inscrit une proposition
             case 'inscript-propositions':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On récupère les données du formulaire
                 try {
@@ -372,7 +372,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On inscrit une proposition construite à partir d'une candidature 
             case 'inscript-propositions-from-candidatures':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On récupère les informations
                 try {
@@ -417,7 +417,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On inscrit une proposition construite à partir d'une candidature sans service    
             case 'inscript-propositions-from-empty-candidatures':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                 
                 try {
                     // On récupère les données du formulaire
@@ -460,15 +460,12 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     throw new Exception("Clé candidat introuvable !");
                 break;       
 
-            // On refuse une candidature    
-            case 'reject-candidatures':
+            case 'dismiss-applications':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                // On test la présence de la clé candidature
-                if(isset($_GET['cle_candidature']) && !empty($_GET['cle_candidature']))
-                    $candidates->rejectCandidature($_GET['cle_candidature']);
-                // On signale l'erreur
+                if(isset($_GET['key_applications']) && !empty($_GET['key_applications']))
+                    $candidates->dismissApplications($_GET['key_applications']);
                 else 
                     throw new Exception("Clé de candidature est introuvable !");
                 break;  
@@ -476,7 +473,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On refuse une proposition    
             case 'reject-propositions':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On test la présence de la clé contrat
                 if(isset($_GET['cle_proposition']))
@@ -489,7 +486,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On construit un contrat    
             case 'inscript-contrats':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On récupère les données du formulaire
                 $infos = [
@@ -541,7 +538,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On construit un contrat depuis une proposition    
             case 'inscript-contrats-from-proposition':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On test la présence de la clé contrat
                 if(isset($_GET['cle_proposition']))
@@ -554,7 +551,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On construit un rendez-vous    
             case 'inscript-meeting':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 try {
                     $data = [
@@ -589,7 +586,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On ajoute une démission à un contrat
             case 'demission':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On test la présence de la clé contrat
                 if(isset($_GET['cle_contrat']))
@@ -599,22 +596,20 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     throw new Exception("La clé de contrat est introuvable !");
                 break; 
                 
-            // On affiche le formulaire de mise-à-jour de la notation d'unn candidat    
-            case 'edit-notation':
+            // Displaying ratings edit HTML form   
+            case 'edit-rating':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                // On test la présence de la clé candidat
-                if(isset($_GET['cle_candidat']))
-                    $candidates->getEditNotation($_GET['cle_candidat']);
-                // On signale l'erreur
+                if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
+                    $candidates->getEditRating($_GET['key_candidate']);
                 else 
                     throw new Exception("La clé candidat est introuvable !");
                 break;  
             // On affiche le formulaire de mise-à-jour des données d'un cadidat
             case 'edit-candidat':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On test la présence de la clé candidat
                 if(isset($_GET['cle_candidat']))
@@ -627,27 +622,29 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // Displaying the meeting editing form
             case 'edit-meeting':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                 else 
                     $candidates->getEditMeetings($_GET['key_meeting']); 
                 break;    
             
             // On met-à-jour la notation d'un candidat
-            case 'update-notation':
+            case 'update-rating':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                // On vé'rifie l'intégrité des données
                 try {
-                    $notation = [
+                    $rating = [
                         'notation' => max($_POST['notation']),
                         'a' => isset($_POST['a']) ? 1 : 0,
                         'b' => isset($_POST['b']) ? 1 : 0,
                         'c' => isset($_POST['c']) ? 1 : 0,
                         'description' => $_POST['description']
                     ];
+                    if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
+                        $candidates->updateRating($_GET['key_candidate'], $rating);
+                    else 
+                        throw new Exception("La clé candidat est introuvable !");
 
-                // On récupère les éventuelles erreurs    
                 } catch(Exception $e) {
                     forms_manip::error_alert([
                         'title' => "Erreur lors de la mise-à-jour du candidat",
@@ -655,18 +652,12 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     ]);
                 }
 
-                // On tets la présence de la clé candidat
-                if(isset($_GET['cle_candidat']))
-                    $candidates->updateNotation($_GET['cle_candidat'], $notation);
-                // On signale l'erreur
-                else 
-                    throw new Exception("La clé candidat est introuvable !");
                 break;  
                 
             // On met-à-jour les données d'un candidat
             case 'update-candidat':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On récupère les donnnées du formulaire
                 try {
@@ -702,7 +693,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // Updating a meeting    
             case 'update-meeting':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 try {
                     if(empty($_POST['recruteur']))
@@ -737,7 +728,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // Deleting a meeting
             case 'delete-meeting': 
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                 else
                     $candidates->deleteMeeting($_GET['key_meeting'], $_GET['key_candidate']);
                 break;    
@@ -761,7 +752,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
     // On vérifie s'il s'agit d'une clé de candidat
     if(is_numeric($_GET['preferences'])) {
         if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-            throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+            throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
         
         if($_GET['preferences'] == $_SESSION['user_key']) 
             header('Location: index.php?preferences=home');
@@ -822,7 +813,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche la formulaire de mise-à-jour d'un 
             case 'get-reset-password':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 if(isset($_GET['cle_utilisateur']) && !empty($_GET['cle_utilisateur']) && is_numeric($_GET['cle_utilisateur'])) {
                     $_SESSION['password'] = PasswordGenerator::random_password();
@@ -840,7 +831,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche la formulaire de mise-à-jour d'un 
             case 'reset-password':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 if(isset($_GET['cle_utilisateur']) && !empty($_GET['cle_utilisateur']) && is_numeric($_GET['cle_utilisateur'])) {
                     $preferences->resetPassword($_SESSION['password'], $_GET['cle_utilisateur']);
@@ -879,7 +870,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche la liste des utilisateurs
             case 'liste-utilisateurs':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displayUtilisateurs();
                 break;
@@ -887,7 +878,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche le formulaire d'ajout d'utilisateurs
             case 'saisie-utilisateur':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displaySaisieUtilisateur();
                 break;     
@@ -895,7 +886,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On prépare l'inscritpion du nouvel utilisateur
             case 'get-inscription-utilisateur':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On récupère les données du formulaire
                 try {
@@ -943,7 +934,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On inscrit un nouvel utilisateur
             case 'inscription-utilisateur':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On vérifie l'intégrité des données
                 try {
@@ -984,7 +975,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche la liste des nouveaux utilisateurs
             case 'liste-nouveaux-utilisateurs':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displayNouveauxUtilisateurs();
                 break;    
@@ -992,7 +983,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche l'historique de connexions des utilisateurs
             case 'connexion-historique':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displayConnexionHistorique();
                 break;  
@@ -1000,7 +991,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche l'historique d'actions des utilisateurs
             case 'action-historique':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displayActionHistorique();
                 break;    
@@ -1008,7 +999,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche la liste des postes de la fondation    
             case 'liste-postes':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displayPostes();
                 break;
@@ -1016,7 +1007,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche le formulaire d'ajout de poste    
             case 'saisie-poste':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displaySaisiePoste();
                 break;    
@@ -1024,7 +1015,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On inscrit un nouveau poste
             case 'inscription-poste':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On récupère les informations du formulaire
                 try {
@@ -1051,7 +1042,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche la liste des services de la fondation
             case 'liste-services':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displayServices();
                 break;
@@ -1083,7 +1074,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche la liste des établissements de la fondation
             case 'liste-etablissements':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displayEtablissements();
                 break;
@@ -1091,7 +1082,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche le formulaire d'ajout d'établissement
             case 'saisie-etablissement':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displaySaisieEtablissement();
                 break;  
@@ -1099,7 +1090,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On inscrit un nouvel établissement
             case 'inscription-etablissement':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On récupère les données du formulaire
                 try {
@@ -1144,7 +1135,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche la listes des pôles de la fondation
             case 'liste-poles':
                 if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displayPoles();
                 break;
@@ -1152,7 +1143,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche le formulaire d'ajout d'un pôle
             case 'saisie-pole':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displaySaisiePole();
                 break;
@@ -1160,7 +1151,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On inscrit un nouveau pôle
             case 'inscription-pole':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 // On récupère les données du formulaire
                 try {
@@ -1198,14 +1189,14 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             // On affiche le formulaire d'ajout d'un diplome
             case 'saisie-diplome':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 break;
                 
             // On inscrit un nouveau diplome
             case 'inscript-diplome':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie du site... ");
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 break;    
 

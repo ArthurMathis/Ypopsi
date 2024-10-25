@@ -430,17 +430,13 @@ abstract class Model {
      * @param Int $cle The application primary key
      * @return Array
      */
-    public function searchCandidatFromCandidature($cle): Array {
-        // On initialise la requête
-        $request = "SELECT * 
-        FROM Candidatures 
-        INNER JOIN Candidats ON Candidatures.Cle_Candidats = Candidats.Id_Candidats
-        WHERE Candidatures.Id_Candidatures = :cle";
-        $params = [
-            'cle' => $cle
-        ];
+    public function searchCandidateFromApplication($key_application): Array {
+        $request = "SELECT c.Id, c.Name, c.Firstname, c.Gender, c.Email, c.Phone, c.Address, c.City, c.PostCode,  c.Availability, c.MedicalVisit,  c.Rating, c.Description, c.Is_delete, c.A,  c.B,  c.C
+        FROM Applications 
+        INNER JOIN Candidates AS c ON Applications.Key_Candidates = c.Id
+        WHERE Applications.Id = :key_application";
+        $params = ['key_application' => $key_application];
 
-        // On lance la requête
         return $this->get_request($request, $params, true, true);
     }
 
@@ -505,9 +501,9 @@ abstract class Model {
      * @param Int $application The application primary key
      * @return Array
      */
-    protected function searchApplication($application): Array {
-        $request = "SELECT * FROM Candidatures WHERE Id = :application";
-        $params = ['application' => $application];
+    protected function searchApplication($key_application): Array {
+        $request = "SELECT * FROM Applications WHERE Id = :key_application";
+        $params = ['key_application' => $key_application];
 
         return $this->get_request($request, $params, true, true);
     }
@@ -557,15 +553,15 @@ abstract class Model {
      * @param Int|String $job The job primary key or intitule
      * @return Array
      */
-    protected function searchJob($job): Array {
-        if(is_numeric($job)) 
-            $request = "SELECT * FROM Jobs WHERE Id = :job";    
-        elseif(is_string($job)) 
-            $request = "SELECT * FROM Jobs WHERE Titled = :job";
+    protected function searchJob($key_job): Array {
+        if(is_numeric($key_job)) 
+            $request = "SELECT * FROM Jobs WHERE Id = :key_job";    
+        elseif(is_string($key_job)) 
+            $request = "SELECT * FROM Jobs WHERE Titled = :key_job";
         else 
             throw new Exception("Erreur lors de la recherche de poste. La saisie du poste est mal typée. Il doit être un identifiant (entier positif) ou une chaine de caractères !");
         
-        $params = ["job" => $job];
+        $params = ["key_job" => $key_job];
 
         return $this->get_request($request, $params, true, true);
     }
@@ -1018,21 +1014,17 @@ abstract class Model {
      * @param Array $notation The candidate's data Array
      * @return Void
      */
-    public function updateNotation($cle_candidat, &$notation=[]) {
-        // On initialise la requête
-        $request = "UPDATE Candidats 
-        SET Notations_Candidats = :notation, Descriptions_Candidats = :description, A_candidats = :a, B_Candidats = :b, C_Candidats = :c
-        WHERE Id_Candidats = :cle";
+    public function updateRating($key_candidate, &$rating=[]) {
+        $request = "UPDATE Candidates SET Rating = :rating, Description = :description, A = :a, B = :b, C = :c WHERE Id = :key_candidate";
         $params = [
-            'notation' => $notation['notation'],
-            'description' => $notation['description'],
-            'a' => $notation['a'],
-            'b' => $notation['b'],
-            'c' => $notation['c'],
-            'cle' => $cle_candidat
+            'rating' => $rating['notation'],
+            'description' => $rating['description'],
+            'a' => $rating['a'],
+            'b' => $rating['b'],
+            'c' => $rating['c'],
+            'key_candidate' => $key_candidate
         ];
 
-        // On lance la requête
         $this->post_request($request, $params);
     }
     /**

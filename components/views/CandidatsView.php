@@ -275,17 +275,22 @@ class CandidatsView extends View {
 
         $this->generateCommonFooter();
     }
+    /**
+     * Public method returning the candidates list
+     *
+     * ! Informaion à vérifier (usage dans liste candidats)
+     * 
+     * @param String $titre The HTML Page titled
+     * @param Array $items The array containing the candidates' data
+     * @return Void
+     */
     public function getContent($titre, &$items=[]) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css']);
-
-        // On ajoute les barres de navigation
         $this->generateMenu();
         include BARRES.DS.'liste-candidats.php';
 
         $this->getListItems($titre, $items, null, 'main-liste');
 
-        // On importe les scripts JavaScript
         $scripts = [
             'views/liste-view.js',
             'models/liste-model.js',
@@ -294,11 +299,19 @@ class CandidatsView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
 
-    /// Méthode publique retournant la formulaire d'ajout d'une proposition
+    /**
+     * Public function Returning the offers' html form 
+     *
+     * @param String $title The HTML Page title
+     * @param Int $cle_candidat The candidate's primary key
+     * @param Array $poste The array containing the jobs list
+     * @param Array $service The array containing the services list
+     * @param Array $typeContrat The array containing the tupes of contracts list
+     * @return Void
+     */
     public function getContentProposition($title, $cle_candidat, $poste=[], $service=[], $typeContrat=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true);
@@ -399,26 +412,24 @@ class CandidatsView extends View {
         $this->generateCommonFooter();
     }
 
-
-    public function getEditNotation($item=[]) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader('Ypopsi - Modification de la notation de ' . forms_manip::majusculeFormat($item['nom']) . ' ' . $item['prenom'], 
-        [FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-notation.css']);
-
-        // On ajoute les barres de navigation
+    /**
+     * Public method building and returning the editing ratings HTML form
+     *
+     * @param Array $candidate The arrayu containing the candidate's data
+     * @return View The HTML page
+     */
+    public function getEditRating($candidate=[]) {
+        $this->generateCommonHeader(
+            'Ypopsi - Modification de la notation de ' . forms_manip::majusculeFormat($candidate['Name']) . ' ' . $candidate['Firstname'], 
+            [FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-rating.css']
+        );
         $this->generateMenu(true);
 
-        // On ajoute le formulaire de connexion
-        include EDIT_FORM.DS.'notation.php';
+        include EDIT_FORM.DS.'rating.php';
         include FORMULAIRES.DS.'waves.php';
 
-        // On importe les scripts JavaScript
-        $scripts = [
-            'controllers/edit-notation-controller.js'
-        ];
+        $scripts = ['controllers/edit-rating-controller.js'];
         include(COMMON.DS.'import-scripts.php');
-
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
     public function getEditCandidat($item=[]) {

@@ -57,3 +57,4 @@ define('INVITE', 5);
 define("COOPTATION", "Prime de cooptation");
 
 define("ETOILE", "layouts/assets/img/etoile.svg");
+define('ETOILE_BK',"layouts/assets/img/etoile_noire.svg");

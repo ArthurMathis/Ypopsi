@@ -5,22 +5,22 @@
     <header>
         <div>
             <h2><?= $item['candidate']['Gender'] ? 'M' : 'Mme'; ?>. <?= $item['candidate']['Name']; ?> <?= $item['candidate']['Firstname']; ?></h2>
-            <?php if(empty($item['candidate']['Rating'])) : ?>
-                <p>Aucune notation</p>
-            <?php else: ?>    
-                <li class="notation">
-                    <ul class="bille_notation <?php if(0 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
-                    <ul class="bille_notation <?php if(1 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
-                    <ul class="bille_notation <?php if(2 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
-                    <ul class="bille_notation <?php if(3 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
-                    <ul class="bille_notation <?php if(4 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
-                </li>
-            <?php endif ?>  
-        </div>
-        <div>
-            <?php if($item['candidate']['A'] || $item['candidate']['B'] || $item['candidate']['C']): ?>
-                <p>Alerte notation !</p>
-            <?php endif ?>
+            <article>
+                <?php if(empty($item['candidate']['Rating'])) : ?>
+                    <p>Aucune notation</p>
+                <?php else: ?>    
+                    <li class="notation">
+                        <ul class="bille_notation <?php if(0 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                        <ul class="bille_notation <?php if(1 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                        <ul class="bille_notation <?php if(2 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                        <ul class="bille_notation <?php if(3 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                        <ul class="bille_notation <?php if(4 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
+                    </li>
+                <?php endif ?> 
+                <?php if($item['candidate']['A'] || $item['candidate']['B'] || $item['candidate']['C']): ?>
+                    <p>Alerte notation !</p>
+                <?php endif ?>
+            </article>
         </div>
         <h3><?= $item['applications'][0]['type_de_contrat']; ?></h3>
         <p><?= forms_manip::nameFormat($item['applications'][0]['statut']); ?></p>  
