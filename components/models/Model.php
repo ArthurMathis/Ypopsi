@@ -283,6 +283,24 @@ abstract class Model {
     // METHODES DE RECHERCHE DANS LA BASE DE DONNEES //
 
     /**
+     * Protected method searching one hub in the database
+     *
+     * @param Int|String $pole The hub primary key or intitule
+     * @return Array
+     */
+    protected function searchPole($pole): Array {
+        if(is_numeric($pole))
+            $request = "SELECT * FROM Poles WHERE Id = :pole";
+        elseif(is_string($pole))
+            $request = "SELECT * FROM Poles WHERE Titled = :pole";  
+        else 
+            throw new Exception("paramètre invalide");
+
+        $params = ['pole' => $pole];
+
+        return $this->get_request($request, $params, true, true);    
+    }
+    /**
      * Public method searching one establishment 
      *
      * @param Int|String $establishment The establishment primary key or intitule 
@@ -301,29 +319,40 @@ abstract class Model {
         return $this->get_request($request, $params, true, true);
     }
     /**
-     * Protected method searching one hub in the database
+     * Protected method searching one service in the database
      *
-     * @param Int|String $pole The hub primary key or intitule
+     * @param Int|String $service The service primary key or intitule
      * @return Array
      */
-    protected function searchPole($pole): Array {
-        if(is_numeric($pole)) {
-            $request = "SELECT * FROM Poles WHERE Id_Poles = :cle";
-            $params = [
-                'cle' => $pole
-            ];
-        
-        } elseif(is_string($pole)) {
-            $request = "SELECT * FROM Poles WHERE Intitule_Poles = :intitule";
-            $params = [
-                'intitule' => $pole
-            ];
-            
-        } else 
-            throw new Exception("paramètre invalide");
+    protected function searchService($service): Array {
+        if(is_numeric($service))
+            $request = "SELECT * FROM Services WHERE Id = :service";
+        elseif(is_string($service))
+            $request =  "SELECT * FROM Services WHERE Titled = :service";
+        else 
+            throw new Exception("La saisie du type de contrat est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
 
-        return $this->get_request($request, $params, true, true);    
+        $params = ['service' => $service];
+
+        return $this->get_request($request, $params, true, true);
     }
+    /**
+     * Protected method searching and returning one BelongTo
+     *
+     * @param Int $key_service The service's primary key
+     * @param Int $key_establishment The establishment's primary key
+     * @return Array|NULL
+     */
+    protected function searchBelongTo($key_service, $key_establishment): ?Array {
+        $request = "SELECT * FROM Belong_to WHERE Key_Services = :key_service AND Key_Establishments = :key_establishment";
+        $params = [
+            'key_service' => $key_service,
+            'key_establishment' => $key_establishment
+        ];
+
+        return $this->get_request($request, $params, true);
+    }
+    
     /**
      * Protected method searching one role in the database
      *
@@ -566,24 +595,6 @@ abstract class Model {
         return $this->get_request($request, $params, true, true);
     }
     /**
-     * Protected method searching one service in the database
-     *
-     * @param Int|String $service The service primary key or intitule
-     * @return Array
-     */
-    protected function searchService($service): Array {
-        if(is_numeric($service))
-            $request = "SELECT * FROM Services WHERE Id = :service";
-        elseif(is_string($service))
-            $request =  "SELECT * FROM Services WHERE Titled = :service";
-        else 
-            throw new Exception("La saisie du type de contrat est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
-
-        $params = ['service' => $service];
-
-        return $this->get_request($request, $params, true, true);
-    }
-    /**
      * Protected method searching one assistance in the database
      *
      * @param Int|String $aide The assistance primary key or intitule
@@ -687,17 +698,10 @@ abstract class Model {
      * @return Void
      */
     protected function inscriptActions(&$key_user, &$key_action, $description=null) {
-        try {
-            if(empty($key_user) || !is_numeric($key_user))
-                throw new Exception("La clé Utilisateur est nécessaire pour l'enregistrement d'une action !");
-            elseif(empty($key_action) || !is_numeric($key_action))
-                throw new Exception("La clé Action est nécessaire pour l'enregistrement d'une action !");
-
-        } catch(Exception $e) {
-            forms_manip::error_alert([
-                'msg' => $e
-            ]);
-        }
+        if(empty($key_user) || !is_numeric($key_user))
+            throw new Exception("La clé Utilisateur est nécessaire pour l'enregistrement d'une action !");
+        elseif(empty($key_action) || !is_numeric($key_action))
+            throw new Exception("La clé Action est nécessaire pour l'enregistrement d'une action !");
         
         if(!empty($description)) {
             $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, Description) VALUES (:user_id, :type_id, :description)";
@@ -754,53 +758,6 @@ abstract class Model {
         $this->post_request($request, $params);
     }
     /**
-     * Protected method regstering one Postuler_a in the database
-     *
-     * @param Int $candidat The candidate's primary key
-     * @param Int $instant The instant primary key
-     * @return Void
-     */
-    protected function inscriptPostuler_a($candidat, $instant) {
-        // On initialise la requête 
-        $request = "INSERT INTO Postuler_a (Cle_Candidats, Cle_Instants) VALUES (:candidat, :instant)";
-        $params = [
-            "candidat" => $candidat, 
-            "instant" => $instant
-        ];
-
-        // On lance la requête
-        $this->post_request($request, $params);
-    }
-    /**
-     * Protected method registering one Appliquer_a ine the database
-     *
-     * @param Int $cle_candidature The application primary key
-     * @param Int $cle_service The service primary key
-     * @return Void
-     */
-    protected function inscriptAppliquer_a($cle_candidature, $cle_service) {
-        // On vérifie l'intégrité des données
-        try {
-            if(empty($cle_candidature) || empty($cle_service)) 
-                throw new Exception('Données éronnées. Pour inscrire un Appliquer_a, la clé de candidature et la clé de service sont nécessaires');
-
-        } catch(Exception $e) {
-            forms_manip::error_alert([
-                'msg' => $e
-            ]);
-        }
-        
-        // On inititalise la requête
-        $request = "INSERT INTO Appliquer_a (Cle_Candidatures, Cle_Services) VALUES (:candidature, :service)";
-        $params = [
-            "candidature" => $cle_candidature,
-            "service" => $cle_service
-        ];
-
-        // On exécute la requête
-        $this->post_request($request, $params);
-    }
-    /**
      * Protected method registering one Have_the_right_to in the database
      *
      * @param Int $cle_candidat The candidate's primary key
@@ -828,28 +785,12 @@ abstract class Model {
         $this->post_request($request, $params);
     }
     /**
-     * Protected method registerin one Proposer_a in the database
-     *
-     * @param Int $cle_candidat The candidate's primary key
-     * @param Int $cle_instant The instant primary key
-     * @return Void
-     */
-    protected function inscriptProposer_a($cle_candidat, $cle_instant) {
-        $request = "INSERT INTO Proposer_a (Cle_candidats, Cle_Instants) VALUES (:candidat, :instant)";
-        $params = [
-            'candidat' => $cle_candidat,
-            'instant' => $cle_instant
-        ];
-
-        $this->post_request($request, $params);
-    }
-    /**
      * Protected method registering one meeting in the database 
      *
      * @param Int $key_user The user's primary key (recruiter) 
      * @param Int $key_candidate The candidate's primary key
      * @param Int $key_establishment The establishment primary key
-     * @param Int $moment The meeting's moment 
+     * @param Int $moment The meeting's moment timestamp
      * @return Void
      */
     protected function inscriptMeetings($key_user, $key_candidate, $key_establishment, $moment) {
@@ -863,13 +804,132 @@ abstract class Model {
     
         $this->post_request($request, $params);
     }
-    // protected function inscriptMeetings($key_user, $key_candidate, $key_establishment, $moment) {
-    //     $request = "INSERT INTO Meetings (Key_Users, Key_Candidates, Key_Establishments, Date) VALUES (:key_user, :key_candidate, :key_establishment, :moment)";
+    // TODO : séparation de la méthode CandidaturesModel::inscriptApplication en Model::inscriptApplication et CandiatureModel::createApplication //
+    /**
+     * Protected methood registering a new contract
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Int $key_job The job's primary key
+     * @param Int $key_service The service's primary key
+     * @param Int $key_establishment The establishment's primary key
+     * @param Int $key_type_of_contract The type of contracts primary key
+     * @param Int $start_date The start date timestamp
+     * @param Int $end_date The end date timestamp
+     * @param Int $signature_date The signature date timestamp
+     * @param Int $salary The candidate's salary
+     * @param Int $hourly_rate The number of hours to be completed in a working week
+     * @param Bool $night_work If the candidate has to work on nights
+     * @param Bool $wk_work If the candidate has to work on week-ends
+     * @return Void
+     */
+    protected function inscriptContracts($key_candidate, $key_job, $key_service, $key_establishment, $key_type_of_contract, $start_date, $end_date = null, $signature_date = null, $salary = null, $hourly_rate = null, $night_work = null, $wk_work = null) {
+        $request = "INSERT INTO Contracts (Key_Candidates, Key_Jobs, Key_Services, Key_Establishments, Key_Types_of_contracts, StartDate";
+        $request_values = " VALUES (:key_candidate, :key_job, :key_service, :key_establishment, :key_type_of_contract, :start_date";
+        $params = [
+            'key_candidate' => $key_candidate,
+            'key_job' => $key_job,
+            'key_service' => $key_service,
+            'key_establishment' => $key_establishment,
+            'key_type_of_contract' => $key_type_of_contract,
+            'start_date' => $start_date
+        ];
+
+        if(!empty($end_date)) {
+            $request .= ", EndDate";
+            $request_values .= ", :end_date";
+            $params['end_date'] = $end_date;
+        }
+        if(!empty($end_signature_datedate)) {
+            $request .= ", SignatureDate";
+            $request_values .= ", :signature_date";
+            $params['signature_date'] = $signature_date;
+        }
+        if(!empty($salary)) {
+            $request .= ", Salary";
+            $request_values .= ", :salary";
+            $params['salary'] = $salary;
+        }
+        if(!empty($hourly_rate)) {
+            $request .= ", HourlyRate";
+            $request_values .= ", :hourly_rate";
+            $params['hourly_rate'] = $hourly_rate;
+        }
+        if(!empty($night_work)) {
+            $request .= ", NightWork";
+            $request_values .= ", :night_work";
+            $params['night_work'] = $night_work;
+        }
+        if(!empty($wk_work)) {
+            $request .= ", WeekEndWork";
+            $request_values .= ", :wk_work";
+            $params['wk_work'] = $wk_work;
+        }
+
+        $request .= ')' . $request_values . ')';
+        unset($request_values);
+
+        $this->post_request($request, $params);
+    }
+    /**
+     * Protected method regstering one Postuler_a in the database
+     *
+     * @param Int $candidat The candidate's primary key
+     * @param Int $instant The instant primary key
+     * @return Void
+     */
+    // protected function inscriptPostuler_a($candidat, $instant) {
+    //     // On initialise la requête 
+    //     $request = "INSERT INTO Postuler_a (Cle_Candidats, Cle_Instants) VALUES (:candidat, :instant)";
     //     $params = [
-    //         ":key_user" => $key_user, 
-    //         ":key_candidate" => $key_candidate, 
-    //         ":key_establishment" => $key_establishment, 
-    //         ":moment" => $moment
+    //         "candidat" => $candidat, 
+    //         "instant" => $instant
+    //     ];
+    // 
+    //     // On lance la requête
+    //     $this->post_request($request, $params);
+    // }
+    /**
+     * Protected method registering one Appliquer_a ine the database
+     *
+     * @param Int $cle_candidature The application primary key
+     * @param Int $cle_service The service primary key
+     * @return Void
+     */
+    //protected function inscriptAppliquer_a($cle_candidature, $cle_service) {
+    //    // On vérifie l'intégrité des données
+    //    try {
+    //        if(empty($cle_candidature) || empty($cle_service)) 
+    //            throw new Exception('Données éronnées. Pour inscrire un Appliquer_a, la clé de candidature et la clé de service sont nécessaires');
+    //
+    //    } catch(Exception $e) {
+    //        forms_manip::error_alert([
+    //            'msg' => $e
+    //        ]);
+    //    }
+    //    
+    //    // On inititalise la requête
+    //    $request = "INSERT INTO Appliquer_a (Cle_Candidatures, Cle_Services) VALUES (:candidature, :service)";
+    //    $params = [
+    //        "candidature" => $cle_candidature,
+    //        "service" => $cle_service
+    //    ];
+    //
+    //    // On exécute la requête
+    //    $this->post_request($request, $params);
+    //}
+    
+    /**
+     * Protected method registerin one Proposer_a in the database
+     *
+     * @param Int $cle_candidat The candidate's primary key
+     * @param Int $cle_instant The instant primary key
+     * @return Void
+     */
+    // protected function inscriptProposer_a($cle_candidat, $cle_instant) {
+    //     $request = "INSERT INTO Proposer_a (Cle_candidats, Cle_Instants) VALUES (:candidat, :instant)";
+    //     $params = [
+    //         'candidat' => $cle_candidat,
+    //         'instant' => $cle_instant
     //     ];
     // 
     //     $this->post_request($request, $params);
@@ -1109,5 +1169,15 @@ abstract class Model {
 
         // On lance la requête
         $this->post_request($request, $params);
+    }
+    /**
+     * Protected method verifying if a service is in an establishment
+     *
+     * @param Int $key_service The service's primary key
+     * @param Int $key_establishment The establishment's primary key
+     * @return Bool
+     */
+    protected function verifyService($key_service, $key_establishment): Bool {
+        
     }
 }

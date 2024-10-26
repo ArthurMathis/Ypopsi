@@ -33,7 +33,7 @@
     <content>
         <div>
             <p>Effectuée le</p>
-            <p><?= $item['date']; ?></p>
+            <p><?= substr($item['date'], 0, 10); ?></p>
         </div>
         <div>
             <p>Effectuée via</p>

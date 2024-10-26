@@ -160,10 +160,10 @@ CREATE TABLE Contracts (
   WeekEndWork BOOLEAN DEFAULT FALSE,
 
   Key_Candidates INTEGER NOT NULL,
-  Key_Types_of_contracts INTEGER NOT NULL,
   Key_Jobs INTEGER NOT NULL,
   Key_Services INTEGER NOT NULL,
   Key_Establishments INTEGER NOT NULL,
+  Key_Types_of_contracts INTEGER NOT NULL,
 
   FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id),
   FOREIGN KEY (Key_Types_of_contracts) REFERENCES Types_of_contracts(Id),

@@ -6,9 +6,7 @@
         <div>
             <h2><?= $item['candidate']['Gender'] ? 'M' : 'Mme'; ?>. <?= $item['candidate']['Name']; ?> <?= $item['candidate']['Firstname']; ?></h2>
             <article>
-                <?php if(empty($item['candidate']['Rating'])) : ?>
-                    <p>Aucune notation</p>
-                <?php else: ?>    
+                <?php if(!empty($item['candidate']['Rating'])) : ?>
                     <li class="notation">
                         <ul class="bille_notation <?php if(0 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>
                         <ul class="bille_notation <?php if(1 < $item['candidate']['Rating']) echo "active"; ?>"><img src="<?= ETOILE; ?>"></ul>

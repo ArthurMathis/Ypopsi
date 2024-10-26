@@ -9,14 +9,10 @@ require_once(CONTROLLERS.DS.'CandidaturesController.php');
 require_once(CONTROLLERS.DS.'CandidatsController.php');
 require_once(CONTROLLERS.DS.'PreferencesController.php');
 
-// On démarre la session de l'utilisateur
 session_start();
-
-// On récupère les infos de connexion à la base de données
 env_start();
 
 if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
-    // On libère la mémoire
     unset($_SESSION['first_log_in']);
     alert_manipulation::alert([
         'title' => "Information importante",
@@ -27,24 +23,20 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
     ]);
     
 } elseif(isset($_GET['login'])) {
-    // On déclare le controller de connexions
     $login = new LoginController();
-
-    // On sélectionne l'action
-    switch($_GET['login']) {
-        // On connecte l'utilisateur     
+    switch($_GET['login']) { 
         case 'connexion' : 
             $erreur = "Erreur d'identification";
             try {
-                // On récupère les données saisies
+                if(empty($_POST["identifiant"])) 
+                    throw new Exception("Le champs identifiant doit être rempli !");
+                elseif(empty($_POST["motdepasse"])) 
+                    throw new Exception("Le champs mot de passe doit être rempli !"); 
+
                 $identifiant = $_POST["identifiant"];
                 $motdepasse = $_POST["motdepasse"];
-                
-                // On vérifie leur intégrité
-                if(empty($identifiant)) 
-                    throw new Exception("Le champs identifiant doit être rempli !");
-                elseif(empty($motdepasse)) 
-                    throw new Exception("Le champs mot de passe doit être rempli !"); 
+
+                $login->checkIdentification($identifiant, $motdepasse);
     
             // On récupère et retourne les éventuelles erreurs    
             } catch(Exception $e){
@@ -53,28 +45,12 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     'msg' => $e
                 ]);
             }
-
-            try {
-                // On identifie l'utilisateur
-                $login->checkIdentification($identifiant, $motdepasse);
-
-            // On récupère les éventuelles erreurs    
-            } catch(Exception $e) {
-                forms_manip::error_alert([
-                    'title' => $erreur,
-                    'msg' => $e
-                ]);
-            }
-
-            // On sort de la boucle swicth
             break;  
 
-        // On déconnecte l'utilisateur    
         case 'deconnexion' :
             $login->closeSession();
             break;
 
-        // On retourne le formulaire de connexion
         case 'get_connexion' :
             $login->displayLogin(); 
             break;   
@@ -85,26 +61,20 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
     }
 
 } elseif(isset($_GET['applications'])) {
-    // On déclare le controller de candidatures
     $applications = new CandidaturesController();
-
     try {
-        // On sélectionne l'action
         switch($_GET['applications']) {
-            // On affiche la page liste des candidatures
             case 'home' :
                 $applications->dispayCandidatures();
                 break; 
 
-            // On affiche le formulaire d'inscription d'un candidat
             case 'input-candidate': 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $applications->displaySaisieCandidat();
+                $applications->displayInputCandidate();
                 break;
 
-            // On affiche le formulaire d'inscription d'une candidature    
             case 'input-applications' : 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
@@ -112,7 +82,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 $applications->displayInputApplications();
                 break;
 
-            // On inscrit un nouveau candidat    
             case 'inscript-candidate' : 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
@@ -156,10 +125,8 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'msg' => $e
                     ]);
                 }
-
                 break;
 
-            // On inscrit une nouvelle candidature
             case 'inscript-applications' :
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
@@ -196,10 +163,8 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'msg' => $e
                     ]);
                 }
-
                 break;
         
-            // On renvoie à la page d'accueil    
             default : 
                 $applications->dispayCandidatures();
                 break;
@@ -234,17 +199,17 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 else 
                     throw new Exception("La clé candidat n'a pas pu être réceptionné");
                 break;
-            
-            // On retourne le formulaire d'ajout d'une proposition d'embauche    
-            case 'saisie-propositions' :
+
+            case 'input-offers' :
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                // On vérifie la présence de la clé candidat
-                if(isset($_GET['cle_candidat']) && is_numeric($_GET['cle_candidat']))
-                    $candidates->getSaisieProposition($_GET['cle_candidat']);
-                // On signale l'erreur  
-                else 
+                if(is_numeric($_GET['key_candidate'])) {
+                    $application = empty($_GET['key_application']) ? null : $_GET['key_application'];
+                    $need = empty($_GET['key_need']) ? null : $_GET['key_need'];
+
+                    $candidates->getInputOffer($_GET['key_candidate'], $application, $need);
+                } else 
                     throw new Exception("La clé candidat n'a pas pu être réceptionnée");
                 break;
 
@@ -268,7 +233,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On vérifie la présence de la clé candidature
                 if(isset($_GET['cle_candidature']) && is_numeric($_GET['cle_candidature']))
-                    $candidates->getSaisiePropositionFromCandidature($_GET['cle_candidature']);
+                    $candidates->getInputOfferFromCandidature($_GET['cle_candidature']);
                 // On signale l'erreur 
                 else 
                     throw new Exception("La clé n'a pas pu être détectée !");
@@ -281,7 +246,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On vérifie la présence de la clé candidature
                 if(isset($_GET['cle_candidature']) && is_numeric($_GET['cle_candidature']))
-                    $candidates->getSaisiePropositionFromEmptyCandidature($_GET['cle_candidature']);
+                    $candidates->getInputOfferFromEmptyCandidature($_GET['cle_candidature']);
                 // On signale l'erreur
                 else 
                     throw new Exception("La clé n'a pas pu être détectée !");
@@ -298,79 +263,56 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     throw new Exception("La clé candidat n'a pas pu être récupérée !");
                 break;    
             
-            // On inscrit une proposition
-            case 'inscript-propositions':
+            case 'inscript-offer':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                // On récupère les données du formulaire
+                
                 try {
-                    $infos = [
+                    if(empty($_POST['poste']))
+                        throw new Exception("Le champs poste doit être rempli !");
+                    elseif(empty($_POST['service']))
+                        throw new Exception("Le champs service doit être rempli !");
+                    elseif(empty($_POST['etablissement']))
+                        throw new Exception("Le champs service doit être rempli !");
+                    elseif(empty($_POST['type_contrat']))
+                        throw new Exception("Le champs type de contrat doit être rempli !");
+                    elseif(empty($_POST['date_debut']))
+                        throw new Exception('Le champs date de début doit être rempli !');
+
+                    $data = [
                         'poste' => $_POST['poste'],
                         'service' => $_POST['service'],
+                        'etablissement' => $_POST['etablissement'],
                         'type_de_contrat' => $_POST['type_contrat'],
                         'date debut' => $_POST['date_debut'],
                     ];
 
-                // On récupère les éventuelles erreurs     
-                } catch(Exception $e) {
-                    forms_manip::error_alert([
-                        'title' => "Erreur lors de l'inscription de la proposition",
-                        'msg' => $e
-                    ]);
-                }
-
-                // On vérifie l'intégrité des données
-                try {
-                    if(empty($infos['poste']))
-                        throw new Exception("Le champs poste doit être rempli !");
-                    elseif(empty($infos['service']))
-                        throw new Exception("Le champs service doit être rempli !");
-                    elseif(empty($infos['type_de_contrat']))
-                        throw new Exception("Le champs type de contrat doit être rempli !");
-                    elseif(empty($infos['date debut']))
-                        throw new Exception('Le champs date de début doit être rempli !');
-
-                // On récupère les éventuelles erreurs        
-                } catch(Exception $e) {
-                    forms_manip::error_alert([
-                        'title' => "Erreur lors de l'inscription de la proposition",
-                        'msg' => $e
-                    ]);
-                }
-
-                // On ajoute les champs optionnel
-                if(!empty($_POST['date_fin']))
-                    $infos['date fin'] = $_POST['date_fin'];
-                if(!empty($_POST['salaire_mensuel']))
-                    $infos['salaire'] = intval($_POST['salaire_mensuel']);
-                if(!empty($_POST['taux_horaire_hebdomadaire'])) 
-                    $infos['taux horaire'] = $_POST['taux_horaire_hebdomadaire'];
-                if(isset($_POST['travail_nuit']))
-                    $infos['travail nuit'] = true;
-                if(isset($_POST['travail_wk']))
-                    $infos['travail nuit'] = true;
-
-                try {
-                    // On test la présence de la clé candidat    
-                    if(isset($_GET['cle_candidat'])) 
-                        $candidates->createProposition($_GET['cle_candidat'], $infos);
-                    // On signale l'erreur
+                    if(!empty($_POST['date_fin']))
+                        $data['date fin'] = $_POST['date_fin'];
+                    if(!empty($_POST['salaire_mensuel']))
+                        $data['salaire'] = intval($_POST['salaire_mensuel']);
+                    if(!empty($_POST['taux_horaire_hebdomadaire'])) 
+                        $data['taux horaire'] = $_POST['taux_horaire_hebdomadaire'];
+                    if(isset($_POST['travail_nuit']))
+                        $data['travail nuit'] = true;
+                    if(isset($_POST['travail_wk']))
+                        $data['travail nuit'] = true;
+    
+                    if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate'])) 
+                        $candidates->createOffer($_GET['key_candidate'], $data);
                     else 
-                        throw new Exception("Clé candidat introuvable !");
+                        throw new Exception("Clé candidat introuvable !");  
 
-                // On récupère les éventuelles erreurs        
                 } catch(Exception $e) {
                     forms_manip::error_alert([
                         'title' => "Erreur lors de l'inscription de la proposition",
                         'msg' => $e
                     ]);
                 }
-
                 break; 
 
             // On inscrit une proposition construite à partir d'une candidature 
-            case 'inscript-propositions-from-candidatures':
+            case 'inscript-offers-from-candidatures':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -408,14 +350,14 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 // On test la présence de la clé candidature
                 if(isset($_GET['cle_candidature'])) 
                     // On récupère la clé candidature    
-                    $candidates->createPropositionFromCandidature($_GET['cle_candidature'], $infos);
+                    $candidates->createOfferFromCandidature($_GET['cle_candidature'], $infos);
                 // On signale l'erreur
                 else 
                     throw new Exception("Clé candidat introuvable !");
                 break;    
 
             // On inscrit une proposition construite à partir d'une candidature sans service    
-            case 'inscript-propositions-from-empty-candidatures':
+            case 'inscript-offers-from-empty-candidatures':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                 
@@ -454,7 +396,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 // On test la présence de la clé candidature
                 if(isset($_GET['cle_candidature'])) 
-                    $candidates->createPropositionFromEmptyCandidature($_GET['cle_candidature'], $infos);
+                    $candidates->createOfferFromEmptyCandidature($_GET['cle_candidature'], $infos);
                 // On signale l'erreur
                 else 
                     throw new Exception("Clé candidat introuvable !");

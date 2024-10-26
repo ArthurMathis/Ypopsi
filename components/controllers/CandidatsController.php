@@ -36,27 +36,43 @@ class CandidatController extends Controller {
         $_SESSION['candidate'] = $this->Model->makeCandidate($key_candidate);
         header('Location: index.php?applications=input-applications');
     }
-    /// Méthode publique affichant le formulaire de saisie d'une proposition
-    public function getSaisieProposition($cle_candidat) {
-        return $this->View->getContentProposition(
+    /**
+     * Public method returning the offer's HTML form
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Int|NULL $key_application The candidate's primary key
+     * @param Int|NULL $key_need The candidate's primary key
+     * @return Void
+     */
+    public function getInputOffer($key_candidate, $key_application=null, $key_need=null) {
+        if(!empty($key_application)) 
+            $offer = $this->Model->searchApplication($key_application);
+        elseif(!empty($key_need))
+            $offer = [];
+        else 
+            $offer = [];
+
+        return $this->View->getContentOffer(
             "Ypopsi - Nouvelle proposition", 
-            $cle_candidat,
-            $this->Model->getAutoCompPostes(),
+            $key_candidate,
+            $this->Model->getAutoCompJobs(),
             $this->Model->getAutoCompServices(),
-            $this->Model->getAutoCompTypesContrat()
+            $this->Model->getAutoCompEstablishments(),
+            $this->Model->getAutoCompTypesOfContracts(), 
+            $offer
         );
     }
     /// Méthode publique affichant le formulaire de saisie d'une proposition depuis une candidature
-    public function getSaisiePropositionFromCandidature($cle_candidature) {
-        return $this->View->getContentPropositionFromCandidatures(
+    public function getInputOfferFromCandidature($cle_candidature) {
+        return $this->View->getContentOfferFromCandidatures(
             "Ypopsi - Nouvelle proposition", 
             $cle_candidature, 
             $this->Model->getTypeContrat($cle_candidature)
         );
     }
     /// Méthode publique affichant le formulaire de saisie d'une proposition depuis une candidature vide
-    public function getSaisiePropositionFromEmptyCandidature($cle_candidature) {
-        return $this->View->getContentPropositionFromEmptyCandidatures(
+    public function getInputOfferFromEmptyCandidature($cle_candidature) {
+        return $this->View->getContentOfferFromEmptyCandidatures(
             "Ypopsi - Nouvelle proposition depuis une candidature", 
             $cle_candidature, 
             $this->Model->getTypeContrat($cle_candidature),
@@ -167,36 +183,42 @@ class CandidatController extends Controller {
     }
 
 
-    /// Méthode publique générant une proposition et l'inscrivant dans la base de donnés
-    public function createProposition($cle, $propositions) {
-        $this->Model->createPropositions($cle, $propositions);
+    /**
+     * Public method generating and registering an offer
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $offer The arrayu containing the offer's data
+     * @return Void
+     */
+    public function createOffer($key_candidate, $offer) {
+        $this->Model->createOffer($key_candidate, $offer);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'Le proposition a été générée',
-            'direction' => 'index.php?candidates=' . $cle
+            'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }
     /// Méthode publique préparant les données d'une candidature pour la génération d'une porposition d'embauche 
-    public function createPropositionFromCandidature($cle_candidature, $propositions=[]) {
+    public function createOfferFromCandidature($cle_candidature, $propositions=[]) {
         $cle_candidat = null;
         // On récupère les données du futur contrat
-        $this->Model->createPropositionsFromCandidature($cle_candidature, $propositions, $cle_candidat);
+        $this->Model->createOfferFromCandidature($cle_candidature, $propositions, $cle_candidat);
         
         // On assigne le nouveau statut à la candidature
         $this->acceptCandidature($cle_candidature);
         // On génère la proposition
-        $this->createProposition($cle_candidat, $propositions);
+        $this->createOffer($cle_candidat, $propositions);
     }
     /// Méthode publique préparant les données d'une candidature pour la génération d'une porposition d'embauche
-    public function createPropositionFromEmptyCandidature($cle_candidature, $propositions=[]) {
+    public function createOfferFromEmptyCandidature($cle_candidature, $propositions=[]) {
         $cle_candidat = null;
         // On récupère les données du futur contrat
-        $this->Model->createPropositionsFromEmptyCandidature($cle_candidature, $propositions, $cle_candidat);
+        $this->Model->createOfferFromEmptyCandidature($cle_candidature, $propositions, $cle_candidat);
         
         // On assigne le nouveau statut à la candidature
         $this->acceptCandidature($cle_candidature);
         // On génère la proposition
-        $this->createProposition($cle_candidat, $propositions);
+        $this->createOffer($cle_candidat, $propositions);
     }
     /// Méthode publique inscrivant un contrat dans la base de données
     public function createContrat($cle_candidat, &$contrats=[]) {
@@ -245,7 +267,7 @@ class CandidatController extends Controller {
         $this->Model->makeUpdateCandidat($cle_candidat, $candidat);
 
         // On enregistre les logs
-        $this->Model->updateCandidatLogs($cle_candidat);
+        $this->Model->updateCandidateLogs($cle_candidat);
 
         // On redirige la page
         alert_manipulation::alert([

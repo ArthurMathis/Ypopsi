@@ -33,6 +33,9 @@ class CandidatsView extends View {
             array_push($contracts_bubbles, $new_c);
         }
 
+        if(empty($contracts_bubbles))
+            return;
+
         $this->getBubble('Contrats', $contracts_bubbles, $nb_items_max, null, null);
     }
     /**
@@ -55,6 +58,9 @@ class CandidatsView extends View {
             ];
             array_push($offers_bubbles, $new_p);
         }
+
+        if(empty($offers_bubbles))
+            return;
 
         $this->getBubble("Propositions d'embauche", $offers_bubbles, $nb_items_max, null, null);
     }
@@ -79,6 +85,9 @@ class CandidatsView extends View {
             array_push($applications_bubbles, $new_c);
         }
 
+        if(empty($applications_bubbles))
+            return;
+
         $this->getBubble("Candidatures", $applications_bubbles, $nb_items_max, null, null);
     }
     /**
@@ -101,6 +110,9 @@ class CandidatsView extends View {
             ];
             array_push($meetings_bubbles, $new_r);
         }
+
+        if(empty($meetings_bubbles))
+            return;
 
         $this->getBubble("Rendez-vous", $meetings_bubbles, $nb_items_max, null, null);
     }
@@ -183,7 +195,7 @@ class CandidatsView extends View {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    protected function getOffresBoard(&$offers, &$key_candidate) {
+    protected function getOffersBoard(&$offers, &$key_candidate) {
         echo '<section class="onglet">';
         if(!empty($offers)) 
             foreach($offers as $obj) 
@@ -191,7 +203,7 @@ class CandidatsView extends View {
         else 
             echo "<h2>Aucune proposition enregistrée </h2>"; 
         
-        $link = 'index.php?candidates=saisie-propositions&cle_candidat=' . $key_candidate;
+        $link = 'index.php?candidates=input-offers&key_candidate=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }
@@ -263,7 +275,7 @@ class CandidatsView extends View {
         include(BARRES.DS.'nav.php');
         $this->getDashboard($item);
         $this->getContractsBoard($item['contracts'], $item['candidate']['id']);
-        $this->getOffresBoard($item['contracts'], $item['candidate']['id']);
+        $this->getOffersBoard($item['contracts'], $item['candidate']['Id']);
         $this->getApplicationsBoard($item['applications'], $item['candidate']['id']);
         $this->getMeetingsBoard($item['meeting'], $item['candidate']['id']);
         $this->getRadingBoard($item['candidate']);
@@ -277,8 +289,6 @@ class CandidatsView extends View {
     }
     /**
      * Public method returning the candidates list
-     *
-     * ! Informaion à vérifier (usage dans liste candidats)
      * 
      * @param String $titre The HTML Page titled
      * @param Array $items The array containing the candidates' data
@@ -306,13 +316,15 @@ class CandidatsView extends View {
      * Public function Returning the offers' html form 
      *
      * @param String $title The HTML Page title
-     * @param Int $cle_candidat The candidate's primary key
-     * @param Array $poste The array containing the jobs list
-     * @param Array $service The array containing the services list
-     * @param Array $typeContrat The array containing the tupes of contracts list
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $jobs The array containing the jobs list
+     * @param Array $services The array containing the services list
+     * @param Array $establishments The array containing the establishments list
+     * @param Array $types_of_contracts The array containing the tupes of contracts list
+     * @param Array $offer The array containing the offer's data
      * @return Void
      */
-    public function getContentProposition($title, $cle_candidat, $poste=[], $service=[], $typeContrat=[]) {
+    public function getContentOffer($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contracts=[], $offer=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true);
 
@@ -328,7 +340,7 @@ class CandidatsView extends View {
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant la formulaire d'ajout d'une proposition
-    public function getContentPropositionFromCandidatures($title, $cle_candidature, $statut_candidature) {
+    public function getContentOfferFromCandidatures($title, $cle_candidature, $statut_candidature) {
         // On ajoute l'entete de page
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
 
@@ -348,7 +360,7 @@ class CandidatsView extends View {
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant la formulaire d'ajout d'une proposition selon une candidature sans service
-    public function getContentPropositionFromEmptyCandidatures($title, $cle_candidature, $statut_candidature, $service=[]) {
+    public function getContentOfferFromEmptyCandidatures($title, $cle_candidature, $statut_candidature, $service=[]) {
         // On ajoute l'entete de page
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
 

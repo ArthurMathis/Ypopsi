@@ -21,7 +21,7 @@ class CandidaturesController extends Controller {
         $items = $this->Model->getCandidatures();
         return $this->View->getContent("Candidatures", $items);
     }
-    public function displaySaisieCandidat() {
+    public function displayInputCandidate() {
         return $this->View->getSaisieCandidatContent(
             'Ypopsi - Nouveau candidat', 
             $this->Model->getQualifications(),

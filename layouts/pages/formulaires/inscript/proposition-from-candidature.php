@@ -1,4 +1,4 @@
-<form class="small-form" method="post" action="index.php?candidats=inscript-propositions-from-candidatures&cle_candidature=<?= $cle_candidature; ?>">
+<form class="small-form" method="post" action="index.php?candidats=inscript-offers-from-candidatures&cle_candidature=<?= $cle_candidature; ?>">
     <h3>Saissisez les informations de la proposition</h3>
     <section class="double-items">
         <div class="input-container">
