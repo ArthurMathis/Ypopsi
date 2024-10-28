@@ -15,19 +15,12 @@
     <article>
         <h3><?= $item['type_de_contrat']; ?></h3>
         <?php 
-            switch($item['statut']) {
-                case 'Acceptée':
-                    echo '<p class="acceptee">Acceptée</p>';
-                    break;
-
-                case 'Refusée':
-                    echo '<p class="refusee">Refusée</p>';
-                    break;
-
-                case 'Non-traitée':
-                    echo '<p class="non-traitee">Non traitée</p>';
-                    break;
-            }
+            if($item['acceptee'])
+                echo '<p class="acceptee">' . ACCEPTED . '</p>';
+            elseif($item['refusee']) 
+                echo '<p class="refusee">' . REFUSED . '</p>';  
+            else 
+                echo '<p class="non-traitee">' . UNTREATED . '</p>';   
         ?>
     </article>
     <content>
@@ -40,21 +33,15 @@
             <p><?= $item['source']; ?></p>
         </div>
     </content>
-    <?php if($item['statut'] == 'Non-traitée'): ?>
+    <?php if(!$item['acceptee'] && !$item['refusee']): ?>
         <footer>
         <?php if($_SESSION['user_role'] != INVITE): ?>
             <a class="circle_button" href="index.php?candidates=dismiss-applications&key_applications=<?= $item['cle']; ?>">
                 <img src="layouts\assets\img\logo\white-close.svg" alt="Logo de refus de la candidature, représenté par une croix">
             </a>
-            <?php if(empty($item['service'])): ?>
-                <a class="circle_button" href="index.php?candidates=saisie-propositions-from-empty-candidature&cle_candidature=<?= $item['cle']; ?>">
-                    <img src="layouts\assets\img\logo\white-valider.svg" alt="Logo de d'acceptation de la candidature, représenté par une coche">
-                </a>
-            <?php else : ?>
-                <a class="circle_button" href="index.php?candidates=saisie-propositions-from-candidature&cle_candidature=<?= $item['cle']; ?>">
-                    <img src="layouts\assets\img\logo\white-valider.svg" alt="Logo de d'acceptation de la candidature, représenté par une coche">
-                </a>  
-            <?php endif; ?>   
+            <a class="circle_button" href="index.php?candidates=input-offers&key_candidate=<?= $key_candidate; ?>&key_application=<?= $item['cle']; ?>">
+                <img src="layouts\assets\img\logo\white-valider.svg" alt="Logo de d'acceptation de la candidature, représenté par une coche">
+            </a> 
         <?php endif ?>     
         </footer>
     <?php endif ?>    

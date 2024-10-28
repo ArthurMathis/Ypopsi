@@ -142,16 +142,16 @@ class CandidaturesModel extends Model {
     public function inscriptApplication(&$candidate, $application=[]) {
         try {
             if($candidate->getKey() === null) 
-                $candidate->setKey($this->searchCandidateByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail())['Id']); 
+                $candidate->setKey($this->searchCandidatesByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail())['Id']); 
 
             $request = "INSERT INTO Applications (status, key_candidates, key_jobs, key_types_of_contracts, key_sources";
             $values_request = "VALUES (:status, :candidate, :job, :contract, :source";
             $params = [
                 "status" => 'Non-traitée', 
                 "candidate" => $candidate->getKey(), 
-                "job" => $this->searchJob($application["job"])['Id'], 
+                "job" => $this->searchJobs($application["job"])['Id'], 
                 "contract" => $this->searchTypesOfContracts($application['type of contract'])['Id'], 
-                "source" => $this->searchSource($application["source"])['Id']
+                "source" => $this->searchSources($application["source"])['Id']
             ];
 
             if(isset($application['needs'])) {
@@ -160,14 +160,14 @@ class CandidaturesModel extends Model {
                 $params["needs"] = $application['needs']; // TODO : Recherche du besoin à réaliser !! // 
             }
             if(isset($application['establishment'])) {
-                $request .= ", key_establishment";
+                $request .= ", key_establishments";
                 $values_request .= ", :establishment";
-                $params["establishment"] = $this->searchEstablishment($application['establishment'])['Id'];
+                $params["establishment"] = $this->searchEstablishments($application['establishment'])['Id'];
             }
             if(isset($application['service'])) {
                 $request .= ", key_services";
                 $values_request .= ", :service";
-                $params["service"] = $this->searchService($application['service'])['Id'];
+                $params["service"] = $this->searchServices($application['service'])['Id'];
             }
             $request .= ")" . $values_request . ")";
             unset($values_request);

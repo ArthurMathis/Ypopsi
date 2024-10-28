@@ -21,7 +21,14 @@
             </article>
         </div>
         <h3><?= $item['applications'][0]['type_de_contrat']; ?></h3>
-        <p><?= forms_manip::nameFormat($item['applications'][0]['statut']); ?></p>  
+        <p><?php 
+            if($item['applications'][0]['acceptee'])
+                echo ACCEPTED;
+            elseif($item['applications'][0]['refusee']) 
+                echo REFUSED;  
+            else 
+                echo UNTREATED;   
+        ?></p>  
     </header>
     <section>
         <div>

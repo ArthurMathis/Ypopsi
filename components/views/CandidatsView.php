@@ -78,10 +78,13 @@ class CandidatsView extends View {
         $applications_bubbles = [];
         foreach($applications as $c) {
             $new_c = [
-                'Statut' => $c['statut'],
                 'Poste' => $c['poste'],
                 'Type de contrat' => $c['type_de_contrat']
             ];
+            if($c['acceptee'])
+                $new_c['Statut'] = ACCEPTED;
+            elseif($c['refusee'])
+                $new_c['Statut'] = REFUSED;
             array_push($applications_bubbles, $new_c);
         }
 
@@ -141,25 +144,28 @@ class CandidatsView extends View {
      * @param Array $item The contract's data array
      * @return Void
      */
-    protected function getContractsBubble($item) { include(MY_ITEMS.DS.'contracts_bubble.php'); }
+    protected function getContractsBubble($item=[]) { include(MY_ITEMS.DS.'contracts_bubble.php'); }
     /**
      * Protected method generating an offer bubble
      *
      * @param Array $item The offer's data array
+     * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    protected function getOffersBubble($item=[]) { include(MY_ITEMS.DS.'offers_bubble.php'); }
+    protected function getOffersBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'offers_bubble.php'); }
     /**
      * Protected method generating an application bubble
      *
      * @param Array $item The application's data array
+     * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    protected function getApplicationsBubble($item=[]) { include(MY_ITEMS.DS.'applications_bubble.php'); }
+    protected function getApplicationsBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'applications_bubble.php'); }
     /**
      * Protected method generating an meeting bubble
      *
      * @param Array $item The meeting's data array
+     * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
     protected function getMeetingsBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'meetings_bubble.php'); }
@@ -171,7 +177,7 @@ class CandidatsView extends View {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    protected function getContractsBoard(&$contracts=[], &$key_candidate) {  
+    protected function getContractsBoard(&$contracts=[], $key_candidate) {  
         echo '<section class="onglet">';
         $compt = 0; 
         $size = empty($contracts) ? 0 :count($contracts);
@@ -184,7 +190,7 @@ class CandidatsView extends View {
 
         if($compt === 0)
             echo "<h2>Aucun contrat enregistré</h2>";
-        $link = 'index.php?candidates=saisie-contrats&cle_candidat=' . $key_candidate;
+        $link = 'index.php?candidates=input-contract&key_candidate=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }
@@ -195,11 +201,11 @@ class CandidatsView extends View {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    protected function getOffersBoard(&$offers, &$key_candidate) {
+    protected function getOffersBoard(&$offers, $key_candidate) {
         echo '<section class="onglet">';
         if(!empty($offers)) 
             foreach($offers as $obj) 
-                $this->getOffersBubble($obj);
+                $this->getOffersBubble($obj, $key_candidate);
         else 
             echo "<h2>Aucune proposition enregistrée </h2>"; 
         
@@ -217,7 +223,7 @@ class CandidatsView extends View {
     protected function getApplicationsBoard(&$applications, &$key_candidate) {
         echo '<section class="onglet">';
         if(!empty($applications)) foreach($applications as $obj)
-            $this->getApplicationsBubble($obj);
+            $this->getApplicationsBubble($obj, $key_candidate);
         else echo "<h2>Aucune candidature enregistrée </h2>";
         
         // $link = 'index.php?applications=input-applications&key_candidate=' . $key_candidate;
@@ -274,9 +280,9 @@ class CandidatsView extends View {
         echo "<main>";
         include(BARRES.DS.'nav.php');
         $this->getDashboard($item);
-        $this->getContractsBoard($item['contracts'], $item['candidate']['id']);
+        $this->getContractsBoard($item['contracts'], $item['candidate']['Id']);
         $this->getOffersBoard($item['contracts'], $item['candidate']['Id']);
-        $this->getApplicationsBoard($item['applications'], $item['candidate']['id']);
+        $this->getApplicationsBoard($item['applications'], $item['candidate']['Id']);
         $this->getMeetingsBoard($item['meeting'], $item['candidate']['id']);
         $this->getRadingBoard($item['candidate']);
         echo "</main>";
@@ -324,7 +330,7 @@ class CandidatsView extends View {
      * @param Array $offer The array containing the offer's data
      * @return Void
      */
-    public function getContentOffer($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contracts=[], $offer=[]) {
+    public function getOffersContent($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contracts=[], $offer=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true);
 
@@ -334,54 +340,56 @@ class CandidatsView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
         
-        include INSCRIPT_FORM.DS.'proposition.php';
+        include INSCRIPT_FORM.DS.'offer.php';
         include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant la formulaire d'ajout d'une proposition
-    public function getContentOfferFromCandidatures($title, $cle_candidature, $statut_candidature) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-
-        // On ajoute la barre de navigation
-        $this->generateMenu(true);
-
-        $scripts = [
-            'views/form-view.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'proposition-from-candidature.php';
-        include FORMULAIRES.DS.'waves.php';
-
-        // On ajoute le pied de page
-        $this->generateCommonFooter();
-    }
-    /// Méthode publique retournant la formulaire d'ajout d'une proposition selon une candidature sans service
-    public function getContentOfferFromEmptyCandidatures($title, $cle_candidature, $statut_candidature, $service=[]) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-
-        $scripts = [
-            'models/objects/AutoComplet.js',
-            'views/form-view.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
-        // On ajoute la barre de navigation
-        $this->generateMenu(true);
-
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'proposition-from-empty-candidature.php';
-        include FORMULAIRES.DS.'waves.php';
-
-        // On ajoute le pied de page
-        $this->generateCommonFooter();
-    }
+    // ! Méthodes à supprimer 
+    // TODO:remplacer par getOffersContent
+    // /// Méthode publique retournant la formulaire d'ajout d'une proposition
+    // public function getOffersContentFromCandidatures($title, $cle_candidature, $statut_candidature) {
+    //     // On ajoute l'entete de page
+    //     $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
+    // 
+    //     // On ajoute la barre de navigation
+    //     $this->generateMenu(true);
+    // 
+    //     $scripts = [
+    //         'views/form-view.js'
+    //     ];
+    //     include(COMMON.DS.'import-scripts.php');
+    // 
+    //     // On ajoute le formulaire de'inscription
+    //     include INSCRIPT_FORM.DS.'proposition-from-candidature.php';
+    //     include FORMULAIRES.DS.'waves.php';
+    // 
+    //     // On ajoute le pied de page
+    //     $this->generateCommonFooter();
+    // }
+    // /// Méthode publique retournant la formulaire d'ajout d'une proposition selon une candidature sans service
+    // public function getOffersContentFromEmptyCandidatures($title, $cle_candidature, $statut_candidature, $service=[]) {
+    //     // On ajoute l'entete de page
+    //     $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
+    // 
+    //     $scripts = [
+    //         'models/objects/AutoComplet.js',
+    //         'views/form-view.js'
+    //     ];
+    //     include(COMMON.DS.'import-scripts.php');
+    // 
+    //     // On ajoute la barre de navigation
+    //     $this->generateMenu(true);
+    // 
+    //     // On ajoute le formulaire de'inscription
+    //     include INSCRIPT_FORM.DS.'proposition-from-empty-candidature.php';
+    //     include FORMULAIRES.DS.'waves.php';
+    // 
+    //     // On ajoute le pied de page
+    //     $this->generateCommonFooter();
+    // }
     /// Méthode publique retournant la formulaire d'ajout d'un contrat
-    public function getContentContrats($title, $cle_candidat, $poste=[], $service=[], $typeContrat=[]) {
+    public function getContractsContent($title, $cle_candidat, $poste=[], $service=[], $typeContrat=[]) {
         // On ajoute l'entete de page
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
 
@@ -430,7 +438,7 @@ class CandidatsView extends View {
      * @param Array $candidate The arrayu containing the candidate's data
      * @return View The HTML page
      */
-    public function getEditRating($candidate=[]) {
+    public function getEditRatings($candidate=[]) {
         $this->generateCommonHeader(
             'Ypopsi - Modification de la notation de ' . forms_manip::majusculeFormat($candidate['Name']) . ' ' . $candidate['Firstname'], 
             [FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-rating.css']
@@ -444,7 +452,7 @@ class CandidatsView extends View {
         include(COMMON.DS.'import-scripts.php');
         $this->generateCommonFooter();
     }
-    public function getEditCandidat($item=[]) {
+    public function getEditCandidates($item=[]) {
         // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Modification de ' . forms_manip::majusculeFormat($item['candidat']['nom']) . ' ' . $item['candidat']['prenom'], [FORMS_STYLES.DS.'big-form.css']);
 

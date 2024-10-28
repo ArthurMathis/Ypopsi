@@ -1,22 +1,22 @@
-<form class="big-form" method="post" action="index.php?candidates=inscript-offer&key_candidate=<?= $key_candidate; ?>">
+<form class="big-form" method="post" action="index.php?candidates=inscript-offer&key_candidate=<?= $key_candidate; ?>&key_application=<?= empty($offer['Id']) ? NULL : $offer['Id']; ?>">
     <div class="form-container">
     <h3>Saissisez les informations de la proposition</h3>
         <section>
                 <p>Emploi</p>
                 <div class="autocomplete">
-                    <input type="text" id="poste" name="poste" placeholder="Poste" autocomplete="off">
+                    <input type="text" id="poste" name="poste" placeholder="Poste" autocomplete="off" value="<?= !empty($offer['Key_Jobs']) ? $offer['Key_Jobs'] : NULL; ?>">
                     <article></article>
                 </div>
                 <div class="autocomplete">
-                    <input type="text" id="service" name="service" placeholder="Services" autocomplete="off">
+                    <input type="text" id="service" name="service" placeholder="Services" autocomplete="off" value="<?= !empty($offer['Key_Services']) ? $offer['Key_Services'] : NULL; ?>">
                     <article></article>
                 </div>
                 <div class="autocomplete">
-                    <input type="text" id="etablissement" name="etablissement" placeholder="Etablissements" autocomplete="off">
+                    <input type="text" id="etablissement" name="etablissement" placeholder="Etablissements" autocomplete="off" value="<?= !empty($offer['Key_Establishments']) ? $offer['Key_Establishments'] : NULL; ?>">
                     <article></article>
                 </div>
                 <div class="autocomplete">
-                    <input type="text" id="type_contrat" name="type_contrat" placeholder="Type de contrat" autocomplete="off">
+                    <input type="text" id="type_contrat" name="type_contrat" placeholder="Type de contrat" autocomplete="off" value="<?= !empty($offer['Key_Types_of_contracts']) ? $offer['Key_Types_of_contracts'] : NULL; ?>">
                     <article></article>
                 </div>
             </section>
@@ -57,22 +57,18 @@
     new AutoComplete(document.getElementById('etablissement'), <?= json_encode(array_map(function($c) {  return $c['titled'];  }, $establishments)); ?>);
     new AutoComplete(document.getElementById('type_contrat'), <?= json_encode(array_map(function($c) { return $c['titled']; }, $types_of_contracts)); ?>);
 
-    // On ajuste la sélection de date
     setMinDateFin('date_debut', 'date_fin');
 
-    // On ajuste le nombre de formulaire de date
     const inputTypeContrat = document.getElementById('type_contrat');
     const inputDateFin = document.getElementById('date_fin').parentElement;
-    // Fonction pour vérifier le type de contrat et ajuster l'affichage de la date de fin
     const checkContratType = () => {
         if (inputTypeContrat.value.trim().toUpperCase() === 'CDI') 
             inputDateFin.style.display = 'none';
         else 
-            inputDateFin.style.display = 'block';  
+            inputDateFin.style.display = 'flex';  
     };
 
-    // Écouteurs d'événements sur l'input type_contrat pour détecter les changements de valeur
     inputTypeContrat.addEventListener('input', checkContratType);
-    // Écouteur d'événement pour capturer la sélection d'une option d'autocomplétion
     inputTypeContrat.addEventListener('AutoCompleteSelect', checkContratType);
+    checkContratType();
 </script>

@@ -52,7 +52,7 @@ class CandidaturesView extends View {
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant le formulaire de saisie d'une candidature
-    public function getInputApplicationContent($title, $job=[], $service=[], $establishment=[], $typeOfContract=[], $source=[]) {
+    public function getInputApplicationsContent($title, $job=[], $service=[], $establishment=[], $typeOfContract=[], $source=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
         $this->generateMenu(true);
 

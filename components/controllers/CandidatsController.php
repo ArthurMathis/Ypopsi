@@ -11,28 +11,50 @@ class CandidatController extends Controller {
         $this->loadView('CandidatsView');
     }
 
+    // * DISPLAY * //
     /**
      * Public method generating the candidates' main page
      *
-     * @return Void
+     * @return View HTML PAGE
      */
     public function displayContent() {
         $items = $this->Model->getContent();
-        $this->View->getContent('Candidats', $items);
+        return $this->View->getContent('Candidats', $items);
     }
-    /// Méthode publique affichant la page candidat
+    /**
+     * Public method displaying the candidate's profile
+     *
+     * @param Int $Key_candidate The candidate's primary key
+     * @return View HTML PAGE
+     */
     public function displayCandidate($Key_candidate) {
         $item = $this->Model->getContentCandidate($Key_candidate);
         return $this->View->getContentCandidate("Candidat " . $item['candidate']['Name'] . ' ' . $item['candidate']['Firstname'], $item);
     }
 
+    // * GET * //
+    /**
+     * Public method returning the html form of inputing a meeting
+     *
+     * @param Int $key_candidate The candidate's primary ket
+     * @return View HTML page
+     */
+    public function getInputMeetings($key_candidate) {
+        return $this->View->GetContentMeeting(
+            "Nouveau rendez-vous",
+            $key_candidate,
+            $this->Model->searchEstablishments($_SESSION['key_establishment'])['Titled'], 
+            $this->Model->getAutoCompUsers(),
+            $this->Model->getAutoCompEstablishments()
+        );
+    }
     /**
      * Public method testing the candidate's data and returning the application's html form
      *
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function getInputApplication($key_candidate) { 
+    public function getInputApplications($key_candidate) { 
         $_SESSION['candidate'] = $this->Model->makeCandidate($key_candidate);
         header('Location: index.php?applications=input-applications');
     }
@@ -44,15 +66,26 @@ class CandidatController extends Controller {
      * @param Int|NULL $key_need The candidate's primary key
      * @return Void
      */
-    public function getInputOffer($key_candidate, $key_application=null, $key_need=null) {
+    public function getInputOffers($key_candidate, $key_application=null, $key_need=null) {
         if(!empty($key_application)) 
-            $offer = $this->Model->searchApplication($key_application);
+            $offer = $this->Model->searchApplications($key_application);
         elseif(!empty($key_need))
             $offer = [];
         else 
             $offer = [];
 
-        return $this->View->getContentOffer(
+        if(isset($offer['Key_Jobs']) && is_numeric($offer['Key_Jobs']))
+            $offer['Key_Jobs'] = $this->Model->searchJobs($offer['Key_Jobs'])['Titled'];
+        if(isset($offer['Key_Services']) && is_numeric($offer['Key_Services']))
+            $offer['Key_Services'] = $this->Model->searchServices($offer['Key_Services'])['Titled'];
+        if(isset($offer['Key_Establishments']) && is_numeric($offer['Key_Establishments']))
+            $offer['Key_Establishments'] = $this->Model->searchEstablishments($offer['Key_Establishments'])['Titled'];
+        if(isset($offer['Key_Sources']) && is_numeric($offer['Key_Sources']))
+            $offer['Key_Sources'] = $this->Model->searchSources($offer['Key_Sources'])['Titled'];
+        if(isset($offer['Key_Types_of_contracts']) && is_numeric($offer['Key_Types_of_contracts']))
+            $offer['Key_Types_of_contracts'] = $this->Model->searchTypesOfContracts($offer['Key_Types_of_contracts'])['Titled'];
+
+        return $this->View->getOffersContent(
             "Ypopsi - Nouvelle proposition", 
             $key_candidate,
             $this->Model->getAutoCompJobs(),
@@ -62,46 +95,27 @@ class CandidatController extends Controller {
             $offer
         );
     }
-    /// Méthode publique affichant le formulaire de saisie d'une proposition depuis une candidature
-    public function getInputOfferFromCandidature($cle_candidature) {
-        return $this->View->getContentOfferFromCandidatures(
-            "Ypopsi - Nouvelle proposition", 
-            $cle_candidature, 
-            $this->Model->getTypeContrat($cle_candidature)
-        );
-    }
-    /// Méthode publique affichant le formulaire de saisie d'une proposition depuis une candidature vide
-    public function getInputOfferFromEmptyCandidature($cle_candidature) {
-        return $this->View->getContentOfferFromEmptyCandidatures(
-            "Ypopsi - Nouvelle proposition depuis une candidature", 
-            $cle_candidature, 
-            $this->Model->getTypeContrat($cle_candidature),
-            $this->Model->getAutoCompServices()
-        );
-    }
-    /// Méthode publique affichant le formulaire de saisie d'un contrat
-    public function getSaisieContrats($cle_candidat) {
-        return $this->View->getContentContrats(
+    /**
+     * Undocumented function
+     *
+     * @param [type] $key_candidate
+     * @return void
+     */
+    public function getInputContracts($key_candidate) {
+        return $this->View->getContractsContent(
             "Ypopsi - Nouveau contrat", 
-            $cle_candidat,
+            $key_candidate,
             $this->Model->getAutoCompPostes(),
             $this->Model->getAutoCompServices(),
             $this->Model->getAutoCompTypesContrat()
         );
     }
-    /**
-     * Public method returning the html form of inputing a meeting
-     *
-     * @param Int $key_candidate The candidate's primary ket
-     * @return View HTML page
-     */
-    public function getInputMeeting($key_candidate) {
-        return $this->View->GetContentMeeting(
-            "Nouveau rendez-vous",
-            $key_candidate,
-            $this->Model->searchEstablishment($_SESSION['key_establishment'])['Titled'], 
-            $this->Model->getAutoCompUsers(),
-            $this->Model->getAutoCompEstablishments()
+
+    // TODO : Remanier la méthode
+    /// Méthode publique affichant le formulaire d'édition d'un candidat
+    public function getEditCandidates($cle_candidat) {
+        return $this->View->getEditCandidates(
+            $this->Model->getEditCandidatesContent($cle_candidat)
         );
     }
     /**
@@ -110,14 +124,8 @@ class CandidatController extends Controller {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function getEditRating($key_candidate) {
-        return $this->View->getEditRating($this->Model->searchCandidate($key_candidate));
-    }
-    /// Méthode publique affichant le formulaire d'édition d'un candidat
-    public function getEditCandidat($cle_candidat) {
-        return $this->View->getEditCandidat(
-            $this->Model->getEditCandidatContent($cle_candidat)
-        );
+    public function getEditRatings($key_candidate) {
+        return $this->View->getEditRatings($this->Model->searchCandidates($key_candidate));
     }
     /**
      * Méthode publique renvoyant le formulaire d'édition de la réunion
@@ -132,103 +140,9 @@ class CandidatController extends Controller {
             $this->Model->getAutoCompEstablishments()
         ); 
     }
+    
 
-    /// Méthode publique donnant le statut acceptée à une candidature
-    public function acceptCandidature($cle) {
-        $this->Model->setApplicationStatus('Acceptée', $cle);
-    }
-    /**
-     * Public method dismissing an application
-     *
-     * @param Int $key_applications The application's primary key
-     * @return Void
-     */
-    public function dismissApplications($key_applications) {
-        $this->Model->dismissApplications($key_applications);
-        alert_manipulation::alert([
-            'title' => 'Action enregistrée',
-            'msg' => 'La candidature a été rejettée',
-            'direction' => 'index.php?candidates=' . $this->Model->searchCandidateFromApplication($key_applications)['Id']
-        ]);
-    }
-
-    /// Méthode publique donnant le statut acceptée à une candidature
-    public function acceptProposition($cle) {
-        // Ajouter la signature
-        $this->Model->addSignature($cle);
-        alert_manipulation::alert([
-            'title' => 'Action enregistrée',
-            'msg' => 'La proposition a été acceptée',
-            'direction' => 'index.php?candidates=' . $this->Model->searchcandidatFromContrat($cle)['Id_Candidats']
-        ]);
-    }
-    /// Méthode publique donnant le statut refusée à une candidature
-    public function rejectProposition($cle) {
-        // $this->Model->setPropositionStatut($cle);
-        $this->Model->rejectProposition($cle);
-        alert_manipulation::alert([
-            'title' => 'Action enregistrée',
-            'msg' => 'La proposition a été rejettée',
-            'direction' => 'index.php?candidates=' . $this->Model->searchcandidatFromContrat($cle)['Id_Candidats']
-        ]);
-    }
-    /// Méthode publique ajoutant une demissione à un contrat
-    public function demissioneContrat($cle) {
-        $this->Model->addDemission($cle);
-        alert_manipulation::alert([
-            'title' => 'Action enregistrée',
-            'msg' => 'Le candidat a démissioné de son contrat',
-            'direction' => 'index.php?candidates=' . $this->Model->searchcandidatFromContrat($cle)['Id_Candidats']
-        ]);
-    }
-
-
-    /**
-     * Public method generating and registering an offer
-     *
-     * @param Int $key_candidate The candidate's primary key
-     * @param Array $offer The arrayu containing the offer's data
-     * @return Void
-     */
-    public function createOffer($key_candidate, $offer) {
-        $this->Model->createOffer($key_candidate, $offer);
-        alert_manipulation::alert([
-            'title' => 'Action enregistrée',
-            'msg' => 'Le proposition a été générée',
-            'direction' => 'index.php?candidates=' . $key_candidate
-        ]);
-    }
-    /// Méthode publique préparant les données d'une candidature pour la génération d'une porposition d'embauche 
-    public function createOfferFromCandidature($cle_candidature, $propositions=[]) {
-        $cle_candidat = null;
-        // On récupère les données du futur contrat
-        $this->Model->createOfferFromCandidature($cle_candidature, $propositions, $cle_candidat);
-        
-        // On assigne le nouveau statut à la candidature
-        $this->acceptCandidature($cle_candidature);
-        // On génère la proposition
-        $this->createOffer($cle_candidat, $propositions);
-    }
-    /// Méthode publique préparant les données d'une candidature pour la génération d'une porposition d'embauche
-    public function createOfferFromEmptyCandidature($cle_candidature, $propositions=[]) {
-        $cle_candidat = null;
-        // On récupère les données du futur contrat
-        $this->Model->createOfferFromEmptyCandidature($cle_candidature, $propositions, $cle_candidat);
-        
-        // On assigne le nouveau statut à la candidature
-        $this->acceptCandidature($cle_candidature);
-        // On génère la proposition
-        $this->createOffer($cle_candidat, $propositions);
-    }
-    /// Méthode publique inscrivant un contrat dans la base de données
-    public function createContrat($cle_candidat, &$contrats=[]) {
-        $this->Model->createContrats($cle_candidat, $contrats);
-        alert_manipulation::alert([
-            'title' => 'Action enregistrée',
-            'msg' => 'Le contrat a été générée',
-            'direction' => 'index.php?candidates=' . $cle_candidat
-        ]);
-    }
+    // * CREATE * //
     /**
      * Public method generating a new meeting
      *
@@ -244,7 +158,42 @@ class CandidatController extends Controller {
             'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }
+    /**
+     * Public method generating and registering an offer
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $offer The arrayu containing the offer's data
+     * @param Int|NULL $key_application The application's primary key (if the offer is made from an application)
+     * @return Void
+     */
+    public function createOffer($key_candidate, $offer, $key_application = null) {
+        if(!empty($key_application))
+            $this->Model->setApplicationsAccepted($key_application);
 
+        $this->Model->createOffer($key_candidate, $offer);
+        alert_manipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'Le proposition a été générée',
+            'direction' => 'index.php?candidates=' . $key_candidate
+        ]);
+    }
+    /**
+     * Public method creating an contract
+     * 
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $contract
+     * @return Void
+     */
+    public function createContracts($key_candidate, &$contract=[]) {
+        $this->Model->createContracts($key_candidate, $contract);
+        alert_manipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'Le contrat a été générée',
+            'direction' => 'index.php?candidates=' . $key_candidate
+        ]);
+    }
+
+    // * UPDATE * //
     /**
      * Public method updating a candidte's rating
      *
@@ -261,6 +210,32 @@ class CandidatController extends Controller {
             'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }
+    /**
+     * Public method updating the meeting
+     *
+     * @param Int $key_meeting The meeting's primary key
+     * @param Int $key_candidate The candidate's key
+     * @param Array $rdv
+     * @return Void
+     */
+    public function updateMeeting($key_meeting, $key_candidate, &$meeting=[]) {
+        $this->Model->updateMeeting(
+            $key_meeting, 
+            $this->Model->searchUsers($meeting['employee'])['Id'], 
+            $key_candidate, 
+            $this->Model->searchEstablishments($meeting['establishment'])['Id'], 
+            $meeting['date'], 
+            $meeting['description']
+        );
+        $this->Model->updateMeetingLogs($key_candidate);
+
+        alert_manipulation::alert([
+            'title' => "Rendez-vous mise-à-jour",
+            'msg' => "Vous avez mis-à-jour le rendez-vous du candidat",
+            'direction' => 'index.php?candidates=' . $key_candidate
+        ]);
+    }
+    // TODO : Méthode à remanier
     /// Méthode publique mettant à jour le profil d'un candidat
     public function updateCandidat($cle_candidat, &$candidat=[]) {
         // On met à jour le candidat
@@ -276,39 +251,80 @@ class CandidatController extends Controller {
             'direction' => 'index.php?candidates=' . $cle_candidat
         ]);
     }
+
+    // * DELETE * //
     /**
-     * Public method updating the meeting
+     * Public method deleting a meeting
      *
      * @param Int $key_meeting The meeting's primary key
-     * @param Int $key_candidate The candidate's key
-     * @param Array $rdv
-     * @return Void
+     * @param Int $key_candidate The candidate'sprimary key
+     * @return Void 
      */
-    public function updateMeeting($key_meeting, $key_candidate, &$meeting=[]) {
-        $this->Model->updateMeeting(
-            $key_meeting, 
-            $this->Model->searchUser($meeting['employee'])['Id'], 
-            $key_candidate, 
-            $this->Model->searchEstablishment($meeting['establishment'])['Id'], 
-            $meeting['date'], 
-            $meeting['description']
-        );
-        $this->Model->updateMeetingLogs($key_candidate);
-
-        alert_manipulation::alert([
-            'title' => "Rendez-vous mise-à-jour",
-            'msg' => "Vous avez mis-à-jour le rendez-vous du candidat",
-            'direction' => 'index.php?candidates=' . $key_candidate
-        ]);
-    }
-
-    /// Méthode publique annulant un rendez-vous
     public function deleteMeeting($key_meeting, $key_candidate) {
         $this->Model->deletingMeeting($key_meeting);
         alert_manipulation::alert([
             'title' => "Rendez-vous annulé",
             'msg' => "Vous avez annulé le rendez-vous du candidat",
             'direction' => 'index.php?candidates=' . $key_candidate
+        ]);
+    }
+
+    // * OTHER * //
+    /**
+     * Public method dismissing an application
+     *
+     * @param Int $key_applications The application's primary key
+     * @return Void
+     */
+    public function dismissApplications($key_applications) {
+        $this->Model->dismissApplications($key_applications);
+        alert_manipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'La candidature a été rejettée',
+            'direction' => 'index.php?candidates=' . $this->Model->searchCandidatesFromApplications($key_applications)['Id']
+        ]);
+    }
+    /**
+     * Public method rejecting an offer
+     *
+     * @param Int $key_offer The offer's primary key
+     * @return Void
+     */
+    public function rejectOffer($key_offer) {
+        $this->Model->rejectOffer($key_offer); 
+        alert_manipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'La proposition a été rejettée',
+            'direction' => 'index.php?candidates=' . $this->Model->searchCandidatesFromContracts($key_offer)['Id']
+        ]);
+    }
+    /**
+     * Public method adding an signature to a contract
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Int $key_contract The contract's primary key
+     * @return Void
+     */
+    public function signContract($key_candidate, $key_contract) {
+        $this->Model->addSignatureToContract($key_candidate, $key_contract);
+        alert_manipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'Le contrat a été signé !',
+            'direction' => 'index.php?candidates=' . $key_candidate
+        ]);
+    }
+    /**
+     * Public method adding a resignation to a contract
+     *
+     * @param Int $key_contract The contract's primary key
+     * @return Void 
+     */
+    public function resignContract($key_contract){
+        $this->Model->setResignationToContract($key_contract);
+        alert_manipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'Le candidat a démissioné de son contrat',
+            'direction' => 'index.php?candidates=' . $this->Model->searchCandidatesFromContracts($key_contract)['Id']
         ]);
     }
 }

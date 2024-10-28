@@ -35,7 +35,7 @@ class CandidatsModel extends Model {
     }
     /// Méthode publique récupérant les données d'un candidat pour sa mise-à-jour
     // TODO : Méthode à remanier
-    public function getEditCandidatContent($key_candidate) {
+    public function getEditCandidatesContent($key_candidate) {
         if(!is_numeric($key_candidate))
             throw new Exception("L'index n'est pas valide. Veullez saisir un entier !");
 
@@ -84,7 +84,7 @@ class CandidatsModel extends Model {
      */
     public function getContentCandidate($key_candidate): Array {
         // $candidate = $this->getCandidate($key_candidate);
-        $candidate = $this->searchcandidate($key_candidate);
+        $candidate = $this->searchCandidates($key_candidate);
         $candidate['qualifications'] = $this->getCandidatesFromQualifications($key_candidate);
 
         $employee = $this->searchCoopter($key_candidate);
@@ -100,25 +100,6 @@ class CandidatsModel extends Model {
             'meeting' => $this->getMeetingFromCandidates($key_candidate)
         ];
     }
-    /**
-     * Public method searching and returning one candidate from his primary key
-     * 
-     * ! Utiliser la méthode Model::searchCandidate
-     *
-     * @param Int $key_candidate The candidte's primary key
-     * @return Array|NULL
-     */
-    // public function getCandidate($key_candidate): ?Array {
-    //     if(empty($key_candidate) || !is_numeric($key_candidate))
-    //         throw new Exception("Erreur lors de la récupération du candidat.");
-    // 
-    //     $request = "SELECT id, name, firstname, phone, email,  address, city, postcode, availability, rating, description,  a,  b,  c
-    //     FROM candidates WHERE Id = :key";
-    // 
-    //     $params = ["key" => $key_candidate];
-    // 
-    //     return $this->get_request($request, $params)[0];
-    // }
     /**
      * Private method that searches and returns a candidate's qualifications based on its primary key
      *
@@ -147,7 +128,8 @@ class CandidatsModel extends Model {
     private function getApplicationsFromCandidates($key_candidate): Array {
         $request = "SELECT 
         app.Id AS cle,
-        app.Status AS statut, 
+        app.IsAccepted AS acceptee, 
+        app.IsRefused AS refusee, 
         s.titled AS source, 
         t.titled AS type_de_contrat,
         app.moment AS date,
@@ -186,16 +168,17 @@ class CandidatsModel extends Model {
         j.titled AS poste,
         s.titled AS service,
         e.titled AS etablissement,
+        t.titled AS type_de_contrat,
+        c.StartDate AS date_debut,
+        c.EndDate AS date_fin,
+        c.PropositionDate AS proposition,
+        c.SignatureDate AS signature,
+        c.ResignationDate AS demission,
+        c.IsRefused AS statut, 
         c.Salary AS salaire,
         c.HourlyRate AS heures,
         c.NightWork AS nuit,
-        c.WeekEndWork AS week_end,
-        c.StartDate AS date_debut,
-        c.EndDate AS date_fin,
-        c.ResignationDate AS demission,
-        t.titled AS type_de_contrat,
-        c.PropositionDate AS proposition,
-        c.SignatureDate AS signature 
+        c.WeekEndWork AS week_end
 
         FROM Contracts as c
         INNER JOIN Jobs AS j ON c.Key_Jobs = j.Id
@@ -203,7 +186,9 @@ class CandidatsModel extends Model {
         INNER JOIN Establishments AS e ON c.Key_Establishments = e.Id
         INNER JOIN Types_of_contracts AS t ON c.Key_Types_of_contracts = t.Id
 
-        WHERE c.Key_Candidates = :key";
+        WHERE c.Key_Candidates = :key
+        
+        ORDER BY c.Id DESC";
         $params = ['key' => $key_candidate];
 
         return $this->get_request($request, $params);
@@ -274,12 +259,6 @@ class CandidatsModel extends Model {
 
         return $this->get_request($request, $params, true, false);
     }
-    // ! Méthode à supprimer 
-    // TODO : Remplacer les méthodes getInputOfferFrom... par getInputOffer (détection du cas de figure via les clé présentes dans l'url)
-    // public function getTypeContrat($cle_candidature) {
-    //     $candidature = $this->searchCandidature($cle_candidature);
-    //     return $this->searchTypeContrat($candidature['Cle_Types_de_contrats'])['Intitule_Types_de_contrats'];
-    // }
     
     /**
      * Public method building an candidate from his primary key
@@ -288,7 +267,7 @@ class CandidatsModel extends Model {
      * @return Candidate
      */
     public function makeCandidate($key_candidate): Candidate {
-        $result = $this->searchCandidate($key_candidate);
+        $result = $this->searchCandidates($key_candidate);
         $candidate = new Candidate(
             $result['Name'], 
             $result['Firstname'], 
@@ -304,36 +283,43 @@ class CandidatsModel extends Model {
     }
 
     /**
-     * Public method updating the application's status
+     * Public method settin IsAccepted on TRUE
      *
-     * @param String $status The new application's status
      * @param Int $key_application The application's primary key
-     * @throws Exception If the status is invalid
      * @return Void
      */
-    public function setApplicationStatus($status, $key_application) {
-        if(empty($status) || !is_string($status))
-            throw new Exception('Statut invalide !');
-
-        $request = "UPDATE Applications SET Status = :status WHERE Id = :key_application";
-        $params = [
-            'status' => $status,
-            'key_application' => $key_application
-        ];
+    public function setApplicationsAccepted($key_application) {
+        $request = "UPDATE Applications SET IsAccepted = TRUE AND IsRefused = FALSE WHERE Id = :key_application";
+        $params = ['key_application' => $key_application];
 
         $this->post_request($request, $params);
     }
-    /// Méthode publique implémentant le statut d'une proposition
-    // TODO : Méthode à remanier en setOfferStatus
-    public function setPropositionStatut($cle) {
-        // On initialise la requête
-        $request = "UPDATE Contrats SET Statut_Proposition = :statut WHERE Id_Contrats = :cle";
+    /**
+     * Public method settin IsRefused on TRUE
+     *
+     * @param Int $key_application The application's primary key
+     * @return Void
+     */
+    public function setApplicationsRefused($key_application) {
+        $request = "UPDATE Applications SET IsAccepted = FALSE AND IsRefused = TRUE WHERE Id = :key_application";
+        $params = ['key_application' => $key_application];
+
+        $this->post_request($request, $params);
+    }
+    /**
+     * Public method setting an status to the offer
+     *
+     * @param Int $key_offer The offer's primary key
+     * @param Bool $status The new offer's satus (TRUE: refused offer ; FALSE, not refused offer)
+     * @return Void
+     */
+    public function setOfferStatus($key_offer, $status = true) {
+        $request = "UPDATE Contracts SET IsRefused = :status WHERE Id = :key_offer";
         $params = [
-            'statut' => 1,
-            'cle' => $cle
+            'key_offer' => $key_offer,
+            'status' => $status
         ];
         
-        // On exécute la requête
         $this->post_request($request, $params);
     }
 
@@ -344,31 +330,30 @@ class CandidatsModel extends Model {
      * @return Void
      */
     public function dismissApplications(&$key_application) {
-        $this->setApplicationStatus('Refusée', $key_application);
-        $candidat = $this->searchCandidateFromApplication($key_application);
+        $this->setApplicationsRefused($key_application);
+        $candidat = $this->searchCandidatesFromApplications($key_application);
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Refus candidature", 
             "Refus de la candidature de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname']) . 
-            " au poste de " . forms_manip::nameFormat($this->searchJob($this->searchApplication($key_application)['Key_Jobs'])['Titled'])
+            " au poste de " . forms_manip::nameFormat($this->searchJobs($this->searchApplications($key_application)['Key_Jobs'])['Titled'])
         );
     }
-    /// Méthode publique refusant une proposition et inscrivant les logs
-    // TODO: méthode à remanier en rejectOffer
-    public function rejectProposition(&$cle_proposition) {
-        // On implémente le statut de la proposition
-        $this->setPropositionStatut($cle_proposition);       
-
-        // On récupère les informations de la proposition
-        $candidat = $this->searchcandidatFromContrat($cle_proposition);
-
-        // On enregistre les logs
+    /**
+     * Public method rejecting an offer and registerng the logs
+     *
+     * @param Int $key_offer Tyhe offer's primary key
+     * @return Void
+     */
+    public function rejectOffer(&$key_offer) {
+        $this->setOfferStatus($key_offer); 
+        $contract = $this->searchContracts($key_offer); 
+        $candidate = $this->searchCandidates($contract['Key_Candidates']); 
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Refus proposition", 
-            strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats']) . " refuse la proposition d'embauche au poste de " . 
-            forms_manip::nameFormat($this->searchPoste($this->searchCandidature($cle_proposition)['Cle_Postes'])['Intitule_Postes'])
-        );
+            strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " refuse la proposition d'embauche au poste de " . forms_manip::nameFormat($this->searchJobs($contract['Key_Jobs'])['Titled'])
+        ); 
     }
 
     /**
@@ -379,12 +364,11 @@ class CandidatsModel extends Model {
      * @return Void
      */
     public function createOffer($key_candidate, $offer=[]) {
-        $offer['service'] = $this->searchService($offer['service'])['Id'];
-        $offer['etablissement'] = $this->searchEstablishment($offer['etablissement'])['Id'];
+        $offer['poste'] = $this->searchJobs($offer['poste'])['Id'];
+        $offer['service'] = $this->searchServices($offer['service'])['Id'];
+        $offer['etablissement'] = $this->searchEstablishments($offer['etablissement'])['Id'];
         if(empty($this->searchBelongTo($offer['service'], $offer['etablissement'])))
             throw new Exception("Le service ne fait pas parti de l'étiablissement !");
-
-        $offer['poste'] = $this->searchJob($offer['poste'])['Id'];
 
         $this->inscriptContracts(
             $key_candidate,
@@ -400,43 +384,16 @@ class CandidatsModel extends Model {
             isset($offer['travail nuit']) ? $offer['travail nuit'] : null,
             isset($offer['travail wk']) ? $offer['travail wk'] : null
         );
-        $candidat = $this->searchcandidate($key_candidate);
+        $candidat = $this->searchCandidates($key_candidate);
         $this-> writeLogs(
             $_SESSION['user_key'],
             "Nouvelle proposition",
-            "Nouvelle proposition de contrat pour " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname']) . " au poste de " . forms_manip::nameFormat($this->searchJob($offer['poste'])['Titled'])
+            "Nouvelle proposition de contrat pour " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname']) . " au poste de " . forms_manip::nameFormat($this->searchJobs($offer['poste'])['Titled'])
         );
     }
-    // ! Methodes à remplacer par CandidatsModel::createOffer !
-    /// Méthode construisant une nouvelle proposition d'embauche depuis une candidature et l'inscrivant dans la base de données
-    // public function createOfferFromCandidature($cle_candidature, &$propositions=[], &$cle_candidat) {
-    //     // On récupère la candidature
-    //     $candidature = $this->searchCandidature($cle_candidature);
-    // 
-    //     // On implémente le tableau de données de la proposition
-    //     $propositions['poste'] = $candidature['Cle_Postes'];
-    //     $propositions['service'] = $this->searchAppliquer_aFromCandidature($candidature['Id_Candidatures'])['Cle_Services'];
-    //     $propositions['type_de_contrat'] = $candidature['Cle_Types_de_contrats'];
-    // 
-    //     // On récupère la clé candidat
-    //     $cle_candidat = $this->searchCandidateFromApplication($cle_candidature)['Cle_Candidats'];
-    // }
-    // ! Methodes à remplacer par CandidatsModel::createOffer !
-    // /// Méthode construisant une nouvelle proposition d'embauche depuis une cnadidature sans service et l'inscrivant dans la base de données
-    // public function createOfferFromEmptyCandidature($cle_candidature, &$propositions=[], &$cle_candidat) {
-    //     // On récupère la candidature
-    //     $candidature = $this->searchCandidature($cle_candidature);
-    // 
-    //     // On implémente le tableau de données de la proposition
-    //     $propositions['poste'] = $candidature['Cle_Postes'];
-    //     $propositions['type_de_contrat'] = $candidature['Cle_Types_de_contrats'];
-    // 
-    //     // On récupère la clé candidat
-    //     $cle_candidat = $this->searchCandidateFromApplication($cle_candidature)['Cle_Candidats'];
-    // }
-    // TODO : Fusionner cette méthode avec createOffer
+    // TODO : Analogue à createOffer
     /// Méthode construisant nouveau contrat et l'inscrivant dans la base de données
-    public function createContrats($cle_candidats, &$contrat=[]) {
+    public function createContracts($key_candidate, &$contract=[]) {
         try {
             // On génère l'instant actuel
             $instant = $this->inscriptInstants()['Id_Instants'];
@@ -456,7 +413,7 @@ class CandidatsModel extends Model {
             // On ajoute la clé poste
             $contrat['cle poste'] = $poste['Id_Postes'];
             // On ajoute la clé service
-            $contrat['cle service'] = is_numeric($contrat['service']) ? $contrat['service'] : $this->searchService($contrat['service'])['Id_Services'];
+            $contrat['cle service'] = is_numeric($contrat['service']) ? $contrat['service'] : $this->searchServices($contrat['service'])['Id_Services'];
             // On ajoute la clé de type de contrat
             $contrat['cle type'] = isset($contrat['type']) && is_numeric($contrat['type']) ? $contrat['type'] : $this->searchTypeContrat($contrat['type_de_contrat'])['Id_Types_de_contrats'];
 
@@ -495,13 +452,13 @@ class CandidatsModel extends Model {
      */
     public function createMeeting($key_candidate, &$meeting=[]) {
         $this->inscriptMeetings(
-            $this->searchUser($meeting['recruteur'])['Id'], 
+            $this->searchUsers($meeting['recruteur'])['Id'], 
             $key_candidate, 
-            $this->searchEstablishment($meeting['etablissement'])['Id'], 
+            $this->searchEstablishments($meeting['etablissement'])['Id'], 
             (new DateTime($meeting['date'] . ' ' . $meeting['time'], new DateTimeZone('Europe/Paris')))->getTimestamp()
         );
 
-        $candidate = $this->searchCandidate($key_candidate);
+        $candidate = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Nouveau rendez-vous", 
@@ -509,50 +466,47 @@ class CandidatsModel extends Model {
         );
     }
 
-    /// Méthode publique ajoutant une signature à un contrat
-    public function addSignature($cle) {
-        // On génère l'instant actuel
-        $instant = Moment::currentInstants()->getDate();
-
-        // On initialise la requête
-        $request = "UPDATE Contrats SET Date_signature_Contrats = :date WHERE Id_Contrats = :contrat";
+    /**
+     * Public method adding an signature to a contract and registering the logs
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Int $key_contract The contract's primary key
+     * @return Void
+     */
+    public function addSignatureToContract($key_candidate, $key_contract) {
+        $request = "UPDATE Contracts SET SignatureDate = :date WHERE Id = :key_contract";
         $params = [
-            'date' => $instant,
-            'contrat' => $cle
+            'date' => date('Y-m-d H:i:s', Moment::currentMoment()->getTimestamp()),
+            'key_contract' => $key_contract
         ];
-
-        // On lance la requête
         $this->post_request($request, $params);
 
-        // On enregistre les logs
-        $candidat = $this->searchcandidatFromContrat($cle);
+        $candidate = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
-            "Nouveau contrat",
-            strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats']) . " a accepté la proposition d'offre pour le poste " . forms_manip::nameFormat($this->searchPoste($this->searchContrat($cle)['Cle_Postes'])['Intitule_Postes'])
+            "Nouveau contrat", 
+            "Nouveau contrat de " . strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Name']) . " au poste de " . $this->searchJobs($this->searchContracts($key_contract)['Key_Jobs'])['Titled']
         );
     }
-    /// Méthode ajoutant une démission à un contrat 
-    public function addDemission($cle) {
-        // On génère l'instant actuel
-        $instant = Instants::currentInstants()->getDate();
-
-        // On initialise la requête
-        $request = "UPDATE Contrats SET Date_demission_Contrats = :date WHERE Id_Contrats = :contrat";
+    /**
+     * Public method adding an resignation to a contract and registering the logs
+     *
+     * @param Int $key_contrat The contract's primary key
+     * @return Void
+     */ 
+    public function setResignationToContract($key_contrat) {
+        $request = "UPDATE Contracts SET ResignationDate = :date WHERE Id = :key_contrat";
         $params = [
-            'date' => $instant,
-            'contrat' => $cle
+            'date' => date('Y-m-d H:i:s', Moment::currentMoment()->getTimestamp()),
+            'key_contrat' => $key_contrat
         ];
-
-        // On lance la requête
         $this->post_request($request, $params);
 
-        // On enregistre les logs
-        $candidat = $this->searchcandidatFromContrat($cle);
+        $candidat = $this->searchCandidatesFromContracts($key_contrat);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Démission",
-            strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats']) . " a démissioné de son travail de " . forms_manip::nameFormat($this->searchPoste($this->searchContrat($cle)['Cle_Postes'])['Intitule_Postes'])
+            strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Name']) . " a démissioné de son travail de " . forms_manip::nameFormat($this->searchJobs($this->searchContracts($key_contract)['Key_Jobs'])['Titled'])
         );
     }
     /**
@@ -562,8 +516,8 @@ class CandidatsModel extends Model {
      * @return Void
      */
     public function deletingMeeting($key_meeting) {
-        $meeting = $this->searchMeeting($key_meeting);
-        $candidate = $this->searchcandidate($meeting['Key_Users']); 
+        $meeting = $this->searchMeetings($key_meeting);
+        $candidate = $this->searchCandidates($meeting['Key_Users']); 
         $this->deleteMeeting($key_meeting);
         $this->writeLogs(
             $_SESSION['user_key'],
@@ -571,25 +525,6 @@ class CandidatsModel extends Model {
             strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " a annulé son rendez-vous du " . date('Y m d', strtotime($meeting['Date']))
         );
     }
-    // ! La table mission n'existe plus !
-    /// Méthode protégée vérifiant qu'une mission est dans la base de données
-    // protected function verifyMission($cle_service, $cle_poste) {
-    //     // On initialise la requête 
-    //     $request = "SELECT * FROM Missions WHERE Cle_Services = :service AND Cle_Postes = :poste";
-    //     $params = [
-    //         'service' => $cle_service,
-    //         'poste' => $cle_poste
-    //     ];
-    // 
-    //     // On lance la requête
-    //     $mission = $this->get_request($request, $params);
-    // 
-    //     // On test la présence de la mission
-    //     if(empty($mission)) {
-    //         // On inscrit la mission
-    //         $this->inscriptMission($cle_service, $cle_poste);
-    //     }
-    // }
 
     // Todo: Remanier et documenter cette méthode 
     public function makeUpdatecandidat($cle_candidat, $candidat) {
@@ -642,7 +577,7 @@ class CandidatsModel extends Model {
      * @return Void
      */
     public function updateRatingLogs($key_candidate) {
-        $candidat = $this->searchcandidate($key_candidate);
+        $candidat = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour notation",
@@ -656,7 +591,7 @@ class CandidatsModel extends Model {
      * @return Void
      */
     public function updateCandidateLogs($key_candidate) {
-        $candidat = $this->searchcandidate($key_candidate);
+        $candidat = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour candidat",
@@ -670,7 +605,7 @@ class CandidatsModel extends Model {
      * @return Void
      */
     public function updateMeetingLogs($key_candidate) {
-        $candidat = $this->searchcandidate($key_candidate);
+        $candidat = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour rendez-vous",
@@ -678,7 +613,7 @@ class CandidatsModel extends Model {
         );
     }
 
-    // ! Méthode à remplacer par public searchCandidate() déclarée dans Model.php
+    // ! Méthode à remplacer par public searchCandidates() déclarée dans Model.php
     /// Méthode protégée recherchant un candidat dans la base de données
     // private function searchCandidat($cle_candidat) {
     //     if(empty($cle_candidat) || !is_numeric($cle_candidat)) 

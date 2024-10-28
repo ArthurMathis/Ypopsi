@@ -338,7 +338,7 @@ class PreferencesModel extends Model {
     /// Méthode publique générant un nouvel établissement
     public function createEtablissement(&$infos=[]) {
         // On récupère le pôle
-        $infos['pole'] = $this->searchPole($infos['pole'])['Id_Poles'];
+        $infos['pole'] = $this->searchPoles($infos['pole'])['Id_Poles'];
 
         // On inscrit l'établissement
         $this->inscriptEtablissement($infos);
@@ -400,7 +400,7 @@ class PreferencesModel extends Model {
     }
     public function updateUserLogs($cle_utilisateur) {
         // On récupère les données du candidat
-        $candidat = $this->searchUser($cle_utilisateur);
+        $candidat = $this->searchUsers($cle_utilisateur);
 
         // On enregistre les logs
         $this->writeLogs(
@@ -412,7 +412,7 @@ class PreferencesModel extends Model {
     /// Méthode publique enregistrant les réinitialisations de mots de passe dans les logs
     public function resetPasswordLogs($cle_utilisateur) {
         // On récpère l'utilisateur
-        $user = $this->searchUser($cle_utilisateur);
+        $user = $this->searchUsers($cle_utilisateur);
         // On enregistre les logs
         $this->writeLogs(
             $_SESSION['user_key'],

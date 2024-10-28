@@ -30,7 +30,7 @@ class CandidaturesController extends Controller {
         );
     }
     public function displayInputApplications() {
-        return $this->View->getInputApplicationContent(
+        return $this->View->getInputApplicationsContent(
             "Ypopsi - Recherche d'un candidat", 
             $this->Model->getAutoCompJobs(),
             $this->Model->getAutoCompServices(),
@@ -87,12 +87,11 @@ class CandidaturesController extends Controller {
      * @param String $coopteur The employee's name who advises the new candidate 
      * @return Void
      */
-    public function createApplication(&$candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
+    public function createApplications(&$candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
         $candidate->setAvailability($application['availability']);
         try {
             if($candidate->getKey() === null) {
-                $search = $this->Model->searchCandidateByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
-                var_dump($search); 
+                $search = $this->Model->searchCandidatesByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
 
                 if(empty($search)) 
                     $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);

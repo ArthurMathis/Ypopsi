@@ -163,6 +163,7 @@ abstract class Model {
     }
 
 
+    // * GET * //
     /**
      * Public method returning the users list to autocomplete items
      *
@@ -267,20 +268,18 @@ abstract class Model {
      * @return Void
      */
     public function getAccessibleRoles() {
-        // ON initialise la requête
         $request = "SELECT 
         Id_Role AS id,
         Intitule_Role AS text
 
         FROM Roles";
 
-        // On lance la requête
         return $this->get_request($request);
     }
 
 
 
-    // METHODES DE RECHERCHE DANS LA BASE DE DONNEES //
+    // * SEARCH * //
 
     /**
      * Protected method searching one hub in the database
@@ -288,7 +287,7 @@ abstract class Model {
      * @param Int|String $pole The hub primary key or intitule
      * @return Array
      */
-    protected function searchPole($pole): Array {
+    protected function searchPoles($pole): Array {
         if(is_numeric($pole))
             $request = "SELECT * FROM Poles WHERE Id = :pole";
         elseif(is_string($pole))
@@ -306,7 +305,7 @@ abstract class Model {
      * @param Int|String $establishment The establishment primary key or intitule 
      * @return Array
      */
-    public function searchEstablishment($establishment): Array {
+    public function searchEstablishments($establishment): Array {
         if(is_numeric($establishment)) 
             $request = "SELECT * FROM Establishments WHERE Id = :establishment";
         elseif(is_string($establishment)) 
@@ -319,12 +318,12 @@ abstract class Model {
         return $this->get_request($request, $params, true, true);
     }
     /**
-     * Protected method searching one service in the database
+     * Public method searching one service in the database
      *
      * @param Int|String $service The service primary key or intitule
      * @return Array
      */
-    protected function searchService($service): Array {
+    public function searchServices($service): Array {
         if(is_numeric($service))
             $request = "SELECT * FROM Services WHERE Id = :service";
         elseif(is_string($service))
@@ -353,6 +352,28 @@ abstract class Model {
         return $this->get_request($request, $params, true);
     }
     
+    /**
+     * Public method search one user in the database
+     * 
+     * @param Int|String $user The user's primary key or identifier
+     * @return Array
+     */ 
+    public function searchUsers($user): Array {
+        if($user == null)
+            throw new Exception("Le nom ou l'identifiant de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
+
+        $params = ['user' => $user];
+        if(is_numeric($user)) {
+            $request = "SELECT * FROM Users WHERE Id = :user";
+            return $this->get_request($request, $params, true, true);
+
+        } elseif(is_string($user)) {
+            $request = "SELECT * FROM Users WHERE Identifier = :user";
+            return $this->get_request($request, $params, true, true);
+
+        } else 
+            throw new Exception("Le type n'a pas pu être reconnu. Le nom (string) ou l'identifiant (int) de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
+    }
     /**
      * Protected method searching one role in the database
      *
@@ -398,35 +419,16 @@ abstract class Model {
 
         return $this->get_request($request, $params, true, true);
     }
-    /**
-     * Public method search one user in the database
-     * 
-     * @param Int|String $user The user's primary key or identifier
-     * @return Array
-     */ 
-    public function searchUser($user): Array {
-        if($user == null)
-            throw new Exception("Le nom ou l'identifiant de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
+    // TODO: Implémenter la methode //
+    protected function searchActions(): Array { return []; }
 
-        $params = ['user' => $user];
-        if(is_numeric($user)) {
-            $request = "SELECT * FROM Users WHERE Id = :user";
-            return $this->get_request($request, $params, true, true);
-
-        } elseif(is_string($user)) {
-            $request = "SELECT * FROM Users WHERE Identifier = :user";
-            return $this->get_request($request, $params, true, true);
-
-        } else 
-            throw new Exception("Le type n'a pas pu être reconnu. Le nom (string) ou l'identifiant (int) de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
-    }
     /**
      * Public method searching and returning one candidate from his primary key
      *
      * @param Int $key_candidate The candidate's primary key
      * @return Array
      */
-    public function searchCandidate($key_candidate): Array {
+    public function searchCandidates($key_candidate): Array {
         if(empty($key_candidate) || !is_numeric($key_candidate))
             throw new Exception("Impossible de rechercher un candidat sans sa clé primaire !");
 
@@ -444,7 +446,7 @@ abstract class Model {
      * @param String $phone The candidate's phone number
      * @return The candidate
      */
-    public function searchCandidateByName($name, $firstname, $email): ?Array {
+    public function searchCandidatesByName($name, $firstname, $email): ?Array {
         $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
         $params = [
             ":name" => $name,
@@ -459,7 +461,7 @@ abstract class Model {
      * @param Int $cle The application primary key
      * @return Array
      */
-    public function searchCandidateFromApplication($key_application): Array {
+    public function searchCandidatesFromApplications($key_application): Array {
         $request = "SELECT c.Id, c.Name, c.Firstname, c.Gender, c.Email, c.Phone, c.Address, c.City, c.PostCode,  c.Availability, c.MedicalVisit,  c.Rating, c.Description, c.Is_delete, c.A,  c.B,  c.C
         FROM Applications 
         INNER JOIN Candidates AS c ON Applications.Key_Candidates = c.Id
@@ -468,26 +470,22 @@ abstract class Model {
 
         return $this->get_request($request, $params, true, true);
     }
-
     /**
      * Public method searching one candidate from one of his contract in the database
      *
-     * @param Int $cle The contract primary key
+     * @param Int $key_contract The contract's primary key
      * @return Array
      */
-    public function searchcandidatFromContrat($cle): Array {
-        // On initialise la requête
+    public function searchCandidatesFromContracts($key_contract): Array {
         $request = "SELECT * 
-        FROM Contrats 
-        INNER JOIN Candidats ON Contrats.Cle_Candidats = Candidats.Id_Candidats
-        WHERE Contrats.Id_Contrats = :cle";
-        $params = [
-            'cle' => $cle
-        ];
+        FROM Contracts 
+        INNER JOIN Candidates ON Contracts.Key_Candidates = Candidates.Id
+        WHERE Contracts.Id = :key_contract";
+        $params = ['key_contract' => $key_contract];
 
-        // On lance la requête
         return $this->get_request($request, $params, true, true);
     }  
+
     /**
      * Protected method searching one degree in the database 
      *
@@ -513,58 +511,31 @@ abstract class Model {
         return $result;
     }
     /**
-     * Public method searching and returning one meeting
+     * Public method searching one job in the database
      *
-     * @param Int $key_meeting The meeting's primary key
-     * @return Array The array containing the meeting's data
-     */
-    public function searchMeeting($key_meeting): Array {
-        $request = "SELECT * FROM Meetings WHERE Id = :key_meeting";
-        $params = ['key_meeting' => $key_meeting];
-
-        return $this->get_request($request, $params, true, true);
-    }
-    /**
-     * Protected method searching one application in the database
-     *
-     * @param Int $application The application primary key
+     * @param Int|String $job The job primary key or intitule
      * @return Array
      */
-    protected function searchApplication($key_application): Array {
-        $request = "SELECT * FROM Applications WHERE Id = :key_application";
-        $params = ['key_application' => $key_application];
+    public function searchJobs($key_job): Array {
+        if(is_numeric($key_job)) 
+            $request = "SELECT * FROM Jobs WHERE Id = :key_job";    
+        elseif(is_string($key_job)) 
+            $request = "SELECT * FROM Jobs WHERE Titled = :key_job";
+        else 
+            throw new Exception("Erreur lors de la recherche de poste. La saisie du poste est mal typée. Il doit être un identifiant (entier positif) ou une chaine de caractères !");
+        
+        $params = ["key_job" => $key_job];
 
         return $this->get_request($request, $params, true, true);
     }
+
     /**
-     * Protected method searching one type of contracts in the database 
-     *
-     * @param Int|String $contract The types of contracts primary key or intitule
-     * @return Array The array of Type of contract information
-     */
-    protected function searchTypesOfContracts($contract): Array {
-        if(is_numeric($contract)) {
-            $request = "SELECT * FROM Types_of_contracts WHERE Id = :id";
-            $params = ['id' => $contract];
-
-        } elseif(is_string($contract)) {
-            $request =  "SELECT * FROM Types_of_contracts WHERE titled = :titled";
-            $params = ['titled' => $contract];
-
-        } else 
-            throw new Exception("La saisie du type de contrat est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
-        
-        $result = $this->get_request($request, $params, true, true);
-
-        return $result;
-    }
-    /**
-     * Protected method one source in the database
+     * Public method one source in the database
      *
      * @param Int|String $source The source primary key or intitule
      * @return Array
      */
-    protected function searchSource($source): Array {
+    public function searchSources($source): Array {
         if(is_numeric($source)) 
             $request = "SELECT * FROM sources WHERE Id = :source";
         elseif(is_string($source)) 
@@ -577,20 +548,14 @@ abstract class Model {
         return $this->get_request($request, $params, true, true);
     }
     /**
-     * Protected method searching one job in the database
+     * Public method searching and returning one meeting
      *
-     * @param Int|String $job The job primary key or intitule
-     * @return Array
+     * @param Int $key_meeting The meeting's primary key
+     * @return Array The array containing the meeting's data
      */
-    protected function searchJob($key_job): Array {
-        if(is_numeric($key_job)) 
-            $request = "SELECT * FROM Jobs WHERE Id = :key_job";    
-        elseif(is_string($key_job)) 
-            $request = "SELECT * FROM Jobs WHERE Titled = :key_job";
-        else 
-            throw new Exception("Erreur lors de la recherche de poste. La saisie du poste est mal typée. Il doit être un identifiant (entier positif) ou une chaine de caractères !");
-        
-        $params = ["key_job" => $key_job];
+    public function searchMeetings($key_meeting): Array {
+        $request = "SELECT * FROM Meetings WHERE Id = :key_meeting";
+        $params = ['key_meeting' => $key_meeting];
 
         return $this->get_request($request, $params, true, true);
     }
@@ -618,55 +583,57 @@ abstract class Model {
 
         return $result;
     }
+
     /**
-     * Protected method searching one Appliquer_a from its application
+     * Public method searching one application in the database
      *
-     * @param Int $cle The application primary key
+     * @param Int $application The application primary key
      * @return Array
      */
-    protected function searchAppliquer_aFromCandidature($cle): Array {
-        // On initialise la requête
-        $request = "SELECT * FROM Appliquer_a WHERE Cle_Candidatures = :cle";
-        $params = ['cle' => $cle];
+    public function searchApplications($key_application): Array {
+        $request = "SELECT * FROM Applications WHERE Id = :key_application";
+        $params = ['key_application' => $key_application];
 
-        // On lance la requête
         return $this->get_request($request, $params, true, true);
     }
     /**
-     * Protected method searching one Appliquer_a from its service
+     * Public method searching one type of contracts in the database 
      *
-     * @param Int $cle the service primary key
-     * @return Array
+     * @param Int|String $contract The types of contracts primary key or intitule
+     * @return Array The array of Type of contract information
      */
-    protected function searchAppliquer_aFromService($cle): Array {
-        // On initialise la requête
-        $request = "SELECT * FROM Appliquer_a WHERE Cle_Services = :cle";
-        $params = ['cle' => $cle];
+    public function searchTypesOfContracts($contract): Array {
+        if(is_numeric($contract)) {
+            $request = "SELECT * FROM Types_of_contracts WHERE Id = :id";
+            $params = ['id' => $contract];
 
-        // On lance la requête
-        return $this->get_request($request, $params, true, true);
+        } elseif(is_string($contract)) {
+            $request =  "SELECT * FROM Types_of_contracts WHERE titled = :titled";
+            $params = ['titled' => $contract];
+
+        } else 
+            throw new Exception("La saisie du type de contrat est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
+        
+        $result = $this->get_request($request, $params, true, true);
+
+        return $result;
     }
     /**
      * Protected method searching one contract in the database
      *
-     * @param Int $cle_contrat The contract primary key
+     * @param Int $key_contract The contract's primary key
      * @return Array
      */
-    protected function searchContrat(&$cle_contrat): Array {
-        if(empty($cle_contrat) || !is_numeric($cle_contrat))
-            throw new Exception('Erreur lors de la recherche du contrat. La clé contrat doit être un nombre entier positif !');
+    protected function searchContracts(&$key_contract): Array {
+        $request  = "SELECT * FROM Contracts WHERE Id = :key_contract";
+        $params = ['key_contract' => $key_contract];
 
-        // On initialise la requête
-        $request  = "SELECT * FROM Contrats WHERE Id_Contrats = :cle";
-        $params = ['cle' => $cle_contrat];
-
-        // On lance la requête
         return $this->get_request($request, $params, true, true);
     }
     
 
 
-    // METHODES D'INSCRIPTION DANS LA BASE DE DONNEES //
+    // * METHODES D'INSCRIPTION DANS LA BASE DE DONNEES * //
 
     /**
      * protected method registering one user in the database
@@ -804,7 +771,7 @@ abstract class Model {
     
         $this->post_request($request, $params);
     }
-    // TODO : séparation de la méthode CandidaturesModel::inscriptApplication en Model::inscriptApplication et CandiatureModel::createApplication //
+    // TODO : séparation de la méthode CandidaturesModel::inscriptApplication en Model::inscriptApplication et CandiatureModel::createApplications //
     /**
      * Protected methood registering a new contract
      *
