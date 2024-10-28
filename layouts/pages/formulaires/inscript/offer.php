@@ -1,4 +1,4 @@
-<form class="big-form" method="post" action="index.php?candidates=inscript-offer&key_candidate=<?= $key_candidate; ?>&key_application=<?= empty($offer['Id']) ? NULL : $offer['Id']; ?>">
+<form class="big-form" method="post" action="index.php?candidates=inscript-offers&key_candidate=<?= $key_candidate; ?>&key_application=<?= empty($offer['Id']) ? NULL : $offer['Id']; ?>">
     <div class="form-container">
     <h3>Saissisez les informations de la proposition</h3>
         <section>

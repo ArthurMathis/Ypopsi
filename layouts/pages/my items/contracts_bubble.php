@@ -36,7 +36,9 @@
         </div>
         <div>
             <p>Horaire</p>
-            <p><?= $item['heures']; ?> heures</p>
+            <?php if(isset($item['heures'])): ?>
+                <p><?= $item['heures']; ?> heures</p>
+            <?php endif ?>
             <?php if($item['nuit'] == 'true'): ?>
                 <p>Emploi de nuit</p>
             <?php endif ?>    
@@ -48,7 +50,7 @@
     <?php if($item['demission'] == null && ($item['date_fin'] == null || $date < $item['date_fin'])): ?>
         <footer>
             <?php if($_SESSION['user_role'] != INVITE): ?>
-                <a class="circle_button" href="index.php?candidats=resignation&key_contract=<?= $item['cle']; ?>">
+                <a class="circle_button" href="index.php?candidates=resignation&key_contract=<?= $item['cle']; ?>">
                     <img src="layouts\assets\img\logo\white-close.svg" alt="Logo de dmission du contrat, représenté par une croix">
                 </a>
             <?php endif ?>    

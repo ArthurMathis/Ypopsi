@@ -1,4 +1,3 @@
-<script>console.table(<?= json_encode($item) ?>); </script>
 <div class="propositions_bulle">
     <header>
         <h2><?= $item['poste']; ?></h2>
@@ -30,23 +29,24 @@
         </div>
         <div>
             <p>Horaire</p>
-            <?php if(!empty($item['heures'])): ?>
-                <p><?= $item['heures']; ?> heures</p>
-            <?php endif ?>
-            <?php if($item['nuit'] == 'true'): ?>
-                <p>Emploi de nuit</p>
-            <?php endif ?>    
-            <?php if($item['week_end'] == 'true'): ?>
-                <p>Emploi de week-end</p>
-            <?php endif ?>  
+            <article>
+                <?php if(!empty($item['heures'])): ?>
+                    <p><?= $item['heures']; ?> heures</p>
+                <?php endif ?>
+                <?php if($item['nuit']): ?>
+                    <p>Emploi de nuit</p>
+                <?php endif ?>    
+                <?php if($item['week_end']): ?>
+                    <p>Emploi de week-end</p>
+                <?php endif ?>  
+            </article>
         </div>
-        <div>
-            <p>Rémunération proposée</p>
-            <?php 
-                if(!empty($item['salaire'])) 
-                    echo "<p>" . $item['salaire'] . "€</p>";
-            ?>
-        </div>
+        <?php if(!empty($item['salaire'])) : ?>
+            <div>
+                <p>Rémunération proposée</p>
+                <p> <?= $item['salaire'] ?>€</p>
+            </div>
+        <?php endif ?>
         <!-- Ajouter la rémunération proposée -->
     </content>
     <?php if(empty($item['signature']) && empty($item['statut'])): ?>
@@ -55,7 +55,7 @@
                 <a class="circle_button" href="index.php?candidates=reject-offer&key_offer=<?= $item['cle']; ?>">
                     <img src="layouts\assets\img\logo\white-close.svg" alt="Logo de refus de la proposition, représenté par une croix">
                 </a>
-                <a class="circle_button" href="index.php?candidates=inscript-contract&key_candidate=<?= $key_candidate; ?>&key_offer=<?= $item['cle']; ?>">
+                <a class="circle_button" href="index.php?candidates=inscript-contracts&key_candidate=<?= $key_candidate; ?>&key_offer=<?= $item['cle']; ?>">
                     <img src="layouts\assets\img\logo\white-valider.svg" alt="Logo de d'acceptation de la proposition, représenté par une coche">
                 </a>
             <?php endif ?>

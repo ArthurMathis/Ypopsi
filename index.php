@@ -189,7 +189,16 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 $candidates->displayContent();
                 break;
 
-            // Returning the html form of inputing an application  
+            case 'input-meetings':
+                if($_SESSION['user_role'] == INVITE)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                if(isset($_GET['key_candidate']))
+                    $candidates->getInputMeetings($_GET['key_candidate']);
+                else 
+                    throw new Exception("La clé candidat n'a pas pu être récupérée !");
+                break;
+
             case 'input-applications': 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
@@ -213,7 +222,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     throw new Exception("La clé candidat n'a pas pu être réceptionnée");
                 break;
 
-            case 'input-contract':
+            case 'input-contracts':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -221,20 +230,42 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     $candidates->getInputContracts($_GET['key_candidate']);
                 else 
                     throw new Exception("La clé candidat n'a pas pu être récupérée !");
-                break;
+                break;   
 
-            
-            case 'input-meeting':
+            case 'inscript-meetings':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                if(isset($_GET['key_candidate']))
-                    $candidates->getInputMeetings($_GET['key_candidate']);
-                else 
-                    throw new Exception("La clé candidat n'a pas pu être récupérée !");
-                break;    
+                if(!isset($_GET['key_candidate']) || !is_numeric($_GET['key_candidate']))
+                    throw new Exception("La clé candidat est introuvale !");
+
+                try {
+                    $data = [
+                        'recruteur' => $_POST['recruteur'],
+                        'etablissement' => $_POST['etablissement'],
+                        'date' => $_POST['date'],
+                        'time' => $_POST['time']
+                    ];
+
+                    if(empty($data['recruteur']))
+                        throw new Exception("Le champs recruteur doit être rempli !");
+                    elseif(empty($data['etablissement']))
+                        throw new Exception("Le champs etablissement doit être rempli !");
+                    elseif(empty($data['date']))
+                        throw new Exception("Le champs date doit être rempli !");
+                    elseif(empty($data['time']))
+                        throw new Exception("Le champs horaire doit être rempli !");
+
+                    $candidates->createMeeting($_GET['key_candidate'], $data);
+
+                } catch(Exception $e) {
+                    forms_manip::error_alert([
+                        'msg' => $e
+                    ]);
+                }
+                break;     
             
-            case 'inscript-offer':
+            case 'inscript-offers':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                 
@@ -284,25 +315,9 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'msg' => $e
                     ]);
                 }
-                break;        
-
-            case 'dismiss-applications':
-                if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                if(!isset($_GET['key_applications']) || !is_numeric($_GET['key_applications']))
-                    throw new Exception("Clé de candidature est introuvable !");
-                else
-                    $candidates->dismissApplications($_GET['key_applications']);
-                break;  
-
-            case 'reject-offer':
-                if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-                $candidates->rejectOffer($_GET['key_offer']);
                 break; 
-
-            case 'inscript-contract':
+                
+            case 'inscript-contracts':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -348,51 +363,14 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'msg' => $e
                     ]);
                 }
-                break;    
-
-
-            case 'inscript-meeting':
-                if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                if(!isset($_GET['key_candidate']) || !is_numeric($_GET['key_candidate']))
-                    throw new Exception("La clé candidat est introuvale !");
-
-                try {
-                    $data = [
-                        'recruteur' => $_POST['recruteur'],
-                        'etablissement' => $_POST['etablissement'],
-                        'date' => $_POST['date'],
-                        'time' => $_POST['time']
-                    ];
-
-                    if(empty($data['recruteur']))
-                        throw new Exception("Le champs recruteur doit être rempli !");
-                    elseif(empty($data['etablissement']))
-                        throw new Exception("Le champs etablissement doit être rempli !");
-                    elseif(empty($data['date']))
-                        throw new Exception("Le champs date doit être rempli !");
-                    elseif(empty($data['time']))
-                        throw new Exception("Le champs horaire doit être rempli !");
-
-                    $candidates->createMeeting($_GET['key_candidate'], $data);
-
-                } catch(Exception $e) {
-                    forms_manip::error_alert([
-                        'msg' => $e
-                    ]);
-                }
-                break;   
+                break;  
                 
-            case 'resignation':
+            case 'edit-meeting':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                if(!isset($_GET['key_contract']) || !is_numeric($_GET['key_contract']))
-                    throw new Exception("La clé de contrat est introuvable !");
-                else
-                    $candidates->resignContract($_GET['key_contract']);
-                break; 
+                else 
+                    $candidates->getEditMeetings($_GET['key_meeting']); 
+                break;  
 
             case 'edit-rating':
                 if($_SESSION['user_role'] == INVITE)
@@ -403,28 +381,17 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 else 
                     throw new Exception("La clé candidat est introuvable !");
                 break;  
-            // On affiche le formulaire de mise-à-jour des données d'un cadidat
-            case 'edit-candidat':
+
+            case 'edit-candidate':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                // On test la présence de la clé candidat
                 if(isset($_GET['cle_candidat']))
                     $candidates->getEditCandidates($_GET['cle_candidat']);
-                // On signale l'erreur
                 else 
                     throw new Exception("La clé candidat est introuvable !");
-                break; 
-                
-            // Displaying the meeting editing form
-            case 'edit-meeting':
-                if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-                else 
-                    $candidates->getEditMeetings($_GET['key_meeting']); 
-                break;    
-            
-            // On met-à-jour la notation d'un candidat
+                break;  
+
             case 'update-rating':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
@@ -451,7 +418,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 break;  
                 
-            // On met-à-jour les données d'un candidat
             case 'update-candidat':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
@@ -486,8 +452,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 else 
                     throw new Exception("Impossible de modifier la notation du candidat, clé candidat est introuvable !");
                 break;  
-
-            // Updating a meeting    
+  
             case 'update-meeting':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
@@ -522,13 +487,38 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 break;
                 
-            // Deleting a meeting
             case 'delete-meeting': 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                 else
                     $candidates->deleteMeeting($_GET['key_meeting'], $_GET['key_candidate']);
+                break;  
+                
+            case 'dismiss-applications':
+                if($_SESSION['user_role'] == INVITE)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                if(!isset($_GET['key_applications']) || !is_numeric($_GET['key_applications']))
+                    throw new Exception("Clé de candidature est introuvable !");
+                else
+                    $candidates->dismissApplications($_GET['key_applications']);
+                break;  
+
+            case 'reject-offer':
+                if($_SESSION['user_role'] == INVITE)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                $candidates->rejectOffer($_GET['key_offer']);
                 break;    
+                
+            case 'resignation':
+                if($_SESSION['user_role'] == INVITE)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                if(!isset($_GET['key_contract']) || !is_numeric($_GET['key_contract']))
+                    throw new Exception("La clé de contrat est introuvable !");
+                else
+                    $candidates->resignContract($_GET['key_contract']);
+                break; 
 
             default: 
                 throw new Exception("L'action n'a pas pu être identifiée !");

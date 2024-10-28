@@ -259,7 +259,7 @@ main section .candidatures_bulle article p::before {
 main section content div {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: top;
 
     width: 100%;
     height: fit-content;
@@ -267,6 +267,11 @@ main section content div {
 main section content div > p:first-of-type {
     font-family: 'Roboto Bold';
 }
+main section content div article {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+} 
 /* On met en page les boutons de candidatures */
 main section .contrats_bulle footer,
 main section .propositions_bulle footer,

@@ -27,7 +27,7 @@ class CandidatController extends Controller {
      * @param Int $Key_candidate The candidate's primary key
      * @return View HTML PAGE
      */
-    public function displayCandidate($Key_candidate) {
+    public function displayCandidate($Key_candidate) { 
         $item = $this->Model->getContentCandidate($Key_candidate);
         return $this->View->getContentCandidate("Candidat " . $item['candidate']['Name'] . ' ' . $item['candidate']['Firstname'], $item);
     }

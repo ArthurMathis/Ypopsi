@@ -1,4 +1,4 @@
-<form method="post" action="index.php?candidates=inscript-meeting&key_candidate=<?= $key_candidate; ?>">
+<form method="post" action="index.php?candidates=inscript-meetings&key_candidate=<?= $key_candidate; ?>">
     <h3>Saissisez les informations du rendez-vous</h3>
     <section>
         <p>Entretien</p>

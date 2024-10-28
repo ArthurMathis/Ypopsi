@@ -190,7 +190,7 @@ class CandidatsView extends View {
 
         if($compt === 0)
             echo "<h2>Aucun contrat enregistré</h2>";
-        $link = 'index.php?candidates=input-contract&key_candidate=' . $key_candidate;
+        $link = 'index.php?candidates=input-contracts&key_candidate=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }
@@ -246,7 +246,7 @@ class CandidatsView extends View {
         else 
             echo "<h2>Aucun rendez-vous enregistré </h2>"; 
         
-        $link = 'index.php?candidates=input-meeting&key_candidate=' . $key_candidate;
+        $link = 'index.php?candidates=input-meetings&key_candidate=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }

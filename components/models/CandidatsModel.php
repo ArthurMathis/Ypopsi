@@ -491,22 +491,22 @@ class CandidatsModel extends Model {
     /**
      * Public method adding an resignation to a contract and registering the logs
      *
-     * @param Int $key_contrat The contract's primary key
+     * @param Int $key_contract The contract's primary key
      * @return Void
      */ 
-    public function setResignationToContract($key_contrat) {
-        $request = "UPDATE Contracts SET ResignationDate = :date WHERE Id = :key_contrat";
+    public function setResignationToContract($key_contract) {
+        $request = "UPDATE Contracts SET ResignationDate = :date WHERE Id = :key_contract";
         $params = [
             'date' => date('Y-m-d H:i:s', Moment::currentMoment()->getTimestamp()),
-            'key_contrat' => $key_contrat
+            'key_contract' => $key_contract
         ];
         $this->post_request($request, $params);
 
-        $candidat = $this->searchCandidatesFromContracts($key_contrat);
+        $candidate = $this->searchCandidatesFromContracts($key_contract);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Démission",
-            strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Name']) . " a démissioné de son travail de " . forms_manip::nameFormat($this->searchJobs($this->searchContracts($key_contract)['Key_Jobs'])['Titled'])
+            strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " a démissioné de son travail de " . forms_manip::nameFormat($this->searchJobs($this->searchContracts($key_contract)['Key_Jobs'])['Titled'])
         );
     }
     /**
@@ -612,18 +612,4 @@ class CandidatsModel extends Model {
             "Mise-à-jour du rendez-vous de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname'])
         );
     }
-
-    // ! Méthode à remplacer par public searchCandidates() déclarée dans Model.php
-    /// Méthode protégée recherchant un candidat dans la base de données
-    // private function searchCandidat($cle_candidat) {
-    //     if(empty($cle_candidat) || !is_numeric($cle_candidat)) 
-    //         throw new Exception('Erreur lors de la recherche du candidat. La clé candidat doit être un nombre entier positif !');
-    // 
-    //     // On initialise la requête
-    //     $request = "SELECT * FROM Candidats WHERE Id_Candidats = :cle";
-    //     $params = ['cle' => $cle_candidat];
-    // 
-    //     // On lance la requête
-    //     return $this->get_request($request, $params, true, true);
-    // }
 }

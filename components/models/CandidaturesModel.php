@@ -144,10 +144,9 @@ class CandidaturesModel extends Model {
             if($candidate->getKey() === null) 
                 $candidate->setKey($this->searchCandidatesByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail())['Id']); 
 
-            $request = "INSERT INTO Applications (status, key_candidates, key_jobs, key_types_of_contracts, key_sources";
-            $values_request = "VALUES (:status, :candidate, :job, :contract, :source";
-            $params = [
-                "status" => 'Non-traitée', 
+            $request = "INSERT INTO Applications (key_candidates, key_jobs, key_types_of_contracts, key_sources";
+            $values_request = "VALUES (:candidate, :job, :contract, :source";
+            $params = [ 
                 "candidate" => $candidate->getKey(), 
                 "job" => $this->searchJobs($application["job"])['Id'], 
                 "contract" => $this->searchTypesOfContracts($application['type of contract'])['Id'], 
