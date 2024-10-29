@@ -1,4 +1,4 @@
-<form class="big-form" method="post" action="index.php?candidats=inscript-contrats&cle_candidat=<?= $cle_candidat; ?>">
+<form class="big-form" method="post" action="index.php?candidates=inscript-contracts&key_candidate=<?= $key_candidate; ?>">
     <div class="form-container">
         <h3>Saisissez les informations du contrat</h3>
         <section>
@@ -12,6 +12,10 @@
                 <article></article>
             </div>
             <div class="autocomplete">
+                <input type="text" id="etablissement" name="etablissement" placeholder="Etablissements" autocomplete="off">
+                <article></article>
+            </div>
+            <div class="autocomplete">
                 <input type="text" id="type_contrat" name="type_contrat" placeholder="Type de contrats" autocomplete="off">
                 <article></article>
             </div>
@@ -19,7 +23,7 @@
         <section class="double-items">
             <div class="input-container">
                 <label for="date_debut">Date de début</label>
-                <input type="date" name="date_debut" id="date_debut" min="<?php echo Instants::currentInstants()->getDate(); ?>">
+                <input type="date" name="date_debut" id="date_debut" min="<?php echo Moment::currentMoment()->getDate(); ?>">
             </div>
             <div class="input-container">
                 <label for="date_fin">Date de fin</label>
@@ -49,15 +53,23 @@
 
 
 <script>
-    // On récupère les données depuis PHP
-    const postes = <?php echo json_encode(array_map(function($c) { return $c['Intitule_Postes']; }, $poste)); ?>;
-    const services = <?php echo json_encode(array_map(function($c) {  return $c['Intitule_Services'];  }, $service)); ?>;
-    const typeContrat = <?php echo json_encode(array_map(function($c) { return $c['Intitule_Types_de_contrats']; }, $typeContrat)); ?>;
-    // On prépare les AutoCompletes
-    new AutoComplete(document.getElementById('poste'), postes);
-    new AutoComplete(document.getElementById('service'), services);
-    new AutoComplete(document.getElementById('type_contrat'), typeContrat);
+    new AutoComplete(document.getElementById('poste'), <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $jobs)); ?>);
+    new AutoComplete(document.getElementById('service'), <?php echo json_encode(array_map(function($c) {  return $c['titled'];  }, $services)); ?>);
+    new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) {  return $c['titled'];  }, $establishments)); ?>);
+    new AutoComplete(document.getElementById('type_contrat'), <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $types_of_contrats)); ?>);
 
-    // On ajuste la sélection de date
     setMinDateFin('date_debut', 'date_fin');
+
+    const inputTypeContrat = document.getElementById('type_contrat');
+    const inputDateFin = document.getElementById('date_fin').parentElement;
+    const checkContratType = () => {
+        if (inputTypeContrat.value.trim().toUpperCase() === 'CDI') 
+            inputDateFin.style.display = 'none';
+        else 
+            inputDateFin.style.display = 'flex';  
+    };
+
+    inputTypeContrat.addEventListener('input', checkContratType);
+    inputTypeContrat.addEventListener('AutoCompleteSelect', checkContratType);
+    checkContratType();
 </script>

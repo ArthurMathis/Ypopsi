@@ -105,9 +105,10 @@ class CandidatController extends Controller {
         return $this->View->getContractsContent(
             "Ypopsi - Nouveau contrat", 
             $key_candidate,
-            $this->Model->getAutoCompPostes(),
+            $this->Model->getAutoCompJobs(),
             $this->Model->getAutoCompServices(),
-            $this->Model->getAutoCompTypesContrat()
+            $this->Model->getAutoCompEstablishments(),
+            $this->Model->getAutoCompTypesOfContracts()
         );
     }
 
@@ -188,7 +189,7 @@ class CandidatController extends Controller {
         $this->Model->createContracts($key_candidate, $contract);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
-            'msg' => 'Le contrat a été générée',
+            'msg' => 'Le contrat a été généré',
             'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }

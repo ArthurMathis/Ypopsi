@@ -193,7 +193,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                if(isset($_GET['key_candidate']))
+                if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
                     $candidates->getInputMeetings($_GET['key_candidate']);
                 else 
                     throw new Exception("La clé candidat n'a pas pu être récupérée !");
@@ -332,28 +332,31 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         throw new Exception("Le champs poste doit être rempli !");
                     elseif(empty($_POST['service']))
                         throw new Exception("Le champs service doit être rempli !");
+                    elseif(empty($_POST['etablissement']))
+                        throw new Exception("Le champs etablissement doit être rempli !");
                     elseif(empty($_POST['type_contrat']))
                         throw new Exception("Le champs type de contrat doit être rempli !");
                     elseif(empty($_POST['date_debut']))
                         throw new Exception('Le champs date de début doit être rempli !');
 
                     $data = [
-                        'poste' => $_POST['poste'],
+                        'job' => $_POST['poste'],
                         'service' => $_POST['service'],
-                        'type_de_contrat' => $_POST['type_contrat'],
-                        'date debut' => $_POST['date_debut']
+                        'establishment' => $_POST['etablissement'],
+                        'type' => $_POST['type_contrat'],
+                        'start_date' => $_POST['date_debut']
                     ];
 
                     if(!empty($_POST['date_fin']))
-                        $data['date fin'] = $_POST['date_fin'];
+                        $data['end_date'] = $_POST['date_fin'];
                     if(!empty($_POST['salaire_mensuel']))
-                        $data['salaire'] = intval($_POST['salaire_mensuel']);
+                        $data['salary'] = intval($_POST['salaire_mensuel']);
                     if(!empty($_POST['taux_horaire_hebdomadaire'])) 
-                        $data['taux horaire'] = $_POST['taux_horaire_hebdomadaire'];
+                        $data['hourly_rate'] = $_POST['taux_horaire_hebdomadaire'];
                     if(isset($_POST['travail_nuit']))
-                        $data['travail nuit'] = true;
+                        $data['night_work'] = true;
                     if(isset($_POST['travail_wk']))
-                        $data['travail nuit'] = true;
+                        $data['week_end_work'] = true;
                     
                     $candidates->createContracts($_GET['key_candidate'], $data);
 

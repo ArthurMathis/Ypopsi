@@ -18,7 +18,11 @@ class CandidaturesModel extends Model {
         return $this->get_request(
             "SELECT 
             c.id AS Cle,
-            app.Status AS Statut, 
+            CASE 
+                WHEN app.IsAccepted = 1 THEN 'Acceptée'
+                WHEN app.IsRefused = 1 THEN 'Refusée'
+                ELSE 'Non-traitée' 
+            END AS Statut,
             c.name AS Nom, 
             c.firstname AS Prenom, 
             j.titled AS Poste,

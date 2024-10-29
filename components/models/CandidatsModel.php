@@ -391,56 +391,43 @@ class CandidatsModel extends Model {
             "Nouvelle proposition de contrat pour " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname']) . " au poste de " . forms_manip::nameFormat($this->searchJobs($offer['poste'])['Titled'])
         );
     }
-    // TODO : Analogue à createOffer
-    /// Méthode construisant nouveau contrat et l'inscrivant dans la base de données
+    /**
+     * Public method creating and registering and contract and the logs
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $contract The array containing the contract's data
+     * @return Void
+     */
     public function createContracts($key_candidate, &$contract=[]) {
-        try {
-            // On génère l'instant actuel
-            $instant = $this->inscriptInstants()['Id_Instants'];
+        $contract['candidate'] = $key_candidate;
+        $contract['job'] = $this->searchJobs($contract['job'])['Id'];
+        $contract['service'] = $this->searchServices($contract['service'])['Id'];
+        $contract['establishment'] = $this->searchEstablishments($contract['establishment'])['Id'];
+        $contract['type'] = $this->searchTypesOfContracts($contract['type'])['Id'];
+        $contract['start_date'] = Moment::fromDate($contract['start_date']);
+        $contract['end_date'] = Moment::fromDate($contract['end_date']);
+        $contract['signature'] = Moment::currentMoment();
 
-            // On ajoute la date de signature
-            $contrat['signature'] = Moment::currentInstants()->getdate();
-
-            // On récupère les informations relatives au poste
-            $poste = $this->searchPoste($contrat['poste']);
-
-            // On ajoute la clé candidat
-            $contrat['cle candidat'] = $cle_candidats;
-            unset($cle_candidat);
-            // On ajoute la clé instant
-            $contrat['cle instant'] = $instant;
-            unset($instant);
-            // On ajoute la clé poste
-            $contrat['cle poste'] = $poste['Id_Postes'];
-            // On ajoute la clé service
-            $contrat['cle service'] = is_numeric($contrat['service']) ? $contrat['service'] : $this->searchServices($contrat['service'])['Id_Services'];
-            // On ajoute la clé de type de contrat
-            $contrat['cle type'] = isset($contrat['type']) && is_numeric($contrat['type']) ? $contrat['type'] : $this->searchTypeContrat($contrat['type_de_contrat'])['Id_Types_de_contrats'];
-
-            // On génère le contrat
-            $contrat = Contract::makeContrat($contrat);
+        $contract = Contract::makeContract($contract);
+        $this->inscriptContracts(
+            $key_candidate,
+            $contract->getJob(),
+            $contract->getService(),
+            $contract->getEstablishment(),
+            $contract->getType(),
+            date('Y-m-d H:i:s', $contract->getStartDate()->getTimestamp()),
+            date('Y-m-d H:i:s', $contract->getEndDate()->getTimestamp()),
+            date('Y-m-d H:i:s', $contract->getSignature()->getTimestamp()),
+            $contract->getHourlyRate(),
+            $contract->getNightWork(),
+            $contract->getWeekEndWork()
+        ); 
         
-        } catch(Exception $e) {
-            forms_manip::error_alert([
-                'title' => "Erreur lors de l'inscription du contrat",
-                'msg' => $e
-            ]);
-        }
-
-        // On inscrit la proposition
-        $this->inscriptProposer_a($contrat->getCleCandidats(), $contrat->getCleInstants());
-        $this->verifyMission($contrat->getCleServices(), $contrat->getClePostes());
-
-        // On enregistre le contrat 
-        $this->inscriptContrats($contrat->exportToSQL());
-
-        // On enregistre les logs
-        $candidat = $this->searchcandidat($contrat->getCleCandidats());
-        unset($contrat);
+        $candidate = $this->searchCandidates($contract->getCandidate());
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Nouveau contrat", 
-            "Nouveau contrat de " . strtoupper($candidat['Nom_Candidats']) . " " . forms_manip::nameFormat($candidat['Prenom_Candidats']) . " au poste de " . $poste['Intitule_Postes']
+            "Nouveau contrat de " . strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " au poste de " . $this->searchJobs($contract->getJob())['Titled']
         );
     }
     /**

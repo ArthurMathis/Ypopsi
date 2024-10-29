@@ -516,15 +516,15 @@ abstract class Model {
      * @param Int|String $job The job primary key or intitule
      * @return Array
      */
-    public function searchJobs($key_job): Array {
-        if(is_numeric($key_job)) 
-            $request = "SELECT * FROM Jobs WHERE Id = :key_job";    
-        elseif(is_string($key_job)) 
-            $request = "SELECT * FROM Jobs WHERE Titled = :key_job";
+    public function searchJobs($job): Array {
+        if(is_numeric($job)) 
+            $request = "SELECT * FROM Jobs WHERE Id = :job";    
+        elseif(is_string($job)) 
+            $request = "SELECT * FROM Jobs WHERE Titled = :job";
         else 
             throw new Exception("Erreur lors de la recherche de poste. La saisie du poste est mal typée. Il doit être un identifiant (entier positif) ou une chaine de caractères !");
         
-        $params = ["key_job" => $key_job];
+        $params = ["job" => $job];
 
         return $this->get_request($request, $params, true, true);
     }
@@ -771,7 +771,6 @@ abstract class Model {
     
         $this->post_request($request, $params);
     }
-    // TODO : séparation de la méthode CandidaturesModel::inscriptApplication en Model::inscriptApplication et CandiatureModel::createApplications //
     /**
      * Protected methood registering a new contract
      *
@@ -806,7 +805,7 @@ abstract class Model {
             $request_values .= ", :end_date";
             $params['end_date'] = $end_date;
         }
-        if(!empty($end_signature_datedate)) {
+        if(!empty($signature_date)) {
             $request .= ", SignatureDate";
             $request_values .= ", :signature_date";
             $params['signature_date'] = $signature_date;
@@ -837,70 +836,7 @@ abstract class Model {
 
         $this->post_request($request, $params);
     }
-    /**
-     * Protected method regstering one Postuler_a in the database
-     *
-     * @param Int $candidat The candidate's primary key
-     * @param Int $instant The instant primary key
-     * @return Void
-     */
-    // protected function inscriptPostuler_a($candidat, $instant) {
-    //     // On initialise la requête 
-    //     $request = "INSERT INTO Postuler_a (Cle_Candidats, Cle_Instants) VALUES (:candidat, :instant)";
-    //     $params = [
-    //         "candidat" => $candidat, 
-    //         "instant" => $instant
-    //     ];
-    // 
-    //     // On lance la requête
-    //     $this->post_request($request, $params);
-    // }
-    /**
-     * Protected method registering one Appliquer_a ine the database
-     *
-     * @param Int $cle_candidature The application primary key
-     * @param Int $cle_service The service primary key
-     * @return Void
-     */
-    //protected function inscriptAppliquer_a($cle_candidature, $cle_service) {
-    //    // On vérifie l'intégrité des données
-    //    try {
-    //        if(empty($cle_candidature) || empty($cle_service)) 
-    //            throw new Exception('Données éronnées. Pour inscrire un Appliquer_a, la clé de candidature et la clé de service sont nécessaires');
-    //
-    //    } catch(Exception $e) {
-    //        forms_manip::error_alert([
-    //            'msg' => $e
-    //        ]);
-    //    }
-    //    
-    //    // On inititalise la requête
-    //    $request = "INSERT INTO Appliquer_a (Cle_Candidatures, Cle_Services) VALUES (:candidature, :service)";
-    //    $params = [
-    //        "candidature" => $cle_candidature,
-    //        "service" => $cle_service
-    //    ];
-    //
-    //    // On exécute la requête
-    //    $this->post_request($request, $params);
-    //}
-    
-    /**
-     * Protected method registerin one Proposer_a in the database
-     *
-     * @param Int $cle_candidat The candidate's primary key
-     * @param Int $cle_instant The instant primary key
-     * @return Void
-     */
-    // protected function inscriptProposer_a($cle_candidat, $cle_instant) {
-    //     $request = "INSERT INTO Proposer_a (Cle_candidats, Cle_Instants) VALUES (:candidat, :instant)";
-    //     $params = [
-    //         'candidat' => $cle_candidat,
-    //         'instant' => $cle_instant
-    //     ];
-    // 
-    //     $this->post_request($request, $params);
-    // }
+
     /**
      * Protected method registering one job in the database
      *

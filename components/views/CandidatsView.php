@@ -238,7 +238,7 @@ class CandidatsView extends View {
      * @param Int $key_candidate The candidate's primary key
      * @return void
      */
-    protected function getMeetingsBoard(&$meetings, &$key_candidate) {
+    protected function getMeetingsBoard(&$meetings, $key_candidate) {
         echo '<section class="onglet">';
         if(!empty($meetings)) 
             foreach($meetings as $obj)
@@ -283,7 +283,7 @@ class CandidatsView extends View {
         $this->getContractsBoard($item['contracts'], $item['candidate']['Id']);
         $this->getOffersBoard($item['contracts'], $item['candidate']['Id']);
         $this->getApplicationsBoard($item['applications'], $item['candidate']['Id']);
-        $this->getMeetingsBoard($item['meeting'], $item['candidate']['id']);
+        $this->getMeetingsBoard($item['meeting'], $item['candidate']['Id']);
         $this->getRadingBoard($item['candidate']);
         echo "</main>";
         echo "</content>";
@@ -345,55 +345,19 @@ class CandidatsView extends View {
 
         $this->generateCommonFooter();
     }
-    // ! Méthodes à supprimer 
-    // TODO:remplacer par getOffersContent
-    // /// Méthode publique retournant la formulaire d'ajout d'une proposition
-    // public function getOffersContentFromCandidatures($title, $cle_candidature, $statut_candidature) {
-    //     // On ajoute l'entete de page
-    //     $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-    // 
-    //     // On ajoute la barre de navigation
-    //     $this->generateMenu(true);
-    // 
-    //     $scripts = [
-    //         'views/form-view.js'
-    //     ];
-    //     include(COMMON.DS.'import-scripts.php');
-    // 
-    //     // On ajoute le formulaire de'inscription
-    //     include INSCRIPT_FORM.DS.'proposition-from-candidature.php';
-    //     include FORMULAIRES.DS.'waves.php';
-    // 
-    //     // On ajoute le pied de page
-    //     $this->generateCommonFooter();
-    // }
-    // /// Méthode publique retournant la formulaire d'ajout d'une proposition selon une candidature sans service
-    // public function getOffersContentFromEmptyCandidatures($title, $cle_candidature, $statut_candidature, $service=[]) {
-    //     // On ajoute l'entete de page
-    //     $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-    // 
-    //     $scripts = [
-    //         'models/objects/AutoComplet.js',
-    //         'views/form-view.js'
-    //     ];
-    //     include(COMMON.DS.'import-scripts.php');
-    // 
-    //     // On ajoute la barre de navigation
-    //     $this->generateMenu(true);
-    // 
-    //     // On ajoute le formulaire de'inscription
-    //     include INSCRIPT_FORM.DS.'proposition-from-empty-candidature.php';
-    //     include FORMULAIRES.DS.'waves.php';
-    // 
-    //     // On ajoute le pied de page
-    //     $this->generateCommonFooter();
-    // }
-    /// Méthode publique retournant la formulaire d'ajout d'un contrat
-    public function getContractsContent($title, $cle_candidat, $poste=[], $service=[], $typeContrat=[]) {
-        // On ajoute l'entete de page
+    /**
+     * Public method returning the HTML form to register an contract
+     *
+     * @param String $title The HTML page's title
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $jobs The array containing the list of jobs
+     * @param Array $services The array containing the list of services
+     * @param Array $establishments The array containing the list of establishments
+     * @param Array $types_of_contrats The array containing the list of types of contractss
+     * @return Void
+     */
+    public function getContractsContent($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contrats=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-
-        // On ajoute la barre de navigation
         $this->generateMenu(true);
 
         $scripts = [
@@ -401,12 +365,9 @@ class CandidatsView extends View {
             'views/form-view.js'
         ];
         include(COMMON.DS.'import-scripts.php');
-
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'contrats.php';
+        include INSCRIPT_FORM.DS.'contracts.php';
         include FORMULAIRES.DS.'waves.php';
 
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
     /**

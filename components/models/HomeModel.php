@@ -27,7 +27,7 @@ class HomeModel extends Model {
         INNER JOIN Candidates as c on app.Key_Candidates = c.Id
         INNER JOin jobs as j on app.Key_Jobs = j.Id
         INNER JOIN sources as s on app.Key_Sources = s.Id
-        WHERE app.Status = 'Non-traitée'
+        WHERE app.IsAccepted = FALSE AND app.IsRefused = FALSE
         
         ORDER BY app.Id DESC";
     
