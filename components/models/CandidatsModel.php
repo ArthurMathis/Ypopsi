@@ -7,6 +7,7 @@ require_once(CLASSE.DS.'Contract.php');
 
 
 class CandidatsModel extends Model {
+    // * GET * //
     /**
      * Public method returning the liste of candidates 
      *
@@ -33,21 +34,22 @@ class CandidatsModel extends Model {
 
         return $temp;
     }
-    /// Méthode publique récupérant les données d'un candidat pour sa mise-à-jour
-    // TODO : Méthode à remanier
+    /**
+     * Public method searching and returning the candidate's data
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Array
+     */
     public function getEditCandidatesContent($key_candidate) {
-        if(!is_numeric($key_candidate))
-            throw new Exception("L'index n'est pas valide. Veullez saisir un entier !");
-
-        $candidats = $this->getCandidate($key_candidate);
-        array_push($candidats, ['diplomes' => $this->getCandidatesFromQualifications($key_candidate)]);
-        array_push($candidats, ['aides' => $this->getHelpsFromCandidates($key_candidate)]);
+        $candidate = $this->searchCandidates($key_candidate);
+        array_push($candidate, ['qualifications' => $this->getQualificationsFromCandidates($key_candidate)]);
+        array_push($candidate, ['aides' => $this->getHelpsFromCandidates($key_candidate)]);
 
         return [
-            'candidat' => $candidats,
-            'coopteur' => $this->searchCoopter($key_candidate),
-            'aide' => $this->getHelps(),
-            'diplome' => $this->getQualifications()
+            'candidate' => $candidate,
+            'employee' => $this->searchCoopter($key_candidate),
+            'helps' => $this->getHelps(),
+            'qualifications' => $this->getQualifications()
         ];
     }
     /**
@@ -85,7 +87,7 @@ class CandidatsModel extends Model {
     public function getContentCandidate($key_candidate): Array {
         // $candidate = $this->getCandidate($key_candidate);
         $candidate = $this->searchCandidates($key_candidate);
-        $candidate['qualifications'] = $this->getCandidatesFromQualifications($key_candidate);
+        $candidate['qualifications'] = $this->getQualificationsFromCandidates($key_candidate);
 
         $employee = $this->searchCoopter($key_candidate);
         if(!empty($employee)) 
@@ -103,20 +105,20 @@ class CandidatsModel extends Model {
     /**
      * Private method that searches and returns a candidate's qualifications based on its primary key
      *
-     * @param Int $key_qualifications The candidate's primary key
+     * @param Int $key_candidate The candidate's primary key
      * @return Array|NULL
      */
-    private function getCandidatesFromQualifications($key_qualifications): ?Array {
+    private function getQualificationsFromCandidates($key_candidate): ?Array {
         $request = "SELECT 
-        Titled AS Intitule
-
+        q.Titled AS Intitule
+    
         FROM candidates AS c
         INNER JOIN Get_qualifications AS g ON c.Id = g.Key_Candidates
         INNER JOIN Qualifications AS q on g.Key_Qualifications = q.Id
         
         WHERE c.Id = :key";
-        $params = ['key' => $key_qualifications];
-
+        $params = ['key' => $key_candidate];
+    
         return $this->get_request($request, $params);
     }
     /**
@@ -238,6 +240,106 @@ class CandidatsModel extends Model {
     
         return empty($this->get_request($request)) ? null : $result[0];
     }
+
+    // * CREATE * //
+    /**
+     * Public method generating a new meeting
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $meeting The array containing the meeting's data
+     * @return Void
+     */
+    public function createMeeting($key_candidate, &$meeting=[]) {
+        $this->inscriptMeetings(
+            $this->searchUsers($meeting['recruteur'])['Id'], 
+            $key_candidate, 
+            $this->searchEstablishments($meeting['etablissement'])['Id'], 
+            (new DateTime($meeting['date'] . ' ' . $meeting['time'], new DateTimeZone('Europe/Paris')))->getTimestamp()
+        );
+
+        $candidate = $this->searchCandidates($key_candidate);
+        $this->writeLogs(
+            $_SESSION['user_key'], 
+            "Nouveau rendez-vous", 
+            "Nouveau rendez-vous avec " . strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . ", le " . $meeting['date']
+        );
+    }
+    /**
+     * Public method building and registering an offer
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $offer The array containing the offer's data
+     * @return Void
+     */
+    public function createOffer($key_candidate, $offer=[]) {
+        $offer['poste'] = $this->searchJobs($offer['poste'])['Id'];
+        $offer['service'] = $this->searchServices($offer['service'])['Id'];
+        $offer['etablissement'] = $this->searchEstablishments($offer['etablissement'])['Id'];
+        if(empty($this->searchBelongTo($offer['service'], $offer['etablissement'])))
+            throw new Exception("Le service ne fait pas parti de l'étiablissement !");
+
+        $this->inscriptContracts(
+            $key_candidate,
+            $offer['poste'],
+            $offer['service'],
+            $offer['etablissement'],
+            $this->searchTypesOfContracts($offer['type_de_contrat'])['Id'],
+            $offer['date debut'], 
+            isset($offer['date fin']) ? $offer['date fin'] : null, 
+            null,
+            isset($offer['salaire']) ? $offer['salaire'] : null,
+            isset($offer['taux horaire']) ? $offer['taux horaire'] : null,
+            isset($offer['travail nuit']) ? $offer['travail nuit'] : null,
+            isset($offer['travail wk']) ? $offer['travail wk'] : null
+        );
+        $candidat = $this->searchCandidates($key_candidate);
+        $this-> writeLogs(
+            $_SESSION['user_key'],
+            "Nouvelle proposition",
+            "Nouvelle proposition de contrat pour " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname']) . " au poste de " . forms_manip::nameFormat($this->searchJobs($offer['poste'])['Titled'])
+        );
+    }
+    /**
+     * Public method creating and registering and contract and the logs
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $contract The array containing the contract's data
+     * @return Void
+     */
+    public function createContracts($key_candidate, &$contract=[]) {
+        $contract['candidate'] = $key_candidate;
+        $contract['job'] = $this->searchJobs($contract['job'])['Id'];
+        $contract['service'] = $this->searchServices($contract['service'])['Id'];
+        $contract['establishment'] = $this->searchEstablishments($contract['establishment'])['Id'];
+        $contract['type'] = $this->searchTypesOfContracts($contract['type'])['Id'];
+        $contract['start_date'] = Moment::fromDate($contract['start_date']);
+        $contract['end_date'] = Moment::fromDate($contract['end_date']);
+        $contract['signature'] = Moment::currentMoment();
+
+        $contract = Contract::makeContract($contract);
+        $this->inscriptContracts(
+            $key_candidate,
+            $contract->getJob(),
+            $contract->getService(),
+            $contract->getEstablishment(),
+            $contract->getType(),
+            date('Y-m-d H:i:s', $contract->getStartDate()->getTimestamp()),
+            date('Y-m-d H:i:s', $contract->getEndDate()->getTimestamp()),
+            date('Y-m-d H:i:s', $contract->getSignature()->getTimestamp()),
+            $contract->getHourlyRate(),
+            $contract->getNightWork(),
+            $contract->getWeekEndWork()
+        ); 
+        
+        $candidate = $this->searchCandidates($contract->getCandidate());
+        $this->writeLogs(
+            $_SESSION['user_key'], 
+            "Nouveau contrat", 
+            "Nouveau contrat de " . strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " au poste de " . $this->searchJobs($contract->getJob())['Titled']
+        );
+    }
+
+    // * SEARCH * //
     /**
      * Private method searching and returning the employee who advices the candidate
      *
@@ -282,6 +384,23 @@ class CandidatsModel extends Model {
         return $candidate;
     }
 
+    // * OTHER * // 
+    /**
+     * Public function deleting a meeting and registering the linked logs
+     *
+     * @param Int $key_meeting The meeting's primary key
+     * @return Void
+     */
+    public function deletingMeeting($key_meeting) {
+        $meeting = $this->searchMeetings($key_meeting);
+        $candidate = $this->searchCandidates($meeting['Key_Users']); 
+        $this->deleteMeeting($key_meeting);
+        $this->writeLogs(
+            $_SESSION['user_key'],
+            "Annulation rendez-vous",
+            strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " a annulé son rendez-vous du " . date('Y m d', strtotime($meeting['Date']))
+        );
+    }
     /**
      * Public method settin IsAccepted on TRUE
      *
@@ -357,103 +476,6 @@ class CandidatsModel extends Model {
     }
 
     /**
-     * Public method building and registering an offer
-     *
-     * @param Int $key_candidate The candidate's primary key
-     * @param Array $offer The array containing the offer's data
-     * @return Void
-     */
-    public function createOffer($key_candidate, $offer=[]) {
-        $offer['poste'] = $this->searchJobs($offer['poste'])['Id'];
-        $offer['service'] = $this->searchServices($offer['service'])['Id'];
-        $offer['etablissement'] = $this->searchEstablishments($offer['etablissement'])['Id'];
-        if(empty($this->searchBelongTo($offer['service'], $offer['etablissement'])))
-            throw new Exception("Le service ne fait pas parti de l'étiablissement !");
-
-        $this->inscriptContracts(
-            $key_candidate,
-            $offer['poste'],
-            $offer['service'],
-            $offer['etablissement'],
-            $this->searchTypesOfContracts($offer['type_de_contrat'])['Id'],
-            $offer['date debut'], 
-            isset($offer['date fin']) ? $offer['date fin'] : null, 
-            null,
-            isset($offer['salaire']) ? $offer['salaire'] : null,
-            isset($offer['taux horaire']) ? $offer['taux horaire'] : null,
-            isset($offer['travail nuit']) ? $offer['travail nuit'] : null,
-            isset($offer['travail wk']) ? $offer['travail wk'] : null
-        );
-        $candidat = $this->searchCandidates($key_candidate);
-        $this-> writeLogs(
-            $_SESSION['user_key'],
-            "Nouvelle proposition",
-            "Nouvelle proposition de contrat pour " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname']) . " au poste de " . forms_manip::nameFormat($this->searchJobs($offer['poste'])['Titled'])
-        );
-    }
-    /**
-     * Public method creating and registering and contract and the logs
-     *
-     * @param Int $key_candidate The candidate's primary key
-     * @param Array $contract The array containing the contract's data
-     * @return Void
-     */
-    public function createContracts($key_candidate, &$contract=[]) {
-        $contract['candidate'] = $key_candidate;
-        $contract['job'] = $this->searchJobs($contract['job'])['Id'];
-        $contract['service'] = $this->searchServices($contract['service'])['Id'];
-        $contract['establishment'] = $this->searchEstablishments($contract['establishment'])['Id'];
-        $contract['type'] = $this->searchTypesOfContracts($contract['type'])['Id'];
-        $contract['start_date'] = Moment::fromDate($contract['start_date']);
-        $contract['end_date'] = Moment::fromDate($contract['end_date']);
-        $contract['signature'] = Moment::currentMoment();
-
-        $contract = Contract::makeContract($contract);
-        $this->inscriptContracts(
-            $key_candidate,
-            $contract->getJob(),
-            $contract->getService(),
-            $contract->getEstablishment(),
-            $contract->getType(),
-            date('Y-m-d H:i:s', $contract->getStartDate()->getTimestamp()),
-            date('Y-m-d H:i:s', $contract->getEndDate()->getTimestamp()),
-            date('Y-m-d H:i:s', $contract->getSignature()->getTimestamp()),
-            $contract->getHourlyRate(),
-            $contract->getNightWork(),
-            $contract->getWeekEndWork()
-        ); 
-        
-        $candidate = $this->searchCandidates($contract->getCandidate());
-        $this->writeLogs(
-            $_SESSION['user_key'], 
-            "Nouveau contrat", 
-            "Nouveau contrat de " . strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " au poste de " . $this->searchJobs($contract->getJob())['Titled']
-        );
-    }
-    /**
-     * Public method generating a new meeting
-     *
-     * @param Int $key_candidate The candidate's primary key
-     * @param Array $meeting The array containing the meeting's data
-     * @return Void
-     */
-    public function createMeeting($key_candidate, &$meeting=[]) {
-        $this->inscriptMeetings(
-            $this->searchUsers($meeting['recruteur'])['Id'], 
-            $key_candidate, 
-            $this->searchEstablishments($meeting['etablissement'])['Id'], 
-            (new DateTime($meeting['date'] . ' ' . $meeting['time'], new DateTimeZone('Europe/Paris')))->getTimestamp()
-        );
-
-        $candidate = $this->searchCandidates($key_candidate);
-        $this->writeLogs(
-            $_SESSION['user_key'], 
-            "Nouveau rendez-vous", 
-            "Nouveau rendez-vous avec " . strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . ", le " . $meeting['date']
-        );
-    }
-
-    /**
      * Public method adding an signature to a contract and registering the logs
      *
      * @param Int $key_candidate The candidate's primary key
@@ -463,7 +485,7 @@ class CandidatsModel extends Model {
     public function addSignatureToContract($key_candidate, $key_contract) {
         $request = "UPDATE Contracts SET SignatureDate = :date WHERE Id = :key_contract";
         $params = [
-            'date' => date('Y-m-d H:i:s', Moment::currentMoment()->getTimestamp()),
+            'date'         => date('Y-m-d H:i:s', Moment::currentMoment()->getTimestamp()),
             'key_contract' => $key_contract
         ];
         $this->post_request($request, $params);
@@ -484,7 +506,7 @@ class CandidatsModel extends Model {
     public function setResignationToContract($key_contract) {
         $request = "UPDATE Contracts SET ResignationDate = :date WHERE Id = :key_contract";
         $params = [
-            'date' => date('Y-m-d H:i:s', Moment::currentMoment()->getTimestamp()),
+            'date'         => date('Y-m-d H:i:s', Moment::currentMoment()->getTimestamp()),
             'key_contract' => $key_contract
         ];
         $this->post_request($request, $params);
@@ -496,67 +518,57 @@ class CandidatsModel extends Model {
             strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " a démissioné de son travail de " . forms_manip::nameFormat($this->searchJobs($this->searchContracts($key_contract)['Key_Jobs'])['Titled'])
         );
     }
+
+    // * UPDATE * // 
+
     /**
-     * Public function deleting a meeting and registering the linked logs
-     *
-     * @param Int $key_meeting The meeting's primary key
-     * @return Void
+     * Undocumented function
+     * 
+     * Todo : Test des qualifications et des aides
+     * 
+     * @param Int $key_candidate
+     * @param array $data
+     * @return void
      */
-    public function deletingMeeting($key_meeting) {
-        $meeting = $this->searchMeetings($key_meeting);
-        $candidate = $this->searchCandidates($meeting['Key_Users']); 
-        $this->deleteMeeting($key_meeting);
+    public function makeUpdateCandidate($key_candidate, $data=[]) {
+        $this->updateCandidate(
+            $key_candidate,
+            $data['name'],
+            $data['firstname'],
+            $data['email'],
+            $data['phone'],
+            $data['address'],
+            $data['city'],
+            $data['post_code']
+        ); 
+
+        $temp = $this->searchHaveTheRightToFromCandidate($key_candidate);
+        if(!empty($temp)) 
+            foreach($temp as $obj) 
+                $this->deleteHaveTheRightTo($key_candidate, $obj['Id']);     
+        unset($temp);
+        if(!empty($data['helps'])) 
+            foreach($data['helps'] as $obj) 
+                $this->inscriptHaveTheRightTo($key_candidate, $this->searchHelps($obj)['Id']);
+
+        $temp = $this->searchGetQualificationsFromCandidates($key_candidate);
+        if(!empty($temp))
+            foreach($temp as $obj)
+                $this->deleteGetQualifications($key_candidate, $this->searchQualifications($obj)['Id']);
+        unset($temp);
+        if(!empty($data['qualifications'])) 
+            foreach($data['qualifications'] as $obj) 
+                $this->inscriptGetQualifications($key_candidate, $this->searchQualifications($obj)['Id']);
+
+        $candidate = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
-            "Annulation rendez-vous",
-            strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " a annulé son rendez-vous du " . date('Y m d', strtotime($meeting['Date']))
+            "Mise-à-jour candidat",
+            "Mise-à-jour du profil de " . strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname'])
         );
     }
 
-    // Todo: Remanier et documenter cette méthode 
-    public function makeUpdatecandidat($cle_candidat, $candidat) {
-        try {
-            $c = new Candidate($candidat['nom'], $candidat['prenom'], $candidat['email'], $candidat['telephone'], $candidat['adresse'], $candidat['ville'], $candidat['code-postal']);
-            unset($candidat['nom']);
-            unset($candidat['prenom']);
-            unset($candidat['email']);
-            unset($candidat['telephone']);
-            unset($candidat['adresse']);
-            unset($candidat['ville']);
-            unset($candidat['code-postal']);
-
-        } catch(InvalideCandidateExceptions $e) {
-            forms_manip::error_alert([
-                'title' => "Erreur lors de la mise-à-jour du candidat",
-                'msg' => $e
-            ]);
-        }
-
-        // On met à jour le candidat
-        $this->updateCandidat($cle_candidat, $c->exportToSQL_update()); //
-        unset($c);
-
-        // On supprime les diplomes du candidat
-        $request = "DELETE FROM Obtenir WHERE Cle_Candidats = :cle";
-        $params = ['cle' => $cle_candidat];
-        $this->post_request($request, $params);
-
-        // On récupère la liste des diplomes
-        for($i = 0; $i < count($candidat['diplome']); $i++) 
-            $this->inscriptObtenir($cle_candidat, $this->searchDiplome($candidat['diplome'][$i])['Id_Diplomes']);
-        unset($candidat['diplome']);
-
-        // On supprime l'aide du candidat
-        $request = "DELETE FROM Avoir_droit_a WHERE Cle_Candidats = :cle";
-        $params = ['cle' => $cle_candidat];
-        $this->post_request($request, $params);
-
-        // On enregistre les aides
-        if($candidat['aide'] != null) foreach($candidat['aide'] as $item) 
-            $this->inscriptAvoir_droit_a($cle_candidat, $item, $item == 3 ? $candidat['coopteur'] : null);    
-        unset($candidat);
-    }
-
+    // * UPDATE LOGS * //
     /**
      * Public function registering the update candidte's rating logs
      *
@@ -572,20 +584,6 @@ class CandidatsModel extends Model {
         );
     }
     /**
-     * Public method registering one candidate update in the logs 
-     *
-     * @param Int $key_candidate The candidate's primary key
-     * @return Void
-     */
-    public function updateCandidateLogs($key_candidate) {
-        $candidat = $this->searchCandidates($key_candidate);
-        $this->writeLogs(
-            $_SESSION['user_key'],
-            "Mise-à-jour candidat",
-            "Mise-à-jour du profil de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname'])
-        );
-    }
-    /**
      * Public method registering one meeting update in the logs 
      *
      * @param Int $key_candidate The candidate's primary key
@@ -597,6 +595,24 @@ class CandidatsModel extends Model {
             $_SESSION['user_key'],
             "Mise-à-jour rendez-vous",
             "Mise-à-jour du rendez-vous de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname'])
+        );
+    }
+    /**
+     * Public method registering one candidate update in the logs 
+     *
+     * ! Méthode à supprimer ! 
+     * 
+     * TODO : Transposer le contenu de la méthode dans CandidatsModel::makeUpdatecandidate()
+     * 
+     * @param Int $key_candidate The candidate's primary key
+     * @return Void
+     */
+    public function updateCandidatesLogs($key_candidate) {
+        $candidat = $this->searchCandidates($key_candidate);
+        $this->writeLogs(
+            $_SESSION['user_key'],
+            "Mise-à-jour candidat",
+            "Mise-à-jour du profil de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname'])
         );
     }
 }

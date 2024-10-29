@@ -32,11 +32,11 @@ class CandidaturesController extends Controller {
     public function displayInputApplications() {
         return $this->View->getInputApplicationsContent(
             "Ypopsi - Recherche d'un candidat", 
-            $this->Model->getAutoCompJobs(),
-            $this->Model->getAutoCompServices(),
-            $this->Model->getAutoCompEstablishments(),
-            $this->Model->getAutoCompTypesOfContracts(),
-            $this->Model->getAutoCompSources()
+            $this->Model->getJobs(),
+            $this->Model->getServices(),
+            $this->Model->getEstablishments(),
+            $this->Model->getTypesOfContracts(),
+            $this->Model->getSources()
         );
     }
 

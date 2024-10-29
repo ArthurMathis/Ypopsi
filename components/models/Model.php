@@ -71,7 +71,7 @@ abstract class Model {
     }
 
 
-    // METHODES DE REQUETES A LA BASE DE DONNEES //
+    // * METHODES DE REQUETES A LA BASE DE DONNEES * //
     
 
     /**
@@ -178,8 +178,71 @@ abstract class Model {
      *
      * @return Void
      */
-    public function getAutoCompEstablishments() {
+    public function getEstablishments() {
         $request = "SELECT titled FROM Establishments ORDER BY titled";
+        return $this->get_request($request, [], false, true);
+    }
+    /**
+     * Public method returning the services list to the autocomplete items
+     *
+     * @return Void
+     */
+    public function getServices() {
+        // On inititalise la requête
+        $request = "SELECT titled FROM Services ORDER BY titled";
+        
+        // On lance la requête
+        return $this->get_request($request, [], false, true);
+    }
+    /**
+     * Public method returning the sources list to the autocomplete items
+     *
+     * @return Void
+     */
+    public function getSources() {
+        // On initialise la requête
+        $request = "SELECT titled FROM Sources ORDER BY titled";
+
+        // On lance la requête
+        return $this->get_request($request, [], false, true);
+    }
+    /**
+     * Public method returning the types of contracts list to the autocomplete items
+     *
+     * @return Void
+     */
+    public function getTypesOfContracts() {
+        // On initialise la requête
+        $request = "SELECT titled FROM Types_of_contracts ORDER BY titled";
+
+        // On lance la requête
+        return $this->get_request($request, [], false, true);
+    }
+    /**
+     * Public method returning the job lost to the autocomplete items
+     *
+     * @return Void
+     */
+    public function getJobs() {
+        $request = "SELECT titled FROM jobs ORDER BY titled";
+        return $this->get_request($request, [], false, true);
+    }
+    /**
+     * Public method returning the establishments list to autocomplete items
+     *
+     * @return Void
+     */
+    public function getQualifications() {
+        $request = "SELECT Titled AS text FROM Qualifications";
+        return $this->get_request($request, [], false, true);
+    }
+    /**
+     * Public method returning the assistants list to autocomplete items
+     *
+     * @return Void
+     */
+    public function getHelps() {
+        $request = "SELECT Id AS id, Titled AS text FROM Helps";
         return $this->get_request($request, [], false, true);
     }
     /**
@@ -198,69 +261,6 @@ abstract class Model {
         AND (con.EndDate IS NULL OR con.EndDate > CURDATE())";
 
         return $this->get_request($request, []);
-    }
-    /**
-     * Public method returning the assistants list to autocomplete items
-     *
-     * @return Void
-     */
-    public function getHelps() {
-        $request = "SELECT Id AS id, Titled AS text FROM Helps";
-        return $this->get_request($request, [], false, true);
-    }
-    /**
-     * Public method returning the establishments list to autocomplete items
-     *
-     * @return Void
-     */
-    public function getQualifications() {
-        $request = "SELECT Titled AS text FROM Qualifications";
-        return $this->get_request($request, [], false, true);
-    }
-    /**
-     * Public method returning the job lost to the autocomplete items
-     *
-     * @return Void
-     */
-    public function getAutoCompJobs() {
-        $request = "SELECT titled FROM jobs ORDER BY titled";
-        return $this->get_request($request, [], false, true);
-    }
-    /**
-     * Public method returning the services list to the autocomplete items
-     *
-     * @return Void
-     */
-    public function getAutoCompServices() {
-        // On inititalise la requête
-        $request = "SELECT titled FROM Services ORDER BY titled";
-        
-        // On lance la requête
-        return $this->get_request($request, [], false, true);
-    }
-    /**
-     * Public method returning the types of contracts list to the autocomplete items
-     *
-     * @return Void
-     */
-    public function getAutoCompTypesOfContracts() {
-        // On initialise la requête
-        $request = "SELECT titled FROM Types_of_contracts ORDER BY titled";
-
-        // On lance la requête
-        return $this->get_request($request, [], false, true);
-    }
-    /**
-     * Public method returning the sources list to the autocomplete items
-     *
-     * @return Void
-     */
-    public function getAutoCompSources() {
-        // On initialise la requête
-        $request = "SELECT titled FROM Sources ORDER BY titled";
-
-        // On lance la requête
-        return $this->get_request($request, [], false, true);
     }
     /**
      * Public method returning the role liste without the owner
@@ -511,6 +511,18 @@ abstract class Model {
         return $result;
     }
     /**
+     * Protected method searching and returning the qualifications that the candidate get 
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Array|NULL
+     */
+    protected function searchGetQualificationsFromCandidates($key_candidate): ?Array {
+        $request= "SELECT * FROM Get_qualifications WHERE key_Candidates = :key_candidate";
+        $params = ['key_candidate' => $key_candidate];
+
+        return $this->get_request($request, $params);
+    }
+    /**
      * Public method searching one job in the database
      *
      * @param Int|String $job The job primary key or intitule
@@ -583,7 +595,18 @@ abstract class Model {
 
         return $result;
     }
+    /**
+     * Protected method searching the helps that a candidate has the right to got
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Array|NULL
+     */
+    protected function searchHaveTheRightToFromCandidate($key_candidate): ?Array {
+        $request = "SELECT * FROM Have_the_right_to WHERE Key_Candidates = :key_candidate";
+        $params = ['key_candidate' => $key_candidate];
 
+        return $this->get_request($request, $params);
+    }
     /**
      * Public method searching one application in the database
      *
@@ -633,7 +656,7 @@ abstract class Model {
     
 
 
-    // * METHODES D'INSCRIPTION DANS LA BASE DE DONNEES * //
+    // * INSCRIPT * //
 
     /**
      * protected method registering one user in the database
@@ -694,7 +717,7 @@ abstract class Model {
      * @param Candidatz $candidate The candidate's data 
      * @return Void
      */
-    protected function inscriptCandidate(&$candidate) {
+    protected function inscriptCandidates(&$candidate) {
         $request = "INSERT INTO Candidates (Name, Firstname, Gender, Phone, Email, Address, City, PostCode, Availability";
         $values_request = " VALUES (:name, :firstname, :gender, :phone, :email, :address, :city, :post_code, :availability";
 
@@ -792,12 +815,12 @@ abstract class Model {
         $request = "INSERT INTO Contracts (Key_Candidates, Key_Jobs, Key_Services, Key_Establishments, Key_Types_of_contracts, StartDate";
         $request_values = " VALUES (:key_candidate, :key_job, :key_service, :key_establishment, :key_type_of_contract, :start_date";
         $params = [
-            'key_candidate' => $key_candidate,
-            'key_job' => $key_job,
-            'key_service' => $key_service,
-            'key_establishment' => $key_establishment,
+            'key_candidate'        => $key_candidate,
+            'key_job'              => $key_job,
+            'key_service'          => $key_service,
+            'key_establishment'    => $key_establishment,
             'key_type_of_contract' => $key_type_of_contract,
-            'start_date' => $start_date
+            'start_date'           => $start_date
         ];
 
         if(!empty($end_date)) {
@@ -847,7 +870,7 @@ abstract class Model {
     protected function inscriptPoste(&$poste, &$description) {
         $request = "INSERT INTO Postes (Intitule_Postes, Description_Postes) VALUES (:poste, :description)";
         $params = [
-            "poste" => $poste,
+            "poste"       => $poste,
             "description" => $description
         ];
 
@@ -864,7 +887,7 @@ abstract class Model {
         // On initialise la requête 
         $request = "INSERT INTO Services (Intitule_Services, Cle_Etablissements) VALUES (:service, :etablissement)";
         $params = [
-            'service' => $service,
+            'service'       => $service,
             'etablissement' => $cle_etablissement
         ];
 
@@ -883,10 +906,10 @@ abstract class Model {
         VALUES (:intitule, :adresse, :ville, :code, :pole)";
         $params = [
             'intitule' => $infos['intitule'],
-            'adresse' => $infos['adresse'],
-            'ville' => $infos['ville'],
-            'code' => $infos['code postal'],
-            'pole' => $infos['pole']
+            'adresse'  => $infos['adresse'],
+            'ville'    => $infos['ville'],
+            'code'     => $infos['code postal'],
+            'pole'     => $infos['pole']
         ];
 
         // On lance
@@ -904,7 +927,7 @@ abstract class Model {
         $request = "INSERT INTO Poles (Intitule_Poles, Description_Poles) VALUES (:intitule, :desc)";
         $params = [
             'intitule' => $intitule,
-            'desc' => $description
+            'desc'     => $description
         ];
 
         // On lance
@@ -926,7 +949,7 @@ abstract class Model {
     }
 
 
-    // METHODES DE MISE-A-JOUR // 
+    // * UPDATE * // 
 
     /**
      * Public method updating one user's password 
@@ -940,7 +963,7 @@ abstract class Model {
         SET Password = :password, PasswordTemp = false
         WHERE Id = :key";
         $params = [
-            'key' => $_SESSION['user_key'],
+            'key'      => $_SESSION['user_key'],
             'password' => password_hash($password, PASSWORD_DEFAULT)
         ];
         
@@ -960,11 +983,11 @@ abstract class Model {
         SET Nom_Utilisateurs = :nom, Prenom_Utilisateurs = :prenom, Email_Utilisateurs = :email, Cle_Roles = :role
         WHERE Id_Utilisateurs = :cle";
         $params = [
-            'nom' => $user['nom'],
+            'nom'    => $user['nom'],
             'prenom' => $user['prenom'],
-            'email' => $user['email'],
-            'role' => $user['role'],
-            'cle' => $cle_utilisateur
+            'email'  => $user['email'],
+            'role'   => $user['role'],
+            'cle'    => $cle_utilisateur
         ];
 
         // On lance la requête
@@ -980,11 +1003,11 @@ abstract class Model {
     public function updateRating($key_candidate, &$rating=[]) {
         $request = "UPDATE Candidates SET Rating = :rating, Description = :description, A = :a, B = :b, C = :c WHERE Id = :key_candidate";
         $params = [
-            'rating' => $rating['notation'],
-            'description' => $rating['description'],
-            'a' => $rating['a'],
-            'b' => $rating['b'],
-            'c' => $rating['c'],
+            'rating'        => $rating['notation'],
+            'description'   => $rating['description'],
+            'a'             => $rating['a'],
+            'b'             => $rating['b'],
+            'c'             => $rating['c'],
             'key_candidate' => $key_candidate
         ];
 
@@ -993,27 +1016,31 @@ abstract class Model {
     /**
      * Public method updating a candidate's data
      *
-     * @param Int $cle_candidat The candidate's primary key
-     * @param Array<String> $candidat The cadidate's data Array
+     * @param Int $key_candidate The candidate's primary key
+     * @param String $name The candidate's name
+     * @param String $firstname The candidate's firstname
+     * @param String $email The candidate's email
+     * @param String $phone The candidate's phone
+     * @param String $address The candidate's addess
+     * @param String $city The candidate's city
+     * @param Int $post_code The candidate's post code
      * @return Void
      */
-    public function updateCandidat($cle_candidat, $candidat=[]) {
-        // On initialise la requête
-        $request = "UPDATE Candidats 
-        SET Nom_candidats = :nom, Prenom_Candidats = :prenom, Email_Candidats = :email, Telephone_Candidats = :telephone, Adresse_Candidats = :adresse, Ville_Candidats = :ville, CodePostal_Candidats = :code_postal
-        Where Id_Candidats = :cle";
+    public function updateCandidate($key_candidate, $name, $firstname, $email, $phone, $address, $city, $post_code) {
+        $request = "UPDATE Candidates 
+        SET Name = :name, Firstname = :firstname, Email = :email, Phone = :phone, Address = :address, City = :city, PostCode = :post_code
+        Where Id = :key_candidate";
         $params = [
-            'nom' => $candidat['nom'], 
-            'prenom' => $candidat['prenom'], 
-            'email' => $candidat['email'], 
-            'telephone' => $candidat['telephone'], 
-            'adresse' => $candidat['adresse'], 
-            'ville' => $candidat['ville'], 
-            'code_postal' => $candidat['code_postal'],
-            'cle' => $cle_candidat
+            'name'          => $name,
+            'firstname'     => $firstname,
+            'email'         => $email,
+            'phone'         => $phone,
+            'address'       => $address,
+            'city'          => $city,
+            'post_code'   => $post_code,
+            'key_candidate' => $key_candidate
         ];
 
-        // On lance la requête
         $this->post_request($request, $params);
     }
     /**
@@ -1032,19 +1059,19 @@ abstract class Model {
         SET Key_Users = :key_user, Key_Candidates = :key_candidate, Key_Establishments = :key_establishment, Date = :moment, Description = :description
         WHERE Id = :key_meeting";
         $params = [
-            'key_meeting' => $key_meeting,
-            'key_user' => $key_user,
-            'key_candidate' => $key_candidate,
+            'key_meeting'       => $key_meeting,
+            'key_user'          => $key_user,
+            'key_candidate'     => $key_candidate,
             'key_establishment' => $key_establishment,
-            'moment' => $moment,
-            'description' => $description
+            'moment'            => $moment,
+            'description'       => $description
         ];
 
         $this->post_request($request, $params);
     }
 
 
-    // METHODES DE SUPPRESSION //
+    // * DELETE * //
 
     /**
      * protected method deleting one meeting
@@ -1060,19 +1087,39 @@ abstract class Model {
         $this->post_request($request, $params);
     }
     /**
-     * Protected method deleting one instant
+     * Protected method deleting an Have_the_right_to 
      *
-     * @param Int $cle_instant The instant primary key
+     * @param Int $key_candidate The candidate's primary key
+     * @param Int $key_help The help's primary key
      * @return Void
      */
-    protected function deleteInstant($cle_instant) {
-        // On initialise la requête
-        $request = "DELETE FROM Instants WHERE Id_Instants = :cle";
-        $params = ['cle' => $cle_instant];
+    protected function deleteHaveTheRightTo($key_candidate, $key_help) {
+        $request = "DELETE FROM Have_the_right_to WHERE Key_Candidates = :key_candidate AND Key_Helps = :key_help";
+        $params = [
+            'key_candidate' => $key_candidate,
+            'key_help'      => $key_help
+        ];
 
-        // On lance la requête
         $this->post_request($request, $params);
     }
+    /**
+     * Protected metho deleting a get_qualifications
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Int $key_qualifications The qualification's primary key
+     * @return void
+     */
+    protected function deleteGetQualifications($key_candidate, $key_qualifications) {
+        $request = "DELETE FROM Get_qualifictaions WHERE Key_Candidates = :key_candidate AND Key_Qualifications = :key_qualifications";
+        $params = [
+            'key_candidate'      => $key_candidate,
+            'key_qualifications' => $key_qualifications
+        ];
+
+        $this->post_request($request, $params);
+    }
+
+    // * OTHER * //
     /**
      * Protected method verifying if a service is in an establishment
      *
@@ -1081,6 +1128,7 @@ abstract class Model {
      * @return Bool
      */
     protected function verifyService($key_service, $key_establishment): Bool {
-        
+        return false;
+        // Todo : méthode à implémenter
     }
 }

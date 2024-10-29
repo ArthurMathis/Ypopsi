@@ -414,10 +414,7 @@ class CandidatsView extends View {
         $this->generateCommonFooter();
     }
     public function getEditCandidates($item=[]) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader('Ypopsi - Modification de ' . forms_manip::majusculeFormat($item['candidat']['nom']) . ' ' . $item['candidat']['prenom'], [FORMS_STYLES.DS.'big-form.css']);
-
-        // On ajoute les barres de navigation
+        $this->generateCommonHeader('Ypopsi - Modification de ' . forms_manip::majusculeFormat($item['candidate']['Name']) . ' ' . $item['candidate']['Firstname'], [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true);
 
         $scripts = [
@@ -426,11 +423,9 @@ class CandidatsView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le formulaire de connexion
-        include EDIT_FORM.DS.'candidat.php';
+        include EDIT_FORM.DS.'candidate.php';
         include FORMULAIRES.DS.'waves.php';
-
-        // On ajoute le pied de page  
+ 
         $this->generateCommonFooter();
     }
     public function getEditMeeting($meeting=[], $users=[], $establisments=[]) {

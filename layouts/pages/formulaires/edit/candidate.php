@@ -1,19 +1,19 @@
-<form class="big-form" method="post" action="index.php?candidats=update-candidat&cle_candidat=<?= $item['candidat']['id']?>">
+<form class="big-form" method="post" action="index.php?candidates=update-candidate&key_candidate=<?= $item['candidate']['Id']?>">
     <div class="form-container">
         <h3>Saisissez les informations du candidat</h3>
         <section>
             <p>Informations personnelles</p>
-            <input type="text" id="nom" name="nom" placeholder="Nom" value="<?= $item['candidat']['nom']?>">
-            <input type="text" id="prenom" name="prenom" placeholder="Prénom" value="<?= $item['candidat']['prenom']?>">
-            <input type="email" id="email" name="email" placeholder="Adresse email" value="<?= $item['candidat']['email']?>">
-            <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone" value="<?= $item['candidat']['telephone']?>">
+            <input type="text" id="nom" name="nom" placeholder="Nom" value="<?= $item['candidate']['Name']?>">
+            <input type="text" id="prenom" name="prenom" placeholder="Prénom" value="<?= $item['candidate']['Firstname']?>">
+            <input type="email" id="email" name="email" placeholder="Adresse email" value="<?= $item['candidate']['Email']?>">
+            <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone" value="<?= $item['candidate']['Phone']?>">
         </section>
         <section>
             <p>Informations habitation</p>
-            <input type="text" id="adresse" name="adresse" placeholder="Adresse postale" value="<?= $item['candidat']['adresse']?>">
+            <input type="text" id="adresse" name="adresse" placeholder="Adresse postale" value="<?= $item['candidate']['Address']?>">
             <div class="double-items">
-                <input type="text" id="ville" name="ville" placeholder="Commune" value="<?= $item['candidat']['ville']?>">
-                <input type="number" id="code-postal" name="code-postal" placeholder="Code postal" value="<?= $item['candidat']['code_postal']?>">
+                <input type="text" id="ville" name="ville" placeholder="Commune" value="<?= $item['candidate']['City']?>">
+                <input type="number" id="code-postal" name="code-postal" placeholder="Code postal" value="<?= $item['candidate']['PostCode']?>">
             </div>
         </section>
         <section id='diplome-section'>
@@ -21,8 +21,8 @@
             <button class="form_button" type="button" style="margin-left: auto">
                 <img src="layouts\assets\img\logo\plus.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
             </button>
-            <?php if(isset($item['candidat'][0]['diplomes'])) foreach($item['candidat'][0]['diplomes'] as $index => $d): ?>
-                <input type="text" id="<?php echo 'diplome-'.$index+1; ?>" name="diplome[]" value="<?= $d["Intitule_Diplomes"]; ?>">
+            <?php if(isset($item['candidate'][0]['qualifications'])) foreach($item['candidate'][0]['qualifications'] as $index => $d): ?>
+                <input type="text" id="<?php echo 'diplome-'.$index+1; ?>" name="diplome[]" value="<?= $d["Titled"]; ?>">
             <?php endforeach ?>   
         </section>      
         <section id='aide-section'>
@@ -30,7 +30,7 @@
             <button class="form_button" type="button" style="margin-left: auto">
                 <img src="layouts\assets\img\logo\plus.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
             </button>
-            <?php if(isset($item['candidat'][1]['aides'])) foreach($item['candidat'][1]['aides'] as $a): ?>
+            <?php if(isset($item['candidate'][1]['aides'])) foreach($item['candidate'][1]['aides'] as $a): ?>
                 <select name="aide">
                     <?php foreach($item['aide'] as $c): ?>
                         <option value="<?= $c['id']; ?>" <?php if($a == $c['text']) { $coopt = true; echo 'selected'; }?>>
@@ -42,8 +42,8 @@
         </section>
         <section id='visite-section'>
             <p>Informations de la visite médicale</p>
-            <?php if(isset($item['candidat']['VisiteMedicale_Candidats'])): ?>
-                <input type="date" id="visite_medicale" name="visite_medicale[]" value="<?= $item['candidat']['VisiteMedicale_Candidats']; ?>">
+            <?php if(isset($item['candidate']['MedicalVisit'])): ?>
+                <input type="date" id="visite_medicale" name="visite_medicale[]" value="<?= $item['candidate']['MedicalVisit']; ?>">
             <?php else: ?>
                 <button class="form_button" type="button" style="margin-left: auto">
                     <img src="layouts\assets\img\logo\plus.svg" alt="Logo d'ajout d'un item', représenté par un symbole">

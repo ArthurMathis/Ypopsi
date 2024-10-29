@@ -45,7 +45,7 @@ class CandidatController extends Controller {
             $key_candidate,
             $this->Model->searchEstablishments($_SESSION['key_establishment'])['Titled'], 
             $this->Model->getAutoCompUsers(),
-            $this->Model->getAutoCompEstablishments()
+            $this->Model->getEstablishments()
         );
     }
     /**
@@ -88,10 +88,10 @@ class CandidatController extends Controller {
         return $this->View->getOffersContent(
             "Ypopsi - Nouvelle proposition", 
             $key_candidate,
-            $this->Model->getAutoCompJobs(),
-            $this->Model->getAutoCompServices(),
-            $this->Model->getAutoCompEstablishments(),
-            $this->Model->getAutoCompTypesOfContracts(), 
+            $this->Model->getJobs(),
+            $this->Model->getServices(),
+            $this->Model->getEstablishments(),
+            $this->Model->getTypesOfContracts(), 
             $offer
         );
     }
@@ -105,18 +105,22 @@ class CandidatController extends Controller {
         return $this->View->getContractsContent(
             "Ypopsi - Nouveau contrat", 
             $key_candidate,
-            $this->Model->getAutoCompJobs(),
-            $this->Model->getAutoCompServices(),
-            $this->Model->getAutoCompEstablishments(),
-            $this->Model->getAutoCompTypesOfContracts()
+            $this->Model->getJobs(),
+            $this->Model->getServices(),
+            $this->Model->getEstablishments(),
+            $this->Model->getTypesOfContracts()
         );
     }
 
-    // TODO : Remanier la méthode
-    /// Méthode publique affichant le formulaire d'édition d'un candidat
-    public function getEditCandidates($cle_candidat) {
+    /**
+     * Public method returning the HTML form to editing a candidate
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @return Void
+     */
+    public function getEditCandidates($key_candidate) {
         return $this->View->getEditCandidates(
-            $this->Model->getEditCandidatesContent($cle_candidat)
+            $this->Model->getEditCandidatesContent($key_candidate)
         );
     }
     /**
@@ -138,7 +142,7 @@ class CandidatController extends Controller {
         return $this->View->getEditMeeting(
             $this->Model->getEditMeetingContent($key_meeting),
             $this->Model->getAutoCompUsers(),
-            $this->Model->getAutoCompEstablishments()
+            $this->Model->getEstablishments()
         ); 
     }
     
@@ -236,20 +240,19 @@ class CandidatController extends Controller {
             'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }
-    // TODO : Méthode à remanier
-    /// Méthode publique mettant à jour le profil d'un candidat
-    public function updateCandidat($cle_candidat, &$candidat=[]) {
-        // On met à jour le candidat
-        $this->Model->makeUpdateCandidat($cle_candidat, $candidat);
-
-        // On enregistre les logs
-        $this->Model->updateCandidateLogs($cle_candidat);
-
-        // On redirige la page
+    /**
+     * Public method updating a candidate
+     *
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $data The array containing the candidate's new data
+     * @return Void
+     */
+    public function updateCandidate($key_candidate, &$data=[]) {
+        $this->Model->makeUpdateCandidate($key_candidate, $data);
         alert_manipulation::alert([
             'title' => "Candidat mise-à-jour",
             'msg' => "Vous avez mis-à-jour les données personnelles du candidat",
-            'direction' => 'index.php?candidates=' . $cle_candidat
+            'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }
 

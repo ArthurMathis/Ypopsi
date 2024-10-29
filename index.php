@@ -389,8 +389,8 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                if(isset($_GET['cle_candidat']))
-                    $candidates->getEditCandidates($_GET['cle_candidat']);
+                if(isset($_GET['key_candidate']))
+                    $candidates->getEditCandidates($_GET['key_candidate']);
                 else 
                     throw new Exception("La clé candidat est introuvable !");
                 break;  
@@ -421,41 +421,37 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 break;  
                 
-            case 'update-candidat':
+            case 'update-candidate':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                // On récupère les donnnées du formulaire
                 try {
-                    $candidat = [
-                        'nom' => forms_manip::nameFormat($_POST['nom']),
-                        'prenom' => forms_manip::nameFormat($_POST['prenom']), 
+                    $data = [
+                        'name' => forms_manip::nameFormat($_POST['nom']),
+                        'firstname' => forms_manip::nameFormat($_POST['prenom']), 
                         'email' => $_POST['email'], 
-                        'telephone' => forms_manip::numberFormat($_POST['telephone']), 
-                        'adresse' => $_POST['adresse'], 
-                        'ville' => forms_manip::nameFormat($_POST['ville']), 
-                        'code-postal' => $_POST['code-postal'], 
-                        'diplome' => isset($_POST["diplome"]) ? $_POST["diplome"] : null,
-                        'aide' => isset($_POST["aide"]) ? $_POST["aide"] : null,
+                        'phone' => forms_manip::numberFormat($_POST['telephone']), 
+                        'address' => $_POST['adresse'], 
+                        'city' => forms_manip::nameFormat($_POST['ville']), 
+                        'post_code' => $_POST['code-postal'], 
+                        'qualifications' => isset($_POST["diplome"]) ? $_POST["diplome"] : null,
+                        'helps' => isset($_POST["aide"]) ? $_POST["aide"] : null,
                         'coopteur' => isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null,
-                        'visite medicale' => isset($_POST["visite_medicale"][0]) ? $_POST["visite_medicale"][0] : null
+                        'medical_visit' => isset($_POST["visite_medicale"][0]) ? $_POST["visite_medicale"][0] : null
                     ];
 
-                // On récupère les éventuelles erreurs
+                    if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
+                        $candidates->updateCandidate($_GET['key_candidate'], $data);
+                    else 
+                        throw new Exception("Impossible de modifier la notation du candidat, clé candidat est introuvable !");
+
                 } catch(Exception $e) {
                     forms_manip::error_alert([
                         'msg' => $e
                     ]);
                 }
-
-                // On test la présence de la clé candidat
-                if(isset($_GET['cle_candidat']) && !empty($_GET['cle_candidat']) && is_numeric($_GET['cle_candidat']))
-                    $candidates->updateCandidat($_GET['cle_candidat'], $candidat);
-                // On signale l'erreur
-                else 
-                    throw new Exception("Impossible de modifier la notation du candidat, clé candidat est introuvable !");
                 break;  
-  
+
             case 'update-meeting':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");

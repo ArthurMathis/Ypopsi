@@ -117,7 +117,7 @@ class CandidaturesModel extends Model {
      * @return Void
      */
     public function createCandidate(&$candidate, $qualifications=[], $helps=[], $coopteur=null) {
-        $this->inscriptCandidate($candidate);
+        $this->inscriptCandidates($candidate);
 
         if(!empty($qualifications)) 
             foreach($qualifications as $item) 
