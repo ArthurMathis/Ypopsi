@@ -55,7 +55,6 @@
         </section>
     </div> 
 </form>
-
 <script>
     const diplome = new implementInput('diplome', 'diplome-section', 'autocomplete', <?= count($item['diplome']); ?>, <?= json_encode($item['diplome']); ?>);
     const aide = new implementInput('aide', 'aide-section', 'liste', <?= count($item['aide']); ?>, <?= json_encode($item['aide']); ?>);

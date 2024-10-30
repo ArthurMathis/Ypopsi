@@ -75,7 +75,7 @@ rechercher.addEventListener('click', () => {
         champs_infos = null;
 
         // On cache le formulaire
-        cacheMenu(rechercher_menu);
+        hideMenu(rechercher_menu);
 
     } else {
         // On récupère les champs du formulaire
@@ -100,34 +100,34 @@ rechercher.addEventListener('click', () => {
         newBouton.addEventListener('click', () => {
             // On récupère la liste de critères
             let criteres = [];
-            recupChamps(champs_infos, criteres);
+            recoverFields(champs_infos, criteres);
             candidatures_selection = Array.from(candidatures);
 
             // On vérifie la présence de critères
             if(criteres.length === 0) {
                 // On réinitialise le tableau 
-                resetLignes(candidatures);
-                afficheNbItems(candidatures !== null ? candidatures.length : 0);
+                resetLines(candidatures);
+                displayCountItems(candidatures !== null ? candidatures.length : 0);
 
             } else {
                 // On applique les filtres
                 candidatures_selection = multiFiltre(candidatures_selection, criteres);
 
                 // On met à jour l'affichage
-                retireLignes(candidatures);
-                resetLignes(candidatures_selection);
-                afficheNbItems(candidatures_selection !== null ? candidatures_selection.length : 0);
+                deleteLines(candidatures);
+                resetLines(candidatures_selection);
+                displayCountItems(candidatures_selection !== null ? candidatures_selection.length : 0);
 
                 // On cache le menu
                 rechercherIsVisible = !rechercherIsVisible;  
             }
             
             // On cache le menu
-            cacheMenu(rechercher_menu);
+            hideMenu(rechercher_menu);
         });
 
         // On affiche le menu
-        montreMenu(rechercher_menu);
+        showMenu(rechercher_menu);
     }
     rechercherIsVisible = !rechercherIsVisible;
 });
@@ -135,8 +135,8 @@ rechercher.addEventListener('click', () => {
 // On corrige le bug de double affichage
 const menu_button = document.getElementById('bouton-menu');
 menu_button.addEventListener('click', () => {
-    cacheMenu(filtrer_menu);
-    cacheMenu(rechercher_menu);
+    hideMenu(filtrer_menu);
+    hideMenu(rechercher_menu);
 });
 
 

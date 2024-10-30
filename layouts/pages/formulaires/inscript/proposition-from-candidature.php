@@ -32,5 +32,5 @@
 
 <script>
     // On ajuste la sélection de date
-    setMinDateFin('date_debut', 'date_fin');
+    SetMinEndDate('date_debut', 'date_fin');
 </script>

@@ -41,7 +41,7 @@
   --big-radius: 1.618rem;
   --extra-radius: 2.618rem;
   
-  --nav-barre-size: 6rem;
+  --navbarre-size: 6rem;
   --liste-shadow: -9px 4px 34.4px 7px #0000003B;
   --bulle-shadow: -1px 8px 15px 7px rgba(0, 0, 0, 0.05);
   --small-bulle-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.05);
@@ -538,7 +538,7 @@ button.cancel_button:is(:hover, :focus),
   display: flex;
   justify-content: space-between;
   align-items: start;
-  height: var(--nav-barre-size);
+  height: var(--navbarre-size);
   width: 100%;
   z-index: 1;
   padding: var(--gap) var(--padding) 0;

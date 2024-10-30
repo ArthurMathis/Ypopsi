@@ -89,7 +89,7 @@ let lastAction = "";
 
 filtrer.addEventListener('click', () => {
     // On cache l'autre fomulaire
-    cacheMenu(rechercher_menu);
+    hideMenu(rechercher_menu);
 
     if(filtrerIsVisible) {
         champs = null;
@@ -97,7 +97,7 @@ filtrer.addEventListener('click', () => {
         champs_date = null;
 
         // On cache le formulaire
-        cacheMenu(filtrer_menu);
+        hideMenu(filtrer_menu);
 
     } else {
         // On récupère les champs du formulaire
@@ -123,16 +123,16 @@ filtrer.addEventListener('click', () => {
         newBouton.addEventListener('click', () => {
             // On récupère la liste de critères
             try {
-                const criteres = recupChamps(champs_infos);
-                const criteres_statut = recupCheckbox(champs_statut);
+                const criteres = recoverFields(champs_infos);
+                const criteres_statut = recoverCheckbox(champs_statut);
                 console.log(criteres_statut);
 
                 // // On vérifie la présence de critères
                 if(criteres.length === 0  && criteres_statut.criteres.length === 4) {
                     // On réinitialise le tableau 
-                    resetLignes(candidatures);
+                    resetLines(candidatures);
                     candidatures_selection = Array.from(candidatures);
-                    afficheNbItems(candidatures !== null ? candidatures.length : 0);
+                    displayCountItems(candidatures !== null ? candidatures.length : 0);
                 
                 } else {
                     // On réinitialise la sélection
@@ -143,16 +143,16 @@ filtrer.addEventListener('click', () => {
                     candidatures_selection = multiFiltre(candidatures_selection, criteres, criteres_statut);
                 
                     // On met à jour l'affichage
-                    retireLignes(candidatures);
-                    resetLignes(candidatures_selection);
-                    afficheNbItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
+                    deleteLines(candidatures);
+                    resetLines(candidatures_selection);
+                    displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
                 
                     // On cache le menu
                     filtrerIsVisible = !filtrerIsVisible;
                 }
                 lastAction = "filtre";
                 // On cache le menu
-                cacheMenu(filtrer_menu);
+                hideMenu(filtrer_menu);
 
             } catch(err) {
                 console.error(err);
@@ -160,7 +160,7 @@ filtrer.addEventListener('click', () => {
         });
 
         // On affiche le menu
-        montreMenu(filtrer_menu);
+        showMenu(filtrer_menu);
     }
     filtrerIsVisible = !filtrerIsVisible;
 });
@@ -169,7 +169,7 @@ filtrer.addEventListener('click', () => {
 let rechercherIsVisible = false;
 rechercher.addEventListener('click', () => {
     // On cache l'autre fomulaire
-    cacheMenu(filtrer_menu);
+    hideMenu(filtrer_menu);
 
     if(rechercherIsVisible) {
         champs = null;
@@ -177,7 +177,7 @@ rechercher.addEventListener('click', () => {
         champs_date = null;
 
         // On cache le formulaire
-        cacheMenu(rechercher_menu);
+        hideMenu(rechercher_menu);
 
     } else {
         // On récupère les champs du formulaire
@@ -205,23 +205,23 @@ rechercher.addEventListener('click', () => {
 
         newBouton.addEventListener('click', () => {
             // On récupère la liste de critères
-            const criteres = recupChamps(champs_infos);
+            const criteres = recoverFields(champs_infos);
 
             // On vérifie la présence de critères
             if(criteres.length === 0) {
                 // On réinitialise le tableau 
-                resetLignes(candidatures);
+                resetLines(candidatures);
                 candidatures_selection = Array.from(candidatures);
-                afficheNbItems(candidatures !== null ? candidatures.length : 0);
+                displayCountItems(candidatures !== null ? candidatures.length : 0);
 
             } else {
                 // On applique les filtres
                 candidatures_selection = multiFiltre(candidatures_selection, criteres);
 
                 // On met à jour l'affichage
-                retireLignes(candidatures);
-                resetLignes(candidatures_selection);
-                afficheNbItems(candidatures_selection !== null ? candidatures_selection.length : 0);
+                deleteLines(candidatures);
+                resetLines(candidatures_selection);
+                displayCountItems(candidatures_selection !== null ? candidatures_selection.length : 0);
 
                 // On cache le menu
                 rechercherIsVisible = !rechercherIsVisible;  
@@ -230,11 +230,11 @@ rechercher.addEventListener('click', () => {
             lastAction = "recherche";
             
             // On cache le menu
-            cacheMenu(rechercher_menu);
+            hideMenu(rechercher_menu);
         });
 
         // On affiche le menu
-        montreMenu(rechercher_menu);
+        showMenu(rechercher_menu);
     }
     rechercherIsVisible = !rechercherIsVisible;
 });
@@ -242,6 +242,6 @@ rechercher.addEventListener('click', () => {
 // On corrige le bug de double affichage
 const menu_button = document.getElementById('barre-de-navigation').querySelector('h3');
 menu_button.addEventListener('click', () => {
-    cacheMenu(filtrer_menu);
-    cacheMenu(rechercher_menu);
+    hideMenu(filtrer_menu);
+    hideMenu(rechercher_menu);
 });

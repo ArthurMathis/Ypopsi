@@ -15,7 +15,7 @@ body > content {
     display: flex;
 
     width: 100dvw;
-    height: calc(100% - 8rem);
+    height: calc(100% - var(--navbarre-size));
 
     padding-top: var(--gap);
 }
@@ -190,7 +190,7 @@ aside section > div > p:not(:first-of-type) {
 /* Mise en page des onglets */
 body > content > main {
     width: 70%;
-    height: calc(100% - var(--gap));
+    height: 100%;
     padding-right: var(--padding);
 
     overflow-y: scroll;

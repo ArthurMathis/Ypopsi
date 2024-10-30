@@ -58,7 +58,7 @@
     new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) {  return $c['titled'];  }, $establishments)); ?>);
     new AutoComplete(document.getElementById('type_contrat'), <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $types_of_contrats)); ?>);
 
-    setMinDateFin('date_debut', 'date_fin');
+    SetMinEndDate('date_debut', 'date_fin');
 
     const inputTypeContrat = document.getElementById('type_contrat');
     const inputDateFin = document.getElementById('date_fin').parentElement;

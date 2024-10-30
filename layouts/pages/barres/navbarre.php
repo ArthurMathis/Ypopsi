@@ -32,5 +32,12 @@
         <img src="layouts/assets/img/main.png" alt="Illustration de main">
     </main>
 </section>
+<script>
+    const button_menu = document.getElementById('bouton-menu');
+    const menu = document.getElementById('menu');
+    const button_fermer = document.getElementById('bouton-close-menu');
+    const link = menu.querySelectorAll('main content a');
 
-<script src="layouts\assets\scripts\views\entete.js"></script>
+    button_menu.addEventListener('click', () => { menu.classList.add('active') });
+    button_fermer.addEventListener('click', () => { menu.classList.remove('active'); });
+</script>

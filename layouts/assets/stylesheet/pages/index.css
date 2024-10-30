@@ -7,7 +7,7 @@ body {
 content {
   display: flex;
   width: 100%;
-  height: calc(100dvh - var(--nav-barre-size));
+  height: calc(100dvh - var(--navbarre-size));
 }
 content > .liste_items {
   width: 65%;
@@ -19,7 +19,7 @@ content > .liste_items .entete {
   padding-right: var(--gap);
 }
 content > .liste_items .table-wrapper {
-  height: calc(100dvh - (var(--nav-barre-size) + var(--gap)));
+  height: calc(100dvh - (var(--navbarre-size) + var(--gap)));
   padding-left: var(--padding);
   padding-right: var(--gap);
   overflow-y: auto;
