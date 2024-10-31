@@ -19,7 +19,6 @@ export const listManipulation = {
 
 
 // * GRAPHICS * //
-
 /**
  * @function resetLines
  * @description Function displaying a HTMLTable's rows
@@ -243,12 +242,11 @@ function setColorAvailability(items=[], index) {
 
 
 // * FILTER * //
-
 /**
  * @function recoverFields
  * @description Function to define a list of criteria based on a list of text fields
  * @param {HTMLInputElement} fields The list of inputs
- * @param {Array<Integer, String, String>} criteria The table of criteria to implement
+ * @param {Array<Integer, String, String>|NULL} criteria The table of criteria to implement
  * @author Arthur MATHIS
  */
 function recoverFields(fields=[], criteria=[]) { 
@@ -256,14 +254,14 @@ function recoverFields(fields=[], criteria=[]) {
         throw new Error("Erreur lors de la récupération des critères. La liste de critères doit être de type Array !");
 
     for(let i = 0; i < fields.length; i++) {
-        if(fields[i].fields.value !== '') {
+        if(fields[i].champs.value !== '') {
             criteria.push({
                 'index'  : fields[i].index,
-                'critere': fields[i].fields.value,
+                'critere': fields[i].champs.value,
                 'type'   : 'default'
             });
 
-            fields[i].fields.value = null;
+            fields[i].champs.value = null;
         }
     }
 }
@@ -275,16 +273,16 @@ function recoverFields(fields=[], criteria=[]) {
  * @author Arthur MATHIS
  */
 function recoverCheckbox(fields=[], criteria=[]) {
-    if (!Array.isArray(fields.fields)) 
+    if (!Array.isArray(fields.champs)) 
         throw new Error("Erreur lors de la récupération des critères. La liste de critères doit être de type Array !");
 
     let new_c = [];
-    fields.fields.forEach(c => {
+    fields.champs.forEach(c => {
         if(c.checked)
             new_c.push(c.name);
     });
 
-    if(new_c.length !== fields.fields.length)
+    if(new_c.length !== fields.champs.length)
         criteria.push({
             'index'   : fields.index,
             'criteres': new_c,
@@ -299,18 +297,18 @@ function recoverCheckbox(fields=[], criteria=[]) {
  * @author Arthur MATHIS
  */
 function recoverFieldsDate(fields=[], criteria=[]) {
-    if(fields.champs.length === 0 || 2 < fields.fields.length) {
+    if(fields.champs.length === 0 || 2 < fields.champs.length) {
         console.warn('Le nombre de champs est invalide');
         return; 
     }
         
     let new_c = [];
-    if(fields.fields[0].value) {
+    if(fields.champs[0].value) {
         new_c.push({
             'type' : 'min',
             'value': new Date(champs.champs[0].value)
         });
-        fields.fields[0].value = null;
+        fields.champs[0].value = null;
     }
     if(fields.champs[1].value) {
         new_c.push({
@@ -454,7 +452,6 @@ function multiFilter(items, criteria=[]) {
 
 
 // * SORT * //
-
 /**
  * @function sortByInteger
  * @description Function to sort between integers

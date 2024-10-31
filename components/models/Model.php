@@ -493,15 +493,18 @@ abstract class Model {
      * @return Array
      */
     protected function searchQualifications($qualification): Array {
+        echo "On recherche : ";
+        var_dump($qualification); 
+        exit;
         if(is_numeric($qualification)) {
-            $request = "SELECT * FROM qualifications WHERE id = :id";
-            $params = ["id" => $qualification];
+            $request = "SELECT * FROM qualifications WHERE id = :qualification";
+            $params = ["qualification" => $qualification];
 
             $result = $this->get_request($request, $params, true, true);
 
         } elseif(is_string($qualification)) {
-            $request = "SELECT * FROM qualifications WHERE id = :intitule";
-            $params = ["intitule" => $qualification];
+            $request = "SELECT * FROM qualifications WHERE titled = :qualification";
+            $params = ["qualification" => $qualification];
 
             $result = $this->get_request($request, $params, true);
 
@@ -734,16 +737,27 @@ abstract class Model {
     /**
      * Protected method registering one Get_qualfications in the database
      *
-     * @param Int $cle_candidat The candidate's primary key
-     * @param Int $cle_diplome The degree primary key
+     * @param Int $key_candidate The candidate's primary key
+     * @param Int $key_qualification The degree primary key
+     * @param Int|NULL $year The year of obtaining
      * @return Void
      */
-    protected function inscriptGetQualifications($key_candidate, $key_qualification) {
-        $request = "INSERT INTO Get_qualifications (Key_Candidates, Key_Qualifications) VALUES (:key_candidate, :key_qualification)";
+    protected function inscriptGetQualifications($key_candidate, $key_qualification, $year = null) {
+        $request = "INSERT INTO Get_qualifications (Key_Candidates, Key_Qualifications";
+        $values_request = " VALUES (:key_candidate, :key_qualification";
         $params = [
             "key_candidate" => $key_candidate, 
             "key_qualification" => $key_qualification
         ];
+
+        if(!empty($year)) {
+            $request .= ", Annee";
+            $values_request .= ", :year";
+            $params['year'] = $year;
+        }
+
+        $request .= ")" . $values_request . ")";
+        unset($values_request);
 
         $this->post_request($request, $params);
     }

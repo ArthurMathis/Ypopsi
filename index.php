@@ -372,7 +372,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                 else 
-                    $candidates->getEditMeetings($_GET['key_meeting']); 
+                    $candidates->getEditMeetingss($_GET['key_meeting']); 
                 break;  
 
             case 'edit-rating':
@@ -435,6 +435,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'city' => forms_manip::nameFormat($_POST['ville']), 
                         'post_code' => $_POST['code-postal'], 
                         'qualifications' => isset($_POST["diplome"]) ? $_POST["diplome"] : null,
+                        'qualifications date' => isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : null,
                         'helps' => isset($_POST["aide"]) ? $_POST["aide"] : null,
                         'coopteur' => isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null,
                         'medical_visit' => isset($_POST["visite_medicale"][0]) ? $_POST["visite_medicale"][0] : null
@@ -523,7 +524,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 throw new Exception("L'action n'a pas pu être identifiée !");
         } 
 
-    // On récupère les éventuelles erreurs    
     } catch(Exception $e) {
         forms_manip::error_alert([
             'msg' => $e

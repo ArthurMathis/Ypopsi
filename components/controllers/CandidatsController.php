@@ -18,8 +18,10 @@ class CandidatController extends Controller {
      * @return View HTML PAGE
      */
     public function displayContent() {
-        $items = $this->Model->getContent();
-        return $this->View->getContent('Candidats', $items);
+        return $this->View->getContent(
+            'Candidats', 
+            $this->Model->getContent()
+        );
     }
     /**
      * Public method displaying the candidate's profile
@@ -119,8 +121,10 @@ class CandidatController extends Controller {
      * @return Void
      */
     public function getEditCandidates($key_candidate) {
-        return $this->View->getEditCandidates(
-            $this->Model->getEditCandidatesContent($key_candidate)
+        return $this->View->displayEditCandidates(
+            $this->Model->getEditCandidatesContent($key_candidate),
+            $this->Model->getQualifications(),
+            $this->Model->getHelps()
         );
     }
     /**
@@ -138,15 +142,14 @@ class CandidatController extends Controller {
      * @param Int $key_meeting The meeting's primary key
      * @return View HTML Page
      */
-    public function getEditMeetings($key_meeting) { 
-        return $this->View->getEditMeeting(
-            $this->Model->getEditMeetingContent($key_meeting),
+    public function getEditMeetingss($key_meeting) { 
+        return $this->View->getEditMeetings(
+            $this->Model->getEditMeetingsContent($key_meeting),
             $this->Model->getAutoCompUsers(),
             $this->Model->getEstablishments()
         ); 
     }
     
-
     // * CREATE * //
     /**
      * Public method generating a new meeting

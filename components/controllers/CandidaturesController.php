@@ -22,7 +22,7 @@ class CandidaturesController extends Controller {
         return $this->View->getContent("Candidatures", $items);
     }
     public function displayInputCandidate() {
-        return $this->View->getSaisieCandidatContent(
+        return $this->View->getInputCandidatesContent(
             'Ypopsi - Nouveau candidat', 
             $this->Model->getQualifications(),
             $this->Model->getHelps(),

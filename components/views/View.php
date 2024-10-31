@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Abstract class representing a view
+ * Class representing a view
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
 class View {

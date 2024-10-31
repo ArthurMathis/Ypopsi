@@ -214,6 +214,7 @@ main > section {
 
 main > section .bulles .bulle-container {
     background-color: var(--blue-opacity);
+    z-index: 0;
 }
 main section .contrats_bulle,
 main section .propositions_bulle,

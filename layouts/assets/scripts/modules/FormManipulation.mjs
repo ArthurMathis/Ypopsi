@@ -1,4 +1,4 @@
-export { SetMinEndDate, setCooptInput, cooptInput, implementInput };
+import { AutoComplete } from "./AutoComplete.mjs";
 
 /**
  * @function SetMinEndDate
@@ -209,7 +209,7 @@ class implementInput {
         let inputElement;
         switch(this.inputType) {
             case 'autocomplete': 
-            inputElement = this.createAutoCopmlete();
+            inputElement = this.createAutoComplete();
                 break;
 
             case 'liste':
@@ -220,6 +220,10 @@ class implementInput {
                 inputElement = this.createDate();
                 break;  
 
+            case 'autocomplete/date':
+                inputElement = this.createAutoCompleteDate();    
+                break;
+
             default: throw new Error("Type d'input non reconnu. Génération d'input impossible !"); 
         }
         
@@ -228,11 +232,17 @@ class implementInput {
         document.dispatchEvent(e);
     }
     /**
+     * @function deleteButton
+     * @description Function deleeting the add button 
+     */
+    deleteButton() { this.button.remove(); }
+
+    /**
      * @function createAutoCopmlete
      * @description Function generating a suggestion window
      * @returns {HTMLInputElement}
      */
-    createAutoCopmlete() {
+    createAutoComplete() {
         const autocomplete = document.createElement('div');
         autocomplete.className = "autocomplete";
 
@@ -285,8 +295,27 @@ class implementInput {
         return dateInput;
     }
     /**
-     * @function deleteButton
-     * @description Function deleeting the add button 
+     * @function createAutoCompleteDate
+     * @description Function generating a double-input (Autocomplete + Date)
+     * @returns {HTMLInputElement}
      */
-    deleteButton() { this.button.remove(); }
+    createAutoCompleteDate() {
+        const container = document.createElement('div');
+        container.className = 'double-items';
+
+        const yearInput = document.createElement('input');
+        yearInput.type = 'number';
+        yearInput.name = this.inputName + 'Date[]';
+        yearInput.id =  this.inputName + 'Date-' + this.nbInput;
+        yearInput.min = 1900; 
+        yearInput.max = new Date().getFullYear(); 
+        yearInput.placeholder = "Année d'obtention";
+
+        container.appendChild(this.createAutoComplete());
+        container.appendChild(yearInput);
+
+        return container;
+    }
 }
+
+export const formManipulation = { SetMinEndDate, setCooptInput, cooptInput, implementInput };

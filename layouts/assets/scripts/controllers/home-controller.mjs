@@ -46,8 +46,8 @@ entete.forEach((item, index) => {
             alert("Alerte : Tri non executé.");
         
         else {
-            listManipulation.destroyTable(document.querySelector('.liste_items .table-wrapper table tbody'));
-            listManipulation.createTable(document.querySelector('.liste_items .table-wrapper table'), candidatures_triees);
+            listManipulation.listManipulation.destroyTable(document.querySelector('.liste_items .table-wrapper table tbody'));
+            listManipulation.listManipulation.createTable(document.querySelector('.liste_items .table-wrapper table'), candidatures_triees);
 
             candidatures = listManipulation.recupApplications(source)
 

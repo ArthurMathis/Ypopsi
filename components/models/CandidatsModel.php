@@ -5,11 +5,10 @@ require_once(CLASSE.DS.'Moment.php');
 require_once(CLASSE.DS.'Contract.php');
 
 
-
 class CandidatsModel extends Model {
     // * GET * //
     /**
-     * Public method returning the liste of candidates 
+     * Public method returning the list of candidates 
      *
      * @return Void
      */
@@ -42,8 +41,8 @@ class CandidatsModel extends Model {
      */
     public function getEditCandidatesContent($key_candidate) {
         $candidate = $this->searchCandidates($key_candidate);
-        array_push($candidate, ['qualifications' => $this->getQualificationsFromCandidates($key_candidate)]);
-        array_push($candidate, ['aides' => $this->getHelpsFromCandidates($key_candidate)]);
+        $candidate['qualifications'] = $this->getQualificationsFromCandidates($key_candidate);
+        $candidate['helps'] = $this->getHelpsFromCandidates($key_candidate);
 
         return [
             'candidate' => $candidate,
@@ -58,7 +57,7 @@ class CandidatsModel extends Model {
      * @param Int $key_meeting The meeting's primary key
      * @return Array
      */
-    public function getEditMeetingContent($key_meeting): Array {
+    public function getEditMeetingsContent($key_meeting): Array {
         $request = "SELECT
         m.Id AS key_meeting,
         c.Id AS key_candidate,
@@ -110,7 +109,8 @@ class CandidatsModel extends Model {
      */
     private function getQualificationsFromCandidates($key_candidate): ?Array {
         $request = "SELECT 
-        q.Titled AS Intitule
+        q.Titled AS Intitule, 
+        g.Annee AS Annee
     
         FROM candidates AS c
         INNER JOIN Get_qualifications AS g ON c.Id = g.Key_Candidates
@@ -238,7 +238,7 @@ class CandidatsModel extends Model {
 
         $result = $this->get_request($request);
     
-        return empty($this->get_request($request)) ? null : $result[0];
+        return $this->get_request($request);
     }
 
     // * CREATE * //
@@ -540,26 +540,37 @@ class CandidatsModel extends Model {
             $data['address'],
             $data['city'],
             $data['post_code']
-        ); 
+        );
 
         $temp = $this->searchHaveTheRightToFromCandidate($key_candidate);
-        if(!empty($temp)) 
-            foreach($temp as $obj) 
-                $this->deleteHaveTheRightTo($key_candidate, $obj['Id']);     
+        if(!empty($temp)) {
+            foreach($temp as $obj) {
+                $this->deleteHaveTheRightTo($key_candidate, $obj['Key_Helps']);
+            } 
+        }
         unset($temp);
-        if(!empty($data['helps'])) 
-            foreach($data['helps'] as $obj) 
+        if(!empty($data['helps'])) {
+            foreach($data['helps'] as $obj) {
                 $this->inscriptHaveTheRightTo($key_candidate, $this->searchHelps($obj)['Id']);
+            }
+        }
+
+        // TODO : corriger le bug de searchQualifications
 
         $temp = $this->searchGetQualificationsFromCandidates($key_candidate);
-        if(!empty($temp))
-            foreach($temp as $obj)
+        var_dump($temp);
+        if(!empty($temp)) {
+            foreach($temp as $obj) {
                 $this->deleteGetQualifications($key_candidate, $this->searchQualifications($obj)['Id']);
+            }
+        }
         unset($temp);
-        if(!empty($data['qualifications'])) 
-            foreach($data['qualifications'] as $obj) 
-                $this->inscriptGetQualifications($key_candidate, $this->searchQualifications($obj)['Id']);
-
+        if(!empty($data['qualifications'])) {
+            foreach($data['qualifications'] as $index => $obj) {
+                $this->inscriptGetQualifications($key_candidate, $this->searchQualifications($obj)['Id'], !empty($data['qualifications date'][$index]) ? $data['qualifications date'][$index] : null);    
+            }
+        }
+        exit;
         $candidate = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],

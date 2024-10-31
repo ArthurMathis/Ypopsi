@@ -12,7 +12,7 @@ entete.forEach((item, index) => {
         // On effectue le tri
         if(item_clicked != index)
             method_tri = true;
-        const candidatures_triees = trierSelon(candidatures, index, method_tri);
+        const candidatures_triees = listManipulation.sortBy(candidatures, index, method_tri);
         item_clicked = index;
 
         // On cherche les éventuelles erreurs
@@ -21,8 +21,8 @@ entete.forEach((item, index) => {
         
         else {
             // On déconstruit et reconstruit le tableau
-            destroyTable(document.querySelector('.liste_items .table-wrapper table tbody'));
-            createTable(document.querySelector('.liste_items .table-wrapper table'), candidatures_triees);
+            listManipulation.destroyTable(document.querySelector('.liste_items .table-wrapper table tbody'));
+            listManipulation.createTable(document.querySelector('.liste_items .table-wrapper table'), candidatures_triees);
 
             // On recharge le tableau dans le script
             candidatures = document.querySelector('.liste_items .table-wrapper table tbody').rows
@@ -61,7 +61,7 @@ const filtrer_menu = document.getElementById('filtrer-menu');
 
 
 // On ajoute les codes couleurs
-setColor(candidatures, [
+listManipulation.setColor(candidatures, [
     {
         content: 'Connexion', 
         class: 'connexion'
@@ -70,7 +70,7 @@ setColor(candidatures, [
         class: 'deconnexion'
     }
 ], 0);
-setColor(candidatures, [
+listManipulation.setColor(candidatures, [
     {
         content: 'Propriétaire',
         class: 'proprietaire'
@@ -104,7 +104,7 @@ let lastAction = "";
 
 filtrer.addEventListener('click', () => {
     // On cache l'autre fomulaire
-    hideMenu(rechercher_menu);
+    listManipulation.hideMenu(rechercher_menu);
 
     if(filtrerIsVisible) {
         champs = null;
@@ -114,7 +114,7 @@ filtrer.addEventListener('click', () => {
         champs_infos = null;
 
         // On cache le formulaire
-        hideMenu(filtrer_menu);
+        listManipulation.hideMenu(filtrer_menu);
 
     } else {
         // On récupère les champs du formulaire
@@ -145,16 +145,16 @@ filtrer.addEventListener('click', () => {
             // On récupère la liste de critères
             try {
                 let criteres = [];
-                recoverCheckbox(champs_action, criteres);
-                recoverCheckbox(champs_role, criteres);
-                recoverFieldsDate(champs_date, criteres);
+                listManipulation.recoverCheckbox(champs_action, criteres);
+                listManipulation.recoverCheckbox(champs_role, criteres);
+                listManipulation.recoverFieldsDate(champs_date, criteres);
 
                 // On vérifie la présence de critères
                 if(criteres.length === 0) {
                     // On réinitialise le tableau 
-                    resetLines(candidatures);
+                    listManipulation.resetLines(candidatures);
                     candidatures_selection = Array.from(candidatures);
-                    displayCountItems(candidatures !== null ? candidatures.length : 0);
+                    listManipulation.displayCountItems(candidatures !== null ? candidatures.length : 0);
                 
                 } else {
                     // On réinitialise la sélection
@@ -162,19 +162,19 @@ filtrer.addEventListener('click', () => {
                         candidatures_selection = Array.from(candidatures);
                 
                     // On applique les filtres
-                    candidatures_selection = multiFiltre(candidatures_selection, criteres);
+                    candidatures_selection = listManipulation.multiFilter(candidatures_selection, criteres);
                 
                     // On met à jour l'affichage
-                    deleteLines(candidatures);
-                    resetLines(candidatures_selection);
-                    displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
+                    listManipulation.deleteLines(candidatures);
+                    listManipulation.resetLines(candidatures_selection);
+                    listManipulation.displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
                 
                     // On cache le menu
                     filtrerIsVisible = !filtrerIsVisible;
                 }
                 lastAction = "filtre";
                 // On cache le menu
-                hideMenu(filtrer_menu);
+                listManipulation.hideMenu(filtrer_menu);
 
             } catch(err) {
                 console.error(err);
@@ -182,7 +182,7 @@ filtrer.addEventListener('click', () => {
         });
 
         // On affiche le menu
-        showMenu(filtrer_menu);
+        listManipulation.showMenu(filtrer_menu);
     }
     filtrerIsVisible = !filtrerIsVisible;
 });
@@ -191,7 +191,7 @@ filtrer.addEventListener('click', () => {
 let rechercherIsVisible = false;
 rechercher.addEventListener('click', () => {
     // On cache l'autre fomulaire
-    hideMenu(filtrer_menu);
+    listManipulation.hideMenu(filtrer_menu);
 
     if(rechercherIsVisible) {
         champs = null;
@@ -202,7 +202,7 @@ rechercher.addEventListener('click', () => {
 
 
         // On cache le formulaire
-        hideMenu(rechercher_menu);
+        listManipulation.hideMenu(rechercher_menu);
 
     } else {
         // On récupère les champs du formulaire
@@ -227,23 +227,23 @@ rechercher.addEventListener('click', () => {
         newBouton.addEventListener('click', () => {
             // On récupère la liste de critères
             let criteres = [];
-            recoverFields(champs_infos, criteres);
+            listManipulation.recoverFields(champs_infos, criteres);
 
             // On vérifie la présence de critères
             if(criteres.length === 0) {
                 // On réinitialise le tableau 
-                resetLines(candidatures);
+                listManipulation.resetLines(candidatures);
                 candidatures_selection = Array.from(candidatures);
-                displayCountItems(candidatures !== null ? candidatures.length : 0);
+                listManipulation.displayCountItems(candidatures !== null ? candidatures.length : 0);
 
             } else {
                 // On applique les filtres
-                candidatures_selection = multiFiltre(candidatures_selection, criteres);
+                candidatures_selection = listManipulation.multiFilter(candidatures_selection, criteres);
 
                 // On met à jour l'affichage
-                deleteLines(candidatures);
-                resetLines(candidatures_selection);
-                displayCountItems(candidatures_selection !== null ? candidatures_selection.length : 0);
+                listManipulation.deleteLines(candidatures);
+                listManipulation.resetLines(candidatures_selection);
+                listManipulation.displayCountItems(candidatures_selection !== null ? candidatures_selection.length : 0);
 
                 // On cache le menu
                 rechercherIsVisible = !rechercherIsVisible;  
@@ -252,11 +252,11 @@ rechercher.addEventListener('click', () => {
             lastAction = "recherche";
             
             // On cache le menu
-            hideMenu(rechercher_menu);
+            listManipulation.hideMenu(rechercher_menu);
         });
 
         // On affiche le menu
-        showMenu(rechercher_menu);
+        listManipulation.showMenu(rechercher_menu);
     }
     rechercherIsVisible = !rechercherIsVisible;
 });
@@ -264,8 +264,8 @@ rechercher.addEventListener('click', () => {
 // On corrige le bug de double affichage
 const menu_button = document.getElementById('bouton-menu');
 menu_button.addEventListener('click', () => {
-    hideMenu(filtrer_menu);
-    hideMenu(rechercher_menu);
+    listManipulation.hideMenu(filtrer_menu);
+    listManipulation.hideMenu(rechercher_menu);
 });
 
 

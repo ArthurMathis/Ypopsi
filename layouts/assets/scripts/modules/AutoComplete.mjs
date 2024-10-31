@@ -1,3 +1,5 @@
+export { AutoComplete };
+
 /**
  * @class AutoComplete
  * @classdesc Classe permettant de créer un champ d'auto-complétion.

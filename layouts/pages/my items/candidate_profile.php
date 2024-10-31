@@ -1,6 +1,3 @@
-<script>
-    console.log(<?php echo json_encode($item); ?>);
-</script>
 <aside>
     <header>
         <div>
@@ -64,6 +61,19 @@
             <?php endif ?>
         </div>
         <div>
+        <p>Aide au recrutement</p> 
+            <?php if($item['helps'] == null): ?>
+                <p>Aucune aide au recrutement</p>
+            <?php else: ?>
+                <div>
+                    <?php foreach($item['helps'] as $obj): ?>
+                        <p><?= $obj['intitule']?><?php if($obj['intitule'] === COOPTATION): ?> - <?= $item['helps']['intitule']?><?php endif ?></p>
+                    <?php endforeach ?>
+                </div>
+            <?php endif ?> 
+        </div>
+        <!--
+        <div>
             <p>Aide au recrutement</p>   
             <?php if($item['helps'] == null): ?>
                 <p>Aucune aide au recrutement</p>
@@ -77,6 +87,7 @@
                 <p><?= $item['employee']; ?></p>
             </div>
         <?php endif ?>
+        -->
     </section>
     <section>
         <div>

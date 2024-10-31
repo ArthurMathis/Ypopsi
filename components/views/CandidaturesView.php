@@ -2,40 +2,35 @@
 
 require_once 'View.php';
 
+/**
+ * Class representing the applications' views
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class CandidaturesView extends View {
-    /// Méthode publique retournant la page de candidatures (liste)
-    public function getContent($titre, $items = [], $nb_items_max=null) {
-        // On ajoute l'entete de page
+    /**
+     * Public method returning the application's HTML page 
+     *
+     * @param String $title The HTML page's title
+     * @param Array $items The array containing the list of applications
+     * @param Int $nb_items_max
+     * @return View HTML Page
+     */
+    public function getContent($title, $items = [], $nb_items_max=null) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'candidatures.css']);
-
-        // $id = 'main-liste';
-
-        // On ajoute les barres de navigation
         $this->generateMenu();
+
         include BARRES.DS.'candidatures.php';
+        $this->getListItems($title, $items, $nb_items_max, 'main-liste');
 
-        $this->getListItems($titre, $items, $nb_items_max, 'main-liste');
-
-
-        // On importe les scripts JavaScript
-        $scripts = [
-            'views/liste-view.js',
-            'models/liste-model.js',
-            'models/objects/Liste.js',
-            'controllers/candidatures-controller.js'
-        ];
+        $scripts = ['controllers/applications.mjs'];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
 
     /// Méthode publique retournant le formulaire de saisie d'un candidat
-    public function getSaisieCandidatContent($title, $diplome=[], $aide=[], $employer=[]) {
-        // On ajoute l'entete de page
+    public function getInputCandidatesContent($title, $diplome=[], $aide=[], $employer=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-
-        // On ajoute la barre de navigation
         $this->generateMenu(true);
 
         $scripts = [
@@ -44,11 +39,9 @@ class CandidaturesView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'candidates.php';
         include FORMULAIRES.DS.'waves.php';
 
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant le formulaire de saisie d'une candidature

@@ -1,8 +1,17 @@
-// On récupère le tableau de candidatures
+// * IMPORTS * //
+import { List } from "../modules/List.mjs"; 
+import { listManipulation } from "../modules/listManipulation.mjs";
+
+// * LISTE DYNAMIQUE * //
+const list = new List("main-liste");
+
+// * MANIPULATION DE LA LISTE * //
 let candidatures = document.querySelector('.liste_items .table-wrapper table tbody').rows
 const entete = Array.from(document.querySelector('.liste_items .table-wrapper table thead tr').cells);
-
-// On ajoute le système de tri //
+const rechercher = document.getElementById('rechercher-button');
+const filtrer = document.getElementById('filtrer-button');
+const rechercher_menu = document.getElementById('rechercher-menu');
+const filtrer_menu = document.getElementById('filtrer-menu');
 
 let item_clicked = null;
 let method_tri = true;
@@ -41,110 +50,119 @@ entete.forEach((item, index) => {
     });
 });
 
-
-
-// On ajoute la Liste dynamique //
-
-const liste = new Liste("main-liste");
-
-
-// On ajoute les fonctionnalités de tri et de recherche // 
-
-// On récupère les boutons
-const rechercher = document.getElementById('rechercher-button');
-
-// On recupère les formulaires
-const rechercher_menu = document.getElementById('rechercher-menu');
-
-
-// On ajoute la gestion des filtres et recherche //
-
-// On duplique le tableau pour travailler plus simplement
 let candidatures_selection = Array.from(candidatures);
-
-// On ajoute le menu de filtration
 let filtrerIsVisible = false;
+let lastAction = "";
+filtrer.addEventListener('click', () => {
+    listManipulation.hideMenu(rechercher_menu);
 
-
-// On ajoute le menu de filtration
-let rechercherIsVisible = false;
-rechercher.addEventListener('click', () => {
-    if(rechercherIsVisible) {
+    if(filtrerIsVisible) {
         champs = null;
+        champs_statut = null;
         champs_date = null;
-        champs_infos = null;
 
-        // On cache le formulaire
-        listManipulation.hideMenu(rechercher_menu);
+        listManipulation.hideMenu(filtrer_menu);
 
     } else {
-        // On récupère les champs du formulaire
-        const champs_infos = [
+        const champs = [
             {
-                champs: document.getElementById('recherche-service'),
-                index: 0
-            },
-            {
-                champs: document.getElementById('recherche-etablissement'),
-                index: 1
+                champs: document.getElementById('filtre-ville'),
+                index: 3
             }
         ];
 
-        // On recupère le bouton de recherche
-        const bouton = document.getElementById('lancer-recherche');
-
-        // Nettoyer les anciens gestionnaires d'événements pour éviter les ajouts multiples
+        const bouton = document.getElementById('valider-filtre');
         const newBouton = bouton.cloneNode(true);
         bouton.parentNode.replaceChild(newBouton, bouton);
-
         newBouton.addEventListener('click', () => {
-            // On récupère la liste de critères
+            try {
+                let criteres = [];
+                listManipulation.recoverFields(champs, criteres);
+
+                if(criteres.length === 0) {
+                    listManipulation.resetLines(candidatures);
+                    candidatures_selection = Array.from(candidatures);
+                    listManipulation.displayCountItems(candidatures !== null ? candidatures.length : 0);
+                
+                } else {
+                    if(lastAction === "filtre") 
+                        candidatures_selection = Array.from(candidatures);
+                
+                    candidatures_selection = listManipulation.multiFilter(candidatures_selection, criteres);
+                    listManipulation.deleteLines(candidatures);
+                    listManipulation.resetLines(candidatures_selection);
+                    listManipulation.displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
+                    filtrerIsVisible = !filtrerIsVisible;
+                }
+                lastAction = "filtre";
+                listManipulation.hideMenu(filtrer_menu);
+
+            } catch(err) {
+                console.error(err);
+            }
+        });
+        listManipulation.showMenu(filtrer_menu);
+    }
+    filtrerIsVisible = !filtrerIsVisible;
+});
+
+let rechercherIsVisible = false;
+rechercher.addEventListener('click', () => {
+    listManipulation.hideMenu(filtrer_menu);
+
+    if(rechercherIsVisible) {
+        champs = null;
+        champs_statut = null;
+        champs_date = null;
+
+        listManipulation.hideMenu(rechercher_menu);
+
+    } else {
+        const champs_infos = [
+            {
+                champs: document.getElementById('recherche-nom'),
+                index: 0
+            },
+            {
+                champs: document.getElementById('recherche-prenom'),
+                index: 1
+            },
+            {
+                champs: document.getElementById('recherche-email'),
+                index: 2
+            }
+        ];
+
+        const bouton = document.getElementById('lancer-recherche');
+        const newBouton = bouton.cloneNode(true);
+        bouton.parentNode.replaceChild(newBouton, bouton);
+        newBouton.addEventListener('click', () => {
             let criteres = [];
             listManipulation.recoverFields(champs_infos, criteres);
-            candidatures_selection = Array.from(candidatures);
-
-            // On vérifie la présence de critères
             if(criteres.length === 0) {
-                // On réinitialise le tableau 
                 listManipulation.resetLines(candidatures);
+                candidatures_selection = Array.from(candidatures);
                 listManipulation.displayCountItems(candidatures !== null ? candidatures.length : 0);
 
             } else {
-                // On applique les filtres
                 candidatures_selection = listManipulation.multiFilter(candidatures_selection, criteres);
-
-                // On met à jour l'affichage
                 listManipulation.deleteLines(candidatures);
                 listManipulation.resetLines(candidatures_selection);
                 listManipulation.displayCountItems(candidatures_selection !== null ? candidatures_selection.length : 0);
 
-                // On cache le menu
                 rechercherIsVisible = !rechercherIsVisible;  
             }
-            
-            // On cache le menu
+
+            lastAction = "recherche";
             listManipulation.hideMenu(rechercher_menu);
         });
-
-        // On affiche le menu
         listManipulation.showMenu(rechercher_menu);
     }
     rechercherIsVisible = !rechercherIsVisible;
 });
 
-// On corrige le bug de double affichage
 const menu_button = document.getElementById('bouton-menu');
 menu_button.addEventListener('click', () => {
     listManipulation.hideMenu(filtrer_menu);
     listManipulation.hideMenu(rechercher_menu);
 });
-
-
-const sizes = [
-    {
-        width: 1080,
-        indexs: [1]
-    }
-];
-window.onresize = function() { responsive(window.innerWidth, entete, candidatures, sizes) };
-responsive(window.innerWidth, entete, candidatures, sizes);

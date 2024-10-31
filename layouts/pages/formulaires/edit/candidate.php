@@ -21,8 +21,11 @@
             <button class="form_button" type="button" style="margin-left: auto">
                 <img src="layouts\assets\img\logo\plus.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
             </button>
-            <?php if(isset($item['candidate'][0]['qualifications'])) foreach($item['candidate'][0]['qualifications'] as $index => $d): ?>
-                <input type="text" id="<?php echo 'diplome-'.$index+1; ?>" name="diplome[]" value="<?= $d["Titled"]; ?>">
+            <?php if(isset($item['candidate']['qualifications'])) foreach($item['candidate']['qualifications'] as $index => $d): ?>
+                <div class="double-items">
+                    <input type="text" id="diplome-<?= $index+1; ?>" name="diplome[]" value="<?= $d['Intitule']; ?>">
+                    <input type="number" name="diplomeDate[]" id="diplomeDate-<?= $index+1; ?>" min="1900" max="<?= date('Y'); ?>" value="<?= empty($d['Annee']) ? NULL : $d['Annee']; ?>" placeholder="Année d'obtention">
+                </div>
             <?php endforeach ?>   
         </section>      
         <section id='aide-section'>
@@ -30,10 +33,10 @@
             <button class="form_button" type="button" style="margin-left: auto">
                 <img src="layouts\assets\img\logo\plus.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
             </button>
-            <?php if(isset($item['candidate'][1]['aides'])) foreach($item['candidate'][1]['aides'] as $a): ?>
-                <select name="aide">
-                    <?php foreach($item['aide'] as $c): ?>
-                        <option value="<?= $c['id']; ?>" <?php if($a == $c['text']) { $coopt = true; echo 'selected'; }?>>
+            <?php if(isset($item['candidate']['helps'])) foreach($item['candidate']['helps'] as $a): ?>
+                <select name="aide[]">
+                    <?php foreach($item['helps'] as $c): ?>
+                        <option value="<?= $c['id']; ?>" <?php if($a["intitule"] == $c['text']) { $coopt = true; echo 'selected'; }?>>
                             <?= $c['text']; ?>
                         </option>
                     <?php endforeach ?>    
@@ -55,8 +58,11 @@
         </section>
     </div> 
 </form>
-<script>
-    const diplome = new implementInput('diplome', 'diplome-section', 'autocomplete', <?= count($item['diplome']); ?>, <?= json_encode($item['diplome']); ?>);
-    const aide = new implementInput('aide', 'aide-section', 'liste', <?= count($item['aide']); ?>, <?= json_encode($item['aide']); ?>);
-    const visiteMedicale = new implementInput('visite_medicale', 'visite-section', 'date', 1, []);
+<script>console.log(<?= json_encode($item['candidate']); ?>);</script>
+<script type="module">
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs"; 
+
+    const diplome = new formManipulation.implementInput('diplome', 'diplome-section', 'autocomplete/date', <?= count($qualifications); ?>, <?= json_encode($qualifications); ?>);
+    const aide = new formManipulation.implementInput('aide', 'aide-section', 'liste', <?= count($helps); ?>, <?= json_encode($helps); ?>);
+    const visiteMedicale = new formManipulation.implementInput('visite_medicale', 'visite-section', 'date', 1, []);
 </script>
