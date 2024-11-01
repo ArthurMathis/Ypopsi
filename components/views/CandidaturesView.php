@@ -44,13 +44,19 @@ class CandidaturesView extends View {
 
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant le formulaire de saisie d'une candidature
+    /**
+     * Public method generating and returning the application's HTML form
+     * 
+     * @param String $title The HTML page's title
+     * @param Array $job The array containing the list of jobs
+     * @param Array $establishment The array containing the list of establishments
+     * @param Array $typeOfContract The array containing the list of types of contracts
+     * @param Array $source The array containing the list of sources
+     * @return View - HTML Page
+     */
     public function getInputApplicationsContent($title, $job=[], $service=[], $establishment=[], $typeOfContract=[], $source=[]) {
-        $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
+        $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true);
-
-        $scripts = ['models/objects/AutoComplet.js'];
-        include(COMMON.DS.'import-scripts.php');
 
         include INSCRIPT_FORM.DS.'applications.php';
         include FORMULAIRES.DS.'waves.php';

@@ -40,8 +40,6 @@ function setCooptInput(input, inputName, searchValue, suggestions) {
         elmt.appendChild(new_i);
         elmt.appendChild(document.createElement('article'));
 
-        //// console.log(elmt);
-
         const tab = [];
         suggestions.forEach(c => { tab.push(c.text); });
         const autocomp = new AutoComplete(new_i, tab);

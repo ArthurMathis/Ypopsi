@@ -62,7 +62,6 @@
 <script type="module">
     import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs"; 
 
-    const diplome = new formManipulation.implementInput('diplome', 'diplome-section', 'autocomplete/date', <?= count($qualifications); ?>, <?= json_encode($qualifications); ?>);
-    const aide = new formManipulation.implementInput('aide', 'aide-section', 'liste', <?= count($helps); ?>, <?= json_encode($helps); ?>);
+    const diplome = new formManipulation.implementInput('diplome', 'diplome-section', 'autocomplete/date', <?= count($qualifications); ?>, <?= json_encode($qualifications); ?>); const aide = new formManipulation.implementInput('aide', 'aide-section', 'liste', <?= count($helps); ?>, <?= json_encode($helps); ?>);
     const visiteMedicale = new formManipulation.implementInput('visite_medicale', 'visite-section', 'date', 1, []);
 </script>
