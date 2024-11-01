@@ -848,7 +848,8 @@ INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES
     ("Master", FALSE, NULL),
     ("Master 1", FALSE, NULL),
     ("Master 2", FALSE, NULL),
-    ("Sage Femme D.E.", TRUE, "S.F.");
+    ("Sage Femme D.E.", TRUE, "S.F.")
+;
 
 
 -- Users --

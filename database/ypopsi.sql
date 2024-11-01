@@ -107,7 +107,7 @@ CREATE TABLE Documents (
 -- Qualifications --
 CREATE TABLE Qualifications (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Titled VARCHAR(64) NOT NULL,
+  Titled VARCHAR(128) NOT NULL,
   MedicalStaff BOOLEAN DEFAULT FALSE, 
   Abreviation VARCHAR(12) DEFAULT NULL
 );
