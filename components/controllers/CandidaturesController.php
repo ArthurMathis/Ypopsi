@@ -30,7 +30,7 @@ class CandidaturesController extends Controller {
         );
     }
     public function displayInputApplications() {
-        return $this->View->getInputApplicationsContent(
+        return $this->View->displayInputApplicationsContent(
             "Ypopsi - Recherche d'un candidat", 
             $this->Model->getJobs(),
             $this->Model->getServices(),

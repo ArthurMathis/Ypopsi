@@ -34,15 +34,15 @@ class CandidatController extends Controller {
         return $this->View->getContentCandidate("Candidat " . $item['candidate']['Name'] . ' ' . $item['candidate']['Firstname'], $item);
     }
 
-    // * GET * //
+    // * DISPLAY INPUT * //
     /**
      * Public method returning the html form of inputing a meeting
      *
      * @param Int $key_candidate The candidate's primary ket
      * @return View HTML page
      */
-    public function getInputMeetings($key_candidate) {
-        return $this->View->GetContentMeeting(
+    public function displayInputMeetings($key_candidate) {
+        return $this->View->displayInputMeetings(
             "Nouveau rendez-vous",
             $key_candidate,
             $this->Model->searchEstablishments($_SESSION['key_establishment'])['Titled'], 
@@ -56,7 +56,7 @@ class CandidatController extends Controller {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function getInputApplications($key_candidate) { 
+    public function displayInputApplications($key_candidate) { 
         $_SESSION['candidate'] = $this->Model->makeCandidate($key_candidate);
         header('Location: index.php?applications=input-applications');
     }
@@ -68,7 +68,7 @@ class CandidatController extends Controller {
      * @param Int|NULL $key_need The candidate's primary key
      * @return Void
      */
-    public function getInputOffers($key_candidate, $key_application=null, $key_need=null) {
+    public function displayInputOffers($key_candidate, $key_application=null, $key_need=null) {
         if(!empty($key_application)) 
             $offer = $this->Model->searchApplications($key_application);
         elseif(!empty($key_need))
@@ -87,7 +87,7 @@ class CandidatController extends Controller {
         if(isset($offer['Key_Types_of_contracts']) && is_numeric($offer['Key_Types_of_contracts']))
             $offer['Key_Types_of_contracts'] = $this->Model->searchTypesOfContracts($offer['Key_Types_of_contracts'])['Titled'];
 
-        return $this->View->getOffersContent(
+        return $this->View->displayInputOffers(
             "Ypopsi - Nouvelle proposition", 
             $key_candidate,
             $this->Model->getJobs(),
@@ -103,8 +103,8 @@ class CandidatController extends Controller {
      * @param [type] $key_candidate
      * @return void
      */
-    public function getInputContracts($key_candidate) {
-        return $this->View->getContractsContent(
+    public function displayInputContracts($key_candidate) {
+        return $this->View->displayInputContracts(
             "Ypopsi - Nouveau contrat", 
             $key_candidate,
             $this->Model->getJobs(),
@@ -114,15 +114,16 @@ class CandidatController extends Controller {
         );
     }
 
+    // * DISPLAY EDIT * //
     /**
      * Public method returning the HTML form to editing a candidate
      *
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function getEditCandidates($key_candidate) {
+    public function displayEditCandidates($key_candidate) {
         return $this->View->displayEditCandidates(
-            $this->Model->getEditCandidatesContent($key_candidate),
+            $this->Model->getEditCandidates($key_candidate),
             $this->Model->getQualifications(),
             $this->Model->getHelps()
         );
@@ -133,8 +134,8 @@ class CandidatController extends Controller {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function getEditRatings($key_candidate) {
-        return $this->View->getEditRatings($this->Model->searchCandidates($key_candidate));
+    public function displayEditRatings($key_candidate) {
+        return $this->View->displayEditRatings($this->Model->searchCandidates($key_candidate));
     }
     /**
      * Méthode publique renvoyant le formulaire d'édition de la réunion
@@ -142,9 +143,9 @@ class CandidatController extends Controller {
      * @param Int $key_meeting The meeting's primary key
      * @return View HTML Page
      */
-    public function getEditMeetingss($key_meeting) { 
-        return $this->View->getEditMeetings(
-            $this->Model->getEditMeetingsContent($key_meeting),
+    public function displayEditMeetings($key_meeting) { 
+        return $this->View->displayEditMeetings(
+            $this->Model->getEditMeetings($key_meeting),
             $this->Model->getAutoCompUsers(),
             $this->Model->getEstablishments()
         ); 
@@ -158,8 +159,8 @@ class CandidatController extends Controller {
      * @param Array $meeting The array containing the meeting's data
      * @return Void
      */
-    public function createMeeting($key_candidate, &$meeting=[]) {
-        $this->Model->createMeeting($key_candidate, $meeting);
+    public function createMeetings($key_candidate, &$meeting=[]) {
+        $this->Model->createMeetings($key_candidate, $meeting);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'Le rendez-vous a été générée',
@@ -174,11 +175,11 @@ class CandidatController extends Controller {
      * @param Int|NULL $key_application The application's primary key (if the offer is made from an application)
      * @return Void
      */
-    public function createOffer($key_candidate, $offer, $key_application = null) {
+    public function createOffers($key_candidate, $offer, $key_application = null) {
         if(!empty($key_application))
             $this->Model->setApplicationsAccepted($key_application);
 
-        $this->Model->createOffer($key_candidate, $offer);
+        $this->Model->createOffers($key_candidate, $offer);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'Le proposition a été générée',
@@ -209,9 +210,9 @@ class CandidatController extends Controller {
      * @param Array $rating
      * @return Void
      */
-    public function updateRating($key_candidate, &$rating=[]) {
-        $this->Model->updateRating($key_candidate, $rating);
-        $this->Model->updateRatingLogs($key_candidate);
+    public function updateRatings($key_candidate, &$rating=[]) {
+        $this->Model->updateRatings($key_candidate, $rating);
+        $this->Model->updateRatingsLogs($key_candidate);
         alert_manipulation::alert([
             'title' => "Candidat mise-à-jour",
             'msg' => "Vous avez mis-à-jour la notation du candidat",
@@ -226,8 +227,8 @@ class CandidatController extends Controller {
      * @param Array $rdv
      * @return Void
      */
-    public function updateMeeting($key_meeting, $key_candidate, &$meeting=[]) {
-        $this->Model->updateMeeting(
+    public function updateMeetings($key_meeting, $key_candidate, &$meeting=[]) {
+        $this->Model->updateMeetings(
             $key_meeting, 
             $this->Model->searchUsers($meeting['employee'])['Id'], 
             $key_candidate, 
@@ -235,7 +236,7 @@ class CandidatController extends Controller {
             $meeting['date'], 
             $meeting['description']
         );
-        $this->Model->updateMeetingLogs($key_candidate);
+        $this->Model->updateMeetingsLogs($key_candidate);
 
         alert_manipulation::alert([
             'title' => "Rendez-vous mise-à-jour",
@@ -250,8 +251,8 @@ class CandidatController extends Controller {
      * @param Array $data The array containing the candidate's new data
      * @return Void
      */
-    public function updateCandidate($key_candidate, &$data=[]) {
-        $this->Model->makeUpdateCandidate($key_candidate, $data);
+    public function updateCandidates($key_candidate, &$data=[]) {
+        $this->Model->makeupdateCandidates($key_candidate, $data);
         alert_manipulation::alert([
             'title' => "Candidat mise-à-jour",
             'msg' => "Vous avez mis-à-jour les données personnelles du candidat",
@@ -267,8 +268,8 @@ class CandidatController extends Controller {
      * @param Int $key_candidate The candidate'sprimary key
      * @return Void 
      */
-    public function deleteMeeting($key_meeting, $key_candidate) {
-        $this->Model->deletingMeeting($key_meeting);
+    public function deleteMeetings($key_meeting, $key_candidate) {
+        $this->Model->deletingMeetings($key_meeting);
         alert_manipulation::alert([
             'title' => "Rendez-vous annulé",
             'msg' => "Vous avez annulé le rendez-vous du candidat",
@@ -297,8 +298,8 @@ class CandidatController extends Controller {
      * @param Int $key_offer The offer's primary key
      * @return Void
      */
-    public function rejectOffer($key_offer) {
-        $this->Model->rejectOffer($key_offer); 
+    public function rejectOffers($key_offer) {
+        $this->Model->rejectOffers($key_offer); 
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
             'msg' => 'La proposition a été rejettée',
@@ -312,7 +313,7 @@ class CandidatController extends Controller {
      * @param Int $key_contract The contract's primary key
      * @return Void
      */
-    public function signContract($key_candidate, $key_contract) {
+    public function signContracts($key_candidate, $key_contract) {
         $this->Model->addSignatureToContract($key_candidate, $key_contract);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
@@ -326,7 +327,7 @@ class CandidatController extends Controller {
      * @param Int $key_contract The contract's primary key
      * @return Void 
      */
-    public function resignContract($key_contract){
+    public function resignContracts($key_contract){
         $this->Model->setResignationToContract($key_contract);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',

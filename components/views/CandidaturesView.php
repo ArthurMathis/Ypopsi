@@ -31,7 +31,7 @@ class CandidaturesView extends View {
     /// Méthode publique retournant le formulaire de saisie d'un candidat
     public function getInputCandidatesContent($title, $diplome=[], $aide=[], $employer=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         $scripts = [
             'models/objects/AutoComplet.js',
@@ -54,9 +54,9 @@ class CandidaturesView extends View {
      * @param Array $source The array containing the list of sources
      * @return View - HTML Page
      */
-    public function getInputApplicationsContent($title, $job=[], $service=[], $establishment=[], $typeOfContract=[], $source=[]) {
+    public function displayInputApplicationsContent($title, $job=[], $service=[], $establishment=[], $typeOfContract=[], $source=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         include INSCRIPT_FORM.DS.'applications.php';
         include FORMULAIRES.DS.'waves.php';

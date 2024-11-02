@@ -1,4 +1,4 @@
-<form class="big-form" method="post" action="index.php?candidates=update-candidate&key_candidate=<?= $item['candidate']['Id']?>">
+<form class="big-form" method="post" action="index.php?candidates=update-candidates&key_candidate=<?= $item['candidate']['Id']?>">
     <div class="form-container">
         <h3>Saisissez les informations du candidat</h3>
         <section>
@@ -62,6 +62,7 @@
 <script type="module">
     import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs"; 
 
-    const diplome = new formManipulation.implementInput('diplome', 'diplome-section', 'autocomplete/date', <?= count($qualifications); ?>, <?= json_encode($qualifications); ?>); const aide = new formManipulation.implementInput('aide', 'aide-section', 'liste', <?= count($helps); ?>, <?= json_encode($helps); ?>);
-    const visiteMedicale = new formManipulation.implementInput('visite_medicale', 'visite-section', 'date', 1, []);
+    const diplome = new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode($qualifications); ?>, 'Intitulé', <?= count($qualifications); ?>, ); 
+    const aide = new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode($helps); ?>, <?= count($helps); ?>);
+    const visiteMedicale = new formManipulation.implementInputDate('visite_medicale', 'visite-section', 1);
 </script>

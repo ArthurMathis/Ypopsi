@@ -1,4 +1,4 @@
-<form method="post" action="index.php?candidates=update-rating&key_candidate=<?= $candidate['Id']; ?>">
+<form method="post" action="index.php?candidates=update-ratings&key_candidate=<?= $candidate['Id']; ?>">
     <h3>Saisissez les modifications à enregistrer</h3>
     <section>
         <p>Notation</p>
@@ -27,3 +27,27 @@
     </section>
     <button type="submit">Mettre à jour</button>
 </form>
+<script>
+    const etoiles = document.querySelectorAll('.etoile-container input');
+    let currentEtoiles = -1;
+
+    etoiles.forEach((e, index) => {
+        e.addEventListener('click', () => {
+            for(let i = 0; i <= index; i++)
+                etoiles[i].checked = true;
+            for(let i = index + 1; i < etoiles.length; i++)
+                etoiles[i].checked = false;
+        });
+
+        e.addEventListener('mouseenter', () => {
+            for(let i = 0; i <= index; i++)
+                etoiles[i].classList.add('selected');
+        });
+
+        e.addEventListener('mouseleave', () => {
+            etoiles.forEach(elmt => {
+                elmt.classList.remove('selected');
+            });
+        });
+    });
+</script>

@@ -64,7 +64,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader("Mise-à-jour de l'utilisateur", [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         $scripts = [
             'models/objects/AutoComplet.js'
@@ -338,7 +338,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription', [FORMS_STYLES.DS.'big-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         $scripts = [
             'models/objects/AutoComplet.js'
@@ -358,7 +358,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription poste', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'poste.php';
@@ -373,7 +373,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription service', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         $scripts = [
             'models/objects/AutoComplet.js'
@@ -393,7 +393,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription établissement', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'etablissements.php';
@@ -408,7 +408,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription pôle', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'pole.php';

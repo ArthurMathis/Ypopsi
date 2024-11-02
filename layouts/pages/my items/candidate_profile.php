@@ -31,9 +31,9 @@
         <div>
             <p>Diplômes</p>
             <div>
-                <?php if(isset($item['candidate'][0]['diplomes']) && 0 < count($item['candidate'][0]['diplomes'])): ?>
-                    <?php foreach($item['candidate'][0]['diplomes'] as $obj): ?>
-                        <p><?= $obj['Intitule_Diplomes']; ?></p>
+                <?php if(isset($item['candidate']['qualifications']) && 0 < count($item['candidate']['qualifications'])): ?>
+                    <?php foreach($item['candidate']['qualifications'] as $obj): ?>
+                        <p><?= $obj['Intitule']; ?></p>
                     <?php endforeach ?>   
                 <?php else : ?>
                     <p>Aucun diplôme saisie</p>     
@@ -72,22 +72,6 @@
                 </div>
             <?php endif ?> 
         </div>
-        <!--
-        <div>
-            <p>Aide au recrutement</p>   
-            <?php if($item['helps'] == null): ?>
-                <p>Aucune aide au recrutement</p>
-            <?php else: ?>
-                <p><?= $item['helps']['intitule']?></p>    
-            <?php endif ?>  
-        </div>
-        <?php if(isset($item['employee'])): ?>
-            <div>
-                <p>Coopteur</p>
-                <p><?= $item['employee']; ?></p>
-            </div>
-        <?php endif ?>
-        -->
     </section>
     <section>
         <div>
@@ -112,7 +96,7 @@
             <a class="circle_button reverse_color" href="mailto:<?= $item['candidate']['Email']; ?>">
                 <img src="layouts\assets\img\logo\white-paperplane.svg" alt="Logo d'envoi d'un courrier, représenté par un avion en papier">
             </a>
-            <a class="circle_button reverse_color" href="index.php?candidates=edit-candidate&key_candidate=<?= $item['candidate']['Id']; ?>">
+            <a class="circle_button reverse_color" href="index.php?candidates=edit-candidates&key_candidate=<?= $item['candidate']['Id']; ?>">
                 <img src="layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
             </a>  
         <?php endif ?>    

@@ -60,7 +60,7 @@ class CandidatsView extends View {
         $this->generateCommonFooter();
     }
 
-    // * DISPLAY INSCRIPT * //
+    // * DISPLAY INPUT * //
     /**
      * Public function Returning the offers' html form 
      *
@@ -73,9 +73,9 @@ class CandidatsView extends View {
      * @param Array $offer The array containing the offer's data
      * @return View The HTML Page
      */
-    public function getOffersContent($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contracts=[], $offer=[]) {
+    public function displayInputOffers($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contracts=[], $offer=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         $scripts = [
             'models/objects/AutoComplet.js',
@@ -99,9 +99,9 @@ class CandidatsView extends View {
      * @param Array $types_of_contrats The array containing the list of types of contractss
      * @return View The HTML Page
      */
-    public function getContractsContent($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contrats=[]) {
+    public function displayInputContracts($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contrats=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         $scripts = [
             'models/objects/AutoComplet.js',
@@ -123,9 +123,9 @@ class CandidatsView extends View {
      * @param Array $establisments
      * @return View The HTML Page
      */
-    public function GetContentMeeting($title, $key_candidate, $user_establishment, $users=[], $establisments=[]) {
+    public function displayInputMeetings($title, $key_candidate, $user_establishment, $users=[], $establisments=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         $scripts = ['models/objects/AutoComplet.js'];
         include(COMMON.DS.'import-scripts.php');
@@ -143,18 +143,16 @@ class CandidatsView extends View {
      * @param Array $candidate The arrayu containing the candidate's data
      * @return View The HTML page
      */
-    public function getEditRatings($candidate=[]) {
+    public function displayEditRatings($candidate=[]) {
         $this->generateCommonHeader(
             'Ypopsi - Modification de la notation de ' . forms_manip::majusculeFormat($candidate['Name']) . ' ' . $candidate['Firstname'], 
             [FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-rating.css']
         );
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         include EDIT_FORM.DS.'rating.php';
         include FORMULAIRES.DS.'waves.php';
 
-        $scripts = ['controllers/edit-rating-controller.js'];
-        include(COMMON.DS.'import-scripts.php');
         $this->generateCommonFooter();
     }
     /**
@@ -167,7 +165,7 @@ class CandidatsView extends View {
      */
     public function displayEditCandidates($item=[], $qualifications=[], $helps=[]) {
         $this->generateCommonHeader('Ypopsi - Modification de ' . forms_manip::majusculeFormat($item['candidate']['Name']) . ' ' . $item['candidate']['Firstname'], [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         include EDIT_FORM.DS.'candidate.php';
         include FORMULAIRES.DS.'waves.php';
@@ -182,9 +180,9 @@ class CandidatsView extends View {
      * @param Array $establisments The array containing the list of establisments
      * @return View The HTML Page
      */
-    public function getEditMeetings($meeting=[], $users=[], $establisments=[]) {
+    public function displayEditMeetings($meeting=[], $users=[], $establisments=[]) {
         $this->generateCommonHeader('Ypopsi - Mise-à-jour rendez-vous', [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(true);
+        $this->generateMenu();
 
         include EDIT_FORM.DS.'meeting.php';
         include FORMULAIRES.DS.'waves.php';

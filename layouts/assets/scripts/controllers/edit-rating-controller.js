@@ -1,18 +1,16 @@
 const etoiles = document.querySelectorAll('.etoile-container input');
 let currentEtoiles = -1;
 
-console.log(etoiles);
-
 etoiles.forEach((e, index) => {
     e.addEventListener('click', () => {
-        for(i = 0; i <= index; i++)
+        for(let i = 0; i <= index; i++)
             etoiles[i].checked = true;
-        for(i = index + 1; i < etoiles.length; i++)
+        for(let i = index + 1; i < etoiles.length; i++)
             etoiles[i].checked = false;
     });
 
     e.addEventListener('mouseenter', () => {
-        for(i = 0; i <= index; i++)
+        for(let i = 0; i <= index; i++)
             etoiles[i].classList.add('selected');
     });
 

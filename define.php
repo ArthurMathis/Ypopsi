@@ -52,6 +52,5 @@ define("UNTREATED", 'Non-traitée');
 define("COOPTATION", "Prime de cooptation");
 
 // Chemin d'accés vers les img 
-// TODO: retirer les defines
 define("ETOILE", "layouts/assets/img/etoile.svg");
 define('ETOILE_BK',"layouts/assets/img/etoile_noire.svg");

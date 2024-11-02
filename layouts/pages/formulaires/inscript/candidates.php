@@ -1,4 +1,4 @@
-<form class="big-form" method="post" action="index.php?applications=inscript-candidate">
+<form class="big-form" method="post" action="index.php?applications=inscript-candidates">
     <div class="form-container">
         <h3>Saisissez les informations du candidat</h3>
         <section>
@@ -47,10 +47,12 @@
     </div> 
 </form>
 
-<script>
-    const diplome = new implementInput('diplome', 'diplome-section', 'autocomplete', <?= count($diplome); ?>, <?= json_encode($diplome); ?>);
-    const aide = new implementInput('aide', 'aide-section', 'liste', <?= count($aide); ?>, <?= json_encode($aide); ?>);
-    const visiteMedicale = new implementInput('visite_medicale', 'visite-section', 'date', 1, [])
+<script type="module">
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+
+    const diplome = new formManipulation.implementInputAutoComplete('diplome', 'diplome-section', <?= json_encode($diplome); ?>, 'Intitulé' , <?= count($diplome); ?>);
+    const aide = new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode($aide); ?>, <?= count($aide); ?>);
+    const visiteMedicale = new formManipulation.implementInputDate('visite_medicale', 'visite-section', 1);
 
     const nbCooptInput = 0;
     document.addEventListener('elementCreated', function(e) {

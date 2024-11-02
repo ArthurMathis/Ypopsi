@@ -39,7 +39,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array
      */
-    public function getEditCandidatesContent($key_candidate) {
+    public function getEditCandidates($key_candidate) {
         $candidate = $this->searchCandidates($key_candidate);
         $candidate['qualifications'] = $this->getQualificationsFromCandidates($key_candidate);
         $candidate['helps'] = $this->getHelpsFromCandidates($key_candidate);
@@ -57,7 +57,7 @@ class CandidatsModel extends Model {
      * @param Int $key_meeting The meeting's primary key
      * @return Array
      */
-    public function getEditMeetingsContent($key_meeting): Array {
+    public function getEditMeetings($key_meeting): Array {
         $request = "SELECT
         m.Id AS key_meeting,
         c.Id AS key_candidate,
@@ -249,7 +249,7 @@ class CandidatsModel extends Model {
      * @param Array $meeting The array containing the meeting's data
      * @return Void
      */
-    public function createMeeting($key_candidate, &$meeting=[]) {
+    public function createMeetings($key_candidate, &$meeting=[]) {
         $this->inscriptMeetings(
             $this->searchUsers($meeting['recruteur'])['Id'], 
             $key_candidate, 
@@ -271,7 +271,7 @@ class CandidatsModel extends Model {
      * @param Array $offer The array containing the offer's data
      * @return Void
      */
-    public function createOffer($key_candidate, $offer=[]) {
+    public function createOffers($key_candidate, $offer=[]) {
         $offer['poste'] = $this->searchJobs($offer['poste'])['Id'];
         $offer['service'] = $this->searchServices($offer['service'])['Id'];
         $offer['etablissement'] = $this->searchEstablishments($offer['etablissement'])['Id'];
@@ -391,10 +391,10 @@ class CandidatsModel extends Model {
      * @param Int $key_meeting The meeting's primary key
      * @return Void
      */
-    public function deletingMeeting($key_meeting) {
+    public function deletingMeetings($key_meeting) {
         $meeting = $this->searchMeetings($key_meeting);
         $candidate = $this->searchCandidates($meeting['Key_Users']); 
-        $this->deleteMeeting($key_meeting);
+        $this->deleteMeetings($key_meeting);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Annulation rendez-vous",
@@ -464,7 +464,7 @@ class CandidatsModel extends Model {
      * @param Int $key_offer Tyhe offer's primary key
      * @return Void
      */
-    public function rejectOffer(&$key_offer) {
+    public function rejectOffers(&$key_offer) {
         $this->setOfferStatus($key_offer); 
         $contract = $this->searchContracts($key_offer); 
         $candidate = $this->searchCandidates($contract['Key_Candidates']); 
@@ -523,15 +523,14 @@ class CandidatsModel extends Model {
 
     /**
      * Undocumented function
-     * 
-     * Todo : Test des qualifications et des aides
+
      * 
      * @param Int $key_candidate
      * @param array $data
      * @return void
      */
-    public function makeUpdateCandidate($key_candidate, $data=[]) {
-        $this->updateCandidate(
+    public function makeupdateCandidates($key_candidate, $data=[]) {
+        $this->updateCandidates(
             $key_candidate,
             $data['name'],
             $data['firstname'],
@@ -541,7 +540,7 @@ class CandidatsModel extends Model {
             $data['city'],
             $data['post_code']
         );
-
+        
         $temp = $this->searchHaveTheRightToFromCandidate($key_candidate);
         if(!empty($temp)) {
             foreach($temp as $obj) {
@@ -555,13 +554,10 @@ class CandidatsModel extends Model {
             }
         }
 
-        // TODO : corriger le bug de searchQualifications
-
         $temp = $this->searchGetQualificationsFromCandidates($key_candidate);
-        var_dump($temp);
         if(!empty($temp)) {
             foreach($temp as $obj) {
-                $this->deleteGetQualifications($key_candidate, $this->searchQualifications($obj)['Id']);
+                $this->deleteGetQualifications($key_candidate, $obj['Key_Qualifications']);
             }
         }
         unset($temp);
@@ -570,7 +566,6 @@ class CandidatsModel extends Model {
                 $this->inscriptGetQualifications($key_candidate, $this->searchQualifications($obj)['Id'], !empty($data['qualifications date'][$index]) ? $data['qualifications date'][$index] : null);    
             }
         }
-        exit;
         $candidate = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
@@ -586,7 +581,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function updateRatingLogs($key_candidate) {
+    public function updateRatingsLogs($key_candidate) {
         $candidat = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
@@ -600,30 +595,12 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function updateMeetingLogs($key_candidate) {
+    public function updateMeetingsLogs($key_candidate) {
         $candidat = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour rendez-vous",
             "Mise-à-jour du rendez-vous de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname'])
-        );
-    }
-    /**
-     * Public method registering one candidate update in the logs 
-     *
-     * ! Méthode à supprimer ! 
-     * 
-     * TODO : Transposer le contenu de la méthode dans CandidatsModel::makeUpdatecandidate()
-     * 
-     * @param Int $key_candidate The candidate's primary key
-     * @return Void
-     */
-    public function updateCandidatesLogs($key_candidate) {
-        $candidat = $this->searchCandidates($key_candidate);
-        $this->writeLogs(
-            $_SESSION['user_key'],
-            "Mise-à-jour candidat",
-            "Mise-à-jour du profil de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname'])
         );
     }
 }

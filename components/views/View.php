@@ -82,7 +82,7 @@ class View {
      * @param Boolean $menu
      * @return Void
      */
-    public function generateMenu($form=false, $home=true, $menu=true) {
+    public function generateMenu($home=true) {
         $liste_menu = $this->menu;
         include BARRES.DS.'navbarre.php';
     }

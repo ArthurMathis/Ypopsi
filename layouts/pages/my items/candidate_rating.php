@@ -46,7 +46,7 @@
     </div>
 </div>
 <?php if($_SESSION['user_role'] != INVITE): ?>
-    <a id="edit_button" class="circle_button" href="index.php?candidates=edit-rating&key_candidate=<?=$candidate['Id'] ?>">
+    <a id="edit_button" class="circle_button" href="index.php?candidates=edit-ratings&key_candidate=<?=$candidate['Id'] ?>">
         <img src="layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
     </a>
 <?php endif ?>

@@ -14,7 +14,7 @@ class LoginView extends View {
      */
     public function getContent() {
         $this->generateCommonHeader('Ypopsi - Connexion', [FORMS_STYLES.DS.'small-form.css']);
-        $this->generateMenu(true, false, false);
+        $this->generateMenu();
 
         include FORMULAIRES.DS.'connexion.php';
         include FORMULAIRES.DS.'waves.php';

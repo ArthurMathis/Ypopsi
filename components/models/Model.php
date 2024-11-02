@@ -493,9 +493,6 @@ abstract class Model {
      * @return Array
      */
     protected function searchQualifications($qualification): Array {
-        echo "On recherche : ";
-        var_dump($qualification); 
-        exit;
         if(is_numeric($qualification)) {
             $request = "SELECT * FROM qualifications WHERE id = :qualification";
             $params = ["qualification" => $qualification];
@@ -509,7 +506,7 @@ abstract class Model {
             $result = $this->get_request($request, $params, true);
 
         } else 
-            throw new Exception("La saisie du diplome est mal typée. Il doit être un identifiant (entier positif) ou un echaine de caractères !");        
+            throw new Exception("La saisie du diplome est mal typée. Il doit être un identifiant (entier positif) ou un echaine de caractères !");      
 
         return $result;
     }
@@ -1014,7 +1011,7 @@ abstract class Model {
      * @param Array $notation The candidate's data Array
      * @return Void
      */
-    public function updateRating($key_candidate, &$rating=[]) {
+    public function updateRatings($key_candidate, &$rating=[]) {
         $request = "UPDATE Candidates SET Rating = :rating, Description = :description, A = :a, B = :b, C = :c WHERE Id = :key_candidate";
         $params = [
             'rating'        => $rating['notation'],
@@ -1040,7 +1037,7 @@ abstract class Model {
      * @param Int $post_code The candidate's post code
      * @return Void
      */
-    public function updateCandidate($key_candidate, $name, $firstname, $email, $phone, $address, $city, $post_code) {
+    public function updateCandidates($key_candidate, $name, $firstname, $email, $phone, $address, $city, $post_code) {
         $request = "UPDATE Candidates 
         SET Name = :name, Firstname = :firstname, Email = :email, Phone = :phone, Address = :address, City = :city, PostCode = :post_code
         Where Id = :key_candidate";
@@ -1068,7 +1065,7 @@ abstract class Model {
      * @param Int $description
      * @return Void
      */
-    public function updateMeeting($key_meeting, $key_user, $key_candidate, $key_establishment, $moment, $description) {
+    public function updateMeetings($key_meeting, $key_user, $key_candidate, $key_establishment, $moment, $description) {
         $request = "UPDATE Meetings
         SET Key_Users = :key_user, Key_Candidates = :key_candidate, Key_Establishments = :key_establishment, Date = :moment, Description = :description
         WHERE Id = :key_meeting";
@@ -1093,7 +1090,7 @@ abstract class Model {
      * @param Int $key_meeting The meeting's primary key
      * @return Void
      */
-    protected function deleteMeeting($key_meeting) {
+    protected function deleteMeetings($key_meeting) {
         $request = "DELETE FROM Meetings
         WHERE Id = :key_meeting";
         $params = ['key_meeting' => $key_meeting];
@@ -1124,7 +1121,7 @@ abstract class Model {
      * @return void
      */
     protected function deleteGetQualifications($key_candidate, $key_qualifications) {
-        $request = "DELETE FROM Get_qualifictaions WHERE Key_Candidates = :key_candidate AND Key_Qualifications = :key_qualifications";
+        $request = "DELETE FROM Get_qualifications WHERE Key_Candidates = :key_candidate AND Key_Qualifications = :key_qualifications";
         $params = [
             'key_candidate'      => $key_candidate,
             'key_qualifications' => $key_qualifications

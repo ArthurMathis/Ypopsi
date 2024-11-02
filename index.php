@@ -37,8 +37,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 $motdepasse = $_POST["motdepasse"];
 
                 $login->checkIdentification($identifiant, $motdepasse);
-    
-            // On récupère et retourne les éventuelles erreurs    
+ 
             } catch(Exception $e){
                 forms_manip::error_alert([
                     'title' => $erreur,
@@ -68,7 +67,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 $applications->dispayCandidatures();
                 break; 
 
-            case 'input-candidate': 
+            case 'input-candidates': 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -82,7 +81,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 $applications->displayInputApplications();
                 break;
 
-            case 'inscript-candidate' : 
+            case 'inscript-candidates' : 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -149,13 +148,16 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     ];
 
                     $candidate = $_SESSION['candidate'];
-                    $qualifications = isset($_SESSION['qualifications']) && !empty($_SESSION['diplomes']) ? $_SESSION['diplomes'] : null;
-                    $helps = isset($_SESSION['helps']) && !empty($_SESSION['aide']) ? $_SESSION['aide'] : null;
+                    $qualifications = isset($_SESSION['qualifications']) && !empty($_SESSION['qualifications']) ? $_SESSION['qualifications'] : null;
+                    $helps = isset($_SESSION['helps']) && !empty($_SESSION['helps']) ? $_SESSION['helps'] : null;
                     $coopteur = isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null; 
 
-                    $applications->createApplications($candidate, $application, $qualifications, $helps, $coopteur);
+                    unset($_SESSION['candidate']);
+                    unset($_SESSION['qualifications']);
+                    unset($_SESSION['helps']);
+                    unset($_SESSION['coopteur']);
 
-                    // TODO : !! Libérer la mémoire !!
+                    $applications->createApplications($candidate, $application, $qualifications, $helps, $coopteur);
         
                 } catch(Exception $e) {
                     forms_manip::error_alert([
@@ -194,7 +196,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
-                    $candidates->getInputMeetings($_GET['key_candidate']);
+                    $candidates->displayInputMeetings($_GET['key_candidate']);
                 else 
                     throw new Exception("La clé candidat n'a pas pu être récupérée !");
                 break;
@@ -204,7 +206,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
-                    $candidates->getInputApplications($_GET['key_candidate']);
+                    $candidates->displayInputApplications($_GET['key_candidate']);
                 else 
                     throw new Exception("La clé candidat n'a pas pu être réceptionné");
                 break;
@@ -217,7 +219,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     $application = empty($_GET['key_application']) ? null : $_GET['key_application'];
                     $need = empty($_GET['key_need']) ? null : $_GET['key_need'];
 
-                    $candidates->getInputOffers($_GET['key_candidate'], $application, $need);
+                    $candidates->displayInputOffers($_GET['key_candidate'], $application, $need);
                 } else 
                     throw new Exception("La clé candidat n'a pas pu être réceptionnée");
                 break;
@@ -227,7 +229,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
-                    $candidates->getInputContracts($_GET['key_candidate']);
+                    $candidates->displayInputContracts($_GET['key_candidate']);
                 else 
                     throw new Exception("La clé candidat n'a pas pu être récupérée !");
                 break;   
@@ -256,7 +258,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     elseif(empty($data['time']))
                         throw new Exception("Le champs horaire doit être rempli !");
 
-                    $candidates->createMeeting($_GET['key_candidate'], $data);
+                    $candidates->createMeetings($_GET['key_candidate'], $data);
 
                 } catch(Exception $e) {
                     forms_manip::error_alert([
@@ -301,7 +303,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         $data['travail nuit'] = true;
     
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate'])) 
-                        $candidates->createOffer(
+                        $candidates->createOffers(
                             $_GET['key_candidate'],
                             $data, 
                             isset($_GET['key_application']) && is_numeric($_GET['key_application']) ? $_GET['key_application'] : NULL
@@ -325,7 +327,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     throw new Exception("La clé candidat est inrouvale !"); 
 
                 if(isset($_GET['key_offer']) && is_numeric($_GET['key_offer'])) 
-                    $candidates->signContract($_GET['key_candidate'], $_GET['key_offer']);
+                    $candidates->signContracts($_GET['key_candidate'], $_GET['key_offer']);
                     
                 else try {
                     if(empty($_POST['poste']))
@@ -368,34 +370,34 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 }
                 break;  
                 
-            case 'edit-meeting':
+            case 'edit-meetings':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                 else 
-                    $candidates->getEditMeetingss($_GET['key_meeting']); 
+                    $candidates->displayEditMeetings($_GET['key_meeting']); 
                 break;  
 
-            case 'edit-rating':
+            case 'edit-ratings':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
-                    $candidates->getEditRatings($_GET['key_candidate']);
+                    $candidates->displayEditRatings($_GET['key_candidate']);
                 else 
                     throw new Exception("La clé candidat est introuvable !");
                 break;  
 
-            case 'edit-candidate':
+            case 'edit-candidates':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 if(isset($_GET['key_candidate']))
-                    $candidates->getEditCandidates($_GET['key_candidate']);
+                    $candidates->displayEditCandidates($_GET['key_candidate']);
                 else 
                     throw new Exception("La clé candidat est introuvable !");
                 break;  
 
-            case 'update-rating':
+            case 'update-ratings':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -408,7 +410,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'description' => $_POST['description']
                     ];
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
-                        $candidates->updateRating($_GET['key_candidate'], $rating);
+                        $candidates->updateRatings($_GET['key_candidate'], $rating);
                     else 
                         throw new Exception("La clé candidat est introuvable !");
 
@@ -421,7 +423,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 break;  
                 
-            case 'update-candidate':
+            case 'update-candidates':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -442,7 +444,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     ];
 
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
-                        $candidates->updateCandidate($_GET['key_candidate'], $data);
+                        $candidates->updateCandidates($_GET['key_candidate'], $data);
                     else 
                         throw new Exception("Impossible de modifier la notation du candidat, clé candidat est introuvable !");
 
@@ -453,7 +455,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 }
                 break;  
 
-            case 'update-meeting':
+            case 'update-meetings':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -477,7 +479,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     if(Moment::currentMoment()->isTallerThan(Moment::fromDate($_POST['date'], $_POST['time'])->getTimestamp()))
                         throw new Exception("La date du rendez-vous est antérieure à aujourd'hui.");
 
-                    $candidates->updateMeeting($_GET['key_meeting'], $_GET['key_candidate'], $meeting);
+                    $candidates->updateMeetings($_GET['key_meeting'], $_GET['key_candidate'], $meeting);
 
                 } catch(Exception $e) {
                     forms_manip::error_alert([
@@ -487,11 +489,11 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
 
                 break;
                 
-            case 'delete-meeting': 
+            case 'delete-meetings': 
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                 else
-                    $candidates->deleteMeeting($_GET['key_meeting'], $_GET['key_candidate']);
+                    $candidates->deleteMeetings($_GET['key_meeting'], $_GET['key_candidate']);
                 break;  
                 
             case 'dismiss-applications':
@@ -504,20 +506,20 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     $candidates->dismissApplications($_GET['key_applications']);
                 break;  
 
-            case 'reject-offer':
+            case 'reject-offers':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-                $candidates->rejectOffer($_GET['key_offer']);
+                $candidates->rejectOffers($_GET['key_offer']);
                 break;    
                 
-            case 'resignation':
+            case 'resignations':
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 if(!isset($_GET['key_contract']) || !is_numeric($_GET['key_contract']))
                     throw new Exception("La clé de contrat est introuvable !");
                 else
-                    $candidates->resignContract($_GET['key_contract']);
+                    $candidates->resignContracts($_GET['key_contract']);
                 break; 
 
             default: 
@@ -529,7 +531,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
             'msg' => $e
         ]);
     } 
-
 
 } elseif(isset($_GET['preferences'])) {
     // On déclare le controller de préférences
@@ -1000,12 +1001,10 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
     }
 
 } elseif(isset($_SESSION['user_key']) && !empty($_SESSION['user_key'])) {
-    // On affiche la page d'accueil du site
     $home = new HomeController();
     $home->displayHome();
 
 } else {
-    // On affiche le formulaire de connexion
     $c = new LoginController();
     $c->displayLogin();
 }
