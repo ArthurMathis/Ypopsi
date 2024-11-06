@@ -6,59 +6,6 @@
  */
 class View {
     /**
-     * Private array containing the list of tabs the user can visit
-     *
-     * @var array<object>
-     */
-    private $menu;
-
-    /**
-     * Class constructor
-     */
-    public function __construct() {
-        $this->menu = $this->makeMenuListe();
-    }
-    /**
-     * Private method generating in according to the user's role, the list of tabs he can visit
-     *
-     * @return void
-     */
-    private function makeMenuListe() {
-        return [
-            [
-                "intitule" => "Accueil",
-                "action" => "index.php",
-                "logo" => LOGO.DS."white-home.svg"
-            ],
-            [
-                "intitule" => "Candidatures",
-                "action" => "index.php?applications=home",
-                "logo" => LOGO.DS."white-candidature.svg"
-            ],
-            // [
-            //     "intitule" => "Statistiques",
-            //     "action" => "#",
-            //     "logo" => LOGO.DS."white-statistiques.svg"
-            // ],
-            // [
-            //     "intitule" => "Besoins",
-            //     "action" => "#",
-            //     "logo" => LOGO.DS."white-offre.svg"
-            // ],
-            [
-                "intitule" => "Préférences",
-                "action" => "index.php?preferences=home",
-                "logo" => LOGO.DS."white-preferences.svg"
-            ],
-            [
-                "intitule" => "Se déconnecter",
-                "action" => "index.php?login=deconnexion",
-                "logo" => LOGO.DS."white-log-out.svg"
-            ]
-        ];
-    }
-
-    /**
      * Public method generating the HTML header tag of the page
      *
      * @param String $name The page's titled
@@ -77,15 +24,10 @@ class View {
      *
      * TODO : Refonte graphique du menu (on the top) ==> remnaniment de cette méthode et de l'élément navbarre.php
      * 
-     * @param Boolean $form
-     * @param Boolean $home
-     * @param Boolean $menu
+     * @param String $currentPage The current tab
      * @return Void
      */
-    public function generateMenu($home=true) {
-        $liste_menu = $this->menu;
-        include BARRES.DS.'navbarre.php';
-    }
+    public function generateMenu($currentPage) { include BARRES.DS.'navbarre.php'; }
 
     /**
      * Public method generating a list.php from an data array

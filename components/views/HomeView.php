@@ -12,8 +12,8 @@ class HomeView extends View {
      */
     public function getContent($items=[], $dashboard=[]) {
         $this->generateCommonHeader('Ypopsi - Welcome', [PAGES_STYLES.DS.'index.css']);
+        $this->generateMenu('HOME');
 
-        $this->generateMenu(false);
         echo "<content>";
         $this->getListItems("Candidatures non-traitées", $items, null, 'main-liste');
         echo "<aside>";

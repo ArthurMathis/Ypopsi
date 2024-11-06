@@ -7,21 +7,24 @@ body {
 content {
   display: flex;
   width: 100%;
-  height: calc(100dvh - var(--navbarre-size));
+  height: calc(100dvh - var(--gap));
 }
 content > .liste_items {
   width: 65%;
   height: 100%;
-  padding-top: var(--padding);
+
+  padding-top: var(--very-big-radius);
 }
 content > .liste_items .entete {
-  padding-left: var(--padding);
-  padding-right: var(--gap);
+  padding-left: var(--very-big-radius);
+  padding-right: var(--very-big-radius);
 }
 content > .liste_items .table-wrapper {
   height: calc(100dvh - (var(--navbarre-size) + var(--gap)));
-  padding-left: var(--padding);
-  padding-right: var(--gap);
+
+  padding-left: var(--very-big-radius);
+  padding-right: var(--very-big-radius);
+
   overflow-y: auto;
 }
 
@@ -33,7 +36,8 @@ aside {
   width: 35%;
   min-width: 600px;
 
-  padding: var(--padding) var(--padding) var(--gap) var(--margin);
+  padding-top: var(--very-big-radius);
+  padding-right: var(--very-big-radius);
 
   overflow-y: scroll;
 }
