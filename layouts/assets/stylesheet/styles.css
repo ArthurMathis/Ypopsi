@@ -590,6 +590,9 @@ button.cancel_button:is(:hover, :focus),
 .navbarre section a.selected {
   background-color: var(--grey);
 }
+.navbarre section a.selected:hover::after {
+  display: none; 
+}
 .navbarre section a img {
   height: var(--font-size-medium);
 }
