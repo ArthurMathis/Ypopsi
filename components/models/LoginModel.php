@@ -25,6 +25,7 @@ class LoginModel extends Model {
         $_SESSION['user_firstname']     = $user->getFirstname();
         $_SESSION['user_email']         = $user->getEmail();
         $_SESSION['user_role']          = $user->getRole();
+        $_SESSION['user_titled_role']   = $this->searchRole($user->getRole())['Titled'];
         $_SESSION['first_log_in']       = $user->getFirstLog();
         $_SESSION['key_establishment']  = $user->getEstablishment();
 

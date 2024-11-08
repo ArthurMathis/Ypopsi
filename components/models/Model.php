@@ -381,22 +381,16 @@ abstract class Model {
      * @return Array
      */
     protected function searchRole($role): Array {
-        // On initialise la requête
-        if(is_numeric($role)) {
-            $request = "SELECT * FROM roles WHERE Id_Role = :Id";
-            $params = ["Id" => $role];
-
-        } elseif(is_string($role)) {
-            $request = "SELECT * FROM roles WHERE Intitule_Role = :Intitule";
-            $params = ["Intitule" => $role];
-
-        } else 
+        if(is_numeric($role)) 
+            $request = "SELECT * FROM roles WHERE Id = :role";
+        elseif(is_string($role)) 
+            $request = "SELECT * FROM roles WHERE Titled = :role";
+        else 
             throw new Exception("La saisie du rôle est mal typée. Le rôle doit être un identifiant (entier positif) ou une chaine de caractères !");
 
-        // On lance la requête
+        $params = ["role" => $role];
         $result = $this->get_request($request, $params, true, true);
 
-        // On retourne le rôle
         return $result;
     }
     /**

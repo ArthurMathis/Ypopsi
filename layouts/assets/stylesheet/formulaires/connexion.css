@@ -1,0 +1,86 @@
+.titled {
+    position: fixed;
+    left: 50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 64px;
+
+    width: fit-content;
+    height: fit-content;
+
+    padding: 56px;
+
+    border-radius: 56px;
+    background-color: rgba(254, 254, 254, 0.15);
+
+    transform: translate(-50%, -50%);
+    animation: 1050ms ease-out entry forwards;
+}
+@keyframes entry {
+    from {
+        top: 55%;
+        opacity: 0;
+    } to {
+        top: 50%;
+        opacity: 1;
+    }
+}
+.titled.hided {
+    animation: 450ms ease-in exit forwards;
+}
+@keyframes exit {
+    from {
+        top: 50%;
+        opacity: 1;
+    }
+    to {
+        top: 45%;
+        opacity: 0;
+    }
+}
+.titled h1 {
+    color: var(--white);
+    font-family: 'Pacifico';
+    font-size: 6.85rem;
+    line-height: 8.9rem;
+}
+.titled p {
+    color: var(--white);
+}
+.titled div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: fit-content;
+}
+.titled button {
+    border: 2px solid var(--white);
+    background-color: var(--white);
+}
+.titled button p {
+    color: var(--blue);
+}
+
+form {
+    top: 200%;
+    opacity: 0;
+}
+form.showed {
+    animation: 1350ms ease-out form-entry forwards;
+}
+@keyframes form-entry {
+    from {
+        top: 65%;
+        opacity: 0;
+    } 
+    to {
+        top: 50%;
+        opacity: 1;
+    }
+}

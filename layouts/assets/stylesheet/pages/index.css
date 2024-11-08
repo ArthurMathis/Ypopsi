@@ -7,7 +7,7 @@ body {
 content {
   display: flex;
   width: 100%;
-  height: calc(100dvh - var(--gap));
+  height: calc(100dvh - (var(--navbarre-size) + var(--gap)));
 }
 content > .liste_items {
   width: 65%;

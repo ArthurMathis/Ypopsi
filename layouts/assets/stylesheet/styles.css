@@ -11,6 +11,10 @@
   src: url("../typo/Roboto/Roboto-Bold.ttf");
 }
 @font-face {
+  font-family: "Pacifico";
+  src: url("../typo/Pacifico-Regular.ttf");
+}
+@font-face {
   font-family: "Roboto Mono";
   src: url("../typo/Roboto_Mono/RobotoMono-VariableFont_wght.ttf");
 }
@@ -168,20 +172,22 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: var(--gap) var(--margin);
+  gap: var(--very-big-radius);
 
-  padding: calc(2 * var(--gap)) var(--padding);
+  width: fit-content;
+  height: fit-content;
+
+  padding: var(--gap);
 
   color: var(--white);
-  border-radius: var(--big-radius);
-  background-color: var(--blue-opacity);
+  border-radius: var(--gap);
+  background-color: rgba(254, 254, 254, 0.15);
 }
 form p {
   color: var(--white);
 }
 form h3 {
   color: var(--white);
-  margin-top: calc(var(--margin) / 2);
   text-align: center;
 }
 form section {
@@ -189,16 +195,16 @@ form section {
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  gap: var(--margin);
+  gap: var(--radius);
 
   width: 100%;
 }
 form input, 
 form select {
-  width: 100%;
-  height: 65px;
+  width: 520px;
+  height: fit-content;
 
-  padding: 0 var(--margin);
+  padding: var(--big-radius) var(--radius);
 
   border: none;
   border-radius: var(--radius);
@@ -220,13 +226,19 @@ form select:is(:hover, :focus) {
   box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.2);
 }
 form button {
-  color: var(--white);
-  border-color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--radius);
+
+  color: var(--blue);
+  border: 2px solid var(--white);
+  background-color: var(--white);
+
   will-change: box-shadow;
   transition: box-shadow 150ms ease;
 }
 form button:is(:hover, :focus) {
-  background-color: transparent;
   box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.2);
 }
 form textarea {
@@ -234,6 +246,12 @@ form textarea {
   height: 160px;
 
   border: none;
+}
+form .form-section {
+  display: flex;
+  justify-content: end;
+
+  width: 100%;
 }
 form .input-container {
   display: flex;
@@ -344,11 +362,9 @@ form .checkbox-liste .checkbox-item label {
   height: 0;
   width: 0;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
   background: var(--grey);
   border-radius: 4px;
@@ -395,13 +411,15 @@ button,
   justify-content: center;
   align-items: center;
 
-  height: var(--padding);
-  padding: 0 calc(var(--margin) * 3 / 2);
+  width: fit-content;
+  height: fit-content;
+
+  padding: var(--small-radius) var(--radius);
 
   color: var(--blue);  
   font-family: "Roboto Bold";
   border: 2px solid var(--blue);
-  border-radius: var(--gap);
+  border-radius: var(--radius);
   background-color: transparent;
 
   box-shadow: none;
@@ -429,7 +447,7 @@ button.cancel_button:is(:hover, :focus),
 .action_button.cancel_button:is(:hover, :focus) {
   box-shadow: 0 0 0 5px rgba(254, 0, 0, 0.2);
 }
-
+/*
 .user-link {
   position: absolute;
   bottom: var(--margin);
@@ -450,6 +468,7 @@ button.cancel_button:is(:hover, :focus),
 .user-link > a::after {
   background-color: var(--blue);
 }
+  */
 
 .circle_button {
   display: flex;
@@ -538,9 +557,9 @@ button.cancel_button:is(:hover, :focus),
 
 /******** BARRE DE NAVIGATION ********/
 .navbarre {
-  position: sticky;
+  /*position: sticky;
   top: 0;
-  left: 0;
+  left: 0;*/
 
   display: flex;
   justify-content: space-between;
@@ -602,44 +621,43 @@ button.cancel_button:is(:hover, :focus),
   display: flex;
   flex-direction: column;
 }
-
 .liste_items .entete {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   width: 100%;
   height: fit-content;
 }
-
 .table-wrapper {
-  overflow-y: auto;
   width: 100%;
+  overflow-y: auto;
 }
-
 .table-wrapper table {
   width: 100%;
+
   border-collapse: separate;
   border-spacing: 0 var(--big-radius);
 }
-
 .table-wrapper table thead {
   position: sticky;
+  top: var(--big-radius);
   /*top: calc(var(--margin) * 3 / 2);*/
   z-index: 1;
 }
 .table-wrapper table thead *::selection {
   background-color: transparent;
 }
-
 .table-wrapper table thead th {
   position: relative;
   font-family: "Roboto Bold";
 }
-
 .table-wrapper table th {
-  width: calc(100% - 2 * var(--gap));
+  width: calc(100% - 2 * var(--small-radius));
   height: 50px;
-  padding: 0 var(--gap);
+
+  padding: 0 var(--small-radius);
+
   text-align: left;
   text-wrap: nowrap;
 }
@@ -650,7 +668,7 @@ button.cancel_button:is(:hover, :focus),
 
 .table-wrapper table tr {
   position: relative;
-  border-spacing: var(--margin) 0;
+  border-spacing: var(--small-radius) 0;
   color: var(--black);
 }
 
@@ -659,17 +677,17 @@ button.cancel_button:is(:hover, :focus),
   position: absolute;
   top: 0;
   left: 0;
+
   display: block;
   width: 100%;
   z-index: -1;
+
   border-radius: var(--radius);
 }
-
 .table-wrapper table thead tr::before {
   height: 50px;
   background-color: rgba(0, 0, 0, 0.03);
 }
-
 .table-wrapper table tbody tr::before {
   width: calc(100% - 4px);
   height: 63px;
@@ -677,32 +695,30 @@ button.cancel_button:is(:hover, :focus),
   box-shadow: none;
   transition: color 250ms ease, border-color 250ms ease, background-color 250ms ease, box-shadow 250ms ease;
 }
-
 .table-wrapper table tbody tr:is(:hover, :focus) {
   color: var(--white);
 }
-
 .table-wrapper table tbody tr:is(:hover, :focus)::before {
   border-color: var(--blue);
   background-color: var(--blue);
   box-shadow: var(--liste-shadow);
 }
-
 .table-wrapper table thead tr th:is(:hover, :focus)::after,
 .table-wrapper table thead tr th.active::after {
   content: "";
   position: absolute;
   top: 50%;
-  right: var(--margin);
+  right: var(--small-radius);
+
   display: block;
-  width: calc(var(--margin) * 3 / 2);
-  height: calc(var(--margin) * 3 / 2);
+  width: 20px;
+  height: 20px;
+
   border-radius: var(--radius);
   transform: translateY(-50%);
   background-image: url("../img/fleche.svg");
   background-size: contain;
 }
-
 .table-wrapper table thead tr th.reverse-tri::after {
   transform: translateY(-50%) rotate(180deg);
 }
@@ -809,53 +825,4 @@ button.cancel_button:is(:hover, :focus),
 
 .bulles .boutons .fleche span::after {
   transform: translateY(calc(-50% + 1px)) rotate(-45deg);
-}
-
-/******** SOUS-MENU ********/
-.sous-menu > img {
-  position: relative;
-  background-color: var(--white);
-}
-.sous-menu content {
-  position: absolute;
-
-  display: none;
-  flex-direction: column;
-
-  width: fit-content;
-  height: fit-content;
-
-  padding: var(--margin);
-
-  border: none;
-  border-radius: calc(var(--radius) + var(--margin));
-  background-color: var(--white);
-  box-shadow: var(--bulle-shadow);
-}
-.sous-menu content a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  height: fit-content;
-
-  padding: var(--margin);
-}
-.sous-menu > img, 
-.sous-menu content a {
-  border: none;
-  color: var(--black);
-  border-radius: var(--radius);
-  background-color: var(--white);
-}
-.sous-menu > img:is(:hover, :focus), 
-.sous-menu content a:is(:hover, :focus) {
-  background-color: #f7f7f7;
-  box-shadow: none;
-}
-
-/******** SOUS-MENU VISIBLE ********/
-.sous-menu.visible content {
-  display: flex;
 }

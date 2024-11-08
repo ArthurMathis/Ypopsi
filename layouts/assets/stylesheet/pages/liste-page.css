@@ -2,12 +2,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     width: 100%;
-    padding: calc(var(--gap) * 2) var(--padding) var(--gap);
+    padding: var(--very-big-radius) var(--very-big-radius) 0 var(--very-big-radius);
 }
 .options_barre article {
     display: flex;
-    gap: var(--margin);
+    gap: var(--radius);
+
     width: fit-content;
     height: fit-content;
 }
@@ -17,7 +19,6 @@
 .options_barre article a {
     text-wrap: nowrap;
 }
-  
 .candidatures-menu {
     position: fixed;
     top: 15rem;
@@ -98,20 +99,21 @@
     bottom: var(--padding);
     right: var(--padding);
 }
-  
+
 .liste_items {
     width: 100%;
-    height: calc(100dvh - 15rem);
-    padding-top: calc(var(--margin) / 2);
+    height: calc(100dvh - (var(--navbarre-size) + var(--radius) + var(--very-big-radius) + 40px));
+    padding-top: var(--very-big-radius);
 }
 .liste_items .table-wrapper, .liste_items .entete {
-    padding: 0 var(--padding);
+    padding: 0 var(--very-big-radius);
 }
 .liste_items .table-wrapper {
     overflow-y: auto;
-    height: calc(100dvh - 8rem - 150px);
+    height: 100%;
+    /*height: calc(100dvh - 8rem - 150px);*/
 }
 .liste_items .table-wrapper table th {
     position: relative;
-    padding-left: var(--margin);
+    padding-left: var(--small-radius);
 }

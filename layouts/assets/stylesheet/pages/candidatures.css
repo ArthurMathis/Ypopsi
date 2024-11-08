@@ -1,16 +1,16 @@
 .liste_items .table-wrapper table th:first-of-type, 
 .liste_items .table-wrapper table th:nth-of-type(7), 
 .liste_items .table-wrapper table th:nth-of-type(8) {
-    padding-left: var(--padding);
+    padding-left: var(--gap);
 }
 .liste_items .table-wrapper table th:first-of-type::before, 
 .liste_items .table-wrapper table th:nth-of-type(7)::before, 
 .liste_items .table-wrapper table th:nth-of-type(8)::before {
     content: "";
     position: absolute;
-    left: var(--margin);
+    left: var(--big-radius);
     top: 50%;
-  
+
     display: block;
     width: var(--font-size-small);
     height: var(--font-size-small);

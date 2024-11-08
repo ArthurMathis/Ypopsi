@@ -13,11 +13,15 @@ class LoginView extends View {
      * @return void
      */
     public function getContent() {
-        $this->generateCommonHeader('Ypopsi - Connexion', [FORMS_STYLES.DS.'small-form.css']);
-        $this->generateMenu();
+        $this->generateCommonHeader(
+            'Ypopsi - Connexion', 
+            [
+                FORMS_STYLES.DS.'small-form.css',
+                FORMS_STYLES.DS.'connexion.css'
+            ]
+        );
 
         include FORMULAIRES.DS.'connexion.php';
-        include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }

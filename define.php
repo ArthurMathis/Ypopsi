@@ -37,6 +37,12 @@ define('MOD', 3);
 define('USER', 4);
 define('INVITE', 5);
 
+define('HOME', 1);
+define('APPLICATIONS', 2);
+define('NEEDS', 3);
+define('STATS', 4);
+define('PREFERENCES', 5);
+
 // On charge le contenu du fichier .env
 function env_start() {
     $env = parse_ini_file('.env');

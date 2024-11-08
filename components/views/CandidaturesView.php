@@ -17,7 +17,7 @@ class CandidaturesView extends View {
      */
     public function getContent($title, $items = [], $nb_items_max=null) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'candidatures.css']);
-        $this->generateMenu();
+        $this->generateMenu(APPLICATIONS);
 
         include BARRES.DS.'candidatures.php';
         $this->getListItems($title, $items, $nb_items_max, 'main-liste');
@@ -56,7 +56,7 @@ class CandidaturesView extends View {
      */
     public function displayInputApplicationsContent($title, $job=[], $service=[], $establishment=[], $typeOfContract=[], $source=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu();
+        $this->generateMenu(APPLICATIONS);
 
         include INSCRIPT_FORM.DS.'applications.php';
         include FORMULAIRES.DS.'waves.php';
