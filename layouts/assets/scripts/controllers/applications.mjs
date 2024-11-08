@@ -68,9 +68,16 @@ listManipulation.setColorAvailability(candidatures, 7);
 const rechercher = document.getElementById('rechercher-button');
 const filtrer = document.getElementById('filtrer-button');
 
+const appliquer_filtre = document.getElementById('valider-filtre');
+const appliquer_recherche = document.getElementById('lancer-recherche');
+
+const reinit_filtre = document.getElementById('reinint-filtre');
+const reinit_recherche = document.getElementById('reinint-recherche');
+
 const rechercher_menu = document.getElementById('rechercher-menu');
 const filtrer_menu = document.getElementById('filtrer-menu');
 
+//// Tri par entête ////
 let item_clicked = null;
 let method_tri = true;
 entete.forEach((item, index) => {
@@ -104,140 +111,130 @@ entete.forEach((item, index) => {
     });
 });
 
+//// Tri par recherches et filtres ////
 let candidatures_selection = Array.from(candidatures);
 let filtrerIsVisible = false;
-let lastAction = "";
+let rechercherIsVisible = false;
+
+const champs_statut = {
+    champs: Array.from(document.getElementById('statut_input').querySelectorAll('input')),
+    index : 0
+};
+const champs_infos_filtre = [
+    {
+        champs: document.getElementById('filtre-poste'),
+        index : 3
+    },
+    {
+        champs: document.getElementById('filtre-source'),
+        index : 6
+    }
+];
+const champs_infos_recherche = [
+    {
+        champs: document.getElementById('recherche-nom'),
+        index : 1
+    },
+    {
+        champs: document.getElementById('recherche-prenom'),
+        index : 2
+    },
+    {
+        champs: document.getElementById('recherche-email'),
+        index : 4
+    },
+    {
+        champs: document.getElementById('recherche-telephone'),
+        index : 5
+    }
+];
+const champs_date = {
+    index : 7,
+    champs: [
+        document.getElementById('filtre-date-max'),
+        document.getElementById('filtre-date-min')
+    ]
+};
+
 filtrer.addEventListener('click', () => {
     listManipulation.hideMenu(rechercher_menu);
 
-    if(filtrerIsVisible) {
-        let champs = null;
-        let champs_statut = null;
-        let champs_date = null;
-
+    if(filtrerIsVisible) 
         listManipulation.hideMenu(filtrer_menu);
-
-    } else {
-        const champs_statut = {
-                champs: Array.from(document.getElementById('statut_input').querySelectorAll('input')),
-                index : 0
-        };
-        const champs_infos = [
-            {
-                champs: document.getElementById('filtre-poste'),
-                index : 3
-            },
-            {
-                champs: document.getElementById('filtre-source'),
-                index : 6
-            }
-        ];
-        const champs_date = {
-            index : 7,
-            champs: [
-                document.getElementById('filtre-date-max'),
-                document.getElementById('filtre-date-min')
-            ]
-        };
-
-        const bouton = document.getElementById('valider-filtre');
-        const newBouton = bouton.cloneNode(true);
-        bouton.parentNode.replaceChild(newBouton, bouton);
-        newBouton.addEventListener('click', () => {
-            try {
-                let criteres = [];
-                listManipulation.recoverFields(champs_infos, criteres);
-                listManipulation.recoverCheckbox(champs_statut, criteres);
-                listManipulation.recoverFieldsDate(champs_date, criteres);
-
-                if(criteres.length === 0) {
-                    listManipulation.resetLines(candidatures);
-                    candidatures_selection = Array.from(candidatures);
-                    listManipulation.displayCountItems(candidatures !== null ? candidatures.length : 0);
-                
-                } else {
-                    if(lastAction === "filtre") 
-                        candidatures_selection = Array.from(candidatures);
-                
-                    candidatures_selection = listManipulation.multiFilter(candidatures_selection, criteres);
-                    listManipulation.deleteLines(candidatures);
-                    listManipulation.resetLines(candidatures_selection);
-                    listManipulation.displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
-                
-                    filtrerIsVisible = !filtrerIsVisible;
-                }
-                lastAction = "filtre";
-                listManipulation.hideMenu(filtrer_menu);
-            } catch(err) {
-                console.error(err);
-            }
-        });
-
+    else 
         listManipulation.showMenu(filtrer_menu);
-    }
     filtrerIsVisible = !filtrerIsVisible;
 });
-let rechercherIsVisible = false;
 rechercher.addEventListener('click', () => {
     listManipulation.hideMenu(filtrer_menu);
 
-    if(rechercherIsVisible) {
-        let champs = null;
-        let champs_statut = null;
-        let champs_date = null;
-
+    if(rechercherIsVisible) 
         listManipulation.hideMenu(rechercher_menu);
-
-    } else {
-        const champs_infos = [
-            {
-                champs: document.getElementById('recherche-nom'),
-                index : 1
-            },
-            {
-                champs: document.getElementById('recherche-prenom'),
-                index : 2
-            },
-            {
-                champs: document.getElementById('recherche-email'),
-                index : 4
-            },
-            {
-                champs: document.getElementById('recherche-telephone'),
-                index : 5
-            }
-        ];
-
-        const bouton = document.getElementById('lancer-recherche');
-        const newBouton = bouton.cloneNode(true);
-        bouton.parentNode.replaceChild(newBouton, bouton);
-        newBouton.addEventListener('click', () => {
-            let criteres = [];
-            listManipulation.recoverFields(champs_infos, criteres);
-            if(criteres.length === 0) {
-                listManipulation.resetLines(candidatures);
-                candidatures_selection = Array.from(candidatures);
-                listManipulation.displayCountItems(candidatures !== null ? candidatures.length : 0);
-
-            } else {
-                candidatures_selection = listManipulation.multiFilter(candidatures_selection, criteres);
-                listManipulation.deleteLines(candidatures);
-                listManipulation.resetLines(candidatures_selection);
-                listManipulation.displayCountItems(candidatures_selection !== null ? candidatures_selection.length : 0);
-
-                rechercherIsVisible = !rechercherIsVisible;  
-            }
-
-            lastAction = "recherche";
-            listManipulation.hideMenu(rechercher_menu);
-        });
+    else
         listManipulation.showMenu(rechercher_menu);
-    }
     rechercherIsVisible = !rechercherIsVisible;
 });
 
-const menu_button = document.getElementById('bouton-menu');
-menu_button.addEventListener('click', () => {
-    listManipulation.hideMenu(filtrer_menu);
+appliquer_filtre.addEventListener('click', () => {
+    try {
+        let criteres = [];
+        listManipulation.recoverFields(champs_infos_filtre, criteres);
+        listManipulation.recoverCheckbox(champs_statut, criteres);
+        listManipulation.recoverFieldsDate(champs_date, criteres);
+
+        if(criteres.length === 0) {
+            listManipulation.resetLines(candidatures);
+            candidatures_selection = Array.from(candidatures);
+            listManipulation.displayCountItems(candidatures !== null ? candidatures.length : 0);
+        
+        } else {
+            // if(lastAction === "filtre") 
+            //     candidatures_selection = Array.from(candidatures);
+        
+            candidatures_selection = listManipulation.multiFilter(candidatures_selection, criteres);
+            listManipulation.deleteLines(candidatures);
+            listManipulation.resetLines(candidatures_selection);
+            listManipulation.displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
+        
+            filtrerIsVisible = !filtrerIsVisible;
+        }
+        // lastAction = "filtre";
+        listManipulation.hideMenu(filtrer_menu);
+    } catch(err) {
+        console.error(err);
+    }
+});
+appliquer_recherche.addEventListener('click', () => {
+    let criteres = [];
+    listManipulation.recoverFields(champs_infos_recherche, criteres);
+    if(criteres.length === 0) {
+        listManipulation.resetLines(candidatures);
+        candidatures_selection = Array.from(candidatures);
+        listManipulation.displayCountItems(candidatures !== null ? candidatures.length : 0);
+
+    } else {
+        candidatures_selection = listManipulation.multiFilter(candidatures_selection, criteres);
+        listManipulation.deleteLines(candidatures);
+        listManipulation.resetLines(candidatures_selection);
+        listManipulation.displayCountItems(candidatures_selection !== null ? candidatures_selection.length : 0);
+
+        rechercherIsVisible = !rechercherIsVisible;  
+    }
     listManipulation.hideMenu(rechercher_menu);
 });
+//// Réinitialisation des recherches et filtres ////
+function reinitFields() {
+    listManipulation.clearFields(champs_infos_filtre);
+    listManipulation.clearFields(champs_infos_recherche);
+    listManipulation.clearFieldsCheckbox(champs_statut);
+    listManipulation.clearFieldsDate(champs_date);
+}
+reinit_filtre.addEventListener('click', reinitFields());
+reinit_recherche.addEventListener('click', reinitFields());
+
+// const menu_button = document.getElementById('bouton-menu');
+// menu_button.addEventListener('click', () => {
+//     listManipulation.hideMenu(filtrer_menu);
+//     listManipulation.hideMenu(rechercher_menu);
+// });
+// 

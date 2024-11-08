@@ -8,11 +8,8 @@ require_once('View.php');
 class PreferencesView extends View {
     /// Méthode publique retournant la page principale du menu préférences
     public function getContent($items=[]) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Préférences', [PAGES_STYLES.DS.'preferences.css']);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -22,7 +19,6 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
     /// Méthode privée retournant leprofil de l'utilisateur
@@ -40,14 +36,11 @@ class PreferencesView extends View {
     }
     /// Méthod epublique retournant la page de modification du mot de passe
     public function getEditpassword() {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Préférences', [
             PAGES_STYLES.DS.'preferences.css', 
             FORMS_STYLES.DS.'edit-user.css'
         ]);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -56,40 +49,31 @@ class PreferencesView extends View {
         echo '</amin>';
         echo '</content>';
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     } 
     public function getEditUtilisateur($user=[], $role=[]) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader("Mise-à-jour de l'utilisateur", [FORMS_STYLES.DS.'small-form.css']);
-
-        // On ajoute la barre de navigation
-        $this->generateMenu();
+        $this->generateMenu()PREFERENCES;
 
         $scripts = [
             'models/objects/AutoComplet.js'
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le formulaire de'inscription
         include EDIT_FORM.DS.'user.php';
         include FORMULAIRES.DS.'waves.php';
 
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
 
     /// Méthode publique retournant la liste utilisateurs
     public function getUtilisateursContent($items=[], $direction ) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css', 
             PAGES_STYLES.DS.'utilisateurs.css'
         ]);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -99,7 +83,6 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        // On importe les scripts JavaScript
         $scripts = [
             'views/liste-view.js',
             'models/liste-model.js',
@@ -108,20 +91,16 @@ class PreferencesView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant la liste des nouveaux utilisateurs
     public function getNouveauxUtilisateursContent($items=[], $direction) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
             PAGES_STYLES.DS.'utilisateurs.css'
         ]);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -131,7 +110,6 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        // On importe les scripts JavaScript
         $scripts = [
             'views/liste-view.js',
             'models/liste-model.js',
@@ -145,15 +123,12 @@ class PreferencesView extends View {
     }
     /// Méthode publique retournant la vue Historique de connexions
     public function getConnexionHistoriqueContent($items=[]) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
             PAGES_STYLES.DS.'connexion-historique.css'
         ]);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -163,7 +138,6 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        // On importe les scripts JavaScript
         $scripts = [
             'views/liste-view.js',
             'models/liste-model.js',
@@ -172,20 +146,16 @@ class PreferencesView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant la vue Historique d'actions
     public function getActionHistoriqueContent($items) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
             PAGES_STYLES.DS.'action-historique.css'
         ]);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -195,7 +165,6 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        // On importe les scripts JavaScript
         $scripts = [
             'views/liste-view.js',
             'models/liste-model.js',
@@ -204,19 +173,15 @@ class PreferencesView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant la liste des postes
     public function getPostesContent($items=[]) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Liste postes', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
         ]);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -226,7 +191,6 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        // On importe les scripts JavaScript
         $scripts = [
             'views/liste-view.js',
             'models/liste-model.js',
@@ -235,19 +199,15 @@ class PreferencesView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant la liste des services
     public function getServicesContent($items=[]) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Liste services', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
         ]);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -257,7 +217,6 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        // On importe les scripts JavaScript
         $scripts = [
             'views/liste-view.js',
             'models/liste-model.js',
@@ -266,20 +225,16 @@ class PreferencesView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant la liste des établissements
     public function getEtablissementsContent($items=[]) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Liste établissements', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
-           PAGES_STYLES.DS.'etablissements.css'
+            PAGES_STYLES.DS.'etablissements.css'
         ]);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -289,7 +244,6 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        // On importe les scripts JavaScript
         $scripts = [
             'views/liste-view.js',
             'models/liste-model.js',
@@ -298,18 +252,14 @@ class PreferencesView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
     public function getPolesContent($items=[]) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Liste pôles', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
         ]);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -319,7 +269,6 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        // On importe les scripts JavaScript
         $scripts = [
             'views/liste-view.js',
             'models/liste-model.js',
@@ -328,17 +277,13 @@ class PreferencesView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
 
     /// Méthode publique retournant la vue saisie utilisateur
     public function getSaisieUtilisateur($role, $etablissements=[]) {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Inscription', [FORMS_STYLES.DS.'big-form.css']);
-
-        // On ajoute la barre de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         $scripts = [
             'models/objects/AutoComplet.js'
@@ -358,7 +303,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription poste', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'poste.php';
@@ -373,7 +318,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription service', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         $scripts = [
             'models/objects/AutoComplet.js'
@@ -393,7 +338,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription établissement', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'etablissements.php';
@@ -408,7 +353,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription pôle', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu();
+        $this->generateMenu(PREFERENCES);
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'pole.php';

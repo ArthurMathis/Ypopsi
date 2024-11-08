@@ -19,7 +19,7 @@ class CandidaturesView extends View {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'candidatures.css']);
         $this->generateMenu(APPLICATIONS);
 
-        include BARRES.DS.'candidatures.php';
+        include BARRES.DS.'applications.php';
         $this->getListItems($title, $items, $nb_items_max, 'main-liste');
 
         $scripts = ['controllers/applications.mjs'];

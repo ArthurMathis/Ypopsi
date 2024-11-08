@@ -24,6 +24,6 @@
         document.querySelector('section').classList.add('hided');
         setTimeout(function() {
             document.querySelector('form').classList.add('showed');
-        }, 450);
+        }, 600);
     });
 </script>

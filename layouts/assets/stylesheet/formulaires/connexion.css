@@ -72,11 +72,11 @@ form {
     opacity: 0;
 }
 form.showed {
-    animation: 1350ms ease-out form-entry forwards;
+    animation: 900ms ease-out form-entry forwards;
 }
 @keyframes form-entry {
     from {
-        top: 65%;
+        top: 55%;
         opacity: 0;
     } 
     to {

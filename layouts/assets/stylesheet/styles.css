@@ -247,7 +247,7 @@ form textarea {
 
   border: none;
 }
-form .form-section {
+.form-section {
   display: flex;
   justify-content: end;
 
@@ -410,6 +410,7 @@ button,
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: var(--small-radius);
 
   width: fit-content;
   height: fit-content;
@@ -426,9 +427,22 @@ button,
   will-change: box-shadow;
   transition: 150ms ease box-shadow;
 }
+button p,
+.action_button p {
+  color: var(--blue);
+}
+button img,
+.action_button ime {
+  height: 25px;
+}
+button.reverse_color,
 .action_button.reverse_color {
   color: var(--white);
   background-color: var(--blue);
+}
+button.reverse_color p,
+.action_button.reverse_color p {
+  color: var(--white);
 }
 .action_button::selection {
   background-color: transparent;
@@ -468,7 +482,7 @@ button.cancel_button:is(:hover, :focus),
 .user-link > a::after {
   background-color: var(--blue);
 }
-  */
+*/
 
 .circle_button {
   display: flex;
@@ -557,10 +571,6 @@ button.cancel_button:is(:hover, :focus),
 
 /******** BARRE DE NAVIGATION ********/
 .navbarre {
-  /*position: sticky;
-  top: 0;
-  left: 0;*/
-
   display: flex;
   justify-content: space-between;
   align-items: start;

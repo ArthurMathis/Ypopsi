@@ -1,4 +1,7 @@
 export const listManipulation = {
+    clearFields,
+    clearFieldsCheckbox,
+    clearFieldsDate,
     createTable,
     deleteLines,
     destroyTable,
@@ -9,7 +12,7 @@ export const listManipulation = {
     recoverCheckbox,
     recoverFields,
     recoverFieldsDate,
-    responsive, 
+    responsive,
     resetLines,
     setColor,
     setColorAvailability,
@@ -261,7 +264,7 @@ function recoverFields(fields=[], criteria=[]) {
                 'type'   : 'default'
             });
 
-            fields[i].champs.value = null;
+            // fields[i].champs.value = null;
         }
     }
 }
@@ -308,14 +311,14 @@ function recoverFieldsDate(fields=[], criteria=[]) {
             'type' : 'min',
             'value': new Date(champs.champs[0].value)
         });
-        fields.champs[0].value = null;
+        // fields.champs[0].value = null;
     }
     if(fields.champs[1].value) {
         new_c.push({
             'type' : 'max',
             'value': new Date(fields.champs[1].value)
         });
-        fields.champs[1].value = null;
+        // fields.champs[1].value = null;
     }
 
     if(new_c.length > 0)
@@ -328,7 +331,33 @@ function recoverFieldsDate(fields=[], criteria=[]) {
     else 
         console.warn("Aucun critère ajouté");
 }
-
+/**
+ * @function clearFields
+ * @description Function that clears one list of HTMLInputElement
+ * @param {Array<HTMLInputElement} fields 
+ * @author Arthur MATHIS
+ */
+function clearFields(fields=[]) {
+    fields.forEach(obj => { obj.champs.value = null; });
+}
+/**
+ * @function clearFieldsCheckbox
+ * @description Function that clears one list of HTMLCheckboxElement
+ * @param {Array<HTMLInputElement} fields 
+ * @author Arthur MATHIS
+ */
+function clearFieldsCheckbox(fields=[]) {
+    fields.champs.forEach(obj => { obj.checked = true; });
+}
+/**
+ * @function clearFields
+ * @description Function that clears one list of HTMLInputElement
+ * @param {Array<HTMLInputElement} fields 
+ * @author Arthur MATHIS
+ */
+function clearFieldsDate(fields=[]) {
+    fields.champs.forEach(obj => { obj.value = null; });
+}
 /**
  * @function filterBy
  * @description Function to filter a table according to a single criterion filter

@@ -12,6 +12,7 @@
 </nav>
 <div class="candidatures-menu" id="filtrer-menu">
     <h2>Filtrer par</h2>
+    <main>
     <content>
         <section id="statut_input" class="small-section">
             <p>Statuts</p>
@@ -42,25 +43,41 @@
             <input type="date" id="filtre-date-min" name="filre-data-min">
         </section>
     </content>
-    <button id="valider-filtre" class="circle_button">
-        <img src="layouts\assets\img\logo\white-filtre.svg" alt="">
-    </button>
+    <aside>
+        <button id="reinint-filtre" class="reinint_button LignesHover">
+            <p>Réinitialiser les filtres</p>
+            <img src="layouts\assets\img\logo\close.svg" alt="">
+        </button>
+        <button id="valider-filtre" class="reverse_color">
+            <p>Appliquer</p>
+            <img src="layouts\assets\img\logo\white-filtre.svg" alt="">
+        </button>
+    </aside>
+    </main>
 </div>
 <div class="candidatures-menu" id="rechercher-menu">
     <h2>Rechercher par</h2>
-    <content>
-        <section>
-            <p>Informations personnelles</p>
-            <input type="text" id="recherche-nom"  placeholder="Nom">
-            <input type="text" id="recherche-prenom" placeholder="Prenom">
-        </section>
-        <section>
-            <p>Informations de communication</p>
-            <input type="text" id="recherche-email" placeholder="Email">
-            <input type="text" id="recherche-telephone" placeholder="Telephone">
-        </section>
-    </content>
-    <button id="lancer-recherche" class="circle_button">
-        <img src="layouts\assets\img\logo\white-recherche.svg" alt="">
-    </button>
+    <main>
+        <content>
+            <section>
+                <p>Informations personnelles</p>
+                <input type="text" id="recherche-nom"  placeholder="Nom">
+                <input type="text" id="recherche-prenom" placeholder="Prenom">
+            </section>
+            <section>
+                <p>Informations de communication</p>
+                <input type="text" id="recherche-email" placeholder="Email">
+                <input type="text" id="recherche-telephone" placeholder="Telephone">
+            </section>
+        </content>
+        <aside>
+            <button id="reinint-recherche" class="reinint_button LignesHover">
+                <p>Réinitialiser les filtres</p>
+                <img src="layouts\assets\img\logo\close.svg" alt="">
+            </button>
+            <button id="lancer-recherche" class="reverse_color">
+                <img src="layouts\assets\img\logo\white-recherche.svg" alt="">
+            </button>
+        </aside>
+    </main>
 </div>

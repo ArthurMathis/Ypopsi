@@ -19,52 +19,62 @@
 .options_barre article a {
     text-wrap: nowrap;
 }
+
 .candidatures-menu {
     position: fixed;
-    top: 15rem;
+    top: calc(var(--navbarre-size) + var(--very-big-radius) + var(--very-big-radius) + 45px);
 
     display: none;
+    flex-direction: column;
+    justify-content: start;
+    align-items: top;
+    gap: var(--radius);
+
     width: 100%;
+    height: fit-content;
     z-index: 2;
 
-    padding: var(--padding);
+    padding: var(--very-big-radius);
     background-color: var(--white);
     overflow-y: hidden;
     box-shadow: 0 15px 5px 5px rgba(0, 0, 0, 0.05);
 }
 .candidatures-menu.active {
-    display: block;
+    display: flex;
 }
-.candidatures-menu h2 {
-    margin-bottom: var(--margin);
+.candidatures-menu main {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    height: fit-content;
 }
 .candidatures-menu content {
     display: flex;
     justify-content: left;
-    flex-wrap: wrap;
-    gap: var(--margin);
+    gap: 20px;
 
-
-    width: 100%;
+    width: fit-content;
+    height: fit-content;
 }
 .candidatures-menu section {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--margin) * 2 / 3);
-    width: clamp(240px, 30%, 320px);
+    gap: var(--small-radius);
+    width: 360px;
 }
 .candidatures-menu section > p {
     font-family: "Roboto Bold";
 }
 .candidatures-menu section > input {
     width: 100%;
-    height: 65px;
+    height: fit-content;
 
-    padding: 0 var(--margin);
+    padding: var(--big-radius) var(--radius);
 
     border: none;
     border-radius: var(--radius);
-    background-color: #F7F7F7;
+    background-color: var(--light-grey);
 
     box-shadow: none;
     outline: none;
@@ -78,7 +88,6 @@
 .candidatures-menu section > input::placeholder {
     color: var(--grey);
 }
-
 .candidatures-menu .small-section {
     width: 160px;
 }
@@ -89,16 +98,29 @@
 .candidatures-menu section .container-statut.margin {
     margin-bottom: calc(var(--margin) * 2 / 3);
 }
-.candidatures-menu .small-section input {
-    height: var(--font-size-standart);
+
+.candidatures-menu aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    width: fit-content;
+}
+.candidatures-menu .reinint_button {
+    padding: var(--very-small-radius);
+
+    color: var(--black);
+    border: none;
+    background-color: transparent;
+}
+.candidatures-menu .reinint_button:hover {
+    box-shadow: none;
+}
+.candidatures-menu .reinint_button p {
+    color: var(--black);
 }
 
-.candidatures-menu #valider-filtre, 
-.candidatures-menu #lancer-recherche {
-    position: absolute;
-    bottom: var(--padding);
-    right: var(--padding);
-}
 
 .liste_items {
     width: 100%;
