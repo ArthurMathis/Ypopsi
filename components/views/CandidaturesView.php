@@ -22,8 +22,8 @@ class CandidaturesView extends View {
         include BARRES.DS.'applications.php';
         $this->getListItems($title, $items, $nb_items_max, 'main-liste');
 
-        $scripts = ['controllers/applications.mjs'];
-        include(COMMON.DS.'import-scripts.php');
+        // $scripts = ['controllers/applications.mjs'];
+        // include(COMMON.DS.'import-scripts.php');
 
         $this->generateCommonFooter();
     }

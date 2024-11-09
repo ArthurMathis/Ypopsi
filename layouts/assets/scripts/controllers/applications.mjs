@@ -231,5 +231,5 @@ function reinitFields() {
     listManipulation.clearFieldsCheckbox(champs_statut);
     listManipulation.clearFieldsDate(champs_date);
 }
-reinit_filtre.addEventListener('click', reinitFields());
-reinit_recherche.addEventListener('click', reinitFields());
+reinit_filtre.addEventListener('click', reinitFields);
+reinit_recherche.addEventListener('click', reinitFields);
