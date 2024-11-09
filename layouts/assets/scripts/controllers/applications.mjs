@@ -158,6 +158,7 @@ const champs_date = {
 
 filtrer.addEventListener('click', () => {
     listManipulation.hideMenu(rechercher_menu);
+    rechercherIsVisible = false;
 
     if(filtrerIsVisible) 
         listManipulation.hideMenu(filtrer_menu);
@@ -167,6 +168,7 @@ filtrer.addEventListener('click', () => {
 });
 rechercher.addEventListener('click', () => {
     listManipulation.hideMenu(filtrer_menu);
+    filtrerIsVisible = false;
 
     if(rechercherIsVisible) 
         listManipulation.hideMenu(rechercher_menu);
@@ -231,10 +233,3 @@ function reinitFields() {
 }
 reinit_filtre.addEventListener('click', reinitFields());
 reinit_recherche.addEventListener('click', reinitFields());
-
-// const menu_button = document.getElementById('bouton-menu');
-// menu_button.addEventListener('click', () => {
-//     listManipulation.hideMenu(filtrer_menu);
-//     listManipulation.hideMenu(rechercher_menu);
-// });
-// 
