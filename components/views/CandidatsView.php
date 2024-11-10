@@ -18,13 +18,10 @@ class CandidatsView extends View {
      */
     public function getContent($titre, $items=[]) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css']);
-        $this->generateMenu();
+        $this->generateMenu(APPLICATIONS);
         include BARRES.DS.'liste-candidats.php';
 
         $this->getListItems($titre, $items, null, 'main-liste');
-
-        $scripts = ['controllers/candidates.mjs'];
-        include(COMMON.DS.'import-scripts.php');
 
         $this->generateCommonFooter();
     }

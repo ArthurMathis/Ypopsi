@@ -108,6 +108,9 @@ a::selection {
   background-color: transparent;
 }
 
+input:focus, .action_button:focus {
+  outline: none; 
+}
 input[type="radio"],
 input[type="checkbox"] {
   position: relative;

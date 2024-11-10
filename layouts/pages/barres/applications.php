@@ -13,46 +13,46 @@
 <div class="candidatures-menu" id="filtrer-menu">
     <h2>Filtrer par</h2>
     <main>
-    <content>
-        <section id="statut_input" class="small-section">
-            <p>Statuts</p>
-            <div class="container-statut">
-                <input type="checkbox" name="Non-traitée" checked>
-                <p>Non-traitée</p>
-            </div>
-            <div class="container-statut">
-                <input type="checkbox" name="Acceptée" checked>
-                <p>Acceptée</p>
-            </div>
-            <div class="container-statut">
-                <input type="checkbox" name="Refusée" checked>
-                <p>Refusée</p>
-            </div>
-        </section>
-        <section>
-            <p>Postes et sources</p>
-            <input type="text" id="filtre-poste" placeholder="Poste">
-            <input type="text" id="filtre-source" placeholder="Source">
-        </section>
-        <section>
-            <p>Date minimale</p>
-            <input type="date" id="filtre-date-max" name="filre-data-max">
-        </section>
-        <section>
-            <p>Date maximale</p>
-            <input type="date" id="filtre-date-min" name="filre-data-min">
-        </section>
-    </content>
-    <aside>
-        <button id="reinint-filtre" class="reinint_button LignesHover">
-            <p>Réinitialiser les filtres</p>
-            <img src="layouts\assets\img\logo\close.svg" alt="">
-        </button>
-        <button id="valider-filtre" class="reverse_color">
-            <p>Appliquer</p>
-            <img src="layouts\assets\img\logo\white-filtre.svg" alt="">
-        </button>
-    </aside>
+        <content>
+            <section id="statut_input" class="small-section">
+                <p>Statuts</p>
+                <div class="container-statut">
+                    <input type="checkbox" name="Non-traitée" checked>
+                    <p>Non-traitée</p>
+                </div>
+                <div class="container-statut">
+                    <input type="checkbox" name="Acceptée" checked>
+                    <p>Acceptée</p>
+                </div>
+                <div class="container-statut">
+                    <input type="checkbox" name="Refusée" checked>
+                    <p>Refusée</p>
+                </div>
+            </section>
+            <section>
+                <p>Postes et sources</p>
+                <input type="text" id="filtre-poste" placeholder="Poste">
+                <input type="text" id="filtre-source" placeholder="Source">
+            </section>
+            <section>
+                <p>Date minimale</p>
+                <input type="date" id="filtre-date-max" name="filre-data-max">
+            </section>
+            <section>
+                <p>Date maximale</p>
+                <input type="date" id="filtre-date-min" name="filre-data-min">
+            </section>
+        </content>
+        <aside>
+            <button id="reinint-filtre" class="reinint_button LignesHover">
+                <p>Réinitialiser les filtres</p>
+                <img src="layouts\assets\img\logo\close.svg" alt="">
+            </button>
+            <button id="valider-filtre" class="reverse_color">
+                <p>Appliquer</p>
+                <img src="layouts\assets\img\logo\white-filtre.svg" alt="">
+            </button>
+        </aside>
     </main>
 </div>
 <div class="candidatures-menu" id="rechercher-menu">
@@ -75,7 +75,7 @@
                 <p>Réinitialiser les filtres</p>
                 <img src="layouts\assets\img\logo\close.svg" alt="">
             </button>
-            <button id="lancer-recherche" class="reverse_color">
+            <button id="valider-recherche" class="reverse_color">
                 <img src="layouts\assets\img\logo\white-recherche.svg" alt="">
             </button>
         </aside>
@@ -154,7 +154,7 @@
         const filtrer = document.getElementById('filtrer-button');
 
         const appliquer_filtre = document.getElementById('valider-filtre');
-        const appliquer_recherche = document.getElementById('lancer-recherche');
+        const appliquer_recherche = document.getElementById('valider-recherche');
 
         const reinit_filtre = document.getElementById('reinint-filtre');
         const reinit_recherche = document.getElementById('reinint-recherche');

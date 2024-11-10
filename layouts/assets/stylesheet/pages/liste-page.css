@@ -108,13 +108,13 @@
     width: fit-content;
 }
 .candidatures-menu .reinint_button {
-    padding: var(--very-small-radius);
+    padding: 0;
 
     color: var(--black);
     border: none;
     background-color: transparent;
 }
-.candidatures-menu .reinint_button:hover {
+.candidatures-menu .reinint_button:is(:hover, :focus) {
     box-shadow: none;
 }
 .candidatures-menu .reinint_button p {
