@@ -36,7 +36,7 @@
         <p>Rendez-vous</p>
         <p class="number"><?= empty($item['meeting']) ? 0 : count($item['meeting'])?></p>
     </div>
-    <div class="dashboard_bublle">
+    <div class="dashboard_bubble">
         <h2>Aides au recrutement</h2>
         <?php foreach($item['candidate']['qualifications'] as $obj): ?>
             <article>
@@ -45,4 +45,10 @@
             </article>
         <?php endforeach ?>    
     </div>
+    <?php if($_SESSION['user_role'] != INVITE): ?>
+    <a class="action_button reverse_color add_button" href="index.php?candidates=edit-ratings&key_candidate=<?=$candidate['Id'] ?>">
+        <p>Noter</p>
+        <img src="layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
+    </a>
+<?php endif ?>
 </section>

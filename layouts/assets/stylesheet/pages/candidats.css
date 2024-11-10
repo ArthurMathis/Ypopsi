@@ -163,20 +163,18 @@ body > content > main {
 }
 main > section {
     display: flex;
-    justify-content: left;
+    justify-content: flex-start;
     align-items: flex-start;
     flex-wrap: wrap;
-    gap: var(--gap);
+    gap: var(--big-radius);
 
-    height: 100%;
+    height: auto;
 
-    padding-top : var(--radius);
-    padding-left: var(--very-big-radius);
+    padding: var(--radius) 0 0 var(--very-big-radius);
 
     overflow-x: hidden;
     overflow-y: scroll;
 }
-
 main > section .bulles .bulle-container {
     background-color: var(--blue-opacity);
     z-index: 0;
@@ -238,7 +236,6 @@ main section content div article {
     flex-direction: column;
     align-items: end;
 } 
-/* On met en page les boutons de candidatures */
 main section .contrats_bulle footer,
 main section .propositions_bulle footer,
 main section .candidatures_bulle footer,
@@ -249,50 +246,6 @@ main section .meeting_bubble footer {
     gap: var(--big-radius);
 
     margin-top: auto;
-}
-.reject-button, .accept-button {
-    position: relative;
-    width: var(--padding);
-    height: var(--padding);
-
-    padding: 0;
-
-    background-color: var(--blue);
-}
-.reject-button::before, 
-.reject-button::after, 
-.accept-button::before, 
-.accept-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    display: block;
-    width: 65%;
-    height: 4px;
-
-    background-color: var(--white);
-
-    transform: translate(-50%, -50%);
-}
-.reject-button::before {
-    transform: translate(-50%, -50%) rotate(45deg);
-}
-.reject-button::after {
-    transform: translate(-50%, -50%) rotate(135deg);
-}
-.accept-button::before {
-    top: 60%;
-    left: 12.5%;
-
-    width: 30%;
-
-    transform: rotate(45deg);
-}
-.accept-button::after {
-    left: 25%;
-    transform: translateY(-30%) rotate(135deg);
 }
 
 /* On ajoute les codes couleurs */
@@ -330,6 +283,7 @@ main section .candidatures_bulle article p.non-traitee::before {
     background-color: var(--color4);
 }
 
+/*
 .grid {
     display: flex;
     justify-content: start;
@@ -402,14 +356,12 @@ main section .candidatures_bulle article p.non-traitee::before {
     opacity: 1;
 }
 
-/* Gestion des boutons d'ajout en bas de page */
-#edit_button,
+*/
 .add_button {
     position: fixed;
     bottom: var(--very-big-radius);
     right: var(--very-big-radius);
 }
-#edit_button:is(:hover, :focus),
 .add_button:is(:hover, :focus) {
     box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.85);
 }
