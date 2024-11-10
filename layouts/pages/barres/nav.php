@@ -1,4 +1,4 @@
-<nav class="navbarre">
+<nav class="tab_barre">
     <?php if(0 < count($buttons)): ?>
         <?php foreach($buttons as $obj): ?>
             <p class="action_button"><?= $obj; ?></p>

@@ -84,7 +84,6 @@ class CandidatsModel extends Model {
      * @return Array
      */
     public function getContentCandidate($key_candidate): Array {
-        // $candidate = $this->getCandidate($key_candidate);
         $candidate = $this->searchCandidates($key_candidate);
         $candidate['qualifications'] = $this->getQualificationsFromCandidates($key_candidate);
 
@@ -109,8 +108,8 @@ class CandidatsModel extends Model {
      */
     private function getQualificationsFromCandidates($key_candidate): ?Array {
         $request = "SELECT 
-        q.Titled AS Intitule, 
-        g.Annee AS Annee
+        q.Titled AS titled, 
+        YEAR(g.Date) AS year
     
         FROM candidates AS c
         INNER JOIN Get_qualifications AS g ON c.Id = g.Key_Candidates

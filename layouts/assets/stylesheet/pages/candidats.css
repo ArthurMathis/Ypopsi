@@ -6,82 +6,61 @@ body{
 
     background: linear-gradient(175deg, var(--white), 75%, var(--light-blue));
 }
-
-/* Réglages de base */
-#menu-de-navigation {
-    background-color: transparent;
-}
 body > content {
     display: flex;
 
     width: 100dvw;
-    height: calc(100% - var(--navbarre-size));
+    height: calc(100% - (var(--navbarre-size) + var(--very-big-radius)));
 
-    padding-top: var(--gap);
+    padding: var(--very-big-radius) var(--very-big-radius) 0 var(--very-big-radius);
 }
 
-/* On met en forme le bandeau latéral */
 aside {
     display : flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 30%;
-    min-width: 520px;
-    height: calc(100dvh - 8rem);
+    width: 20%;
+    min-width: 460px;
+    max-width: 540px;
+    height: calc(100dvh - (var(--navbarre-size) + 3 * var(--very-big-radius)));
 
-    padding: var(--padding);
+    padding: 32px;
 
-    border-radius: 0 var(--extra-radius) 0 0;
+    border-radius: 32px;
     background-color: var(--blue);
 }
-aside * {
+aside h2, 
+aside h3, 
+aside p {
     color: var(--white);
 }
-aside header, 
-aside section {
+aside header, aside section {
     width: 100%;
 }
 aside footer {
     display: flex;
     justify-content: right;
     align-items: end;
-    gap: var(--margin);
+    gap: var(--radius);
 
     width: 100%;
 }
-aside footer .action_button {
-    color: var(--white);
-    border-color: var(--white);
-
-    box-shadow: none;
-    transition:  box-shadow 250ms ease;
+aside footer .action_button.reverse_color {
+    border: 2px solid var(--white);
 }
-aside footer .action_button:hover {
+aside footer .action_button.reverse_color:is(:hover, :focus) {
     box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.25);
 }
-aside header {
-    display: flex;
-    flex-direction: column;
-}
-aside header div {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
 
+aside .aside-wrapper {
+    display : flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 48px;
+    
     width: 100%;
     height: fit-content;
-}
-aside header div p {
-    font-family: "Roboto Bold";
-    text-align: right;
-}
-aside header > p {
-    line-height: var(--font-size-medium);
-}
-aside section {
-    display: flex;
-    flex-direction: column;
-    gap: calc(var(--margin) / 3);
+
 }
 aside header h2 {
     font-size: 2.48rem;
@@ -89,60 +68,49 @@ aside header h2 {
 aside header h3 {
     font-size: var(--font-size-medium);
 }
-aside header article {
-    padding: var(--margin) 0;
-    text-wrap: nowrap;
-}
-aside header .notation {
+aside .aside-wrapper section {
     display: flex;
-    justify-content: right;
-    align-items: center;
-    gap: var(--margin);
+    flex-direction: column;
+    gap: var(--very-small-radius);
+
+    height: fit-content;
 }
-aside header .notation .bille_notation {
-    display: block;
-    width: var(--font-size-standart);
-    height: var(--font-size-standart);
-}
-aside header .notation .bille_notation img {
-    height: 100%;
-    opacity: 0.25;
-}
-aside header .notation .bille_notation.active img {
-    opacity: 1;
-}
-aside section > div {
+aside .aside-wrapper section > div {
     display: flex;
     justify-content: space-between;
+
+    width: 100%;
+    height: fit-content;
 }
-aside section > div > div {
+aside .aside-wrapper section > div > div {
     max-width: 75%;
     text-align: right;
-}aside section > div > p:first-of-type {
+}
+aside .aside-wrapper section > div > p:first-of-type {
     font-family: 'Roboto Medium';
 }
-aside section > div > p:not(:first-of-type) {
+aside .aside-wrapper section > div > p:not(:first-of-type) {
     text-align: end;
 }
 
-/* Mise en forme de la barre de navigation intra page */
-.navbarre {
+.tab_barre {
     position: sticky;
     top: 0;
 
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--margin);
+    gap: var(--big-radius);
 
     height: fit-content;
     z-index: 1;
-    padding: 0 var(--padding);
+
+    padding-left: var(--very-big-radius);
 
     background: linear-gradient(175deg, var(--white), 75%, var(--light-blue));
     background-attachment: fixed;
 }
-.navbarre p {
+.tab_barre p {
     position: relative;
 
     height: var(--gap);
@@ -157,7 +125,7 @@ aside section > div > p:not(:first-of-type) {
     will-change: color;
     transition: color ease 150ms;
 }
-.navbarre p::before {
+.tab_barre p::before {
     content: '';
     position: absolute;
     left: 0;
@@ -174,24 +142,22 @@ aside section > div > p:not(:first-of-type) {
     will-change: transform;
     transition: transform ease 150ms;
 }
-.navbarre p:hover {
+.tab_barre p:hover {
     color: var(--grey);
     background-color: transparent;
     box-shadow: none;
 }
-.navbarre p:hover::before,
-.navbarre p.active::before {
+.tab_barre p:hover::before,
+.tab_barre p.active::before {
     transform: scaleX(1);
 }
-.navbarre p.active {
+.tab_barre p.active {
     color: var(--black);
 }
 
-/* Mise en page des onglets */
 body > content > main {
-    width: 70%;
+    width: 100%;
     height: 100%;
-    padding-right: var(--padding);
 
     overflow-y: scroll;
 }
@@ -202,11 +168,10 @@ main > section {
     flex-wrap: wrap;
     gap: var(--gap);
 
-    height: fit-content;
+    height: 100%;
 
-    padding-top : var(--padding);
-    padding-left: var(--padding);
-    padding-bottom: var(--padding);
+    padding-top : var(--radius);
+    padding-left: var(--very-big-radius);
 
     overflow-x: hidden;
     overflow-y: scroll;
@@ -222,14 +187,14 @@ main section .candidatures_bulle,
 main section .meeting_bubble {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--gap) * 2 / 3);
+    gap: var(--radius);
 
-    width: clamp(480px, calc(50% - var(--margin)), 720px);
+    width: 420px;
     height: 360px;
 
-    padding: calc(var(--gap) * 2 / 3);
+    padding: var(--big-radius);
 
-    border-radius: var(--radius);
+    border-radius: var(--big-radius);
     border: 2px solid var(--light-grey);
     background-color: var(--white);
     box-shadow: var(--small-bulle-shadow);
@@ -247,7 +212,7 @@ main section .candidatures_bulle article p::before {
     content: '';
     position: absolute;
     top: 50%;
-    right: calc(-1.5 * var(--margin));
+    right: 0;
 
     display: block;
     width: var(--font-size-standart);
@@ -255,7 +220,7 @@ main section .candidatures_bulle article p::before {
 
     border-radius: 50%;
 
-    transform: translateY(-50%);
+    transform: translate(var(--very-big-radius), -50%);
 }
 main section content div {
     display: flex;
@@ -281,7 +246,7 @@ main section .meeting_bubble footer {
     display: flex;
     justify-content: right;
     align-items: flex-end;
-    gap: 15px;
+    gap: var(--big-radius);
 
     margin-top: auto;
 }
@@ -441,8 +406,8 @@ main section .candidatures_bulle article p.non-traitee::before {
 #edit_button,
 .add_button {
     position: fixed;
-    bottom: var(--gap);
-    right: var(--padding);
+    bottom: var(--very-big-radius);
+    right: var(--very-big-radius);
 }
 #edit_button:is(:hover, :focus),
 .add_button:is(:hover, :focus) {

@@ -36,11 +36,13 @@
     <?php if(!$item['acceptee'] && !$item['refusee']): ?>
         <footer>
         <?php if($_SESSION['user_role'] != INVITE): ?>
-            <a class="circle_button" href="index.php?candidates=dismiss-applications&key_applications=<?= $item['cle']; ?>">
-                <img src="layouts\assets\img\logo\white-close.svg" alt="Logo de refus de la candidature, représenté par une croix">
+            <a class="action_button grey_color" href="index.php?candidates=dismiss-applications&key_applications=<?= $item['cle']; ?>">
+                <p>Refuser</p>
+                <img src="layouts\assets\img\logo\close.svg" alt="">
             </a>
-            <a class="circle_button" href="index.php?candidates=input-offers&key_candidate=<?= $key_candidate; ?>&key_application=<?= $item['cle']; ?>">
-                <img src="layouts\assets\img\logo\white-valider.svg" alt="Logo de d'acceptation de la candidature, représenté par une coche">
+            <a class="action_button reverse_color" href="index.php?candidates=input-offers&key_candidate=<?= $key_candidate; ?>&key_application=<?= $item['cle']; ?>">
+                <p>Valider</p>
+                <img src="layouts\assets\img\logo\white-valider.svg" alt="">
             </a> 
         <?php endif ?>     
         </footer>

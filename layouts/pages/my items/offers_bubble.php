@@ -52,10 +52,12 @@
     <?php if(empty($item['signature']) && empty($item['statut'])): ?>
         <footer>
             <?php if($_SESSION['user_role'] != INVITE): ?>
-                <a class="circle_button" href="index.php?candidates=reject-offers&key_offer=<?= $item['cle']; ?>">
-                    <img src="layouts\assets\img\logo\white-close.svg" alt="Logo de refus de la proposition, représenté par une croix">
+                <a class="action_button grey_color" href="index.php?candidates=reject-offers&key_offer=<?= $item['cle']; ?>">
+                    <p>Refuser</p>
+                    <img src="layouts\assets\img\logo\close.svg" alt="Logo de refus de la proposition, représenté par une croix">
                 </a>
-                <a class="circle_button" href="index.php?candidates=inscript-contracts&key_candidate=<?= $key_candidate; ?>&key_offer=<?= $item['cle']; ?>">
+                <a class="action_button reverse_color" href="index.php?candidates=inscript-contracts&key_candidate=<?= $key_candidate; ?>&key_offer=<?= $item['cle']; ?>">
+                    <p>Accepter</p>
                     <img src="layouts\assets\img\logo\white-valider.svg" alt="Logo de d'acceptation de la proposition, représenté par une coche">
                 </a>
             <?php endif ?>

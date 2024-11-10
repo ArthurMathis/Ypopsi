@@ -19,7 +19,7 @@ class CandidatsView extends View {
     public function getContent($titre, $items=[]) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css']);
         $this->generateMenu(APPLICATIONS);
-        include BARRES.DS.'liste-candidats.php';
+        include BARRES.DS.'candidates.php';
 
         $this->getListItems($titre, $items, null, 'main-liste');
 
@@ -34,25 +34,23 @@ class CandidatsView extends View {
      */
     public function getContentCandidate($title, &$item=[]) {
         $this->generateCommonHeader($title, [PAGES_STYLES.DS.'candidats.css']);
-
-        $buttons = ['Tableau de bord', 'Contrats', 'Propositions', 'Candidatures', 'Rendez-vous', 'Notation'] ;
-        $this->generateMenu();
+        $this->generateMenu(NULL);
 
         echo "<content>";
         include(MY_ITEMS.DS.'candidate_profile.php');
         echo "<main>";
-        include(BARRES.DS.'nav.php');
+        $buttons = ['Tableau de bord', 'Contrats', 'Propositions', 'Candidatures', 'Rendez-vous'] ;
+        include(BARRES.DS.'candidate_profile.php');
         $this->getDashboard($item);
         $this->getContractsBoard($item['contracts'], $item['candidate']['Id']);
         $this->getOffersBoard($item['contracts'], $item['candidate']['Id']);
         $this->getApplicationsBoard($item['applications'], $item['candidate']['Id']);
         $this->getMeetingsBoard($item['meeting'], $item['candidate']['Id']);
-        $this->getRatingsBoard($item['candidate']);
         echo "</main>";
         echo "</content>";
 
-        $scripts = ['views/candidats-view.js'];
-        include(COMMON.DS.'import-scripts.php');
+        // $scripts = ['views/candidats-view.js'];
+        // include(COMMON.DS.'import-scripts.php');
 
         $this->generateCommonFooter();
     }
@@ -194,18 +192,7 @@ class CandidatsView extends View {
      * @param Array $item The array containing the candidate's data
      * @return View The HTML Page
      */
-    public function getDashboard($item=[]) {
-        echo '<section class="onglet">';
-        $this->makeContractsList($item['contracts'], 4);
-        $this->makeOffersList($item['contracts'], 4);
-        $this->makeApplicationsList($item['applications'], 4);
-        $this->makeMeetingsList($item['meeting'], 4);
-
-        if(empty($item['contracts']) && empty($item['applications']) && empty($item['meeting']))
-            echo "<h2>Aucun élément enregistré sur le profil du candidat.</h2>";
-
-        echo "</section>";
-    }
+    public function getDashboard($item=[]) { include(MY_ITEMS.DS.'dashboard.php'); }
 
     /**
      * Protected method generating the candidate's contracts tab
@@ -331,6 +318,7 @@ class CandidatsView extends View {
     protected function getMeetingsBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'meetings_bubble.php'); }
 
     // * MAKE * //
+    // ! Méthodes générant les listes du dashboard ; à ne plus utiliser ! //
     /**
      * Private method generating the list of the candidate's contracts
      *
@@ -338,34 +326,34 @@ class CandidatsView extends View {
      * @param Int $nb_items_max The maximum number of elements
      * @return Void
      */
-    private function makeContractsList($contracts=[], $nb_items_max) {
-        if(empty($contracts)) 
-            return;
-
-        $contracts_bubbles = [];
-        foreach($contracts as $c) if(!empty($c['signature'])){
-            $date = Moment::currentMoment()->getDate();
-            if($date < $c['date_debut'])
-                $statut = "A venir";
-            elseif($c['date_fin'] < ($date || $c['demission']))
-                $statut = "Terminé";
-            else    
-                $statut = "En cours";
-
-            $new_c = [
-                'Statut' => $statut,
-                'Poste' => $c['poste'],
-                'Type de contrat' => $c['type_de_contrat']
-            ];
-            
-            array_push($contracts_bubbles, $new_c);
-        }
-
-        if(empty($contracts_bubbles))
-            return;
-
-        $this->getBubble('Contrats', $contracts_bubbles, $nb_items_max, null, null);
-    }
+    // private function makeContractsList($contracts=[], $nb_items_max) {
+    //     if(empty($contracts)) 
+    //         return;
+    // 
+    //     $contracts_bubbles = [];
+    //     foreach($contracts as $c) if(!empty($c['signature'])){
+    //         $date = Moment::currentMoment()->getDate();
+    //         if($date < $c['date_debut'])
+    //             $statut = "A venir";
+    //         elseif($c['date_fin'] < ($date || $c['demission']))
+    //             $statut = "Terminé";
+    //         else    
+    //             $statut = "En cours";
+    // 
+    //         $new_c = [
+    //             'Statut' => $statut,
+    //             'Poste' => $c['poste'],
+    //             'Type de contrat' => $c['type_de_contrat']
+    //         ];
+    //         
+    //         array_push($contracts_bubbles, $new_c);
+    //     }
+    // 
+    //     if(empty($contracts_bubbles))
+    //         return;
+    // 
+    //     $this->getBubble('Contrats', $contracts_bubbles, $nb_items_max, null, null);
+    // }
     /**
      * Private method generating the list of the candidate's offers
      *
@@ -373,25 +361,25 @@ class CandidatsView extends View {
      * @param Int $nb_items_max The maximum number of elements
      * @return Void
      */
-    private function makeOffersList($offers=[], $nb_items_max) {
-        if(empty($offers)) 
-            return;
-
-        $offers_bubbles = [];
-        foreach($offers as $p) if(empty($p['signature'])) {
-            $new_p = [
-                'Statut' => empty($p['statut']) ? 'en attente' : 'refusée',
-                'Poste' => $p['poste'],
-                'Type de contrat' => $p['type_de_contrat']
-            ];
-            array_push($offers_bubbles, $new_p);
-        }
-
-        if(empty($offers_bubbles))
-            return;
-
-        $this->getBubble("Propositions d'embauche", $offers_bubbles, $nb_items_max, null, null);
-    }
+    // private function makeOffersList($offers=[], $nb_items_max) {
+    //     if(empty($offers)) 
+    //         return;
+    // 
+    //     $offers_bubbles = [];
+    //     foreach($offers as $p) if(empty($p['signature'])) {
+    //         $new_p = [
+    //             'Statut' => empty($p['statut']) ? 'en attente' : 'refusée',
+    //             'Poste' => $p['poste'],
+    //             'Type de contrat' => $p['type_de_contrat']
+    //         ];
+    //         array_push($offers_bubbles, $new_p);
+    //     }
+    // 
+    //     if(empty($offers_bubbles))
+    //         return;
+    // 
+    //     $this->getBubble("Propositions d'embauche", $offers_bubbles, $nb_items_max, null, null);
+    // }
     /**
      * Private method generating the list of the candidate's applications
      *
@@ -399,28 +387,28 @@ class CandidatsView extends View {
      * @param Int $nb_items_max The maximum number of elements
      * @return Void
      */
-    private function makeApplicationsList($applications=[], $nb_items_max) {
-        if(empty($applications)) 
-            return;
-
-        $applications_bubbles = [];
-        foreach($applications as $c) {
-            $new_c = [
-                'Poste' => $c['poste'],
-                'Type de contrat' => $c['type_de_contrat']
-            ];
-            if($c['acceptee'])
-                $new_c['Statut'] = ACCEPTED;
-            elseif($c['refusee'])
-                $new_c['Statut'] = REFUSED;
-            array_push($applications_bubbles, $new_c);
-        }
-
-        if(empty($applications_bubbles))
-            return;
-
-        $this->getBubble("Candidatures", $applications_bubbles, $nb_items_max, null, null);
-    }
+    // private function makeApplicationsList($applications=[], $nb_items_max) {
+    //     if(empty($applications)) 
+    //         return;
+    // 
+    //     $applications_bubbles = [];
+    //     foreach($applications as $c) {
+    //         $new_c = [
+    //             'Poste' => $c['poste'],
+    //             'Type de contrat' => $c['type_de_contrat']
+    //         ];
+    //         if($c['acceptee'])
+    //             $new_c['Statut'] = ACCEPTED;
+    //         elseif($c['refusee'])
+    //             $new_c['Statut'] = REFUSED;
+    //         array_push($applications_bubbles, $new_c);
+    //     }
+    // 
+    //     if(empty($applications_bubbles))
+    //         return;
+    // 
+    //     $this->getBubble("Candidatures", $applications_bubbles, $nb_items_max, null, null);
+    // }
     /**
      * Private method generating the candidate's list of meetings
      *
@@ -428,23 +416,23 @@ class CandidatsView extends View {
      * @param Int $nb_items_max The maximum number of elements in the list
      * @return Void
      */
-    private function makeMeetingsList($meetings=[], $nb_items_max) {
-        if(empty($meetings)) 
-            return;
-
-        $meetings_bubbles = [];
-        foreach($meetings as $r) {
-            $new_r = [
-                'Recruteur' => forms_manip::majusculeFormat($r['nom']) . ' ' . $r['prenom'],
-                'Date' => $r['date'],
-                'Etablissement' => $r['etablissement']
-            ];
-            array_push($meetings_bubbles, $new_r);
-        }
-
-        if(empty($meetings_bubbles))
-            return;
-
-        $this->getBubble("Rendez-vous", $meetings_bubbles, $nb_items_max, null, null);
-    }
+    // private function makeMeetingsList($meetings=[], $nb_items_max) {
+    //     if(empty($meetings)) 
+    //         return;
+    // 
+    //     $meetings_bubbles = [];
+    //     foreach($meetings as $r) {
+    //         $new_r = [
+    //             'Recruteur' => forms_manip::majusculeFormat($r['nom']) . ' ' . $r['prenom'],
+    //             'Date' => $r['date'],
+    //             'Etablissement' => $r['etablissement']
+    //         ];
+    //         array_push($meetings_bubbles, $new_r);
+    //     }
+    // 
+    //     if(empty($meetings_bubbles))
+    //         return;
+    // 
+    //     $this->getBubble("Rendez-vous", $meetings_bubbles, $nb_items_max, null, null);
+    // }
 }
