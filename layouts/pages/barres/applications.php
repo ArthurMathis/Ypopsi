@@ -262,54 +262,36 @@
             rechercherIsVisible = !rechercherIsVisible;
         });
 
-        appliquer_filtre.addEventListener('click', () => {
-            try {
-                let criteres = [];
-                listManipulation.recoverFields(champs_infos_filtre, criteres);
-                listManipulation.recoverCheckbox(champs_statut, criteres);
-                listManipulation.recoverFieldsDate(champs_date, criteres);
-
-                if(criteres.length === 0) {
-                    listManipulation.resetLines(candidatures);
-                    candidatures_selection = Array.from(candidatures);
-                    listManipulation.displayCountItems(candidatures !== null ? candidatures.length : 0);
-                
-                } else {
-                    // if(lastAction === "filtre") 
-                    //     candidatures_selection = Array.from(candidatures);
-                
-                    candidatures_selection = listManipulation.multiFilter(candidatures_selection, criteres);
-                    listManipulation.deleteLines(candidatures);
-                    listManipulation.resetLines(candidatures_selection);
-                    listManipulation.displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
-                
-                    filtrerIsVisible = !filtrerIsVisible;
-                }
-                // lastAction = "filtre";
-                listManipulation.hideMenu(filtrer_menu);
-            } catch(err) {
-                console.error(err);
-            }
-        });
-        appliquer_recherche.addEventListener('click', () => {
+        //// Application des filtres ////
+        function filter() {
             let criteres = [];
+            listManipulation.recoverFields(champs_infos_filtre, criteres);
+            listManipulation.recoverCheckbox(champs_statut, criteres);
+            listManipulation.recoverFieldsDate(champs_date, criteres);
             listManipulation.recoverFields(champs_infos_recherche, criteres);
+
+            // If empty, reset the list
             if(criteres.length === 0) {
                 listManipulation.resetLines(candidatures);
                 candidatures_selection = Array.from(candidatures);
                 listManipulation.displayCountItems(candidatures !== null ? candidatures.length : 0);
-
+            
             } else {
-                candidatures_selection = listManipulation.multiFilter(candidatures_selection, criteres);
+                candidatures_selection = listManipulation.multiFilter(candidatures, criteres);
                 listManipulation.deleteLines(candidatures);
                 listManipulation.resetLines(candidatures_selection);
-                listManipulation.displayCountItems(candidatures_selection !== null ? candidatures_selection.length : 0);
-
+                listManipulation.displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
+            
+                filtrerIsVisible = !filtrerIsVisible;
                 rechercherIsVisible = !rechercherIsVisible;  
             }
+            listManipulation.hideMenu(filtrer_menu);
             listManipulation.hideMenu(rechercher_menu);
-        });
-        //// Réinitialisation des recherches et filtres ////
+        }
+        appliquer_filtre.addEventListener('click', filter);
+        appliquer_recherche.addEventListener('click', filter);
+
+        //// Réinitialisation des filtres ////
         function reinitFields() {
             listManipulation.clearFields(champs_infos_filtre);
             listManipulation.clearFields(champs_infos_recherche);

@@ -224,6 +224,7 @@ appliquer_recherche.addEventListener('click', () => {
     }
     listManipulation.hideMenu(rechercher_menu);
 });
+
 //// Réinitialisation des recherches et filtres ////
 function reinitFields() {
     listManipulation.clearFields(champs_infos_filtre);
