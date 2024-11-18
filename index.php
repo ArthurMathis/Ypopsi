@@ -37,7 +37,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                 $motdepasse = $_POST["motdepasse"];
 
                 $login->checkIdentification($identifiant, $motdepasse);
- 
+
             } catch(Exception $e){
                 forms_manip::error_alert([
                     'title' => $erreur,

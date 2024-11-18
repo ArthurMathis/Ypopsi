@@ -159,6 +159,11 @@ input[type="radio"]:checked::after,
 input[type="checkbox"]:checked::after {
   background-color: var(--blue);
 }
+input[type="radio"]:disabled:hover,
+input[type="checkbox"]:disabled:hover {
+  cursor: default;
+}
+
 
 textarea {
   padding: var(--margin);
@@ -795,7 +800,7 @@ button.form_button:is(:hover, :focus),
 
   box-shadow: var(--small-bulle-shadow);
 }
-.number_bubble .number {
+.number {
   text-align: right;
   font-family: 'Roboto Medium';
   font-size: 67.75px;
@@ -808,7 +813,7 @@ button.form_button:is(:hover, :focus),
   justify-content: start;
   align-items: start;
 
-  width: 392px;
+  width: 432px;
   height: 186px;
 
   padding: var(--big-radius);

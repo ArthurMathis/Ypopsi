@@ -53,10 +53,38 @@
             <i>Aucune aide renseignée</i>
         <?php endif ?>
     </div>
+    <div class="dashboard_bubble" id="rating_bubble">
+        <h2>Notation</h2>
+        <content>
+            <article>
+                <div>
+                    <p for="a">A</p>
+                    <input type="checkbox" name="a" id="a" disabled <?php if($item['candidate']['A']) echo 'checked'; ?> onclick="return false;">
+                </div>
+                <div>
+                    <p for="b">B</p>
+                    <input type="checkbox" name="b" id="b" disabled <?php if($item['candidate']['B']) echo 'checked'; ?>>
+                </div>
+                <div>
+                    <p for="c">C</p>
+                    <input type="checkbox" name="c" id="c" disabled <?php if($item['candidate']['C']) echo 'checked'; ?>>
+                </div>
+            </article>
+            <p class="number"><?php echo !empty($item['candidate']['Rating']) ? $item['candidate']['Rating'] : "?"; ?>/5</p>
+        </content>
+    </div>
+    <div class="dashboard_bubble">
+        <h2>Remarque</h2>
+        <?php if(!empty($item['candidate']['Description'])): ?>
+            <textarea><?= $item['candidate']['Description'] ?></textarea>
+        <?php else: ?>
+            <i>Aucune remarque saisie</i>
+        <?php endif ?>
+    </div>
     <?php if($_SESSION['user_role'] != INVITE): ?>
-    <a class="action_button reverse_color add_button" href="index.php?candidates=edit-ratings&key_candidate=<?=$candidate['Id'] ?>">
-        <p>Noter</p>
-        <img src="layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
-    </a>
-<?php endif ?>
+        <a class="action_button reverse_color add_button" href="index.php?candidates=edit-ratings&key_candidate=<?=$candidate['Id'] ?>">
+            <p>Noter</p>
+            <img src="layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
+        </a>
+    <?php endif ?>
 </section>
