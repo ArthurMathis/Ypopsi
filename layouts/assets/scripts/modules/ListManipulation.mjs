@@ -203,14 +203,13 @@ function recupApplications(source) { return document.querySelector(source).rows;
  * @author Arthur MATHIS
  */
 function setColor(items=[], criteres=[], index) {
-    if (items == null) 
-        throw new Error("Erreur lors de la détermination du code couleur. Le tableau ne peut pas être nul !");
     if (!Array.isArray(criteres)) 
         throw new Error("Erreur lors de la détermination du code couleur. La liste de critères doit être de type Array !");
-    if (index == null || !Number.isInteger(index) || index < 0) 
-        throw new Error("Erreur lors de la détermination du code couleur. L'index doit être un nombre entier non négatif !");
-    if (items.length > 0 && items[0].cells.length <= index) 
-        throw new Error("Erreur lors de la détermination du code couleur. L'index ne peut pas dépasser la dimension du tableau !");
+    if (index === null || !Number.isInteger(index) || index < 0) 
+        throw new Error("Erreur lors de la détermination du code couleur. L'index doit être un nombre entier positif !");
+    if(!items.cells || items.cells.length === 0)
+        return;
+
 
     items = Array.from(items);
     items.forEach(line => {
@@ -233,6 +232,9 @@ function setColor(items=[], criteres=[], index) {
  * @author Arthur MATHIS
  */
 function setColorAvailability(items=[], index) {
+    if(!items.cells || items.cells.length === 0)
+        return;
+
     const current_date = new Date();
 
     for(let i = 0; i < items.length; i++) {
