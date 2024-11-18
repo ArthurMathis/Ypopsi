@@ -32,11 +32,12 @@ class LoginController extends Controller {
      */
     public function checkIdentification($identifiant, $motdepasse) {
         $this->Model->connectUser($identifiant, $motdepasse);
-        alert_manipulation::alert([
-            'title' => 'Connexion réussie',
-            'msg' => 'Bienvene ' . strtoupper($_SESSION['user_name']) . ' ' . forms_manip::nameFormat($_SESSION['user_firstname']),
-            'direction' => 'index.php'
-        ]);
+        header('Location: index.php');
+        // alert_manipulation::alert([
+        //     'title' => 'Connexion réussie',
+        //     'msg' => 'Bienvene ' . strtoupper($_SESSION['user_name']) . ' ' . forms_manip::nameFormat($_SESSION['user_firstname']),
+        //     'direction' => 'index.php'
+        // ]);
     }
     /**
      * Public method disconnecting the current user to the application
@@ -45,10 +46,11 @@ class LoginController extends Controller {
      */
     public function closeSession() {
         $this->Model->deconnectUser();
-        alert_manipulation::alert([
-            'title' => 'Déconnexion réussie',
-            'msg' => 'A bientot !',
-            'direction' => 'index.php'
-        ]);
+        header('Location: index.php?login=get_connexion');
+        // alert_manipulation::alert([
+        //     'title' => 'Déconnexion réussie',
+        //     'msg' => 'A bientot !',
+        //     'direction' => 'index.php'
+        // ]);
     }
 }

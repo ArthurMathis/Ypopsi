@@ -170,7 +170,7 @@ main > section {
 
     height: auto;
 
-    padding: var(--radius) 0 0 var(--very-big-radius);
+    padding: var(--radius) 0 var(--radius) var(--very-big-radius);
 
     overflow-x: hidden;
     overflow-y: scroll;
