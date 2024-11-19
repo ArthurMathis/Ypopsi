@@ -32,14 +32,6 @@
         <p>Offres d'emplois</p>
         <p class="number"><?= empty($item['contracts']) ? 0 : count($item['contracts'])?></p>
     </div>
-    <div class="number_bubble">
-        <p>Candidatures</p>
-        <p class="number"><?= empty($item['applications']) ? 0 : count($item['applications'])?></p>
-    </div>
-    <div class="number_bubble">
-        <p>Rendez-vous</p>
-        <p class="number"><?= empty($item['meeting']) ? 0 : count($item['meeting'])?></p>
-    </div>
     <div class="dashboard_bubble">
         <h2>Aides au recrutement</h2>
         <?php if(isset($item['candidate']['qualifications']) && !empty($item['candidate']['qualifications'])): ?>
@@ -52,6 +44,14 @@
         <?php else: ?>
             <i>Aucune aide renseignée</i>
         <?php endif ?>
+    </div>
+    <div class="number_bubble">
+        <p>Candidatures</p>
+        <p class="number"><?= empty($item['applications']) ? 0 : count($item['applications'])?></p>
+    </div>
+    <div class="number_bubble">
+        <p>Rendez-vous</p>
+        <p class="number"><?= empty($item['meeting']) ? 0 : count($item['meeting'])?></p>
     </div>
     <div class="dashboard_bubble" id="rating_bubble">
         <h2>Notation</h2>

@@ -18,6 +18,7 @@ class ConnectSuccessTest(TestRunner):
             # Accès à la page
             try:
                 driver.get("http://localhost/ypopsi")
+
             except WebDriverException as e:
                 print(f"{self.ROUGE}Erreur lors de l'accès à la page : {str(e)}{self.RESET}")
                 return False
@@ -28,6 +29,7 @@ class ConnectSuccessTest(TestRunner):
                     EC.element_to_be_clickable((By.ID, "action-button"))
                 )
                 action_button.click()
+
             except TimeoutException:
                 print(f"{self.ROUGE}Erreur : Le bouton d'action n'a pas été trouvé ou n'est pas cliquable{self.RESET}")
                 return False
@@ -37,14 +39,20 @@ class ConnectSuccessTest(TestRunner):
 
             try:
                 # Remplissage du formulaire
-                identifiant = driver.find_element(By.ID, "identifiant")
-                identifiant.send_keys("mathis.a")
+                identifiant = WebDriverWait(driver, 10).until(
+                    EC.visibility_of_element_located((By.ID, "identifiant"))
+                )
+                identifiant.send_keys("test.py")
                 
-                motdepasse = driver.find_element(By.ID, "motdepasse")
-                motdepasse.send_keys("Arthur123")
+                motdepasse = WebDriverWait(driver, 10).until(
+                    EC.visibility_of_element_located((By.ID, "motdepasse"))
+                )
+                motdepasse.send_keys("test123")
                 
                 # Soumission du formulaire
-                submit_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
+                submit_button = WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']"))
+                )
                 submit_button.click()
             except Exception as e:
                 print(f"{self.ROUGE}Erreur lors de la manipulation du formulaire : {str(e)}{self.RESET}")

@@ -163,7 +163,7 @@ class CandidatController extends Controller {
         $this->Model->createMeetings($key_candidate, $meeting);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
-            'msg' => 'Le rendez-vous a été générée',
+            'msg' => 'Le rendez-vous a été ajouté avec succès.',
             'direction' => 'index.php?candidates=' . $key_candidate
         ]);
     }

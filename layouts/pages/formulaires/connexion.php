@@ -1,11 +1,11 @@
 <section class='titled'>
     <div>
-        <p>Bienvenu sur</p>
+        <p>Bienvenue sur</p>
         <h1>Ypopsi</h1>
     </div>
     <button id="action-button">
         <p>Accéder</p>
-        <img src="layouts/assets/img/logo/arrow.svg" alt="">
+        <img src="layouts/assets/img/logo/blue/arrow.svg" alt="">
     </button>
 </section>
 <form method="post" action="index.php?login=connexion">
@@ -16,7 +16,10 @@
         <input type="password" id="motdepasse" name="motdepasse" placeholder="Mot de passe">
     </section>
     <div class="form-section">
-        <button type="submit" value="new_user">Se connecter</button>
+        <button type="submit" value="new_user">
+            <p>Se connecter</p>
+            <img src="layouts/assets/img/logo/blue/arrow.svg" alt="">
+        </button>
     </div>
 </form>
 <script>

@@ -25,20 +25,20 @@
         </section>
         <section id='diplome-section' class="imp-section">
             <p>Diplômes</p>
-            <button class="form_button" type="button" style="margin-left: auto">
-                <img src="layouts\assets\img\logo\plus.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
+            <button class="form_button" type="button">
+                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
             </button>
         </section>
         <section id='aide-section' class="imp-section">
             <p>Aides au recrutement</p>
-            <button class="form_button" type="button" style="margin-left: auto">
-                <img src="layouts\assets\img\logo\plus.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
+            <button class="form_button" type="button">
+                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
             </button>
         </section>
         <section id='visite-section' class="imp-section">
             <p>Date d'expiration de la visite médicale</p>
-            <button class="form_button" type="button" style="margin-left: auto">
-                <img src="layouts\assets\img\logo\plus.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
+            <button class="form_button" type="button">
+                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
             </button>
         </section>
         <section class="buttons_actions">
