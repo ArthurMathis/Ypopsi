@@ -10,7 +10,7 @@ class CandidateTestRunner(TestRunner):
         
         # Test de connexion réussie
         self.run_test("Test d'inscription d'un rendez-vous", "tests/selenium/candidate/inscript_meeting_success.py")
-
+        self.run_test("Test d'inscription d'un rendez-vous", "tests/selenium/candidate/inscript_meeting_failure.py")
         
         print(f"\n{self.BLEU}=== Fin des tests de connexion ==={self.RESET}")
 

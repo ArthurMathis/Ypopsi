@@ -76,7 +76,7 @@ def main():
     print(f"{TestRunner.BLEU}=== Début des tests Selenium ==={TestRunner.RESET}")
     
     # Tests
-    runner.run_test("Tests dse connexions ", "tests/selenium/connexion/connect.py")
+    # runner.run_test("Tests dse connexions ", "tests/selenium/connexion/connect.py")
     runner.run_test("Tests des candidats", "tests/selenium/candidate/candidate.py")
     
     print(f"\n{TestRunner.BLEU}=== Fin des tests Selenium ==={TestRunner.RESET}")

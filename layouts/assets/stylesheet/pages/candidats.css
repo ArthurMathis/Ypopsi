@@ -170,7 +170,7 @@ main > section {
 
     height: auto;
 
-    padding: var(--radius) 0 var(--radius) var(--very-big-radius);
+    padding: var(--radius) 0 var(--very-big-radius) var(--very-big-radius);
 
     overflow-x: hidden;
     overflow-y: scroll;
@@ -193,7 +193,6 @@ main section .meeting_bubble {
     padding: var(--big-radius);
 
     border-radius: var(--big-radius);
-    border: 2px solid var(--light-grey);
     background-color: var(--white);
     box-shadow: var(--small-bulle-shadow);
 
