@@ -61,7 +61,7 @@
             </a>
             <a class="action_button form_button" href="index.php?candidates=edit-candidates&key_candidate=<?= $item['candidate']['Id']; ?>">
                 <p>Modifier</p>
-                <img src="layouts\assets\img\logo\edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
+                <img src="layouts\assets\img\logo\blue\edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
             </a>  
         <?php endif ?>    
     </footer>

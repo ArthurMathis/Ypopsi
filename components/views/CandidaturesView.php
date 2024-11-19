@@ -17,7 +17,7 @@ class CandidaturesView extends View {
      */
     public function getContent($title, $items = [], $nb_items_max=null) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'candidatures.css']);
-        $this->generateMenu(APPLICATIONS);
+        $this->generateMenu(false, APPLICATIONS);
 
         include BARRES.DS.'applications.php';
         $this->getListItems($title, $items, $nb_items_max, 'main-liste');
@@ -28,7 +28,7 @@ class CandidaturesView extends View {
     /// Méthode publique retournant le formulaire de saisie d'un candidat
     public function getInputCandidatesContent($title, $diplome=[], $aide=[], $employer=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu();
+        $this->generateMenu(true, null);
 
         $scripts = [
             'models/objects/AutoComplet.js',
@@ -37,7 +37,6 @@ class CandidaturesView extends View {
         include(COMMON.DS.'import-scripts.php');
 
         include INSCRIPT_FORM.DS.'candidates.php';
-        include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }
@@ -53,10 +52,9 @@ class CandidaturesView extends View {
      */
     public function displayInputApplicationsContent($title, $job=[], $service=[], $establishment=[], $typeOfContract=[], $source=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(APPLICATIONS);
+        $this->generateMenu(true, null);
 
         include INSCRIPT_FORM.DS.'applications.php';
-        include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }

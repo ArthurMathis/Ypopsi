@@ -18,7 +18,7 @@ class CandidatsView extends View {
      */
     public function getContent($titre, $items=[]) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css']);
-        $this->generateMenu(APPLICATIONS);
+        $this->generateMenu(false, APPLICATIONS);
         include BARRES.DS.'candidates.php';
 
         $this->getListItems($titre, $items, null, 'main-liste');
@@ -34,7 +34,7 @@ class CandidatsView extends View {
      */
     public function getContentCandidate($title, &$item=[]) {
         $this->generateCommonHeader($title, [PAGES_STYLES.DS.'candidats.css']);
-        $this->generateMenu(NULL);
+        $this->generateMenu(false, NULL);
 
         echo "<content>";
         include(MY_ITEMS.DS.'candidate_profile.php');
@@ -70,7 +70,7 @@ class CandidatsView extends View {
      */
     public function displayInputOffers($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contracts=[], $offer=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(null);
+        $this->generateMenu(true, null);
 
         $scripts = [
             'models/objects/AutoComplet.js',
@@ -79,7 +79,6 @@ class CandidatsView extends View {
         include(COMMON.DS.'import-scripts.php');
         
         include INSCRIPT_FORM.DS.'offer.php';
-        include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }
@@ -96,7 +95,7 @@ class CandidatsView extends View {
      */
     public function displayInputContracts($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contrats=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(null);
+        $this->generateMenu(true, null);
 
         $scripts = [
             'models/objects/AutoComplet.js',
@@ -104,7 +103,6 @@ class CandidatsView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
         include INSCRIPT_FORM.DS.'contracts.php';
-        include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }
@@ -120,13 +118,12 @@ class CandidatsView extends View {
      */
     public function displayInputMeetings($title, $key_candidate, $user_establishment, $users=[], $establisments=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-        $this->generateMenu(null);
+        $this->generateMenu(true, null);
 
         $scripts = ['models/objects/AutoComplet.js'];
         include(COMMON.DS.'import-scripts.php');
 
         include INSCRIPT_FORM.DS.'meeting.php';
-        include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }
@@ -143,10 +140,9 @@ class CandidatsView extends View {
             'Ypopsi - Modification de la notation de ' . forms_manip::majusculeFormat($candidate['Name']) . ' ' . $candidate['Firstname'], 
             [FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-rating.css']
         );
-        $this->generateMenu(null);
+        $this->generateMenu(true, null);
 
         include EDIT_FORM.DS.'rating.php';
-        include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }
@@ -160,10 +156,9 @@ class CandidatsView extends View {
      */
     public function displayEditCandidates($item=[], $qualifications=[], $helps=[]) {
         $this->generateCommonHeader('Ypopsi - Modification de ' . forms_manip::majusculeFormat($item['candidate']['Name']) . ' ' . $item['candidate']['Firstname'], [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(null);
+        $this->generateMenu(true, null);
 
         include EDIT_FORM.DS.'candidate.php';
-        include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }
@@ -177,10 +172,9 @@ class CandidatsView extends View {
      */
     public function displayEditMeetings($meeting=[], $users=[], $establisments=[]) {
         $this->generateCommonHeader('Ypopsi - Mise-à-jour rendez-vous', [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(null);
+        $this->generateMenu(true, null);
 
         include EDIT_FORM.DS.'meeting.php';
-        include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }

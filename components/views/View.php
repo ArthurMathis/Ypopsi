@@ -25,9 +25,10 @@ class View {
      * TODO : Refonte graphique du menu (on the top) ==> remnaniment de cette méthode et de l'élément navbarre.php
      * 
      * @param String $currentPage The current tab
+     * @param Bool $form Boolean explaining if the navbarre is in a form page, or not
      * @return Void
      */
-    public function generateMenu($currentPage) { include BARRES.DS.'navbarre.php'; }
+    public function generateMenu($form = false, $currentPage) { include BARRES.DS.'navbarre.php'; }
 
     /**
      * Public method generating a list.php from an data array

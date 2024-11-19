@@ -9,7 +9,7 @@ class PreferencesView extends View {
     /// Méthode publique retournant la page principale du menu préférences
     public function getContent($items=[]) {
         $this->generateCommonHeader('Ypopsi - Préférences', [PAGES_STYLES.DS.'preferences.css']);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -40,7 +40,7 @@ class PreferencesView extends View {
             PAGES_STYLES.DS.'preferences.css', 
             FORMS_STYLES.DS.'edit-user.css'
         ]);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(true, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -53,7 +53,7 @@ class PreferencesView extends View {
     } 
     public function getEditUtilisateur($user=[], $role=[]) {
         $this->generateCommonHeader("Mise-à-jour de l'utilisateur", [FORMS_STYLES.DS.'small-form.css']);
-        $this->generateMenu()PREFERENCES;
+        $this->generateMenu(true, PREFERENCES);
 
         $scripts = [
             'models/objects/AutoComplet.js'
@@ -61,7 +61,6 @@ class PreferencesView extends View {
         include(COMMON.DS.'import-scripts.php');
 
         include EDIT_FORM.DS.'user.php';
-        include FORMULAIRES.DS.'waves.php';
 
         $this->generateCommonFooter();
     }
@@ -73,7 +72,7 @@ class PreferencesView extends View {
             PAGES_STYLES.DS.'liste-page.css', 
             PAGES_STYLES.DS.'utilisateurs.css'
         ]);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -100,7 +99,7 @@ class PreferencesView extends View {
             PAGES_STYLES.DS.'liste-page.css',
             PAGES_STYLES.DS.'utilisateurs.css'
         ]);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -128,7 +127,7 @@ class PreferencesView extends View {
             PAGES_STYLES.DS.'liste-page.css',
             PAGES_STYLES.DS.'connexion-historique.css'
         ]);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -155,7 +154,7 @@ class PreferencesView extends View {
             PAGES_STYLES.DS.'liste-page.css',
             PAGES_STYLES.DS.'action-historique.css'
         ]);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -181,7 +180,7 @@ class PreferencesView extends View {
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
         ]);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -207,7 +206,7 @@ class PreferencesView extends View {
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
         ]);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -234,7 +233,7 @@ class PreferencesView extends View {
             PAGES_STYLES.DS.'liste-page.css',
             PAGES_STYLES.DS.'etablissements.css'
         ]);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -259,7 +258,7 @@ class PreferencesView extends View {
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
         ]);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
@@ -283,7 +282,7 @@ class PreferencesView extends View {
     /// Méthode publique retournant la vue saisie utilisateur
     public function getSaisieUtilisateur($role, $etablissements=[]) {
         $this->generateCommonHeader('Ypopsi - Inscription', [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(true, PREFERENCES);
 
         $scripts = [
             'models/objects/AutoComplet.js'
@@ -292,7 +291,6 @@ class PreferencesView extends View {
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'utilisateur.php';
-        include FORMULAIRES.DS.'waves.php';
 
         // On ajoute le pied de page
         $this->generateCommonFooter();
@@ -303,11 +301,10 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription poste', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(true, PREFERENCES);
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'poste.php';
-        include FORMULAIRES.DS.'waves.php';
 
         // On ajoute le pied de page
         $this->generateCommonFooter();
@@ -318,7 +315,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription service', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(true, PREFERENCES);
 
         $scripts = [
             'models/objects/AutoComplet.js'
@@ -327,7 +324,6 @@ class PreferencesView extends View {
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'service.php';
-        include FORMULAIRES.DS.'waves.php';
 
         // On ajoute le pied de page
         $this->generateCommonFooter();
@@ -338,11 +334,10 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription établissement', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(true, PREFERENCES);
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'etablissements.php';
-        include FORMULAIRES.DS.'waves.php';
 
         // On ajoute le pied de page
         $this->generateCommonFooter();
@@ -353,11 +348,10 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Inscription pôle', [FORMS_STYLES.DS.'small-form.css']);
 
         // On ajoute la barre de navigation
-        $this->generateMenu(PREFERENCES);
+        $this->generateMenu(true, PREFERENCES);
 
         // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'pole.php';
-        include FORMULAIRES.DS.'waves.php';
 
         // On ajoute le pied de page
         $this->generateCommonFooter();
