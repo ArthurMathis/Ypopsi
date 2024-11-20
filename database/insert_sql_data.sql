@@ -898,5 +898,6 @@ INSERT INTO Types_of_actions (Titled) VALUES
 
 -- User de test --
 INSERT INTO Users (Identifier, Name, Firstname, Email, Password, Key_Roles, Key_Establishments) VALUES 
-	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$YjmR/M/Wkce8YvEyot8r8epdqAuhHENAI1Atd3tEzDwS6/GwL1eYe', 1, 1)
+	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$YjmR/M/Wkce8YvEyot8r8epdqAuhHENAI1Atd3tEzDwS6/GwL1eYe', 1, 1),
+    ('test.py', 'Test', 'Python', 'python.test@diaconat-mulhouse.fr', '$2y$10$tlDdD8ZMnafyDhFrFHi3uuubfAYyudvHUOJuR8sxOcFiLw9emxkP2', 2, 1)
 ;    
