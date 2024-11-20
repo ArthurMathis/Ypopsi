@@ -7,10 +7,6 @@
   src: url('../typo/Roboto/Roboto-Italic.ttf');
 }
 @font-face {
-  font-family: "Roboto Medium";
-  src: url("../typo/Roboto/Roboto-Medium.ttf");
-}
-@font-face {
   font-family: "Roboto Bold";
   src: url("../typo/Roboto/Roboto-Bold.ttf");
 }
@@ -18,17 +14,13 @@
   font-family: "Pacifico";
   src: url("../typo/Pacifico-Regular.ttf");
 }
-@font-face {
-  font-family: "Roboto Mono";
-  src: url("../typo/Roboto_Mono/RobotoMono-VariableFont_wght.ttf");
-}
 :root {
   --black: #2C3131;
   --grey: #d5d5d5;
   --light-grey: #f7f7f7;
+  --light-white: #ffffff14;
   --white: #fff;
   --light-blue: #E2E8F8;
-  --light-opacity-blue: #0046FE0F;
   --blue-opacity: #0048fedd;
   --blue: #0046FE;
 
@@ -84,14 +76,14 @@ p {
 h1 {
   color: var(--blue);
   font-size: var(--font-size-big);
-  font-family: "Roboto Medium";
+  font-family: "Roboto Bold";
   line-height: calc(var(--font-size-big) * 1.3);
 }
 
 h2 {
   color: var(--black);
   font-size: var(--font-size-medium);
-  font-family: "Roboto Medium";
+  font-family: "Roboto Bold";
   line-height: calc(var(--font-size-medium) * 1.3);
 }
 
@@ -99,6 +91,10 @@ h3 {
   color: var(--black);
   font-size: var(--font-size-medium);
   line-height: calc(var(--font-size-medium) * 1.3);
+}
+
+h4 {
+  font-family: 'Roboto Bold';
 }
 
 i {
@@ -199,7 +195,7 @@ form {
 
   color: var(--white);
   border-radius: var(--gap);
-  background-color: rgba(254, 254, 254, 0.15);
+  background-color: var(--light-white);
 }
 form p {
   color: var(--white);
@@ -352,12 +348,18 @@ form .checkbox-liste .checkbox-item label {
   overflow-y: auto;
 }
 .autocomplete-items > div {
-  padding: var(--margin);
-
+  padding: var(--small-radius) var(--radius);
   color: #d8d8d8;
-
   will-change: color;
   transition: color ease 150ms;
+}
+
+.autocomplete-items > div:first-child  {
+  margin-top: var(--small-radius);
+}
+
+.autocomplete-items > div:last-child {
+  margin-bottom: var(--small-radius); 
 }
 .autocomplete-items > div:is(:hover, :focus, .active) {
   color: var(--black);
@@ -530,7 +532,7 @@ button.form_button:is(:hover, :focus),
 .notification-title {
   color: var(--blue);
   font-size: var(--font-size-medium);
-  font-family: "Roboto Medium";
+  font-family: "Roboto Bold";
 }
 .notification-content {
   margin: 0;
@@ -610,7 +612,7 @@ button.form_button:is(:hover, :focus),
   color: var(--white);
 }
 .navbarre.formbarre section.action-section {
-  background-color: var(--light-opacity-blue);
+  background-color: var(--light-white);
 }
 .navbarre.formbarre section a::after {
   background-color: var(--white); 
@@ -828,7 +830,7 @@ button.form_button:is(:hover, :focus),
 }
 .number {
   text-align: right;
-  font-family: 'Roboto Medium';
+  font-family: 'Roboto Bold';
   font-size: 67.75px;
   line-height: 50px;
 }

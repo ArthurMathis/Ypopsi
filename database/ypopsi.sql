@@ -223,7 +223,7 @@ CREATE TABLE Applications (
 
   Key_Candidates INTEGER NOT NULL,
   Key_Jobs INTEGER NOT NULL,
-  Key_Types_of_contracts INTEGER NOT NULL,
+  Key_Types_of_contracts INTEGER DEFAULT NULL,
   Key_Sources INTEGER NOT NULL,
   Key_Needs INTEGER DEFAULT NULL,
   Key_Establishments INTEGER DEFAULT NULL,

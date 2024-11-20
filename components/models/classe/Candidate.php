@@ -137,31 +137,31 @@ class Candidate {
      * 
      * @return String
      */
-    public function getEmail(): String { return $this->email; }
+    public function getEmail(): ?String { return $this->email; }
     /**
      * Public method returning the candidate's phone number
      * 
      * @return String
      */
-    public function getPhone(): String { return $this->phone; }
+    public function getPhone(): ?String { return $this->phone; }
     /**
      * Public method returning the candidate's address
      * 
      * @return String
      */
-    public function getAddress(): String { return $this->address; }
+    public function getAddress(): ?String { return $this->address; }
     /**
      * Public method returning the city where lives the candidate
      * 
      * @return String
      */
-    public function getCity(): String { return $this->city; }
+    public function getCity(): ?String { return $this->city; }
     /**
      * Public method returning the city's post code
      * 
      * @return String
      */
-    public function getPostCode(): String { return $this->post_code; }
+    public function getPostCode(): ?String { return $this->post_code; }
     /**
      * Public method returning the candidate's availability
      * 
@@ -183,7 +183,6 @@ class Candidate {
      * @return Void
      */
     public function setKey($key) { 
-        // Verifying the key's integrity
         if($key == null)
             throw new InvalideCandidateExceptions("La clé d'un candidat ne peut être nulle.");
         elseif(!is_numeric($key)) 
@@ -191,7 +190,6 @@ class Candidate {
         elseif($key < 0)
             throw new InvalideCandidateExceptions("La clé d'un candidat doit être strictement positive !");
 
-        // Implementing   
         else  $this->key = $key;
     }
     /**
@@ -201,7 +199,6 @@ class Candidate {
      * @return Void
      */
     private function setName($name) { 
-        // On vérifie l'intégrité des données
         if(empty($name))
             throw new InvalideCandidateExceptions("Le nom d'un candidat ne peut pas être vide !");
         elseif(!is_string($name))
@@ -211,7 +208,7 @@ class Candidate {
         elseif(preg_match('/[^\p{L}\p{M}\s\'-]/u', $name))
             throw new InvalideCandidateExceptions("Le nom d'un candidat ne peut pas contenir de carcatères spéciaux !");
 
-        // On implémente    
+
         else $this->name = $name;
     }
     /**
@@ -221,7 +218,6 @@ class Candidate {
      * @return Void
      */
     private function setFirstname($firstname) { 
-        // On vérifie l'intégrité des données
         if(empty($firstname))
             throw new InvalideCandidateExceptions("Le prenom d'un candidat ne peut pas être vide !");
         elseif(!is_string($firstname))
@@ -231,7 +227,6 @@ class Candidate {
         elseif(preg_match('/[^\p{L}\p{M}\s\'-]/u', $firstname))
             throw new InvalideCandidateExceptions("Le prenom d'un candidat ne peut pas contenir de carcatères spéciaux !");
 
-        // On implémente    
         else $this->firstname = $firstname;
     }
     /**
@@ -248,16 +243,15 @@ class Candidate {
      * @return Void
      */
     private function setEmail($email) { 
-        // On vérifie l'intégrité des données
         if(empty($email))
-            throw new InvalideCandidateExceptions("L'email d'un candidat ne peut être vide !");
-        elseif(!is_string($email))
+            return;
+
+        if(!is_string($email))
             throw new InvalideCandidateExceptions("L'email d'un candidat doit être une chaine de caractères !");
         elseif(!filter_var($email, FILTER_VALIDATE_EMAIL))
             throw new InvalideCandidateExceptions("L'email doit contenir un nom, un @ et une adresse ! (ex: nom.prenom@diaconat-mulhouse.fr)");
         
-        // On implémente
-        else $this->email = $email;
+        $this->email = $email;
     }
     /**
      * Private method setting the candidate's phone number
@@ -266,16 +260,14 @@ class Candidate {
      * @return Void
      */
     private function setPhone($phone) { 
-        // Verifying the phone number integrity
-        if(empty($phone)) {
-            throw new InvalideCandidateExceptions("Le téléphone d'un utilisateur ne peut pas être vide !");
-        } elseif(!is_string($phone)) {
+        if(empty($phone)) 
+            return;
+        
+        if(!is_string($phone)) 
             throw new InvalideCandidateExceptions("Un numéro de téléphone doit être une chaîne de caractères !");
-        } elseif(!preg_match(REGEX, $phone)) {
+        elseif(!preg_match(REGEX, $phone))
             throw new InvalideCandidateExceptions("Le numéro de téléphone doit être au format XX.XX.XX.XX.XX, avec des chiffres !");
-        }
     
-        // Si tout est correct, on assigne la valeur
         $this->phone = $phone;
     }
     
@@ -286,14 +278,13 @@ class Candidate {
      * @return Void
      */
     private function setAddress($address) { 
-        // On vérifie l'intégrité des données
         if(empty($address))
-            throw new InvalideCandidateExceptions("L'adresse d'un candidat ne peut pas être vide !");
-        elseif(!is_string($address) || is_numeric($address))
+            return;
+
+        if(!is_string($address) || is_numeric($address))
             throw new InvalideCandidateExceptions("L'adresse d'un candidat doit être une chaine de carcatères !");
         
-        // On implémente
-        else $this->address = $address;
+        $this->address = $address;
     }
     /**
      * Private method setting the city where lives the candidate
@@ -302,18 +293,17 @@ class Candidate {
      * @return Void
      */
     private function setCity($city) { 
-        // On vérifie l'intégrité des données
         if(empty($city))
-            throw new InvalideCandidateExceptions("La ville d'un candidat ne peut pas être vide !");
-        elseif(!is_string($city))
+            return;
+
+        if(!is_string($city))
             throw new InvalideCandidateExceptions("La ville d'un candidat doit être une chaine de carcatères !");
         elseif(preg_match('/\d/', $city))
             throw new InvalideCandidateExceptions("La ville d'un candidat ne peut pas contenir de nombres !");
         elseif(preg_match('/[^\w\s]/', $city))
             throw new InvalideCandidateExceptions("La ville d'un candidat ne peut pas contenir de carcatères spéciaux !");
         
-        // On implémente
-        else $this->city = $city;
+        $this->city = $city;
     }
     /**
      * Private method setting the city's post code
@@ -322,13 +312,13 @@ class Candidate {
      * @return Void
      */
     private function setPostCode($post_code) { 
-        // On vérifie l'intégrité des données
         if(empty($post_code))
-            throw new InvalideCandidateExceptions("Le code postale d'un cndidat ne peut être vide !");
-        elseif(!preg_match ("~^[0-9]{5}$~", $post_code))
+            return;
+        
+        if(!preg_match ("~^[0-9]{5}$~", $post_code))
             throw new InvalideCandidateExceptions("Le code postale doit être composé de cinq nombres uniquement !");
 
-        else $this->post_code = $post_code;
+        $this->post_code = $post_code;
     }
     /**
      * Public method setting the candidate's availability
@@ -337,14 +327,13 @@ class Candidate {
      * @return Void
      */
     public function setAvailability($availability) { 
-        // On vérifie l'intégrité des données
         if(empty($availability))
-            throw new InvalideCandidateExceptions("La disponibilité d'un candidat doit être remplie !");
-        elseif(!Moment::isDate($availability))
+            return;
+
+        if(!Moment::isDate($availability))
             throw new InvalideCandidateExceptions("La disponibilité d'un candidat doit être une date !");
         
-        // On implémente
-        else $this->availability = $availability;
+        $this->availability = $availability;
     }
     /**
      * Public method setting the candidate last medical visit date
@@ -354,8 +343,9 @@ class Candidate {
      */
     public function setMedicalVisit($visite) {
         if(empty($visite))
-            throw new InvalideCandidateExceptions("La visite médicale d'un candidat doit être remplie !");
-        elseif(!Moment::isDate($visite))
+            return;
+
+        if(!Moment::isDate($visite))
             throw new InvalideCandidateExceptions("La visite médicale d'un candidat doit être une date !");
 
         else $this->medical_visit = $visite;

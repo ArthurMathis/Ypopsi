@@ -90,14 +90,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
                     } elseif(empty($_POST["prenom"])) {
                         throw new Exception("Le champs prenom doit être rempli par une chaine de caractères !");
-                    } elseif(empty($_POST["email"])) {
-                        throw new Exception("Le champs email doit être rempli par une chaine de caractères !");
-                    } elseif(empty($_POST["adresse"])) {
-                        throw new Exception("Le champs adresse doit être rempli par une chaine de caractères !");
-                    } elseif(empty($_POST["ville"])) {
-                        throw new Exception("Le champs ville doit être rempli par une chaine de caractères !");
-                    } elseif(empty($_POST['code-postal'])) {
-                        throw new Exception("Le champs code postal doit être rempli par une chaine de caractères !");
                     }
 
                     $candidate = [
@@ -114,7 +106,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     $qualifications = isset($_POST["diplome"]) ? $_POST["diplome"] : null;
                     $helps          = isset($_POST["aide"]) ? $_POST["aide"] : null;
                     $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null;
-                    $medical_visit  = isset($_POST["visite_medicale"][0]) ? $_POST["visite_medicale"][0] : null;
+                    $medical_visit  = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
 
                     $applications->checkCandidate($candidate, $qualifications, $helps, $medical_visit, $coopteur);
 

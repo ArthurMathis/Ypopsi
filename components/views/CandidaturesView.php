@@ -25,16 +25,18 @@ class CandidaturesView extends View {
         $this->generateCommonFooter();
     }
 
-    /// Méthode publique retournant le formulaire de saisie d'un candidat
-    public function getInputCandidatesContent($title, $diplome=[], $aide=[], $employer=[]) {
+    /**
+     * Public method returning the candidate's HTML form
+     *
+     * @param String $title The HTML page title
+     * @param Array<String> $diplome The list of qualifications
+     * @param Array<String> $aide The list of helps
+     * @param Array<String> $employer The list of employees
+     * @return void
+     */
+    public function displayInputCandidatesContent($title, $diplome=[], $aide=[], $employer=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
-
-        $scripts = [
-            'models/objects/AutoComplet.js',
-            'views/form-view.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
 
         include INSCRIPT_FORM.DS.'candidates.php';
 

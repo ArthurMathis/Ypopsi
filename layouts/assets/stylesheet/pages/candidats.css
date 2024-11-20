@@ -87,7 +87,7 @@ aside .aside-wrapper section > div > div {
     text-align: right;
 }
 aside .aside-wrapper section > div > p:first-of-type {
-    font-family: 'Roboto Medium';
+    font-family: 'Roboto Bold';
 }
 aside .aside-wrapper section > div > p:not(:first-of-type) {
     text-align: end;

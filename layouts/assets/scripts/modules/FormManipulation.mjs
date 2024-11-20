@@ -388,12 +388,11 @@ class implementInputAutoCompleteDate extends implementInput {
      */
     createDate() {
         const inputElement = document.createElement('input');
-        inputElement.type = 'number';
+        inputElement.type = 'date';
         inputElement.name = this.inputName + 'Date[]';
         inputElement.id =  this.inputName + 'Date-' + this.nbInput;
-        inputElement.min = 1900; 
-        inputElement.max = new Date().getFullYear(); 
-        inputElement.placeholder = "Année d'obtention";
+        inputElement.placeholder = "Date d'obtention";
+        inputElement.max = new Date().toISOString().split("T")[0];
 
         return inputElement;
     }

@@ -1,19 +1,87 @@
 <form class="big-form" method="post" action="index.php?applications=inscript-candidates">
     <div class="form-container">
+        <h3>Nouveau candidat</h3>
+        <section>
+            <div class="input-container">
+                <p>Nom *</p>
+                <input type="text" id="nom" name="nom" placeholder="Dupond">
+            </div>
+            <div class="input-container">
+                <p>Prénom *</p>
+                <input type="text" id="prenom" name="prenom" placeholder="Jean">
+            </div>
+            <div class="input-container">
+                <p>Civilité *</p>
+                <select id="genre" name="genre">
+                    <option value="Homme">Homme</option>
+                    <option value="Femme">Femme</option>
+                </select>    
+            </div>
+        </section>
+        <section>
+            <div class="input-container">
+                <p>Adresse email</p>
+                <input type="email" id="email" name="email" placeholder="jean.dupond@example.com">
+            </div>
+            <div class="input-container">
+                <p>Numéro de téléphone</p>
+                <input type="tel" id="telephone" name="telephone" placeholder="06.12.34.57.89">
+            </div>
+        </section>
+        <section>
+            <div class="input-container">
+                <p>Adresse</p>
+                <input type="text" id="adresse" name="adresse" placeholder="1er Grand Rue">
+            </div>
+            <div class="double-items">
+                <div class="input-container">
+                    <p>Commune</p>
+                    <input type="text" id="ville" name="ville" placeholder="Colmar">
+                </div>
+                <div class="input-container">
+                    <p>Code postal</p>
+                    <input type="number" id="code-postal" name="code-postal" placeholder="68000">
+                </div>
+            </div>
+        </section>
+        <section id='diplome-section' class="imp-section">
+            <p>Diplômes</p>
+            <button class="form_button" type="button">
+                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
+            </button>
+        </section>
+        <section id='aide-section' class="imp-section">
+            <parse_str>Aides au recrutement</parse_str>
+            <button class="form_button" type="button">
+                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
+            </button>
+        </section>
+        <section id='visite-section' class="imp-section">
+            <h4>Visite médicale</h4>
+            <input id="viste_medicale" name="viste_medicale" type="date" min="<?= date('Y-m-d'); ?>">
+        </section>
+        <section class="buttons_actions">
+            <button type="submit" class="submit_button" value="new_user">Inscrire</button>
+        </section>
+    </div> 
+</form>
+<!--
+<form class="big-form" method="post" action="index.php?applications=inscript-candidates">
+    <div class="form-container">
         <h3>Saisissez les informations du candidat</h3>
         <section>
-            <p>Informations personnes</p>
-            <input type="text" id="nom" name="nom" placeholder="Nom">
-            <input type="text" id="prenom" name="prenom" placeholder="Prénom">
+            <p>Informations personnelles</p>
+            <input type="text" id="nom" name="nom" placeholder="Dupond">
+            <input type="text" id="prenom" name="prenom" placeholder="Jean">
             <select id="genre" name="genre">
-                <option value="Homme" selected>Homme</option>
+                <option value="Homme">Homme</option>
                 <option value="Femme">Femme</option>
             </select>
         </section>
         <section>
             <p>Coordonnées</p>
-            <input type="email" id="email" name="email" placeholder="Adresse email">
-            <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone">
+            <input type="email" id="email" name="email" placeholder="jean.dupond@exemple.fr">
+            <input type="tel" id="telephone" name="telephone" placeholder="06 12 34 57 89">
         </section>
         <section>
             <p>Adresse</p>
@@ -37,22 +105,20 @@
         </section>
         <section id='visite-section' class="imp-section">
             <p>Date d'expiration de la visite médicale</p>
-            <button class="form_button" type="button">
-                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
-            </button>
+            <input id="viste_medicale" name="viste_medicale" type="date" min="<?= date('Y-m-d'); ?>">
         </section>
         <section class="buttons_actions">
             <button type="submit" class="submit_button" value="new_user">Inscrire</button>
         </section>
     </div> 
 </form>
+-->
 
 <script type="module">
     import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
 
-    const diplome = new formManipulation.implementInputAutoComplete('diplome', 'diplome-section', <?= json_encode($diplome); ?>, 'Intitulé' , <?= count($diplome); ?>);
+    const diplome = new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode($diplome); ?>, 'Licence', <?= count($diplome); ?>, null); 
     const aide = new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode($aide); ?>, <?= count($aide); ?>);
-    const visiteMedicale = new formManipulation.implementInputDate('visite_medicale', 'visite-section', 1);
 
     const nbCooptInput = 0;
     document.addEventListener('elementCreated', function(e) {

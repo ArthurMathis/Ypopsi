@@ -27,7 +27,7 @@ form .form-container {
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    gap: var(--very-big-radius);
+    gap: var(--gap);
 
     width: 100%;
     height: 100%;

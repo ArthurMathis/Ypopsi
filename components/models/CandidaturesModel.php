@@ -86,7 +86,7 @@ class CandidaturesModel extends Model {
                     if($item === $id)
                         $coopt++;
                 if(1 < $coopt) 
-                    throw new Exception("Il n'est possible de renseigner q'une prime de cooptation");
+                    throw new Exception("Il n'est possible de renseigner qu'une seule prime de cooptation");
             }
         
         } catch(InvalideCandidateExceptions $e) {
