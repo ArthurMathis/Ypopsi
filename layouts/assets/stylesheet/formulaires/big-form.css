@@ -39,31 +39,6 @@ form .form-container {
 form section {
     padding: 0 var(--padding);
 }
-
-/*
-form {
-    
+form section:not(:first-of-type) {
+    margin-top: var(--radius);
 }
-form > div {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 0.4rem;
-    width: 100%;
-}
-*/
-/*
-.user-link {
-    background-attachment: fixed;
-}
-.user-link, 
-.user-link > a {
-    color: var(--white);
-}
-.user-link > a {
-    font-family: 'Roboto Bold';
-}
-.user-link > a::after {
-    background-color: var(--white);
-}
-*/

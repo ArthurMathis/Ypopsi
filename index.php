@@ -97,10 +97,10 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'firstname'     => forms_manip::nameFormat($_POST["prenom"]), 
                         'gender'        => $_POST['genre'],
                         'email'         => $_POST["email"], 
-                        'phone'         => forms_manip::numberFormat($_POST["telephone"]), 
-                        'address'       => $_POST["adresse"],
+                        'phone'         => !empty($_POST["telephone"]) ? forms_manip::numberFormat($_POST["telephone"]) : null, 
+                        'address'       => !empty($_POST["adresse"]) ? $_POST["adresse"] : null,
                         'city'          => forms_manip::nameFormat($_POST["ville"]), 
-                        'post code'     => $_POST['code-postal']
+                        'post code'     => !empty($_POST['code-postal']) ? $_POST['code-postal'] : null
                     ];
 
                     $qualifications = isset($_POST["diplome"]) ? $_POST["diplome"] : null;
@@ -131,23 +131,26 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         throw new Exception("Le champs source doit être rempli par une chaine de caractères");
 
                     $application = [
-                        'job'               => forms_manip::nameFormat($_POST["poste"]), 
-                        'service'           => $_POST["service"], 
-                        'establishment'      => $_POST["etablissement"],
-                        'type of contract'  => $_POST["type_de_contrat"],
-                        'availability'      => $_POST["disponibilite"], 
-                        'source'            => forms_manip::nameFormat($_POST["source"])
+                        'job'              => forms_manip::nameFormat($_POST["poste"]),
+                        'service'          => !empty($_POST["service"]) ? $_POST["service"] : null,
+                        'establishment'    => !empty($_POST["etablissement"]) ?  $_POST["etablissement"] : null,
+                        'type of contract' => !empty($_POST["type_de_contrat"]) ?  $_POST["type_de_contrat"] : null,
+                        'availability'     => $_POST["disponibilite"],
+                        'source'           => forms_manip::nameFormat($_POST["source"])
                     ];
+
+                    // echo '<h1>Récupération des données en session</h1>';
+                    // var_dump($_SESSION);
 
                     $candidate = $_SESSION['candidate'];
                     $qualifications = isset($_SESSION['qualifications']) && !empty($_SESSION['qualifications']) ? $_SESSION['qualifications'] : null;
                     $helps = isset($_SESSION['helps']) && !empty($_SESSION['helps']) ? $_SESSION['helps'] : null;
                     $coopteur = isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null; 
 
-                    unset($_SESSION['candidate']);
-                    unset($_SESSION['qualifications']);
-                    unset($_SESSION['helps']);
-                    unset($_SESSION['coopteur']);
+                    // unset($_SESSION['candidate']);
+                    // unset($_SESSION['qualifications']);
+                    // unset($_SESSION['helps']);
+                    // unset($_SESSION['coopteur']);
 
                     $applications->createApplications($candidate, $application, $qualifications, $helps, $coopteur);
         

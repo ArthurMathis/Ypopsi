@@ -141,7 +141,7 @@ class CandidatsModel extends Model {
         FROM Applications AS app
         INNER JOIN Sources AS s ON app.key_sources = s.Id
         INNER JOIN Jobs AS j ON app.key_jobs = j.Id
-        INNER JOIN Types_of_contracts AS t ON app.Key_Types_of_contracts = t.Id
+        LEFT JOIN Types_of_contracts AS t ON app.Key_Types_of_contracts = t.Id
         LEFT JOIN Services as serv ON app.Key_Services = serv.Id
         LEFT JOIN Establishments AS e ON app.Key_Establishments = e.id
 

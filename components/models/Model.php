@@ -706,12 +706,12 @@ abstract class Model {
         $this->post_request($request, $params);
     }
     /**
-     * Protected method registering one candidate ine the database
+     * Protected method registering one candidate in the database
      *
      * @param Candidatz $candidate The candidate's data 
-     * @return Void
+     * @return Int
      */
-    protected function inscriptCandidates(&$candidate) {
+    protected function inscriptCandidates(&$candidate): Int {
         $request = "INSERT INTO Candidates (Name, Firstname, Gender, Phone, Email, Address, City, PostCode, Availability";
         $values_request = " VALUES (:name, :firstname, :gender, :phone, :email, :address, :city, :post_code, :availability";
 
@@ -724,7 +724,30 @@ abstract class Model {
         unset($values_request);
 
         $this->post_request($request, $candidate->exportToSQL());
+        $lastId = $this->getConnection()->lastInsertId();
+
+        return $lastId;
     }
+    /**
+     * Protected method registering one candidate ine the database
+     *
+     * @param Candidatz $candidate The candidate's data 
+     * @return Void
+     */
+    // protected function inscriptCandidates(&$candidate) {
+    //     $request = "INSERT INTO Candidates (Name, Firstname, Gender, Phone, Email, Address, City, PostCode, Availability";
+    //     $values_request = " VALUES (:name, :firstname, :gender, :phone, :email, :address, :city, :post_code, :availability";
+    // 
+    //     if($candidate->getMedicalVisit()) {
+    //         $request .= " , MedicalVisit";
+    //         $values_request .= ", :visite";
+    //     }
+    // 
+    //     $request .= ")" . $values_request . ")";
+    //     unset($values_request);
+    // 
+    //     $this->post_request($request, $candidate->exportToSQL());
+    // }
     /**
      * Protected method registering one Get_qualfications in the database
      *

@@ -93,6 +93,8 @@ class CandidaturesController extends Controller {
             if($candidate->getKey() === null) {
                 $search = $this->Model->searchCandidatesByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
 
+                
+
                 if(empty($search)) 
                     $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);
                 else 

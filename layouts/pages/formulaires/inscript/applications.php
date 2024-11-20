@@ -2,30 +2,46 @@
     <div class="form-container">
         <h3>Saisissez les informations de la candidature</h3>
         <section>
-            <p>Emploi</p>
-            <div class="autocomplete">
-                <input type="text" id="poste" name="poste" placeholder="Poste" autocomplete="off">
-                <article></article>
+            <div class="input-container">
+                <p>Poste *</p>
+                <div class="autocomplete">
+                    <input type="text" id="poste" name="poste" placeholder="AGENT ADMINISTRATIF" autocomplete="off">
+                    <article></article>
+                </div>
             </div>
-            <div class="autocomplete">
-                <input type="text" id="service" name="service" placeholder="Services" autocomplete="off">
-                <article></article>
+            <div class="input-container">
+                <p>Service</p>
+                <div class="autocomplete">
+                    <input type="text" id="service" name="service" placeholder="ACCUEIL-STANDARD" autocomplete="off">
+                    <article></article>
+                </div>
             </div>
-            <div class="autocomplete">
-                <input type="text" id="etablissement" name="etablissement" placeholder="Etablissements" autocomplete="off">
-                <article></article>
+            <div class="input-container">
+                <p>Etablissement</p>
+                <div class="autocomplete">
+                    <input type="text" id="etablissement" name="etablissement" placeholder="Clinique du Diaconat Roosevelt" autocomplete="off">
+                    <article></article>
+                </div>
             </div>
         </section>
         <section>
-            <p>Infos</p>
-            <div class="autocomplete">
-                <input type="text" id="type_de_contrat" name="type_de_contrat" placeholder="Type de contrat" autocomplete="off">
-                <article></article>
+            <div class="input-container">
+                <p>Type de contrat</p>
+                <div class="autocomplete">
+                    <input type="text" id="type_de_contrat" name="type_de_contrat" placeholder="CDI" autocomplete="off">
+                    <article></article>
+                </div>
             </div>
-            <input type="Date" id="disponibilite" name="disponibilite" min="<?php echo Moment::currentMoment()->getDate(); ?>">
-            <div class="autocomplete">
-                <input type="text" id="source" name="source" placeholder="Sources" autocomplete="off">
-                <article></article>
+            <div class="input-container">
+                <p>Disponibilité *</p>
+                <input type="Date" id="disponibilite" name="disponibilite" min="<?php echo Moment::currentMoment()->getDate(); ?>">
+            </div>
+            <div class="input-container">
+                <p>Source *</p>
+                <div class="autocomplete">
+                    <input type="text" id="source" name="source" placeholder="HelloWork" autocomplete="off">
+                    <article></article>
+                </div>
             </div>
         </section>
         <section class="buttons_actions">

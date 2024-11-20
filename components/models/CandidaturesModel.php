@@ -117,7 +117,7 @@ class CandidaturesModel extends Model {
      * @return Void
      */
     public function createCandidate(&$candidate, $qualifications=[], $helps=[], $coopteur=null) {
-        $this->inscriptCandidates($candidate);
+        $candidate->setKey($this->inscriptCandidates($candidate));
 
         if(!empty($qualifications)) 
             foreach($qualifications as $item) 
@@ -145,18 +145,19 @@ class CandidaturesModel extends Model {
      */
     public function inscriptApplication(&$candidate, $application=[]) {
         try {
-            if($candidate->getKey() === null) 
-                $candidate->setKey($this->searchCandidatesByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail())['Id']); 
-
-            $request = "INSERT INTO Applications (key_candidates, key_jobs, key_types_of_contracts, key_sources";
-            $values_request = "VALUES (:candidate, :job, :contract, :source";
+            $request = "INSERT INTO Applications (key_candidates, key_jobs, key_sources";
+            $values_request = "VALUES (:candidate, :job, :source";
             $params = [ 
                 "candidate" => $candidate->getKey(), 
                 "job" => $this->searchJobs($application["job"])['Id'], 
-                "contract" => $this->searchTypesOfContracts($application['type of contract'])['Id'], 
                 "source" => $this->searchSources($application["source"])['Id']
             ];
 
+            if(isset($application['type of contract'])) {
+                $request .= ', key_types_of_contracts';
+                $values_request .= ', :contract';
+                $params['contract'] = $this->searchTypesOfContracts($application['type of contract'])['Id'];
+            }
             if(isset($application['needs'])) {
                 $request .= ", key_needs";
                 $values_request .= ", :needs";

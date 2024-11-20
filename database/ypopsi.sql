@@ -238,6 +238,7 @@ CREATE TABLE Applications (
   FOREIGN KEY (Key_Services) REFERENCES Services(Id),
 
   CHECK (
+    (Key_Establishments IS NULL AND Key_Services IS NULL AND Key_Needs IS NULL) OR
     (Key_Establishments IS NOT NULL AND Key_Services IS NOT NULL AND Key_Needs IS NULL) OR
     (Key_Needs IS NOT NULL AND Key_Establishments IS NULL AND Key_Services IS NULL)
   )  
