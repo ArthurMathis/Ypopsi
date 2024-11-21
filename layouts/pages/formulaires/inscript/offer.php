@@ -1,28 +1,39 @@
 <form class="big-form" method="post" action="index.php?candidates=inscript-offers&key_candidate=<?= $key_candidate; ?>&key_application=<?= empty($offer['Id']) ? NULL : $offer['Id']; ?>">
     <div class="form-container">
-    <h3>Saissisez les informations de la proposition</h3>
+    <h3>Nouvelle proposition</h3>
         <section>
-                <p>Emploi</p>
+            <div class="input-container">
+                <p>Poste *</p>
                 <div class="autocomplete">
-                    <input type="text" id="poste" name="poste" placeholder="Poste" autocomplete="off" value="<?= !empty($offer['Key_Jobs']) ? $offer['Key_Jobs'] : NULL; ?>">
+                    <input type="text" id="poste" name="poste" placeholder="AGENT ADMINISTRATIF" autocomplete="off" value="<?= !empty($offer['Key_Jobs']) ? $offer['Key_Jobs'] : NULL; ?>">
                     <article></article>
                 </div>
+            </div>
+            <div class="input-container">
+                <p>Service *</p>
                 <div class="autocomplete">
-                    <input type="text" id="service" name="service" placeholder="Services" autocomplete="off" value="<?= !empty($offer['Key_Services']) ? $offer['Key_Services'] : NULL; ?>">
+                    <input type="text" id="service" name="service" placeholder="ACCUEIL-STANDARD" autocomplete="off" value="<?= !empty($offer['Key_Services']) ? $offer['Key_Services'] : NULL; ?>">
                     <article></article>
                 </div>
+            </div>
+            <div class="input-container">
+                <p>Etablissement *</p>
                 <div class="autocomplete">
-                    <input type="text" id="etablissement" name="etablissement" placeholder="Etablissements" autocomplete="off" value="<?= !empty($offer['Key_Establishments']) ? $offer['Key_Establishments'] : NULL; ?>">
+                    <input type="text" id="etablissement" name="etablissement" placeholder="Clinique du Diaconat Roosevelt" autocomplete="off" value="<?= !empty($offer['Key_Establishments']) ? $offer['Key_Establishments'] : NULL; ?>">
                     <article></article>
                 </div>
+            </div>
+            <div class="input-container">
+                <p>Type de contrat *</p>
                 <div class="autocomplete">
-                    <input type="text" id="type_contrat" name="type_contrat" placeholder="Type de contrat" autocomplete="off" value="<?= !empty($offer['Key_Types_of_contracts']) ? $offer['Key_Types_of_contracts'] : NULL; ?>">
+                    <input type="text" id="type_contrat" name="type_contrat" placeholder="CDI" autocomplete="off" value="<?= !empty($offer['Key_Types_of_contracts']) ? $offer['Key_Types_of_contracts'] : NULL; ?>">
                     <article></article>
                 </div>
-            </section>
+            </div>
+        </section>
         <section class="double-items">
             <div class="input-container">
-                <label for="date_debut">Date de début</label>
+                <label for="date_debut">Date de début *</label>
                 <input type="date" name="date_debut" id="date_debut" min="<?php echo Moment::currentMoment()->getDate(); ?>">
             </div>
             <div class="input-container">
@@ -31,9 +42,14 @@
             </div>
         </section>
         <section>
-            <p>Horaires et rémunérations</p>
-            <input id="salaire_mensuel" name="salaire_mensuel" type="number" placeholder="Salaire mensuel">
-            <input id="taux_horaire_hebdomadaire" name="taux_horaire_hebdomadaire" type="number" placeholder="taux horaire hebdomadaire">
+            <div class="input-container">
+                <p>Rémunération</p>
+                <input id="salaire_mensuel" name="salaire_mensuel" type="number" placeholder="1500">
+            </div>
+            <div class="input-container">
+                <p>Taux horaire</p>
+                <input id="taux_horaire_hebdomadaire" name="taux_horaire_hebdomadaire" type="number" placeholder="35">
+            </div>
             <div class="checkbox-liste">
                 <div class="checkbox-item">
                     <label for="travail nuit">Travail de nuit</label>
@@ -51,13 +67,16 @@
     </div>
 </form>
 
-<script>
+<script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+
     new AutoComplete(document.getElementById('poste'), <?= json_encode(array_map(function($c) { return $c['titled']; }, $jobs)); ?>);
     new AutoComplete(document.getElementById('service'), <?= json_encode(array_map(function($c) {  return $c['titled'];  }, $services)); ?>);
     new AutoComplete(document.getElementById('etablissement'), <?= json_encode(array_map(function($c) {  return $c['titled'];  }, $establishments)); ?>);
     new AutoComplete(document.getElementById('type_contrat'), <?= json_encode(array_map(function($c) { return $c['titled']; }, $types_of_contracts)); ?>);
 
-    SetMinEndDate('date_debut', 'date_fin');
+    formManipulation.SetMinEndDate('date_debut', 'date_fin');
 
     const inputTypeContrat = document.getElementById('type_contrat');
     const inputDateFin = document.getElementById('date_fin').parentElement;

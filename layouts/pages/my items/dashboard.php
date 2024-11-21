@@ -82,7 +82,7 @@
         <?php endif ?>
     </div>
     <?php if($_SESSION['user_role'] != INVITE): ?>
-        <a class="action_button reverse_color add_button" href="index.php?candidates=edit-ratings&key_candidate=<?=$candidate['Id'] ?>">
+        <a class="action_button reverse_color add_button" href="index.php?candidates=edit-ratings&key_candidate=<?= $item['candidate']['Id'] ?>">
             <p>Noter</p>
             <img src="layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
         </a>

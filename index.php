@@ -131,7 +131,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         throw new Exception("Le champs source doit être rempli par une chaine de caractères");
 
                     $application = [
-                        'job'              => forms_manip::nameFormat($_POST["poste"]),
+                        'job'              => $_POST["poste"],
                         'service'          => !empty($_POST["service"]) ? $_POST["service"] : null,
                         'establishment'    => !empty($_POST["etablissement"]) ?  $_POST["etablissement"] : null,
                         'type of contract' => !empty($_POST["type_de_contrat"]) ?  $_POST["type_de_contrat"] : null,
@@ -139,18 +139,15 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'source'           => forms_manip::nameFormat($_POST["source"])
                     ];
 
-                    // echo '<h1>Récupération des données en session</h1>';
-                    // var_dump($_SESSION);
-
                     $candidate = $_SESSION['candidate'];
                     $qualifications = isset($_SESSION['qualifications']) && !empty($_SESSION['qualifications']) ? $_SESSION['qualifications'] : null;
                     $helps = isset($_SESSION['helps']) && !empty($_SESSION['helps']) ? $_SESSION['helps'] : null;
                     $coopteur = isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null; 
 
-                    // unset($_SESSION['candidate']);
-                    // unset($_SESSION['qualifications']);
-                    // unset($_SESSION['helps']);
-                    // unset($_SESSION['coopteur']);
+                    unset($_SESSION['candidate']);
+                    unset($_SESSION['qualifications']);
+                    unset($_SESSION['helps']);
+                    unset($_SESSION['coopteur']);
 
                     $applications->createApplications($candidate, $application, $qualifications, $helps, $coopteur);
         
@@ -277,6 +274,10 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         throw new Exception("Le champs type de contrat doit être rempli !");
                     elseif(empty($_POST['date_debut']))
                         throw new Exception('Le champs date de début doit être rempli !');
+                    if($data['type_de_contrat'] == 'CDI' && !empty($_POST['date_fin'])) 
+                        throw new Exception("La date de fin ne peut pas être remplie pour un CDI !");
+                    elseif(empty($_POST['date_fin'])) 
+                            throw new Exception("La date de fin doit être remplie !");
 
                     $data = [
                         'poste' => $_POST['poste'],

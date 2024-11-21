@@ -47,17 +47,17 @@
         <section id='diplome-section' class="imp-section">
             <p>Diplômes</p>
             <button class="form_button" type="button">
-                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
+                <img src="layouts\assets\img\logo\blue\add.svg" alt="">
             </button>
         </section>
         <section id='aide-section' class="imp-section">
             <parse_str>Aides au recrutement</parse_str>
             <button class="form_button" type="button">
-                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
+                <img src="layouts\assets\img\logo\blue\add.svg" alt="">
             </button>
         </section>
         <section id='visite-section' class="imp-section">
-            <h4>Visite médicale</h4>
+            <p>Visite médicale</p>
             <input id="viste_medicale" name="viste_medicale" type="date" min="<?= date('Y-m-d'); ?>">
         </section>
         <section class="buttons_actions">
@@ -65,69 +65,20 @@
         </section>
     </div> 
 </form>
-<!--
-<form class="big-form" method="post" action="index.php?applications=inscript-candidates">
-    <div class="form-container">
-        <h3>Saisissez les informations du candidat</h3>
-        <section>
-            <p>Informations personnelles</p>
-            <input type="text" id="nom" name="nom" placeholder="Dupond">
-            <input type="text" id="prenom" name="prenom" placeholder="Jean">
-            <select id="genre" name="genre">
-                <option value="Homme">Homme</option>
-                <option value="Femme">Femme</option>
-            </select>
-        </section>
-        <section>
-            <p>Coordonnées</p>
-            <input type="email" id="email" name="email" placeholder="jean.dupond@exemple.fr">
-            <input type="tel" id="telephone" name="telephone" placeholder="06 12 34 57 89">
-        </section>
-        <section>
-            <p>Adresse</p>
-            <input type="text" id="adresse" name="adresse" placeholder="Adresse postale">
-            <div class="double-items">
-                <input type="text" id="ville" name="ville" placeholder="Commune">
-                <input type="number" id="code-postal" name="code-postal" placeholder="Code postal">
-            </div>
-        </section>
-        <section id='diplome-section' class="imp-section">
-            <p>Diplômes</p>
-            <button class="form_button" type="button">
-                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
-            </button>
-        </section>
-        <section id='aide-section' class="imp-section">
-            <p>Aides au recrutement</p>
-            <button class="form_button" type="button">
-                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
-            </button>
-        </section>
-        <section id='visite-section' class="imp-section">
-            <p>Date d'expiration de la visite médicale</p>
-            <input id="viste_medicale" name="viste_medicale" type="date" min="<?= date('Y-m-d'); ?>">
-        </section>
-        <section class="buttons_actions">
-            <button type="submit" class="submit_button" value="new_user">Inscrire</button>
-        </section>
-    </div> 
-</form>
--->
 
 <script type="module">
-    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
-
-    const diplome = new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode($diplome); ?>, 'Licence', <?= count($diplome); ?>, null); 
-    const aide = new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode($aide); ?>, <?= count($aide); ?>);
-
-    const nbCooptInput = 0;
     document.addEventListener('elementCreated', function(e) {
         if(e.detail.element.parentNode === document.getElementById('aide-section')) {
             const aideSection = document.getElementById('aide-section');
             const inputAide = aideSection.querySelectorAll('select');
             
-            const obj = new cooptInput(inputAide[inputAide.length - 1], 'coopteur', 3, <?= json_encode($employer); ?>);
+            const obj = new formManipulation.cooptInput(inputAide[inputAide.length - 1], 'coopteur', 3, <?= json_encode($employer); ?>);
             obj.input.addEventListener('change', (e) => obj.react());
         }
     });
+
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+
+    const diplome = new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode($diplome); ?>, 'Licence', <?= count($diplome); ?>, null); 
+    const aide = new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode($aide); ?>, <?= count($aide); ?>);
 </script>

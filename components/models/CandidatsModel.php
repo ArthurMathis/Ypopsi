@@ -419,7 +419,7 @@ class CandidatsModel extends Model {
      * @return Void
      */
     public function setApplicationsRefused($key_application) {
-        $request = "UPDATE Applications SET IsAccepted = FALSE AND IsRefused = TRUE WHERE Id = :key_application";
+        $request = "UPDATE Applications SET IsAccepted = FALSE, IsRefused = TRUE WHERE Id = :key_application";
         $params = ['key_application' => $key_application];
 
         $this->post_request($request, $params);

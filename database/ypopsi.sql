@@ -177,9 +177,9 @@ CREATE TABLE Contracts (
   FOREIGN KEY (Key_Services) REFERENCES Services(Id),
   FOREIGN KEY (Key_Establishments) REFERENCES Establishments(Id),
 
-  CHECK(PropositionDate < StartDate AND StartDate < EndDate),
-  CHECK(PropositionDate < SignatureDate AND SignatureDate < EndDate),
-  CHECK(StartDate < ResignationDate AND ResignationDate < EndDate)
+  CHECK(PropositionDate <= StartDate AND StartDate <= EndDate),
+  CHECK(PropositionDate <= SignatureDate AND SignatureDate <= EndDate),
+  CHECK(StartDate <= ResignationDate AND ResignationDate <= EndDate)
 );
 
 -- Needs --

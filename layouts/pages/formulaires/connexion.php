@@ -11,9 +11,14 @@
 <form method="post" action="index.php?login=connexion">
     <h3>Connexion à l'application</h3>
     <section>
-        <p>Saisissez vos informations de connexion</p>
-        <input type="text" id="identifiant" name="identifiant" placeholder="Identifiant">
-        <input type="password" id="motdepasse" name="motdepasse" placeholder="Mot de passe">
+        <div class="input-container">
+            <p>Indentifiant</p>
+            <input type="text" id="identifiant" name="identifiant" placeholder="dupond.j">
+        </div>
+        <div class="input-container">
+            <p>Mot de passe</p>
+            <input type="password" id="motdepasse" name="motdepasse" placeholder="................">
+        </div>
     </section>
     <div class="form-section">
         <button type="submit" value="new_user">

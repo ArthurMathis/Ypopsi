@@ -163,11 +163,11 @@ input[type="checkbox"]:disabled:hover {
 
 
 textarea {
-  padding: var(--margin);
+  padding: var(--radius);
 
   color: var(--black);
   border: 2px solid var(--blue);
-  border-radius: var(--margin);
+  border-radius: var(--radius);
   background-color: var(--white);
 
   will-change: box-shadow;
@@ -209,7 +209,7 @@ form section {
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  gap: var(--radius);
+  gap: var(--small-radius);
 
   width: 100%;
 }
@@ -296,12 +296,14 @@ form .double-items {
   width: 100%;
   height: fit-content;
 }
-form .double-items input,
+form .double-items input:not([type="radio"], [type="checkbox"]),
 form .double-items .autocomplete,
 form .double-items .input-container {
   width: 50%;
 }
 form .double-items .autocomplete input, 
+form .double-items .input-container .autocomplete,
+form .double-items .input-container .autocomplete input,
 form .double-items .input-container input {
   width: 100%;
 }
@@ -732,33 +734,26 @@ button.form_button:is(:hover, :focus),
   justify-content: space-between;
   height: fit-content;
 }
-.bulles > h2 {
-  margin-bottom: calc(var(--margin) * 1 / 4);
-}
-.bulles > p {
-  margin-bottom: var(--gap);
-}
-.bulles > h2::selection, 
-.bulles > p::selection {
+.bulles > *::selection {
     background-color: transparent;
 }
 .bulles .bulle-container {
   display: flex;
   flex-direction: column;
-  border-radius: var(--radius);
+
+  margin-top: var(--radius);
+
+  border-radius: var(--big-radius);
   background-color: var(--blue);
 }
 .bulles .table-wrapper table {
   padding: var(--margin) 0;
-  border-spacing: 0 calc(var(--margin) * 2 / 3);
+  border-spacing: var(--radius);
 }
 .bulles .table-wrapper table thead th,
 .bulles .table-wrapper table tbody th {
   height: 30px;
   color: var(--white);
-}
-.bulles .table-wrapper table thead th {
-  padding-bottom: calc(var(--margin) * 1 / 2);
 }
 .bulles .table-wrapper table tr::before {
   display: none;
@@ -767,6 +762,7 @@ button.form_button:is(:hover, :focus),
 .bulles .table-wrapper table thead tr th.active::after {
   display: none;
 }
+/*
 .bulles .boutons {
   display: flex;
   justify-content: right;
@@ -812,6 +808,7 @@ button.form_button:is(:hover, :focus),
 .bulles .boutons .fleche span::after {
   transform: translateY(calc(-50% + 1px)) rotate(-45deg);
 }
+*/
 
 .number_bubble {
   display: flex;
