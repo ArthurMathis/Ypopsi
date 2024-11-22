@@ -30,8 +30,8 @@ class CandidatController extends Controller {
      * @return View HTML PAGE
      */
     public function displayCandidate($Key_candidate) { 
-        $item = $this->Model->getContentCandidate($Key_candidate);
-        return $this->View->getContentCandidate("Candidat " . $item['candidate']['Name'] . ' ' . $item['candidate']['Firstname'], $item);
+        $item = $this->Model->displayContentCandidate($Key_candidate);
+        return $this->View->displayContentCandidate("Candidat " . $item['candidate']['Name'] . ' ' . $item['candidate']['Firstname'], $item);
     }
 
     // * DISPLAY INPUT * //

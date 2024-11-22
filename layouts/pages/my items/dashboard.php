@@ -5,7 +5,7 @@
             <?php foreach($item['candidate']['qualifications'] as $obj): ?>
                 <article>
                     <p><?= $obj['titled']; ?></p>
-                    <i><?= $obj['year']; ?></i>
+                    <i><?= date('F Y', strtotime($obj['date'])); ?></i>
                 </article>
             <?php endforeach ?>   
         <?php else: ?>

@@ -536,7 +536,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
     } 
 
 } elseif(isset($_GET['preferences'])) {
-    // On déclare le controller de préférences
     $preferences = new PreferencesController();
 
     // On vérifie s'il s'agit d'une clé de candidat
