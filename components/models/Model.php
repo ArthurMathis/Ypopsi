@@ -729,49 +729,26 @@ abstract class Model {
         return $lastId;
     }
     /**
-     * Protected method registering one candidate ine the database
-     *
-     * @param Candidatz $candidate The candidate's data 
-     * @return Void
-     */
-    // protected function inscriptCandidates(&$candidate) {
-    //     $request = "INSERT INTO Candidates (Name, Firstname, Gender, Phone, Email, Address, City, PostCode, Availability";
-    //     $values_request = " VALUES (:name, :firstname, :gender, :phone, :email, :address, :city, :post_code, :availability";
-    // 
-    //     if($candidate->getMedicalVisit()) {
-    //         $request .= " , MedicalVisit";
-    //         $values_request .= ", :visite";
-    //     }
-    // 
-    //     $request .= ")" . $values_request . ")";
-    //     unset($values_request);
-    // 
-    //     $this->post_request($request, $candidate->exportToSQL());
-    // }
-    /**
      * Protected method registering one Get_qualfications in the database
      *
      * @param Int $key_candidate The candidate's primary key
      * @param Int $key_qualification The degree primary key
-     * @param Int|NULL $year The year of obtaining
+     * @param Int $year The year of obtaining
      * @return Void
      */
-    protected function inscriptGetQualifications($key_candidate, $key_qualification, $year = null) {
-        $request = "INSERT INTO Get_qualifications (Key_Candidates, Key_Qualifications";
-        $values_request = " VALUES (:key_candidate, :key_qualification";
+    protected function inscriptGetQualifications($key_candidate, $key_qualification, $date) {
+        $request = "INSERT INTO Get_qualifications (Key_Candidates, Key_Qualifications, Date) VALUES (:key_candidate, :key_qualification, :date)";
         $params = [
-            "key_candidate" => $key_candidate, 
-            "key_qualification" => $key_qualification
+            "key_candidate"     => $key_candidate,
+            "key_qualification" => $key_qualification,
+            "date"              => $date
         ];
-
-        if(!empty($year)) {
-            $request .= ", Annee";
-            $values_request .= ", :year";
-            $params['year'] = $year;
-        }
-
-        $request .= ")" . $values_request . ")";
-        unset($values_request);
+    
+        echo 'On prépare la requête : <br>';
+        var_dump($request); 
+        echo '<br>'; 
+        var_dump($params); 
+        echo '<br>';
 
         $this->post_request($request, $params);
     }
@@ -788,7 +765,7 @@ abstract class Model {
         $values_request = " VALUES (:key_candidate, :key_helps";
         $params = [
             'key_candidate' => $key_candidate,
-            'key_helps' => $key_helps
+            'key_helps'     => $key_helps
         ];
 
         if(!empty($cle_coopteur)) {
@@ -814,9 +791,9 @@ abstract class Model {
     protected function inscriptMeetings($key_user, $key_candidate, $key_establishment, $moment) {
         $request = "INSERT INTO Meetings (Date, Key_Users, Key_Candidates, Key_Establishments) VALUES (:moment, :key_user, :key_candidate, :key_establishment)";
         $params = [
-            "moment" => date('Y-m-d H:i:s', $moment),
-            "key_user" => $key_user,
-            "key_candidate" => $key_candidate,
+            "moment"            => date('Y-m-d H:i:s', $moment),
+            "key_user"          => $key_user,
+            "key_candidate"     => $key_candidate,
             "key_establishment" => $key_establishment
         ];
     

@@ -86,11 +86,12 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 try {
-                    if(empty($_POST["nom"])) {
+                    if(empty($_POST["nom"]))
                         throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
-                    } elseif(empty($_POST["prenom"])) {
+                    elseif(empty($_POST["prenom"]))
                         throw new Exception("Le champs prenom doit être rempli par une chaine de caractères !");
-                    }
+                    elseif(count($_POST["diplome"]) !== count($_POST["diplomeDate"]))
+                        throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
 
                     $candidate = [
                         'name'          => forms_manip::nameFormat($_POST["nom"]), 
@@ -103,7 +104,13 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'post code'     => !empty($_POST['code-postal']) ? $_POST['code-postal'] : null
                     ];
 
-                    $qualifications = isset($_POST["diplome"]) ? $_POST["diplome"] : null;
+                    // $qualifications = isset($_POST["diplome"]) ? $_POST["diplome"] : null;
+                    // $qualifications_dates = isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : null;
+                    $qualifications = isset($_POST["diplome"]) ? $_POST["diplome"] : [];
+                    $qualifications_dates = isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : [];
+                    $qualifications = array_map(function($qualification, $date) {
+                        return ['qualification' => $qualification, 'date' => $date];
+                    }, $qualifications, $qualifications_dates);
                     $helps          = isset($_POST["aide"]) ? $_POST["aide"] : null;
                     $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null;
                     $medical_visit  = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
@@ -136,14 +143,14 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'establishment'    => !empty($_POST["etablissement"]) ?  $_POST["etablissement"] : null,
                         'type of contract' => !empty($_POST["type_de_contrat"]) ?  $_POST["type_de_contrat"] : null,
                         'availability'     => $_POST["disponibilite"],
-                        'source'           => forms_manip::nameFormat($_POST["source"])
+                        'source'           => $_POST["source"]
                     ];
 
                     $candidate = $_SESSION['candidate'];
                     $qualifications = isset($_SESSION['qualifications']) && !empty($_SESSION['qualifications']) ? $_SESSION['qualifications'] : null;
                     $helps = isset($_SESSION['helps']) && !empty($_SESSION['helps']) ? $_SESSION['helps'] : null;
                     $coopteur = isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null; 
-
+                    
                     unset($_SESSION['candidate']);
                     unset($_SESSION['qualifications']);
                     unset($_SESSION['helps']);
