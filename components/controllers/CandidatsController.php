@@ -252,7 +252,7 @@ class CandidatController extends Controller {
      * @return Void
      */
     public function updateCandidates($key_candidate, &$data=[]) {
-        $this->Model->makeupdateCandidates($key_candidate, $data);
+        $this->Model->makeUpdateCandidates($key_candidate, $data);
         alert_manipulation::alert([
             'title' => "Candidat mise-à-jour",
             'msg' => "Vous avez mis-à-jour les données personnelles du candidat",

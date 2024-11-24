@@ -29,11 +29,11 @@
 }
 .liste_items .table-wrapper table tbody tr.acceptee th:first-of-type::before, 
 .liste_items .table-wrapper table tbody tr.email th:nth-of-type(7)::before, 
-.liste_items .table-wrapper table tbody tr th:nth-of-type(8)::before {
+.liste_items .table-wrapper table tbody tr.date_future th:nth-of-type(8)::before {
     background-color: var(--color3);
 }
 .liste_items .table-wrapper table tbody tr.refusee th:first-of-type::before, 
 .liste_items .table-wrapper table tbody tr.telephone th:nth-of-type(7)::before, 
-.liste_items .table-wrapper table tbody tr.date_depassee th:nth-of-type(8)::before {
+.liste_items .table-wrapper table tbody tr th:nth-of-type(8)::before {
     background-color: var(--color5);
 }

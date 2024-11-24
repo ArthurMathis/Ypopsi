@@ -90,9 +90,10 @@ class CandidaturesController extends Controller {
     public function createApplications(&$candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
         $candidate->setAvailability($application['availability']);
         try {
-            if($candidate->getKey() === null) {
+            if($candidate->getKey() === null) { 
                 // TODO : Repenser la méthode de recherche
-                $search = $this->Model->searchCandidatesByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
+                // $search = $this->Model->searchCandidatesByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
+                $search = null;
 
                 if(empty($search)) 
                     $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);

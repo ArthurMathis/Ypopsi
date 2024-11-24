@@ -29,17 +29,17 @@ function SetMinEndDate(startDateInput, endDateInput) {
  * @author Arthur MATHIS
  */
 function setCooptInput(input, inputName, searchValue, suggestions) {
-    if(input.value == searchValue) {
+    if(input.value === searchValue) {
         const elmt = document.createElement('div');
         elmt.className = 'autocomplete'
         const new_i = document.createElement('input');
         new_i.type = 'text';
         new_i.name = inputName + '[]';
         new_i.autocomplete = 'off';
-
+        
         elmt.appendChild(new_i);
         elmt.appendChild(document.createElement('article'));
-
+        
         const tab = [];
         suggestions.forEach(c => { tab.push(c.text); });
         const autocomp = new AutoComplete(new_i, tab);
@@ -101,19 +101,30 @@ class cooptInput {
      * @description Function generating the suggestion window
      */
     createInput() {
-        this.elmt = document.createElement('div');
-        this.elmt.className = 'autocomplete'
-        const new_i = document.createElement('input');
-        new_i.type = 'text';
-        new_i.name = this.inputName + '[]';
-        new_i.autocomplete = 'off';
+        console.log('Bonjour');
+        // TODO : remplacer le autocomplete input par une liste déroulante
+        // this.elmt = document.createElement('div');
+        // this.elmt.className = 'autocomplete'
+        // const new_i = document.createElement('input');
+        // new_i.type = 'text';
+        // new_i.name = this.inputName;
+        // new_i.autocomplete = 'off';
+        // 
+        // this.elmt.appendChild(new_i);
+        // this.elmt.appendChild(document.createElement('article'));
+        // 
+        // const tab = [];
+        // this.suggestions.forEach(c => { tab.push(c.text); });
+        // this.autocomplete = new AutoComplete(new_i, tab);
 
-        this.elmt.appendChild(new_i);
-        this.elmt.appendChild(document.createElement('article'));
-
-        const tab = [];
-        this.suggestions.forEach(c => { tab.push(c.text); });
-        this.autocomplete = new AutoComplete(new_i, tab);
+        this.elmt = document.createElement('select');
+        this.elmt.name = this.inputName;
+        this.suggestions.forEach(c => {
+            const option = document.createElement('option');
+            option.value = c.id;
+            option.textContent = c.text;
+            this.elmt.appendChild(option);
+        });
 
         const parent = this.input.parentNode;
         if (parent.lastChild === this.input) 

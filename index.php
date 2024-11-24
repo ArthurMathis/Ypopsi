@@ -115,7 +115,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                         isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : []
                     );
                     $helps          = isset($_POST["aide"]) ? $_POST["aide"] : null;
-                    $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null;
+                    $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'] : null;
                     $medical_visit  = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
 
                     $applications->checkCandidate($candidate, $qualifications, $helps, $medical_visit, $coopteur);

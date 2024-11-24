@@ -43,6 +43,8 @@ class CandidaturesModel extends Model {
     /**
      * Protected method searching one employee (candidate in contract) from a concatenation of his first and last name
      *
+     * ! UNUSED !
+     * 
      * @param String $candidate_concat The concatenation
      * @return Array The employee's data
      */ 
@@ -98,8 +100,8 @@ class CandidaturesModel extends Model {
         if(!empty($medical_visit))
             $candidate->setMedicalVisit($medical_visit);
     
-        if($coopteur)
-            $coopteur = $this->searchCandidatByConcat($coopteur);
+        // if($coopteur)
+        //     $coopteur = $this->searchCandidatByConcat($coopteur);
 
         $_SESSION['candidate']      = $candidate;
         $_SESSION['qualifications'] = $qualifications;
@@ -123,11 +125,11 @@ class CandidaturesModel extends Model {
             foreach($qualifications as $item) 
                 $this->inscriptGetQualifications($candidate->getKey(), $this->searchQualifications($item['qualification'])['Id'], $item['date']);
 
-        if(!empty($helps)) 
-            foreach($helps as $item) 
-                $this->inscriptHaveTheRightTo($candidate->getKey(), $this->searchHelps($item)['Id'], $item === COOPTATION ? $coopteur : null);
-
-                exit;
+        if(!empty($helps)) {
+            foreach($helps as $item) {
+                $this->inscriptHaveTheRightTo($candidate->getKey(), $item, $item == $this->searchHelps(COOPTATION)['Id'] ? $coopteur : null);   
+            }
+        }
                 
         $this->writeLogs(
             $_SESSION['user_key'], 

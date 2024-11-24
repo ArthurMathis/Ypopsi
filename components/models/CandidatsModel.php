@@ -528,7 +528,7 @@ class CandidatsModel extends Model {
      * @param array $data
      * @return void
      */
-    public function makeupdateCandidates($key_candidate, $data=[]) {
+    public function makeUpdateCandidates($key_candidate, $data=[]) {
         $this->updateCandidates(
             $key_candidate,
             $data['name'],

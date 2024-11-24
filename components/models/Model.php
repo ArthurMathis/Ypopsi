@@ -249,13 +249,16 @@ abstract class Model {
      */
     public function getEmployee() {
         $request = "SELECT 
+        c.Id AS id,
         CONCAT(c.Name, ' ', c.Firstname) AS text
 
         FROM Candidates AS c
         INNER JOIN Contracts AS con ON c.Id = con.Key_Candidates
 
         WHERE con.SignatureDate IS NOT NULL
-        AND (con.EndDate IS NULL OR con.EndDate > CURDATE())";
+        AND (con.EndDate IS NULL OR con.EndDate > CURDATE())
+        
+        ORDER BY text";
 
         return $this->get_request($request, []);
     }

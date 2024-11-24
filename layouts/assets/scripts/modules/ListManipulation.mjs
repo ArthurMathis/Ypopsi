@@ -241,7 +241,7 @@ function setColorAvailability(items=[], index) {
         const date = new Date(items[i].cells[index].innerHTML.trim());
 
         if(date < current_date)
-            items[i].classList.add('date_depassee');
+            items[i].classList.add('date_future');
     }
 }
 
