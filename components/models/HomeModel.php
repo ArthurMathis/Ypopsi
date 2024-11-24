@@ -13,7 +13,6 @@ class HomeModel extends Model {
      * @return void
      */
     public function getNonTraiteeCandidatures(): ?Array {
-        // On initialise la requête
         $request = "SELECT 
         c.Id AS Cle,
         j.Titled AS Poste, 
@@ -31,7 +30,6 @@ class HomeModel extends Model {
         
         ORDER BY app.Id DESC";
     
-        // On lance la requête
         return $this->get_request($request);
     }
     /**
@@ -40,7 +38,6 @@ class HomeModel extends Model {
      * @return void
      */
     public function getReductProposition(): ?Array {
-        // On initialise la requête
         $request = "SELECT 
         j.Titled AS Poste,
         can.Name AS Nom, 
@@ -53,7 +50,6 @@ class HomeModel extends Model {
         
         ORDER BY con.Id DESC";
 
-        // On lance la requête
         return $this->get_request($request);
     }
     /**
@@ -76,27 +72,4 @@ class HomeModel extends Model {
 
         return $this->get_request($request, $params);
     }
-    // public function getReductRendezVous(): ?Array {
-    //     $request = "SELECT 
-    //     c.Name AS Nom, 
-    //     c.Firstname AS Prenom,
-    //     meet.Date as Moment
-    //     
-    //     FROM Meetings AS meet
-    //     INNER JOIN Candidates AS c ON meet.Key_Candidates = c.Id
-    //     
-    //     WHERE meet.Key_Users = :cle";
-    //     $params = ['cle' => $_SESSION['user_key']];
-    // 
-    //     // On lance la requête
-    //     $arr = $this->get_request($request, $params);
-    // 
-    //     if(!empty($arr))
-    //         foreach ($arr as &$row) {
-    //             $row["Jour"] = date('d/m/Y', strtotime($row["Moment"]));
-    //             $row["Heure"] = date('H:i', strtotime($row["Moment"]));
-    //             unset($row["Moment"]);
-    //     }
-    //     return $arr;
-    // }
 }

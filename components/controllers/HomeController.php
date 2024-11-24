@@ -38,7 +38,6 @@ class HomeController extends Controller {
             ]
         ];
         
-        // On génère la vue
-        return $this->View->getContent($items, $dashboard);
+        return $this->View->displayHomePage($items, $dashboard);
     }
 }

@@ -29,7 +29,6 @@ abstract class Model {
             $db_user        = getenv('DB_USER');
             $db_password    = getenv('DB_PASS');
     
-            // Supprimez le slash dans la valeur de DB_HOST
             $db_host = str_replace('/', '', $db_host);
     
             $db_fetch = "$db_connection:host=$db_host;port=$db_port;dbname=$db_name";
@@ -71,8 +70,7 @@ abstract class Model {
     }
 
 
-    // * METHODES DE REQUETES A LA BASE DE DONNEES * //
-    
+// * METHODES DE REQUETES A LA BASE DE DONNEES * //
 
     /**
      * Private method checking the request parameters
@@ -86,7 +84,7 @@ abstract class Model {
             throw new Exception("La requête doit être passée en paramètre !");
         elseif(!is_Array($params))
             throw new Exception("Les données de la requête doivent être passsée en paramètre !");
-    
+
         return true;
     }
     /**
@@ -105,19 +103,17 @@ abstract class Model {
         if($this->test_data_request($request, $params)) try {
             $query = $this->getConnection()->prepare($request);
             $query->execute($params);
-
+    
             if($unique) 
                 $result = $query->fetch(PDO::FETCH_ASSOC);
             else 
                 $result = $query->fetchAll(PDO::FETCH_ASSOC);
-
+    
             if(empty($result)) {
                 if($present) 
                     throw new Exception("Requête: " . $request ."\nAucun résultat correspondant");
-                
                 else 
                     return null;
-    
             } else 
                 return $result;
     
@@ -163,7 +159,8 @@ abstract class Model {
     }
 
 
-    // * GET * //
+// * GET * //
+
     /**
      * Public method returning the users list to autocomplete items
      *
@@ -277,9 +274,8 @@ abstract class Model {
         return $this->get_request($request);
     }
 
-
-
-    // * SEARCH * //
+    
+// * SEARCH * //
 
     /**
      * Protected method searching one hub in the database
@@ -350,8 +346,7 @@ abstract class Model {
         ];
 
         return $this->get_request($request, $params, true);
-    }
-    
+    } 
     /**
      * Public method search one user in the database
      * 
@@ -431,24 +426,24 @@ abstract class Model {
 
         return $this->get_request($request, $params, true, true);
     }
-    /**
-     * Public method searching a candidate with his name, his firstnam and his email address or his phone number
-     * 
-     * @param String $name The candidate's name
-     * @param String $firstname The candidate's firstname
-     * @param String $email The candidate's email
-     * @param String $phone The candidate's phone number
-     * @return The candidate
-     */
-    public function searchCandidatesByName($name, $firstname, $email): ?Array {
-        $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
-        $params = [
-            ":name" => $name,
-            ":firstname" => $firstname, 
-            ":email" => $email
-        ];
-        return $this->get_request($request, $params, true);
-    }
+    // /**
+    //  * Public method searching a candidate with his name, his firstnam and his email address or his phone number
+    //  * 
+    //  * @param String $name The candidate's name
+    //  * @param String $firstname The candidate's firstname
+    //  * @param String $email The candidate's email
+    //  * @param String $phone The candidate's phone number
+    //  * @return The candidate
+    //  */
+    // public function searchCandidatesByName($name, $firstname, $email): ?Array {
+    //     $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
+    //     $params = [
+    //         ":name" => $name,
+    //         ":firstname" => $firstname, 
+    //         ":email" => $email
+    //     ];
+    //     return $this->get_request($request, $params, true);
+    // }
     /**
      * Public method searching one candidate from one of his application in the database
      *
@@ -598,7 +593,7 @@ abstract class Model {
     protected function searchHaveTheRightToFromCandidate($key_candidate): ?Array {
         $request = "SELECT * FROM Have_the_right_to WHERE Key_Candidates = :key_candidate";
         $params = ['key_candidate' => $key_candidate];
-
+ 
         return $this->get_request($request, $params);
     }
     /**
@@ -650,7 +645,7 @@ abstract class Model {
     
 
 
-    // * INSCRIPT * //
+// * INSCRIPT * //
 
     /**
      * protected method registering one user in the database
@@ -731,6 +726,8 @@ abstract class Model {
     /**
      * Protected method registering one Get_qualfications in the database
      *
+     * TODO : Tester cette méthode
+     * 
      * @param Int $key_candidate The candidate's primary key
      * @param Int $key_qualification The degree primary key
      * @param Int $year The year of obtaining
@@ -743,21 +740,17 @@ abstract class Model {
             "key_qualification" => $key_qualification,
             "date"              => $date
         ];
-    
-        echo 'On prépare la requête : <br>';
-        var_dump($request); 
-        echo '<br>'; 
-        var_dump($params); 
-        echo '<br>';
 
         $this->post_request($request, $params);
     }
     /**
      * Protected method registering one Have_the_right_to in the database
      *
-     * @param Int $cle_candidat The candidate's primary key
-     * @param Int $cle_aide The assistance primary key
-     * @param Int $cle_coopteur The recommander's primary key
+     * TODO : Tester cette méthode
+     * 
+     * @param Int $key_candidate The candidate's primary key
+     * @param Int $key_helps The assistance primary key
+     * @param Int $key_employee The recommander's primary key
      * @return Void
      */
     protected function inscriptHaveTheRightTo($key_candidate, $key_helps, $key_employee=null) {
@@ -768,15 +761,15 @@ abstract class Model {
             'key_helps'     => $key_helps
         ];
 
-        if(!empty($cle_coopteur)) {
-            $request .= ", Cle_Coopteur";
+        if(!empty($key_employee)) {
+            $request .= ", Key_Employee";
             $values_request .= ", :key_employee";
             $params['key_employee'] = $key_employee;
         }
 
         $request .= ")" . $values_request . ")";
         unset($values_request);
-        
+
         $this->post_request($request, $params);
     }
     /**

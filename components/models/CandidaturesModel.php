@@ -117,12 +117,7 @@ class CandidaturesModel extends Model {
      * @return Void
      */
     public function createCandidate(&$candidate, $qualifications=[], $helps=[], $coopteur=null) {
-        echo 'On génère le nouveau candidat<br>';
-
         $candidate->setKey($this->inscriptCandidates($candidate));
-
-        echo 'La clé du nouveau candidat : ' . $candidate->getKey() . '<br>'; 
-        echo 'Liste des qualifications du candidat : <br>';
 
         if(!empty($qualifications)) 
             foreach($qualifications as $item) 
@@ -130,8 +125,10 @@ class CandidaturesModel extends Model {
 
         if(!empty($helps)) 
             foreach($helps as $item) 
-                $this->inscriptHaveTheRightTo($candidate->getKey(), $this->searchHelps($item)['id']);
+                $this->inscriptHaveTheRightTo($candidate->getKey(), $this->searchHelps($item)['Id'], $item === COOPTATION ? $coopteur : null);
 
+                exit;
+                
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Nouveau candidat", 

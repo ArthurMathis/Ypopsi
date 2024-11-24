@@ -19,17 +19,13 @@
             </div>
             <div>
                 <p>Service demandé</p>
-                <?php if(empty($item['candidatures'][0]['service'])): ?>
-                    <p>non renseigné</p>
-                <?php else: ?>
+                <?php if(!empty($item['candidatures'][0]['service'])): ?>
                     <p><?= $item['candidatures'][0]['service']; ?></p>
                 <?php endif ?>
             </div>
             <div>
                 <p>Etablissement demandé</p>
-                <?php if(empty($item['candidatures'][0]['etablissement'])): ?>
-                    <p>non renseigné</p>
-                <?php else: ?>
+                <?php if(!empty($item['candidatures'][0]['etablissement'])): ?>
                     <p><?= $item['candidatures'][0]['etablissement']; ?></p>
                 <?php endif ?>
             </div>

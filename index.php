@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once('define.php');
 require_once(COMPONENTS.DS.'AlertManipulation.php');
@@ -12,7 +12,7 @@ require_once(CONTROLLERS.DS.'PreferencesController.php');
 session_start();
 env_start();
 
-if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
+if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
     unset($_SESSION['first_log_in']);
     alert_manipulation::alert([
         'title' => "Information importante",
@@ -90,6 +90,11 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
                     elseif(empty($_POST["prenom"]))
                         throw new Exception("Le champs prenom doit être rempli par une chaine de caractères !");
+                    elseif(empty($_POST["diplome"])) {
+                        if(!empty($_POST["diplomeDate"])) 
+                            throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
+                    } elseif(empty($_POST["diplomeDate"]))
+                        throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
                     elseif(count($_POST["diplome"]) !== count($_POST["diplomeDate"]))
                         throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
 
@@ -104,13 +109,11 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'post code'     => !empty($_POST['code-postal']) ? $_POST['code-postal'] : null
                     ];
 
-                    // $qualifications = isset($_POST["diplome"]) ? $_POST["diplome"] : null;
-                    // $qualifications_dates = isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : null;
-                    $qualifications = isset($_POST["diplome"]) ? $_POST["diplome"] : [];
-                    $qualifications_dates = isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : [];
-                    $qualifications = array_map(function($qualification, $date) {
-                        return ['qualification' => $qualification, 'date' => $date];
-                    }, $qualifications, $qualifications_dates);
+                    $qualifications = array_map(
+                        function($qualification, $date) { return ['qualification' => $qualification, 'date' => $date]; }, 
+                        isset($_POST["diplome"]) ? $_POST["diplome"] : [], 
+                        isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : []
+                    );
                     $helps          = isset($_POST["aide"]) ? $_POST["aide"] : null;
                     $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null;
                     $medical_visit  = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
@@ -435,7 +438,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] == true) {
                         'name' => forms_manip::nameFormat($_POST['nom']),
                         'firstname' => forms_manip::nameFormat($_POST['prenom']), 
                         'email' => $_POST['email'], 
-                        'phone' => forms_manip::numberFormat($_POST['telephone']), 
+                        'phone' => !empty($_POST['telephone']) ? forms_manip::numberFormat($_POST['telephone']) : null, 
                         'address' => $_POST['adresse'], 
                         'city' => forms_manip::nameFormat($_POST['ville']), 
                         'post_code' => $_POST['code-postal'], 

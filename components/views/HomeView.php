@@ -10,7 +10,7 @@ class HomeView extends View {
     /**
      * Public function returning the home page 
      */
-    public function getContent($items=[], $dashboard=[]) {
+    public function displayHomePage($items=[], $dashboard=[]) {
         $this->generateCommonHeader('Ypopsi - Welcome', [PAGES_STYLES.DS.'index.css']);
         $this->generateMenu(false, HOME);
 

@@ -91,6 +91,7 @@ class CandidaturesController extends Controller {
         $candidate->setAvailability($application['availability']);
         try {
             if($candidate->getKey() === null) {
+                // TODO : Repenser la méthode de recherche
                 $search = $this->Model->searchCandidatesByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
 
                 if(empty($search)) 

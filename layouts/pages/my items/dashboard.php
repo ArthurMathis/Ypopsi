@@ -34,11 +34,11 @@
     </div>
     <div class="dashboard_bubble">
         <h2>Aides au recrutement</h2>
-        <?php if(isset($item['candidate']['qualifications']) && !empty($item['candidate']['qualifications'])): ?>
-            <?php foreach($item['candidate']['qualifications'] as $obj): ?>
+        <?php if(isset($item['helps']) && !empty($item['helps'])): ?>
+            <?php foreach($item['helps'] as $obj): ?>
                 <article>
-                    <p><?= $obj['titled']; ?></p>
-                    <i><?= $obj['year']; ?></i>
+                    <p><?= $obj['intitule']; ?></p>
+                    <i><?php if($obj['intitule'] === COOPTATION) echo $item['employee']; ?></i>
                 </article>
             <?php endforeach ?>  
         <?php else: ?>
