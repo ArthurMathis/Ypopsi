@@ -284,9 +284,9 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                         throw new Exception("Le champs type de contrat doit être rempli !");
                     elseif(empty($_POST['date_debut']))
                         throw new Exception('Le champs date de début doit être rempli !');
-                    if($data['type_de_contrat'] == 'CDI' && !empty($_POST['date_fin'])) 
+                    if($_POST['type_contrat'] == 'CDI' && !empty($_POST['date_fin'])) 
                         throw new Exception("La date de fin ne peut pas être remplie pour un CDI !");
-                    elseif(empty($_POST['date_fin'])) 
+                    elseif($_POST['type_contrat'] != 'CDI' &&empty($_POST['date_fin'])) 
                             throw new Exception("La date de fin doit être remplie !");
 
                     $data = [
