@@ -229,10 +229,13 @@ class CandidatsModel extends Model {
      */
     private function getHelpsFromCandidates($key_candidate): ?Array {
         $request = "SELECT 
-        Titled AS intitule 
+        helps.Titled AS intitule,
+        c.Id AS id
 
-        FROM Helps
-        INNER JOIN Have_the_right_to AS have ON helps.Id = have.Key_Helps
+
+        FROM Have_the_right_to AS have
+        INNER JOIN helps ON helps.Id = have.Key_Helps
+        LEFT JOIN Candidates AS c ON have.Key_Employee = c.Id
         WHERE have.Key_Candidates = " . $key_candidate;
 
         $result = $this->get_request($request);
@@ -539,6 +542,19 @@ class CandidatsModel extends Model {
             $data['city'],
             $data['post_code']
         );
+
+        $temp = $this->searchGetQualificationsFromCandidates($key_candidate);
+        if(!empty($temp)) {
+            foreach($temp as $obj) {
+                $this->deleteGetQualifications($key_candidate, $obj['Key_Qualifications']);
+            }
+        }
+        unset($temp);
+        if(!empty($data['qualifications'])) {
+            foreach($data['qualifications'] as $obj) {
+                $this->inscriptGetQualifications($key_candidate, $this->searchQualifications($obj['qualification'])['Id'], $obj['date']);
+            }
+        }
         
         $temp = $this->searchHaveTheRightToFromCandidate($key_candidate);
         if(!empty($temp)) {
@@ -549,22 +565,10 @@ class CandidatsModel extends Model {
         unset($temp);
         if(!empty($data['helps'])) {
             foreach($data['helps'] as $obj) {
-                $this->inscriptHaveTheRightTo($key_candidate, $this->searchHelps($obj)['Id']);
+                $this->inscriptHaveTheRightTo($key_candidate, $obj, $obj == $this->searchHelps(COOPTATION)['Id'] ? $data['coopteur'] : null);
             }
         }
 
-        $temp = $this->searchGetQualificationsFromCandidates($key_candidate);
-        if(!empty($temp)) {
-            foreach($temp as $obj) {
-                $this->deleteGetQualifications($key_candidate, $obj['Key_Qualifications']);
-            }
-        }
-        unset($temp);
-        if(!empty($data['qualifications'])) {
-            foreach($data['qualifications'] as $index => $obj) {
-                $this->inscriptGetQualifications($key_candidate, $this->searchQualifications($obj)['Id'], !empty($data['qualifications date'][$index]) ? $data['qualifications date'][$index] : null);    
-            }
-        }
         $candidate = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],

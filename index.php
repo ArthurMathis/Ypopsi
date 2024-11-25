@@ -435,18 +435,21 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
 
                 try {
                     $data = [
-                        'name' => forms_manip::nameFormat($_POST['nom']),
-                        'firstname' => forms_manip::nameFormat($_POST['prenom']), 
-                        'email' => $_POST['email'], 
-                        'phone' => !empty($_POST['telephone']) ? forms_manip::numberFormat($_POST['telephone']) : null, 
-                        'address' => $_POST['adresse'], 
-                        'city' => forms_manip::nameFormat($_POST['ville']), 
-                        'post_code' => $_POST['code-postal'], 
-                        'qualifications' => isset($_POST["diplome"]) ? $_POST["diplome"] : null,
-                        'qualifications date' => isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : null,
-                        'helps' => isset($_POST["aide"]) ? $_POST["aide"] : null,
-                        'coopteur' => isset($_POST["coopteur"]) ? $_POST['coopteur'][0] : null,
-                        'medical_visit' => isset($_POST["visite_medicale"][0]) ? $_POST["visite_medicale"][0] : null
+                        'name'                => forms_manip::nameFormat($_POST['nom']),
+                        'firstname'           => forms_manip::nameFormat($_POST['prenom']),
+                        'email'               => !empty($_POST['email']) ? forms_manip::numberFormat($_POST['email']) : null,
+                        'phone'               => !empty($_POST['telephone']) ? forms_manip::numberFormat($_POST['telephone']) : null,
+                        'address'             => $_POST['adresse'],
+                        'city'                => forms_manip::nameFormat($_POST['ville']),
+                        'post_code'           => $_POST['code-postal'],
+                        'qualifications'      => array_map(
+                                                    function($qualification, $date) { return ['qualification' => $qualification, 'date' => $date]; }, 
+                                                    isset($_POST["diplome"]) ? $_POST["diplome"] : [], 
+                                                    isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : []
+                                                ),
+                        'helps'               => isset($_POST["aide"]) ? $_POST["aide"] : null,
+                        'coopteur'            => isset($_POST["coopteur"]) ? $_POST['coopteur'] : null,
+                        'medical_visit'       => isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null
                     ];
 
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))

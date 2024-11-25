@@ -125,7 +125,8 @@ class CandidatController extends Controller {
         return $this->View->displayEditCandidates(
             $this->Model->getEditCandidates($key_candidate),
             $this->Model->getQualifications(),
-            $this->Model->getHelps()
+            $this->Model->getHelps(),
+            $this->Model->getEmployee()
         );
     }
     /**

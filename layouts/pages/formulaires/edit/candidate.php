@@ -55,11 +55,20 @@
             <?php if(isset($item['candidate']['helps'])) foreach($item['candidate']['helps'] as $a): ?>
                 <select name="aide[]">
                     <?php foreach($item['helps'] as $c): ?>
-                        <option value="<?= $c['id']; ?>" <?php if($a["intitule"] == $c['text']) { $coopt = true; echo 'selected'; }?>>
+                        <option value="<?= $c['id']; ?>" <?php if($a["intitule"] == $c['text']) { echo 'selected'; }?>>
                             <?= $c['text']; ?>
                         </option>
                     <?php endforeach ?>    
                 </select> 
+                <?php if($a['intitule'] === COOPTATION): ?>
+                    <select id="coopteur" name="coopteur">
+                    <?php foreach($employee as $c): ?>
+                        <option value="<?= $c['id']; ?>" <?php if($a["id"] == $c['id']) { echo 'selected'; }?>>
+                            <?= $c['text']; ?>
+                        </option>
+                    <?php endforeach ?>
+                    </select>
+                <?php endif ?>
             <?php endforeach ?>
         </section>
         <section id='visite-section' class="imp-section">
@@ -72,6 +81,16 @@
     </div> 
 </form>
 <script type="module">
+    document.addEventListener('elementCreated', function(e) {
+        if(e.detail.element.parentNode === document.getElementById('aide-section')) {
+            const aideSection = document.getElementById('aide-section');
+            const inputAide = aideSection.querySelectorAll('select');
+            
+            const obj = new formManipulation.cooptInput(inputAide[inputAide.length - 1], 'coopteur', 3, <?= json_encode($employee); ?>);
+            obj.input.addEventListener('change', (e) => obj.react());
+        }
+    });
+
     import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs"; 
 
     const diplome = new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode($qualifications); ?>, 'Intitulé', <?= count($qualifications); ?>, ); 

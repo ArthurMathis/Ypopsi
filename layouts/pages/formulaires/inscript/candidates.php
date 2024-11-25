@@ -67,7 +67,6 @@
 </form>
 
 <script type="module">
-    console.log('Start');
     document.addEventListener('elementCreated', function(e) {
         if(e.detail.element.parentNode === document.getElementById('aide-section')) {
             const aideSection = document.getElementById('aide-section');

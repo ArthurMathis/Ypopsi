@@ -149,12 +149,13 @@ class CandidatsView extends View {
     /**
      * Public method building the edit candidates HTML form 
      *
-     * @param Array $item The array containing the 
-     * @param Array $qualifications
-     * @param Array $helps
+     * @param Array $item The array containing the candidate's data
+     * @param Array $qualifications The array containing the list of qualifications
+     * @param Array $helps The array containing the list of helps
+     * @param Array $employee The array containing the the list of employee
      * @return View The HTML Page
      */
-    public function displayEditCandidates($item=[], $qualifications=[], $helps=[]) {
+    public function displayEditCandidates($item=[], $qualifications=[], $helps=[], $employee=[]) {
         $this->generateCommonHeader('Ypopsi - Modification de ' . forms_manip::majusculeFormat($item['candidate']['Name']) . ' ' . $item['candidate']['Firstname'], [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
 
