@@ -1,8 +1,8 @@
 <aside>
     <article>
         <header>
-            <img src="layouts\assets\img\logo\white-profil.svg" alt="Logo de la section profil représentant une personne">
             <h2>Votre compte</h2>
+            <img src="layouts\assets\img\logo\white-profil.svg" alt="Logo de la section profil représentant une personne">
         </header>
         <content>
             <a <?php if($_GET['preferences'] == "home") echo 'class="selected"'; ?> href="index.php?preferences=home">Consulter vos informations</a>
@@ -12,8 +12,8 @@
     <?php if($_SESSION['user_role'] == OWNER || $_SESSION['user_role'] == ADMIN): ?>
     <article>
         <header>
-            <img src="layouts\assets\img\logo\white-utilisateurs.svg" alt="Logo de la section utilisateurs représentant un groupe de personne">
             <h2>Utilisateurs</h2>
+            <img src="layouts\assets\img\logo\white-utilisateurs.svg" alt="Logo de la section utilisateurs représentant un groupe de personne">
         </header>
         <content>
             <a <?php if($_GET['preferences'] == "liste-utilisateurs") echo 'class="selected"'; ?> href="index.php?preferences=liste-utilisateurs">Liste des utilisateurs</a>
@@ -26,8 +26,8 @@
     <?php if($_SESSION['user_role'] != INVITE): ?>
     <article>
         <header>
-            <img src="layouts\assets\img\logo\white-data.svg" alt="Logo de la section données représentant un nuage">
             <h2>Données</h2>
+            <img src="layouts\assets\img\logo\white-data.svg" alt="Logo de la section données représentant un nuage">
         </header>
         <content>
             <a <?php if($_GET['preferences'] == "liste-postes") echo 'class="selected"'; ?> href="index.php?preferences=liste-postes">Postes</a>

@@ -50,7 +50,7 @@ class CandidaturesView extends View {
      * @param Array $establishment The array containing the list of establishments
      * @param Array $typeOfContract The array containing the list of types of contracts
      * @param Array $source The array containing the list of sources
-     * @return View - HTML Page
+     * @return View HTML Page
      */
     public function displayInputApplicationsContent($title, $job=[], $service=[], $establishment=[], $typeOfContract=[], $source=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);

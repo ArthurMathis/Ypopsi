@@ -2,19 +2,26 @@
 
 require_once('Controller.php');
 
+/**
+ * Class representing the control page controller
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class PreferencesController extends Controller {
-    /// Constructeur de la classe
+    /**
+     * Class' constructor
+     */
     public function __construct() {
         $this->loadModel('PreferencesModel');
         $this->loadView('PreferencesView');
     }
 
-    /// Méthode publique retournant la page de préférences
-    public function display($cle_utilisateur) {
-        return $this->View->getContent(
-            $this->Model->getProfil($cle_utilisateur)
-        );
-    }
+    /**
+     * Public method returning the user's profile 
+     *
+     * @param Int $key_user The user's primary key
+     * @return View HTML Page
+     */
+    public function display($key_user) { return $this->View->displayProfile($this->Model->getProfil($key_user)); }
     /// Méthode publique retournant la page de modification du mot de passe
     public function displayEdit() {
         return $this->View->getEditpassword();

@@ -7,7 +7,13 @@ require_once('View.php');
  */
 class PreferencesView extends View {
     /// Méthode publique retournant la page principale du menu préférences
-    public function getContent($items=[]) {
+    /**
+     * Public method displaying the user's profile
+     *
+     * @param Array $items The array containing the user's data
+     * @return View HTML Page
+     */
+    public function displayProfile($items=[]) {
         $this->generateCommonHeader('Ypopsi - Préférences', [PAGES_STYLES.DS.'preferences.css']);
         $this->generateMenu(false, PREFERENCES);
 
@@ -24,14 +30,14 @@ class PreferencesView extends View {
     /// Méthode privée retournant leprofil de l'utilisateur
     private function getProfil(&$items=[]) {
         echo "<div class='left'>";
-        include(MY_ITEMS.DS.'profil_user.php');
+        include(MY_ITEMS.DS.'user_profile.php');
         echo "</div>";
     }
     /// Méthode privée retournant la page d'historique d'un utilisateur
     private function getUtilisateurHistorique(&$items=[]) {
         echo "<div class='right'>"; 
-        $this->getBulles("Historique d'actions", $items['actions'], 8, null, null);
-        $this->getBulles("Historique de connexions", $items['connexions'], 4, null, null);
+        $this->getBubble("Historique d'actions", $items['actions'], 8, null, null);
+        $this->getBubble("Historique de connexions", $items['connexions'], 4, null, null);
         echo "</div>";
     }
     /// Méthod epublique retournant la page de modification du mot de passe
