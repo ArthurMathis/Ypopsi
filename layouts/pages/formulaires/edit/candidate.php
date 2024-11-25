@@ -42,8 +42,8 @@
             </button>
             <?php if(isset($item['candidate']['qualifications'])) foreach($item['candidate']['qualifications'] as $index => $d): ?>
                 <div class="double-items">
-                    <input type="text" id="diplome-<?= $index+1; ?>" name="diplome[]" value="<?= $d['Intitule']; ?>">
-                    <input type="number" name="diplomeDate[]" id="diplomeDate-<?= $index+1; ?>" min="1900" max="<?= date('Y'); ?>" value="<?= empty($d['Annee']) ? NULL : $d['Annee']; ?>" placeholder="Année d'obtention">
+                    <input type="text" id="diplome-<?= $index+1; ?>" name="diplome[]" value="<?= $d['titled']; ?>">
+                    <input type="date" name="diplomeDate[]" id="diplomeDate-<?= $index+1; ?>" max="<?= date('Y-m-d'); ?>" value="<?= date('Y-m-d', strtotime($d['date'])); ?>">
                 </div>
             <?php endforeach ?>   
         </section>      
