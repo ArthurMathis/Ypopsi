@@ -56,11 +56,8 @@
     <main>
         <content>
             <section>
-                <input type="text" id="recherche-nom"  placeholder="Nom">
-                <input type="text" id="recherche-prenom" placeholder="Prenom">
-            </section>
-            <section>
-                <input type="text" id="recherche-email" placeholder="Email">
+                <p>Identifiant</p>
+                <input type="text" id="recherche-identifiant"  placeholder="Identifiant">
             </section>
         </content>
         <aside>
@@ -176,16 +173,8 @@
         ];
         const champs_infos_recherche = [
             {
-                champs: document.getElementById('recherche-nom'),
-                index : 1
-            },
-            {
-                champs: document.getElementById('recherche-prenom'),
-                index : 2
-            },
-            {
-                champs: document.getElementById('recherche-email'),
-                index : 3
+                champs: document.getElementById('recherche-identifiant'),
+                index: 1
             }
         ];
 

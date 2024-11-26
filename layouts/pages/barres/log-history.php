@@ -1,7 +1,5 @@
 <nav class="options_barre">
-    <article>
-        <a class="action_button reverse_color" href="index.php?preferences=saisie-utilisateur">Nouvel utilisateur</a>
-    </article>
+    <article></article>
     <article>
         <p class="action_button" id="filtrer-button">Filtrer</p>
         <p class="action_button" id="rechercher-button">Rechercher</p>
@@ -11,6 +9,17 @@
     <h2>Filtrer par</h2>
     <main>
         <content>
+            <section id="action_input" class="small-section">
+                <p>Actions</p>
+                <div class="container-statut">
+                    <input type="checkbox" name="connexion" checked>
+                    <p>Connexion</p>
+                </div>
+                <div class="container-statut">
+                    <input type="checkbox" name="moderateur" checked>
+                    <p>Deconnexion</p>
+                </div>
+            </section>
             <section id="role_input" class="small-section">
                 <p>Rôles</p>
                 <div class="container-statut">
@@ -35,10 +44,14 @@
                 </div>
             </section>
             <section>
-                <p>Etablissement</p>
-                <input type="text" id="filtre-etablissement" placeholder="Etablissement">
+                <p>Date minimale</p>
+                <input type="date" id="filtre-date-max" name="filre-data-max">
             </section>
-        </content>
+            <section>
+                <p>Date maximale</p>
+                <input type="date" id="filtre-date-min" name="filre-data-min">
+            </section>
+        </content> 
         <aside>
             <button id="reinint-filtre" class="reinint_button LignesHover">
                 <p>Réinitialiser les filtres</p>
@@ -52,15 +65,13 @@
     </main>
 </div>
 <div class="candidatures-menu" id="rechercher-menu">
-    <h2>Rechercher par</h2>
+    <h2>Rechercher selon</h2>
     <main>
         <content>
             <section>
+                <p>Informations personnelles</p>
                 <input type="text" id="recherche-nom"  placeholder="Nom">
                 <input type="text" id="recherche-prenom" placeholder="Prenom">
-            </section>
-            <section>
-                <input type="text" id="recherche-email" placeholder="Email">
             </section>
         </content>
         <aside>
@@ -91,8 +102,17 @@
         // * CODES COULEURS * //
         listManipulation.setColor(candidatures, [
             {
-                content: 'Propriétaire', 
-                class: 'owner'
+                content: 'Connexion', 
+                class: 'connexion'
+            },{
+                content: 'Déconnexion', 
+                class: 'deconnexion'
+            }
+        ], 0);
+        listManipulation.setColor(candidatures, [
+            {
+                content: 'Propriétaire',
+                class: 'proprietaire'
             },
             {
                 content: 'Administrateur', 
@@ -105,12 +125,11 @@
             {
                 content: 'Utilisateur', 
                 class: 'utilisateur'
-            },
-            {
+            },{
                 content: 'Invité', 
                 class: 'invite'
             }
-        ], 0);
+        ], 1);
 
         // * MANIPULATION DE LA LISTE * //
         const rechercher = document.getElementById('rechercher-button');
@@ -163,31 +182,31 @@
         let candidatures_selection = Array.from(candidatures);
         let filtrerIsVisible = false;
         let rechercherIsVisible = false;
-
-        const champs_statut = {
-            champs: Array.from(document.getElementById('role_input').querySelectorAll('input')),
-            index : 0
+        const champs_action = {
+            champs: Array.from(document.getElementById('action_input').querySelectorAll('input')),
+            index: 0
         };
-        const champs_infos_filtre = [
-            {
-                champs: document.getElementById('filtre-etablissement'),
-                index : 3
-            }
-        ];
-        const champs_infos_recherche = [
+        const champs_role = {
+            champs: Array.from(document.getElementById('role_input').querySelectorAll('input')),
+            index: 1
+        };
+        const champs_infos = [
             {
                 champs: document.getElementById('recherche-nom'),
-                index : 1
+                index: 2
             },
             {
                 champs: document.getElementById('recherche-prenom'),
-                index : 2
-            },
-            {
-                champs: document.getElementById('recherche-email'),
-                index : 3
+                index: 3
             }
         ];
+        const champs_date = {
+            index: 5,
+            champs : [
+                document.getElementById('filtre-date-max'),
+                document.getElementById('filtre-date-min')
+            ]
+        };
 
         filtrer.addEventListener('click', () => {
             listManipulation.hideMenu(rechercher_menu);
@@ -213,9 +232,10 @@
         //// Application des filtres ////
         function filter() {
             let criteres = [];
-            listManipulation.recoverFields(champs_infos_filtre, criteres);
-            listManipulation.recoverCheckbox(champs_statut, criteres);
-            listManipulation.recoverFields(champs_infos_recherche, criteres);
+            listManipulation.recoverCheckbox(champs_action, criteres);
+            listManipulation.recoverCheckbox(champs_role, criteres);
+            listManipulation.recoverFields(champs_infos, criteres);
+            listManipulation.recoverFieldsDate(champs_date, criteres);
 
             // If empty, reset the list
             if(criteres.length === 0) {
@@ -240,9 +260,9 @@
 
         //// Réinitialisation des filtres ////
         function reinitFields() {
-            listManipulation.clearFields(champs_infos_filtre);
-            listManipulation.clearFields(champs_infos_recherche);
-            listManipulation.clearFieldsCheckbox(champs_statut);
+            listManipulation.clearFields(champs_infos);
+            listManipulation.clearFieldsCheckbox(champs_action);
+            listManipulation.clearFieldsCheckbox(champs_role);
             listManipulation.clearFieldsDate(champs_date);
         }
         reinit_filtre.addEventListener('click', reinitFields);

@@ -1,14 +1,14 @@
 .liste_items .table-wrapper table th:first-of-type, 
 .liste_items .table-wrapper table th:nth-of-type(2) {
-    padding-left: var(--padding);
+    padding-left: calc(var(--gap) +  4px);
 }
 .liste_items .table-wrapper table th:first-of-type::before, 
 .liste_items .table-wrapper table th:nth-of-type(2)::before{
     content: "";
     position: absolute;
-    left: var(--margin);
+    left: var(--big-radius);
     top: 50%;
-  
+
     display: block;
     width: var(--font-size-small);
     height: var(--font-size-small);

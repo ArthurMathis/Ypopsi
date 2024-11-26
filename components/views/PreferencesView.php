@@ -72,11 +72,11 @@ class PreferencesView extends View {
     }
 
     /**
-     * Public method 
+     * Public method returning the list of users HTML Page 
      *
-     * @param Array $items
-     * @param String $direction
-     * @return View - HTML Page
+     * @param Array $items The list of users
+     * @param String $direction The redirection link to the user profile
+     * @return View HTML Page
      */
     public function displayUsersContent($items=[], $direction) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
@@ -94,18 +94,16 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        // $scripts = [
-        //     'views/liste-view.js',
-        //     'models/liste-model.js',
-        //     'models/objects/Liste.js',
-        //     'controllers/preferences-controller.js'
-        // ];
-        // include(COMMON.DS.'import-scripts.php');
-
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant la liste des nouveaux utilisateurs
-    public function getNouveauxUtilisateursContent($items=[], $direction) {
+    /**
+     * Public method returning the list of new users HTML Page 
+     *
+     * @param Array $items The list of users
+     * @param String $direction The redirection link to the user profile
+     * @return View HTML Page
+     */
+    public function displayNewUsersContent($items=[], $direction) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
@@ -116,46 +114,36 @@ class PreferencesView extends View {
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="liste-utilisateurs">';
-        include BARRES.DS.'nouveaux-utilisateurs.php';
+        include BARRES.DS.'users.php';
+        // include BARRES.DS.'new-users.php';
         $this->getListItems("Nouveaux utilisateurs", $items, null, "main-liste", null, $direction);
         echo '</main>';
         echo '</content>';
 
-        $scripts = [
-            'views/liste-view.js',
-            'models/liste-model.js',
-            'models/objects/Liste.js',
-            'controllers/nouveaux-utilisateurs-controller.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
         // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant la vue Historique de connexions
+    /**
+     * Public method returning thelogs history HTML Page 
+     *
+     * @param Array $items The list of connexions
+     * @return View HTML Page
+     */
     public function getConnexionHistoriqueContent($items=[]) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
-            PAGES_STYLES.DS.'connexion-historique.css'
+            PAGES_STYLES.DS.'log-history.css'
         ]);
         $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="historique">';
-        include BARRES.DS.'connexion-historique.php';
+        include BARRES.DS.'log-history.php';
         $this->getListItems("Historique de connexions", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
-
-        $scripts = [
-            'views/liste-view.js',
-            'models/liste-model.js',
-            'models/objects/Liste.js',
-            'controllers/connexion-historique-controller.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
 
         $this->generateCommonFooter();
     }

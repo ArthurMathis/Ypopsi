@@ -13,7 +13,7 @@
     z-index: 0;
     
     border-radius: var(--font-size-small);
-    transform: translateY(-50%);;
+    transform: translateY(-50%);
 }
 .liste_items .table-wrapper table tbody tr.moderateur th:first-of-type::before {
     background-color: var(--color2);

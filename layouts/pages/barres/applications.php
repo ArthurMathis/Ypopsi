@@ -76,6 +76,7 @@
                 <img src="layouts\assets\img\logo\close.svg" alt="">
             </button>
             <button id="valider-recherche" class="reverse_color">
+                <p>Appliquer</p>
                 <img src="layouts\assets\img\logo\white-recherche.svg" alt="">
             </button>
         </aside>
