@@ -12,7 +12,8 @@ body > content {
     width: 100dvw;
     height: calc(100% - (var(--navbarre-size) + var(--very-big-radius)));
 
-    padding: 0 var(--very-big-radius) var(--very-big-radius);
+    padding-left: var(--very-big-radius);
+    padding-bottom: var(--very-big-radius);
 }
 
 /******** Barre de préférences ********/
@@ -134,6 +135,8 @@ body > content > main {
 
 body > content > main .candidatures-menu {
     width: calc(100% - 340px + var(--very-big-radius));
+    background: linear-gradient(195deg, var(--white), 75%, var(--light-blue));
+    background-attachment: fixed;
 }
 
 /*

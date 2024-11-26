@@ -152,25 +152,25 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
-            PAGES_STYLES.DS.'action-historique.css'
+            PAGES_STYLES.DS.'action-history.css'
         ]);
         $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="historique">';
-        include BARRES.DS.'action-historique.php';
+        include BARRES.DS.'action-history.php';
         $this->getListItems("Historique d'actions", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
 
-        $scripts = [
-            'views/liste-view.js',
-            'models/liste-model.js',
-            'models/objects/Liste.js',
-            'controllers/action-historique-controller.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
+        // $scripts = [
+        //     'views/liste-view.js',
+        //     'models/liste-model.js',
+        //     'models/objects/Liste.js',
+        //     'controllers/action-historique-controller.js'
+        // ];
+        // include(COMMON.DS.'import-scripts.php');
 
         $this->generateCommonFooter();
     }

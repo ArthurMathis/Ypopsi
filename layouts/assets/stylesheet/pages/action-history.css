@@ -1,12 +1,12 @@
 .liste_items .table-wrapper table th:first-of-type {
-    padding-left: var(--padding);
+    padding-left: calc(var(--gap) +  4px);
 }
 .liste_items .table-wrapper table th:first-of-type::before {
     content: "";
     position: absolute;
-    left: var(--margin);
+    left: var(--big-radius);
     top: 50%;
-  
+
     display: block;
     width: var(--font-size-small);
     height: var(--font-size-small);
@@ -26,4 +26,8 @@
 }
 .liste_items .table-wrapper table tbody tr.fondation th:first-of-type::before{
     background-color: var(--color5);
+}
+
+.candidatures-menu .small-section {
+    width: 220px;
 }
