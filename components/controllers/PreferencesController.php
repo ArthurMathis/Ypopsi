@@ -110,10 +110,16 @@ class PreferencesController extends Controller {
     public function displaySaisiePole() {
         return $this->View->getSaisiePole();
     }
-    public function displayEditUtilisateur($cle_utilisateur) {
-        return $this->View->getEditUtilisateur(
-            $this->Model->getEditProfil($cle_utilisateur),
-            $this->Model->getAccessibleRoles()
+    /**
+     * Public method displaying the user edit HTML form
+     *
+     * @param Int $user_key The suer's primary key
+     * @return View HTML Page
+     */
+    public function displayEditUsers($user_key) {
+        return $this->View->displayEditUsers(
+            $this->Model->getEditProfile($user_key),
+            $this->Model->getRoles()
         );
     }
 
@@ -167,7 +173,7 @@ class PreferencesController extends Controller {
         alert_manipulation::alert([
             'title' => 'Opération réussie',
             'msg' => "Nouvel utilisateur enregistré !",
-            'direction' => 'index.php?preferences=liste-nouveaux-utilisateurs'
+            'direction' => 'index.php?preferences=list-new-users'
         ]);
     }
     /// Méthode publique générant un nouveau poste
@@ -181,7 +187,7 @@ class PreferencesController extends Controller {
         alert_manipulation::alert([
             'title' => 'Opération réussie',
             'msg' => "Nouveau poste enregistré !",
-            'direction' => 'index.php?preferences=liste-postes'
+            'direction' => 'index.php?preferences=list-jobs'
         ]);
     }
     /// Méthode publique générant un nouveau service
@@ -191,7 +197,7 @@ class PreferencesController extends Controller {
         alert_manipulation::alert([
             'title' => 'Opération réussie',
             'msg' => "Nouveau service enregistré !",
-            'direction' => 'index.php?preferences=liste-services'
+            'direction' => 'index.php?preferences=list-services'
         ]);
     }
     /// Méthode publique générant un nouvel établissement
@@ -201,7 +207,7 @@ class PreferencesController extends Controller {
         alert_manipulation::alert([
             'title' => 'Opération réussie',
             'msg' => "Nouveau établissement enregistré !",
-            'direction' => 'index.php?preferences=liste-etablissements'
+            'direction' => 'index.php?preferences=list-establishments'
         ]);
     }
     /// Méthode publique générant un nouveau pôle
@@ -211,7 +217,7 @@ class PreferencesController extends Controller {
         alert_manipulation::alert([
             'title' => 'Opération réussie',
             'msg' => "Nouveau pôle enregistré !",
-            'direction' => 'index.php?preferences=liste-poles'
+            'direction' => 'index.php?preferences=list-poles'
         ]);
     }
 }

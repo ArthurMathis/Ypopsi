@@ -185,10 +185,7 @@ abstract class Model {
      * @return Void
      */
     public function getServices() {
-        // On inititalise la requête
         $request = "SELECT titled FROM Services ORDER BY titled";
-        
-        // On lance la requête
         return $this->get_request($request, [], false, true);
     }
     /**
@@ -197,10 +194,7 @@ abstract class Model {
      * @return Void
      */
     public function getSources() {
-        // On initialise la requête
         $request = "SELECT titled FROM Sources ORDER BY titled";
-
-        // On lance la requête
         return $this->get_request($request, [], false, true);
     }
     /**
@@ -209,10 +203,7 @@ abstract class Model {
      * @return Void
      */
     public function getTypesOfContracts() {
-        // On initialise la requête
         $request = "SELECT titled FROM Types_of_contracts ORDER BY titled";
-
-        // On lance la requête
         return $this->get_request($request, [], false, true);
     }
     /**
@@ -267,10 +258,10 @@ abstract class Model {
      *
      * @return Void
      */
-    public function getAccessibleRoles() {
+    public function getRoles() {
         $request = "SELECT 
-        Id_Role AS id,
-        Intitule_Role AS text
+        Id AS id,
+        Titled AS titled
 
         FROM Roles";
 
@@ -411,8 +402,6 @@ abstract class Model {
 
         return $this->get_request($request, $params, true, true);
     }
-    // TODO: Implémenter la methode //
-    protected function searchActions(): Array { return []; }
 
     /**
      * Public method searching and returning one candidate from his primary key
@@ -429,24 +418,6 @@ abstract class Model {
 
         return $this->get_request($request, $params, true, true);
     }
-    // /**
-    //  * Public method searching a candidate with his name, his firstnam and his email address or his phone number
-    //  * 
-    //  * @param String $name The candidate's name
-    //  * @param String $firstname The candidate's firstname
-    //  * @param String $email The candidate's email
-    //  * @param String $phone The candidate's phone number
-    //  * @return The candidate
-    //  */
-    // public function searchCandidatesByName($name, $firstname, $email): ?Array {
-    //     $request = "SELECT * FROM Candidates WHERE name = :name AND firstname = :firstname AND email = :email";
-    //     $params = [
-    //         ":name" => $name,
-    //         ":firstname" => $firstname, 
-    //         ":email" => $email
-    //     ];
-    //     return $this->get_request($request, $params, true);
-    // }
     /**
      * Public method searching one candidate from one of his application in the database
      *

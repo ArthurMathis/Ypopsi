@@ -6,7 +6,6 @@ require_once('View.php');
  *  Class générant les pages du menu préférences
  */
 class PreferencesView extends View {
-    /// Méthode publique retournant la page principale du menu préférences
     /**
      * Public method displaying the user's profile
      *
@@ -20,51 +19,47 @@ class PreferencesView extends View {
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="profil-user">';
-        $this->getProfil($items);
-        $this->getUtilisateurHistorique($items);
+        echo "<div class='left'>";
+        include(MY_ITEMS.DS.'user_profile.php');
+        echo "</div>";
+        echo "<div class='right'>"; 
+        $this->getBubble("Historique d'actions", $items['actions'], 10, null, null);
+        $this->getBubble("Historique de connexions", $items['logs'], 6, null, null);
+        echo "</div>";
         echo '</main>';
         echo '</content>';
 
         $this->generateCommonFooter();
     }
-    /// Méthode privée retournant leprofil de l'utilisateur
-    private function getProfil(&$items=[]) {
-        echo "<div class='left'>";
-        include(MY_ITEMS.DS.'user_profile.php');
-        echo "</div>";
-    }
-    /// Méthode privée retournant la page d'historique d'un utilisateur
-    private function getUtilisateurHistorique(&$items=[]) {
-        echo "<div class='right'>"; 
-        $this->getBubble("Historique d'actions", $items['actions'], 8, null, null);
-        $this->getBubble("Historique de connexions", $items['connexions'], 4, null, null);
-        echo "</div>";
-    }
-    /// Méthod epublique retournant la page de modification du mot de passe
+    /**
+     * Public method displaying the edit password HTML form
+     *
+     * @return View HTML Page
+     */
     public function getEditpassword() {
         $this->generateCommonHeader('Ypopsi - Préférences', [
             PAGES_STYLES.DS.'preferences.css', 
             FORMS_STYLES.DS.'edit-user.css'
         ]);
-        $this->generateMenu(true, PREFERENCES);
+        $this->generateMenu(false, PREFERENCES);
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main>';
-        include(EDIT_FORM.DS.'mot-de-passe.php');
+        include(EDIT_FORM.DS.'password.php');
         echo '</amin>';
         echo '</content>';
 
         $this->generateCommonFooter();
     } 
-    public function getEditUtilisateur($user=[], $role=[]) {
+    /**
+     * Public method displaying the edit user HTML form
+     *
+     * @return View HTML Page
+     */
+    public function displayEditUsers($user=[], $role=[]) {
         $this->generateCommonHeader("Mise-à-jour de l'utilisateur", [FORMS_STYLES.DS.'small-form.css']);
-        $this->generateMenu(true, PREFERENCES);
-
-        $scripts = [
-            'models/objects/AutoComplet.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
+        $this->generateMenu(true, null);
 
         include EDIT_FORM.DS.'user.php';
 
@@ -88,7 +83,7 @@ class PreferencesView extends View {
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
-        echo '<main id="liste-utilisateurs">';
+        echo '<main id="list-users">';
         include BARRES.DS.'users.php';
         $this->getListItems("Utilisateurs", $items, null, "main-liste", null, $direction);
         echo '</main>';
@@ -113,7 +108,7 @@ class PreferencesView extends View {
 
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
-        echo '<main id="liste-utilisateurs">';
+        echo '<main id="list-users">';
         include BARRES.DS.'users.php';
         // include BARRES.DS.'new-users.php';
         $this->getListItems("Nouveaux utilisateurs", $items, null, "main-liste", null, $direction);
@@ -124,7 +119,7 @@ class PreferencesView extends View {
         $this->generateCommonFooter();
     }
     /**
-     * Public method returning thelogs history HTML Page 
+     * Public method returning the logs history HTML Page 
      *
      * @param Array $items The list of connexions
      * @return View HTML Page
@@ -147,7 +142,12 @@ class PreferencesView extends View {
 
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant la vue Historique d'actions
+    /**
+     * Public method returning the actions history HTML Page 
+     *
+     * @param Array $items The list of connexions
+     * @return View HTML Page
+     */
     public function displayActionsHistoryContent($items) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
@@ -163,14 +163,6 @@ class PreferencesView extends View {
         $this->getListItems("Historique d'actions", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
-
-        // $scripts = [
-        //     'views/liste-view.js',
-        //     'models/liste-model.js',
-        //     'models/objects/Liste.js',
-        //     'controllers/action-historique-controller.js'
-        // ];
-        // include(COMMON.DS.'import-scripts.php');
 
         $this->generateCommonFooter();
     }

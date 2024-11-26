@@ -1,4 +1,4 @@
-<form class="small-form" method="post" action="index.php?preferences=inscription-etablissement">
+<form class="small-form" method="post" action="index.php?preferences=inscript-establishments">
     <h3>Saissez les informations de l'établissement</h3>
     <section>
         <p>Informations relatives à la fondation</p>

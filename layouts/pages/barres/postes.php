@@ -1,7 +1,7 @@
 <nav class="options_barre">
     <article>
         <?php if($_SESSION['user_role'] == OWNER || $_SESSION['user_role'] == ADMIN): ?>    
-            <a class="action_button reverse_color" href="index.php?preferences=saisie-poste">Nouveau poste</a>
+            <a class="action_button reverse_color" href="index.php?preferences=input-jobs">Nouveau poste</a>
         <?php endif ?>    
     </article>
     <article>

@@ -1,6 +1,6 @@
 <nav class="options_barre">
     <article>
-        <a class="action_button reverse_color" href="index.php?preferences=saisie-utilisateur">Nouvel utilisateur</a>
+        <a class="action_button reverse_color" href="index.php?preferences=input-users">Nouvel utilisateur</a>
     </article>
     <article>
         <p class="action_button" id="filtrer-button">Filtrer</p>

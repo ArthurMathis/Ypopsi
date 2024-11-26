@@ -97,7 +97,7 @@ body > content > aside content a:is(:hover, :focus) {
 #profil-user .right {
     display: flex;
     flex-direction: column;
-    gap: calc(2 * var(--gap));
+    gap: var(--very-big-radius);
 
     height: auto;
 }
@@ -126,6 +126,7 @@ body > content > aside content a:is(:hover, :focus) {
     display: flex;
     justify-content: end;
     align-items: end;
+    gap: var(--radius);
 }
 
 body > content > main {
@@ -140,10 +141,10 @@ body > content > main .candidatures-menu {
 }
 
 /*
-#liste-utilisateurs .liste_items .table-wrapper table th:first-of-type {
+#list-users .liste_items .table-wrapper table th:first-of-type {
     padding-left: var(--gap);
 }
-#liste-utilisateurs .liste_items .table-wrapper table th:first-of-type::before {
+#list-users .liste_items .table-wrapper table th:first-of-type::before {
     content: "";
     position: absolute;
     left: var(--big-radius);
@@ -157,15 +158,15 @@ body > content > main .candidatures-menu {
     border-radius: var(--font-size-small);
     transform: translateY(-50%);
 }
-#liste-utilisateurs .liste_items .table-wrapper table tbody tr.moderateur th:first-of-type::before {
+#list-users .liste_items .table-wrapper table tbody tr.moderateur th:first-of-type::before {
     background-color: var(--color2);
 }
-#liste-utilisateurs .liste_items .table-wrapper table tbody tr.administrateur th:first-of-type::before {
+#list-users .liste_items .table-wrapper table tbody tr.administrateur th:first-of-type::before {
     background-color: var(--color4);
 }
-#liste-utilisateurs .liste_items .table-wrapper table tbody tr.utilisateur th:first-of-type::before {
+#list-users .liste_items .table-wrapper table tbody tr.utilisateur th:first-of-type::before {
     background-color: var(--color3);
 }
-#liste-utilisateurs .liste_items .table-wrapper table tbody tr.invite th:first-of-type::before {
+#list-users .liste_items .table-wrapper table tbody tr.invite th:first-of-type::before {
     background-color: var(--color5);
 }*/

@@ -1,12 +1,14 @@
 <form method="post" action="index.php?preferences=update-password">
     <h3>Modification de mot de passe</h3>
-    <section>
+    <div class="input-container">
         <p>Saisissez votre ancien mot de passe</p>
         <input type="password" id="password" name="password" placeholder="Mot de passe">
-    </section>
+    </div>
     <section>
-        <p>Choissiez votre nouveau mot de passe</p>
-        <input type="password" id="new-password" name="new-password" placeholder="Mot de passe">
+        <div class="input-container">
+            <p>Choissiez votre nouveau mot de passe</p>
+            <input type="password" id="new-password" name="new-password" placeholder="Mot de passe">
+        </div>
         <input type="password" id="confirmation" name="confirmation" placeholder="Confirmation">
     </section>
     <button class="action_button reverse_color" type="submit" value="new_user">Enregistrer</button>
@@ -22,9 +24,7 @@
 <script src="layouts\assets\scripts\anime.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const morphs = document.querySelectorAll('.morph');
-
-        morphs.forEach(morph => { animateMorph(morph); });
+        document.querySelectorAll('.morph').forEach(morph => { animateMorph(morph); });
     });
 
     function animateMorph(element) {

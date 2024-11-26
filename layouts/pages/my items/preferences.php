@@ -16,10 +16,10 @@
             <img src="layouts\assets\img\logo\white-utilisateurs.svg" alt="Logo de la section utilisateurs représentant un groupe de personne">
         </header>
         <content>
-            <a <?php if($_GET['preferences'] == "liste-utilisateurs") echo 'class="selected"'; ?> href="index.php?preferences=liste-utilisateurs">Liste des utilisateurs</a>
-            <a <?php if($_GET['preferences'] == "liste-nouveaux-utilisateurs") echo 'class="selected"'; ?> href="index.php?preferences=liste-nouveaux-utilisateurs">Nouveaux utilisateurs</a>
-            <a <?php if($_GET['preferences'] == "connexion-historique") echo 'class="selected"'; ?> href="index.php?preferences=connexion-historique">Historique de connexions</a>
-            <a <?php if($_GET['preferences'] == "action-historique") echo 'class="selected"'; ?> href="index.php?preferences=action-historique">Historique d'actions</a>
+            <a <?php if($_GET['preferences'] == "list-users") echo 'class="selected"'; ?> href="index.php?preferences=list-users">Liste des utilisateurs</a>
+            <a <?php if($_GET['preferences'] == "list-new-users") echo 'class="selected"'; ?> href="index.php?preferences=list-new-users">Nouveaux utilisateurs</a>
+            <a <?php if($_GET['preferences'] == "logs-history") echo 'class="selected"'; ?> href="index.php?preferences=logs-history">Historique de connexions</a>
+            <a <?php if($_GET['preferences'] == "actions-history") echo 'class="selected"'; ?> href="index.php?preferences=actions-history">Historique d'actions</a>
         </content>
     </article>
     <?php endif ?>
@@ -30,11 +30,11 @@
             <img src="layouts\assets\img\logo\white-data.svg" alt="Logo de la section données représentant un nuage">
         </header>
         <content>
-            <a <?php if($_GET['preferences'] == "liste-postes") echo 'class="selected"'; ?> href="index.php?preferences=liste-postes">Postes</a>
-            <a <?php if($_GET['preferences'] == "liste-services") echo 'class="selected"'; ?> href="index.php?preferences=liste-services">Services</a>
-            <a <?php if($_GET['preferences'] == "liste-etablissements") echo 'class="selected"'; ?> href="index.php?preferences=liste-etablissements">Etablissements</a>
-            <a <?php if($_GET['preferences'] == "liste-poles") echo 'class="selected"'; ?> href="index.php?preferences=liste-poles">Pôles</a>
-            <!--<a <?php if($_GET['preferences'] == "liste-diplomes") echo 'class="selected"'; ?> href="index.php?preferences=liste-diplomes">Diplômes</a>
+            <a <?php if($_GET['preferences'] == "list-jobs") echo 'class="selected"'; ?> href="index.php?preferences=list-jobs">Postes</a>
+            <a <?php if($_GET['preferences'] == "list-services") echo 'class="selected"'; ?> href="index.php?preferences=list-services">Services</a>
+            <a <?php if($_GET['preferences'] == "list-establishments") echo 'class="selected"'; ?> href="index.php?preferences=list-establishments">Etablissements</a>
+            <a <?php if($_GET['preferences'] == "list-poles") echo 'class="selected"'; ?> href="index.php?preferences=list-poles">Pôles</a>
+            <!--<a <?php if($_GET['preferences'] == "list-qualifications") echo 'class="selected"'; ?> href="index.php?preferences=list-qualifications">Diplômes</a>
             <a <?php if($_GET['preferences'] == "autres") echo 'class="selected"'; ?> href="index.php?preferences=autres">Autres</a>-->
         </content>
     </article>

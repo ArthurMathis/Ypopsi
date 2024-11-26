@@ -559,15 +559,15 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 $preferences->display($_SESSION['user_key']); 
                 break;    
 
-            case 'edit-user':
-                if(isset($_GET['cle_utilisateur']) && !empty($_GET['cle_utilisateur']) && is_numeric($_GET['cle_utilisateur'])) {
-                    $preferences->displayEditUtilisateur($_GET['cle_utilisateur']);
+            case 'edit-users':
+                if(isset($_GET['user_key']) && !empty($_GET['user_key']) && is_numeric($_GET['user_key'])) {
+                    $preferences->displayEditUsers($_GET['user_key']);
 
                 } else 
                     throw new Exception ('La clé utilisateur est nécessaire pour la mise-à-jour de son rôle !');
                 break;
 
-            case 'update-user':
+            case 'update-users':
                 if(isset($_GET['cle_utilisateur']) && !empty($_GET['cle_utilisateur']) && is_numeric($_GET['cle_utilisateur'])) {
                     try {
                         if(empty( $_POST['nom'])) 
@@ -598,39 +598,11 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                     throw new Exception ('La clé utilisateur est nécessaire pour la mise-à-jour !');
                 break;    
 
-            case 'get-reset-password':
-                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                if(isset($_GET['cle_utilisateur']) && !empty($_GET['cle_utilisateur']) && is_numeric($_GET['cle_utilisateur'])) {
-                    $_SESSION['password'] = PasswordGenerator::random_password();
-                    alert_manipulation::alert([
-                        'title' => "Information importante",
-                        'msg' => "Le mot de passe va être réinitialisé. Le nouveau mot de passe est : <br><b> ". $_SESSION['password'] . "</b><br>Ce mot de passe ne pourra plus être consulté. Mémorisez-le avant de valider ou revenez en arrière.",
-                        'direction' => 'index.php?preferences=reset-password&cle_utilisateur=' . $_GET['cle_utilisateur'],
-                        'confirm' => true
-                    ]);
-
-                } else 
-                    throw new Exception ('La clé utilisateur est nécessaire pour la réinitialisation du mot de passe !');
-                break;
-
-            case 'reset-password':
-                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                if(isset($_GET['cle_utilisateur']) && !empty($_GET['cle_utilisateur']) && is_numeric($_GET['cle_utilisateur'])) {
-                    $preferences->resetPassword($_SESSION['password'], $_GET['cle_utilisateur']);
-                    unset($_SESSION['password']);
-
-                } else 
-                    throw new Exception ('La clé utilisateur est nécessaire pour la réinitialisation du mot de passe !');
-                break;    
+                
 
             case 'edit-password':
                 $preferences->displayEdit();
                 break; 
-            
 
             case 'update-password':
                 try {
@@ -647,23 +619,120 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 }
 
                 $preferences->updatePassword($_POST['password'], $_POST['new-password']);
-                break;    
+                break; 
+                
+            case 'display-reset-password':
+                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-            case 'liste-utilisateurs':
+                if(isset($_GET['user_key']) && !empty($_GET['user_key']) && is_numeric($_GET['user_key'])) {
+                    $_SESSION['password'] = PasswordGenerator::random_password();
+                    alert_manipulation::alert([
+                        'title' => "Information importante",
+                        'msg' => "Le mot de passe va être réinitialisé. Le nouveau mot de passe est : <br><b> ". $_SESSION['password'] . "</b><br>Ce mot de passe ne pourra plus être consulté. Mémorisez-le avant de valider ou revenez en arrière.",
+                        'direction' => 'index.php?preferences=reset-password&user_key=' . $_GET['user_key'],
+                        'confirm' => true
+                    ]);
+
+                } else 
+                    throw new Exception ('La clé utilisateur est nécessaire pour la réinitialisation du mot de passe !');
+                break;
+
+            case 'reset-password':
+                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                if(isset($_GET['user_key']) && !empty($_GET['user_key']) && is_numeric($_GET['user_key'])) {
+                    $preferences->resetPassword($_SESSION['password'], $_GET['user_key']);
+                    unset($_SESSION['password']);
+
+                } else 
+                    throw new Exception ('La clé utilisateur est nécessaire pour la réinitialisation du mot de passe !');
+                break;
+
+            case 'list-users':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displayUsers();
                 break;
 
-            case 'saisie-utilisateur':
+            case 'list-new-users':
+                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                $preferences->displayNewUsers();
+                break;
+
+            case 'list-jobs':
+                if($_SESSION['user_role'] == INVITE)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                $preferences->displayPostes();
+                break;
+
+            case 'list-qualifications': 
+                break;
+
+            case 'list-poles':
+                if($_SESSION['user_role'] == INVITE)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                $preferences->displayPoles();
+                break;
+
+            case 'list-establishments':
+                if($_SESSION['user_role'] == INVITE)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                $preferences->displayEtablissements();
+                break;
+
+            case 'list-services':
+                if($_SESSION['user_role'] == INVITE)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                $preferences->displayServices();
+                break;
+
+            case 'input-users':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 $preferences->displaySaisieUtilisateur();
-                break;     
+                break; 
 
-            case 'get-inscription-utilisateur':
+            case 'input-jobs':
+                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                $preferences->displaySaisiePoste();
+                break;  
+
+            case 'input-qualifications':
+                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                break;   
+
+            case 'input-poles':
+                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                $preferences->displaySaisiePole();
+                break;
+
+            case 'input-establishments':
+                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                $preferences->displaySaisieEtablissement();
+                break;  
+
+            case 'input-services': 
+                $preferences->displaySaisieService();
+                break;
+
+            case 'get-inscript-users':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -702,12 +771,12 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 alert_manipulation::alert([
                     'title' => "Information importante",
                     'msg' => "Le nouvel utilisateur va être créé avec le mot de passe suivant : <br><b> ". $infos['mot de passe'] . "</b><br>Ce mot de passe ne pourra plus être consulté. Mémorisez-le avant de valider la création du compte ou revenez en arrière.",
-                    'direction' => 'index.php?preferences=inscription-utilisateur',
+                    'direction' => 'index.php?preferences=inscript-users',
                     'confirm' => true
                 ]);
                 break;  
             
-            case 'inscription-utilisateur':
+            case 'inscript-users':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -737,49 +806,14 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                     forms_manip::error_alert([
                         'title' => "Erreur lors de l'incription du nouvel utilisateur", 
                         'msg' => $e,
-                        'direction' => "index.php?preferences=saisie-utilisateur"
+                        'direction' => "index.php?preferences=input-users"
                     ]);
                 } 
 
                 $preferences->createUtilisateur($infos);
                 break;
 
-            case 'liste-nouveaux-utilisateurs':
-                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                $preferences->displayNewUsers();
-                break;    
-
-            case 'connexion-historique':
-                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                $preferences->displayLogsHistory();
-                break;  
-
-            case 'action-historique':
-                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                $preferences->displayActionsHistory();
-                break;    
-
-            case 'liste-postes':
-                if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                $preferences->displayPostes();
-                break;
-
-            case 'saisie-poste':
-                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                $preferences->displaySaisiePoste();
-                break;    
-
-            case 'inscription-poste':
+            case 'inscript-jobs':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -804,50 +838,35 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 $preferences->createPoste($infos);
                 break;
 
-            case 'liste-services':
-                if($_SESSION['user_role'] == INVITE)
+            case 'inscript-qualifications':
+                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                break; 
+
+            case 'inscript-poles':
+                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displayServices();
-                break;
-
-            case 'saisie-service': 
-                $preferences->displaySaisieService();
-                break;
-
-            case 'inscription-service':
                 try {
-                    $service = $_POST['service'];
-                    $etablissement = $_POST['etablissement'];
-                
-                    if(empty($service) || empty($etablissement))
-                        throw new Exception("Les champs service est établissements doivent être remplis !");
+                    if(empty($_POST['intitule']))
+                        throw new Exception("Le champs intitulé doit être rempli !");
+                    elseif(empty($_POST['description']))
+                        throw new Exception("Le champs description doit être rempli !");
 
-                } catch (Exception $e) {
+                    $intitule = $_POST['intitule'];
+                    $desc = $_POST['description'];
+
+                } catch(Exception $e) {
                     forms_manip::error_alert([
-                        'title' => "Erreur lors de l'inscription du nouveau service",
+                        'title' => "Erreur lors de l'inscription du pôle",
                         'msg' => $e
                     ]);
                 }
 
-                $preferences->createService($service, $etablissement);
-                break;   
-
-            case 'liste-etablissements':
-                if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                $preferences->displayEtablissements();
+                $preferences->createPole($intitule, $desc);
                 break;
 
-            case 'saisie-etablissement':
-                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                $preferences->displaySaisieEtablissement();
-                break;  
-
-            case 'inscription-etablissement':
+            case 'inscript-establishments':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
@@ -860,14 +879,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                         'pole' => $_POST['pole']
                     ];
 
-                } catch (Exception $e) {
-                    forms_manip::error_alert([
-                        'title' => "Erreur lors de l'inscription de l'établissement",
-                        'msg' => $e
-                    ]);
-                }
-
-                try {
                     if(empty($infos['intitule']))
                         throw new Exception('Le champs intitulé doit être rempli !');
                     elseif(empty($infos['adresse']))
@@ -889,66 +900,40 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 $preferences->createEtablissement($infos);
                 break;
 
-            case 'liste-poles':
-                if($_SESSION['user_role'] == INVITE)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                $preferences->displayPoles();
-                break;
-
-            case 'saisie-pole':
-                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                $preferences->displaySaisiePole();
-                break;
-
-            case 'inscription-pole':
-                if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+            case 'inscript-services':
                 try {
-                    $intitule = $_POST['intitule'];
-                    $desc = $_POST['description'];
-                } catch(Exception $e) {
+                    $service = $_POST['service'];
+                    $etablissement = $_POST['etablissement'];
+                
+                    if(empty($service) || empty($etablissement))
+                        throw new Exception("Les champs service est établissements doivent être remplis !");
+
+                } catch (Exception $e) {
                     forms_manip::error_alert([
-                        'title' => "Erreur lors de l'inscription du pôle",
+                        'title' => "Erreur lors de l'inscription du nouveau service",
                         'msg' => $e
                     ]);
                 }
 
-                try {
-                    if(empty($intitule))
-                        throw new Exception("Le champs intitulé doit être rempli !");
-                    elseif(empty($desc))
-                        throw new Exception("Le champs description doit être rempli !");
-
-                } catch(Exception $e) {  
-                    forms_manip::error_alert([
-                        'title' => "Erreur lors de l'inscription du pôle",
-                        'msg' => $e
-                    ]);
-                }
-
-                $preferences->createPole($intitule, $desc);
-                break;    
-
-            case 'liste-diplomes': 
+                $preferences->createService($service, $etablissement);
                 break;
 
-            case 'saisie-diplome':
+
+            case 'logs-history':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                break;
+                $preferences->displayLogsHistory();
+                break;  
 
-            case 'inscript-diplome':
+            case 'actions-history':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                break;    
+                $preferences->displayActionsHistory();
+                break;  
 
-            // On affiche les listes des autres données de la base de données (types de contrats, aides au recrutement, sources)    
+            // todo : On affiche les listes des autres données de la base de données (types de contrats, aides au recrutement, sources)    
             case 'autres':
                 break;    
 

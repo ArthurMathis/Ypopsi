@@ -1,4 +1,4 @@
-<form class="small-form" method="post" action="index.php?preferences=inscription-pole">
+<form class="small-form" method="post" action="index.php?preferences=inscript-poles">
     <h3>Saisissez les informations du nouveau pôle</h3>
     <section>
         <input type="text" id="intitule" name="intitule" placeholder="Intitulé">

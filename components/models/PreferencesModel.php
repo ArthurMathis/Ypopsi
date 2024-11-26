@@ -7,106 +7,96 @@ require_once(CLASSE.DS.'User.php');
 require_once(COMPONENTS.DS.'Passwordgenerator.php');
 
 class PreferencesModel extends Model {
-    /// Méthode publique retournant les informations du l'utilisateur actuelk
-    public function getProfil(&$cle_utilisateur): array {
-        // On récupère les informations de l'utilisateur
+    /**
+     * Public method returning the user's data profile
+     *
+     * @param Int $user_key The user's primary key
+     * @return Array
+     */
+    public function getProfil(&$user_key): Array {
         try {
-            // On initialise la requête
+            //// Profile ////
             $request = "SELECT 
-            u.Id As Cle,
-            u.Name AS Nom,
-            u.Firstname AS Prenom, 
-            r.Titled AS Role, 
-            u.Email AS Email,
-            LENGTH(u.Password) AS 'Mot de passe'
+            u.Id As id,
+            u.Name AS name,
+            u.Firstname AS firstname, 
+            r.Titled AS titled_role, 
+            r.Id AS role, 
+            u.Email AS email, 
+            e.Titled AS establishments
 
             FROM Users AS u
             INNER JOIN Roles AS r ON u.Key_Roles = r.Id
+            INNER JOIN Establishments AS e on u.Key_Establishments = e.Id
+
             
-            WHERE u.Id= :cle";
-            $params = ['cle' => $cle_utilisateur];
+            WHERE u.Id= :user_key";
+            $params = ['user_key' => $user_key];
 
-            // On implémente les données
-            $infos = ['utilisateur' => $this->get_request($request, $params)[0]];
+            $data = ['user' => $this->get_request($request, $params)[0]];
 
-        } catch(Exception $e) {
-            forms_manip::error_alert($e);
-        }
-
-
-        // On récupère l'historique de connexions de l'utilisateur
-        try {
-            // On initialise la requête
+            //// Logs history ////
             $request = "SELECT
             t.Titled AS Action,
-            a.Moment AS Date
+            DATE(a.Moment) AS Date,
+            DATE_FORMAT(a.Moment, '%H:%i:%s') AS Hour
 
             FROM Actions AS a
             INNER JOIN Types_of_actions AS t ON a.Key_Types_of_actions = t.Id
 
             WHERE t.titled IN ('Connexion', 'Déconnexion')
-            AND a.Key_Users = :cle
+            AND a.Key_Users = :user_key
             ORDER BY Date DESC";
 
-            // On implémente les données
-            $temp = $this->get_request($request, $params);
-            foreach($temp as $item) {
-                $item['Hour'] = date('H:i:s', strtotime($item['Date']));
-                $item['Date'] = date('Y-m-d', strtotime($item['Date']));
-            }
-            $infos['connexions'] = $temp;
+            $data['logs'] = $this->get_request($request, $params);
 
-        } catch(Exception $e) {
-            forms_manip::error_alert($e);
-        }
-        
-
-        // On récupère l'historique d'actions de l'utilisateur
-        try {
-            // On initialise la requête
+            //// Actions history //// 
             $request = "SELECT
             t.Titled AS Action,
-            a.Moment AS Date
+            DATE_FORMAT(a.Moment, '%Y-%m-%d') AS Date,
+            DATE_FORMAT(a.Moment, '%H:%i:%s') AS Hour
 
             FROM Actions AS a
             INNER JOIN Types_of_actions AS t ON a.Key_Types_of_actions = t.Id
 
             WHERE t.titled NOT IN ('Connexion', 'Déconnexion')
-            AND a.Key_Users = :cle
+            AND a.Key_Users = :user_key
             ORDER BY Date DESC";
 
-            // On implémente les données
-            $infos['actions'] = $this->get_request($request, $params);
+            $data['actions'] = $this->get_request($request, $params);
 
         } catch(Exception $e) {
             forms_manip::error_alert($e);
         }
-    
-        // On retourne les données
-        return $infos;
-    }
-    public function getEditProfil($cle_utilisateur): array {
-        // On initialise la requête
-        $request = "SELECT 
-        Id_Utilisateurs AS cle, 
-        Nom_Utilisateurs AS nom,
-        Prenom_Utilisateurs AS prenom, 
-        Id_Role AS role, 
-        Email_Utilisateurs AS email
-
-        FROM Utilisateurs AS u
-        INNER JOIN Roles AS r ON u.Cle_Roles = r.Id_Role
         
-        WHERE u.Id_Utilisateurs = :cle";
-        $params = ['cle' => $cle_utilisateur];
+        return $data;
+    }
+    /**
+     * Public method returning the user's data
+     *
+     * @param Int $user_key The user's primary key
+     * @return Array
+     */
+    public function getEditProfile($user_key): Array {
+        $request = "SELECT 
+        u.Id AS id, 
+        u.Name AS name,
+        u.Firstname AS firstname, 
+        r.Id AS role, 
+        u.Email AS email
 
-        // On lance la requête
+        FROM Users AS u
+        INNER JOIN Roles AS r ON u.Key_Roles = r.Id
+        
+        WHERE u.Id = :user_key";
+        $params = ['user_key' => $user_key];
+
         return  $this->get_request($request, $params, true, true);
     }
 
     /**
      * Public method returning the list of users
-     *
+     * 
      * @return Array
      */
     public function getUsers(): Array {
@@ -205,23 +195,6 @@ class PreferencesModel extends Model {
 
         ORDER BY Date DESC, Heure DESC";
 
-        return $this->get_request($request);
-    }
-    /**
-     * Public method returning the listes of roles
-     *
-     * @return Void
-     */
-    public function getRoles() {
-        $request = "SELECT 
-        Id AS id,
-        titled AS role
-
-        FROM Roles
-
-        ORDER BY id DESC";
-
-        // On lance la requête
         return $this->get_request($request);
     }
     /// Méthode publique retournant les postes de la base de données

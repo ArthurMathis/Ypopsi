@@ -1,7 +1,7 @@
 <nav class="options_barre">
     <article>
         <?php if($_SESSION['user_role'] == OWNER || $_SESSION['user_role'] == ADMIN): ?>
-            <a class="action_button reverse_color" href="index.php?preferences=saisie-service">Nouveau service</a>
+            <a class="action_button reverse_color" href="index.php?preferences=input-services">Nouveau service</a>
         <?php endif?>
     </article>
     <article>

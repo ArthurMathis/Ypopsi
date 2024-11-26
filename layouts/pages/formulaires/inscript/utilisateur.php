@@ -1,4 +1,4 @@
-<form class="big-form" method="post" action="index.php?preferences=get-inscription-utilisateur">
+<form class="big-form" method="post" action="index.php?preferences=get-inscript-users">
     <div class="form-container">
         <h3>Saissiez les informations du nouvel utilisateurs</h3>
         <section>
