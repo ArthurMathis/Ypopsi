@@ -27,10 +27,14 @@ class PreferencesController extends Controller {
         return $this->View->getEditpassword();
     }
 
-    /// Méthode publique retournant la page Utilisateurs
-    public function displayUtilisateurs() {
-        return $this->View->getUtilisateursContent(
-            $this->Model->getUtilisateurs(),
+    /**
+     * Public method returning the user list HTML page
+     *
+     * @return View - HTML Page
+     */
+    public function displayUsers() {
+        return $this->View->displayUsersContent(
+            $this->Model->getUsers(),
             'index.php?preferences='
         );
     }

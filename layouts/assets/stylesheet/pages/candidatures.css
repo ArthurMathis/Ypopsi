@@ -1,7 +1,7 @@
 .liste_items .table-wrapper table th:first-of-type, 
 .liste_items .table-wrapper table th:nth-of-type(7), 
 .liste_items .table-wrapper table th:nth-of-type(8) {
-    padding-left: var(--gap);
+    padding-left: calc(var(--gap) +  4px);
 }
 .liste_items .table-wrapper table th:first-of-type::before, 
 .liste_items .table-wrapper table th:nth-of-type(7)::before, 

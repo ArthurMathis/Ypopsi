@@ -21,6 +21,11 @@ class CandidaturesController extends Controller {
         $items = $this->Model->getCandidatures();
         return $this->View->getContent("Candidatures", $items);
     }
+    /**
+     * Public method returning the input candidate form
+     *
+     * @return View HTML Page
+     */
     public function displayInputCandidate() {
         return $this->View->displayInputCandidatesContent(
             'Ypopsi - Nouveau candidat', 
@@ -29,6 +34,11 @@ class CandidaturesController extends Controller {
             $this->Model->getEmployee()
         );
     }
+    /**
+     * Public method returning the input application form
+     *
+     * @return View HTML Page
+     */
     public function displayInputApplications() {
         return $this->View->displayInputApplicationsContent(
             "Ypopsi - Recherche d'un candidat", 

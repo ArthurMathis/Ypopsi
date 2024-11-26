@@ -127,28 +127,23 @@ body > content > aside content a:is(:hover, :focus) {
     align-items: end;
 }
 
-/*
 body > content > main {
     width: 100%;
     height: 100%;
 }
 
 body > content > main .candidatures-menu {
-    top: 13rem;
-    width: 80%;
+    width: calc(100% - 340px + var(--very-big-radius));
 }
-body > content > main .options_barre {
-    padding-top : 0;
-}
-*/
 
+/*
 #liste-utilisateurs .liste_items .table-wrapper table th:first-of-type {
-    padding-left: var(--padding);
+    padding-left: var(--gap);
 }
 #liste-utilisateurs .liste_items .table-wrapper table th:first-of-type::before {
     content: "";
     position: absolute;
-    left: var(--margin);
+    left: var(--big-radius);
     top: 50%;
 
     display: block;
@@ -170,4 +165,4 @@ body > content > main .options_barre {
 }
 #liste-utilisateurs .liste_items .table-wrapper table tbody tr.invite th:first-of-type::before {
     background-color: var(--color5);
-}
+}*/

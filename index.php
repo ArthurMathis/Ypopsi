@@ -653,7 +653,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displayUtilisateurs();
+                $preferences->displayUsers();
                 break;
 
             case 'saisie-utilisateur':

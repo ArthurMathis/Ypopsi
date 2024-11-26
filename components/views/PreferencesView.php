@@ -71,8 +71,14 @@ class PreferencesView extends View {
         $this->generateCommonFooter();
     }
 
-    /// Méthode publique retournant la liste utilisateurs
-    public function getUtilisateursContent($items=[], $direction ) {
+    /**
+     * Public method 
+     *
+     * @param Array $items
+     * @param String $direction
+     * @return View - HTML Page
+     */
+    public function displayUsersContent($items=[], $direction) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css', 
@@ -83,18 +89,18 @@ class PreferencesView extends View {
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="liste-utilisateurs">';
-        include BARRES.DS.'utilisateurs.php';
-        $this->getListesItems("Utilisateurs", $items, null, "main-liste", null, $direction);
+        include BARRES.DS.'users.php';
+        $this->getListItems("Utilisateurs", $items, null, "main-liste", null, $direction);
         echo '</main>';
         echo '</content>';
 
-        $scripts = [
-            'views/liste-view.js',
-            'models/liste-model.js',
-            'models/objects/Liste.js',
-            'controllers/preferences-controller.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
+        // $scripts = [
+        //     'views/liste-view.js',
+        //     'models/liste-model.js',
+        //     'models/objects/Liste.js',
+        //     'controllers/preferences-controller.js'
+        // ];
+        // include(COMMON.DS.'import-scripts.php');
 
         $this->generateCommonFooter();
     }
@@ -111,7 +117,7 @@ class PreferencesView extends View {
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="liste-utilisateurs">';
         include BARRES.DS.'nouveaux-utilisateurs.php';
-        $this->getListesItems("Nouveaux utilisateurs", $items, null, "main-liste", null, $direction);
+        $this->getListItems("Nouveaux utilisateurs", $items, null, "main-liste", null, $direction);
         echo '</main>';
         echo '</content>';
 
@@ -139,7 +145,7 @@ class PreferencesView extends View {
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="historique">';
         include BARRES.DS.'connexion-historique.php';
-        $this->getListesItems("Historique de connexions", $items, null, "main-liste");
+        $this->getListItems("Historique de connexions", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
 
@@ -166,7 +172,7 @@ class PreferencesView extends View {
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="historique">';
         include BARRES.DS.'action-historique.php';
-        $this->getListesItems("Historique d'actions", $items, null, "main-liste");
+        $this->getListItems("Historique d'actions", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
 
@@ -192,7 +198,7 @@ class PreferencesView extends View {
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="historique">';
         include BARRES.DS.'postes.php';
-        $this->getListesItems("Postes", $items, null, "main-liste");
+        $this->getListItems("Postes", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
 
@@ -218,7 +224,7 @@ class PreferencesView extends View {
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="historique">';
         include BARRES.DS.'services.php';
-        $this->getListesItems("Services", $items, null, "main-liste");
+        $this->getListItems("Services", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
 
@@ -245,7 +251,7 @@ class PreferencesView extends View {
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="historique">';
         include BARRES.DS.'etablissements.php';
-        $this->getListesItems("Etablissements", $items, null, "main-liste");
+        $this->getListItems("Etablissements", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
 
@@ -270,7 +276,7 @@ class PreferencesView extends View {
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="historique">';
         include BARRES.DS.'poles.php';
-        $this->getListesItems("Pôles", $items, null, "main-liste");
+        $this->getListItems("Pôles", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
 

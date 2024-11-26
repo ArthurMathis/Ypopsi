@@ -652,6 +652,9 @@ button.form_button:is(:hover, :focus),
 .table-wrapper table thead *::selection {
   background-color: transparent;
 }
+.table-wrapper table th:first-of-type {
+  padding-left: var(--big-radius);
+}
 .table-wrapper table thead th {
   position: relative;
   font-family: "Roboto Bold";
@@ -665,7 +668,6 @@ button.form_button:is(:hover, :focus),
   text-align: left;
   text-wrap: nowrap;
 }
-
 .table-wrapper table tbody th {
   height: 65px;
 }
@@ -747,16 +749,21 @@ button.form_button:is(:hover, :focus),
   background-color: var(--blue);
 }
 .bulles .table-wrapper table {
-  padding: var(--margin) 0;
   border-spacing: var(--radius);
 }
-.bulles .table-wrapper table thead th,
+.bulles .table-wrapper table thead th {
+  height: calc(var(--font-size-standart) * 1.8);
+  color: var(--white);
+}
 .bulles .table-wrapper table tbody th {
-  height: 30px;
+  height: calc(var(--font-size-standart) * 1.5);
   color: var(--white);
 }
 .bulles .table-wrapper table tr::before {
   display: none;
+}
+.bulles .table-wrapper table th:first-of-type {
+  padding-left: var(--radius);
 }
 .bulles .table-wrapper table thead tr th:is(:hover, :focus)::after,
 .bulles .table-wrapper table thead tr th.active::after {

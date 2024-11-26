@@ -107,10 +107,9 @@ class PreferencesModel extends Model {
     /**
      * Public method returning the list of users
      *
-     * @return Void
+     * @return Array
      */
-    public function getUtilisateurs() {
-        // On initialise la requête 
+    public function getUsers(): Array {
         $request = "SELECT 
         u.Id AS Cle,
         r.Titled AS Role,
@@ -125,7 +124,6 @@ class PreferencesModel extends Model {
 
         ORDER BY Role, Cle";
 
-        // On lance la requête
         return $this->get_request($request);
     }
     /**

@@ -207,10 +207,10 @@ function setColor(items=[], criteres=[], index) {
         throw new Error("Erreur lors de la détermination du code couleur. La liste de critères doit être de type Array !");
     if (index === null || !Number.isInteger(index) || index < 0) 
         throw new Error("Erreur lors de la détermination du code couleur. L'index doit être un nombre entier positif !");
-    if(!items.cells || items.cells.length === 0)
+    if(!items[0].cells || items[0].cells.length === 0) {
+        console.error('Aucun élément détecté...');
         return;
-
-
+    }
     items = Array.from(items);
     items.forEach(line => {
         let i = 0, find = false;
