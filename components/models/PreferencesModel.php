@@ -131,7 +131,7 @@ class PreferencesModel extends Model {
      *
      * @return Void
      */
-    public function getNouveauxUtilisateurs() {
+    public function getNewUsers() {
         // On initialise la requête
         $request = "SELECT
         u.Id AS Cle,
@@ -157,7 +157,7 @@ class PreferencesModel extends Model {
      *
      * @return Void
      */
-    public function getConnexionHistorique() {
+    public function getLogsHistory() {
         $request = "SELECT
         t.titled AS Action,
         r.titled AS Role,
@@ -184,16 +184,16 @@ class PreferencesModel extends Model {
         return $temp;
     }
     /**
-     * Public method returning the action logs
+     * Public method returning the actions history
      *
-     * @return Void
+     * @return Array
      */
-    public function getActionHistorique() {
-        // On initialise la requête
+    public function getActionsHistory() {
         $request = "SELECT
         t.titled AS Action,
         CONCAT(u.name, ' ', u.firstname) AS Utilisateur,
-        a.moment AS Date,
+        DATE_FORMAT(a.moment, '%Y-%m-%d') AS Date,
+        DATE_FORMAT(a.moment, '%H:%i:%s') AS Heure,
         a.description AS Description
 
         FROM Actions AS a
@@ -203,9 +203,8 @@ class PreferencesModel extends Model {
 
         WHERE t.titled NOT IN ('Connexion', 'Déconnexion')
 
-        ORDER BY Date DESC";
+        ORDER BY Date DESC, Heure DESC";
 
-        // On lance la requête
         return $this->get_request($request);
     }
     /**

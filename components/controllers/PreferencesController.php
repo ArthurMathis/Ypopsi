@@ -38,23 +38,30 @@ class PreferencesController extends Controller {
             'index.php?preferences='
         );
     }
-    /// Méthode publique retournant la page de nouvels utilisateurs
-    public function displayNouveauxUtilisateurs() {
+    /**
+     * Public method returning the list of new users HTML Page
+     *
+     * @return View HTML Page
+     */
+    public function displayNewUsers() {
         return $this->View->displayNewUsersContent(
-            $this->Model->getNouveauxUtilisateurs(),
+            $this->Model->getNewUsers(),
             'index.php?preferences='
         );
     }
-    /// Méthode publique retournant la page Historique
-    public function displayConnexionHistorique() {
-        $items = $this->Model->getConnexionHistorique();
-        return $this->View->getConnexionHistoriqueContent($items);
-    }
-    /// Méthode publique retournant la page Historique
-    public function displayActionHistorique() {
-        $items = $this->Model->getActionHistorique();
-        return $this->View->getActionHistoriqueContent($items);
-    }
+    /**
+     * Public method returning the logs history HTML Page
+     *
+     * @return View HTML Page
+     */
+    public function displayLogsHistory() { return $this->View->displayLogsHistoryContent($this->Model->getLogsHistory()); }
+    /**
+     * Public method returning the actions history HTML Page
+     *
+     * @return View HTML Page
+     */
+    public function displayActionsHistory() { return $this->View->displayActionsHistoryContent($this->Model->getActionsHistory()); }
+    
     /// Méthode publique retournant la page Postes
     public function displayPostes() {
         $poste = $this->Model->getPostes();

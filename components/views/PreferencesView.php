@@ -129,7 +129,7 @@ class PreferencesView extends View {
      * @param Array $items The list of connexions
      * @return View HTML Page
      */
-    public function getConnexionHistoriqueContent($items=[]) {
+    public function displayLogsHistoryContent($items=[]) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
@@ -148,7 +148,7 @@ class PreferencesView extends View {
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant la vue Historique d'actions
-    public function getActionHistoriqueContent($items) {
+    public function displayActionsHistoryContent($items) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',

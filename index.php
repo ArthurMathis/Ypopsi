@@ -748,21 +748,21 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displayNouveauxUtilisateurs();
+                $preferences->displayNewUsers();
                 break;    
 
             case 'connexion-historique':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displayConnexionHistorique();
+                $preferences->displayLogsHistory();
                 break;  
 
             case 'action-historique':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displayActionHistorique();
+                $preferences->displayActionsHistory();
                 break;    
 
             case 'liste-postes':
