@@ -89,7 +89,8 @@ body > content > aside content a:is(:hover, :focus) {
 }
 #profil-user .left,
 #profil-user .right  {
-    width: 540px;
+    width: calc(50% - var(--gap));
+    min-width: 540px;
 } 
 #profil-user .left {
     height: fit-content;

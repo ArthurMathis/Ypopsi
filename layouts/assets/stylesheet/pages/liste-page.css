@@ -104,6 +104,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
+    gap: var(--radius);
 
     width: fit-content;
 }
@@ -133,9 +134,11 @@
 .liste_items .table-wrapper {
     overflow-y: auto;
     height: 100%;
-    /*height: calc(100dvh - 8rem - 150px);*/
 }
 .liste_items .table-wrapper table th {
     position: relative;
     padding-left: var(--small-radius);
+}
+.liste_items .table-wrapper table th:first-of-type{
+    padding-left: var(--very-big-radius);
 }

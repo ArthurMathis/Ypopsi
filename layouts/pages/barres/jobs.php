@@ -1,58 +1,20 @@
 <nav class="options_barre">
     <article>
-        <?php if($_SESSION['user_role'] == OWNER || $_SESSION['user_role'] == ADMIN): ?>
-            <a class="action_button reverse_color" href="index.php?preferences=input-establishments">Nouvel établissement</a>
-        <?php endif ?>
+        <?php if($_SESSION['user_role'] == OWNER || $_SESSION['user_role'] == ADMIN): ?>    
+            <a class="action_button reverse_color" href="index.php?preferences=input-jobs">Nouveau poste</a>
+        <?php endif ?>    
     </article>
     <article>
-        <p class="action_button" id="filtrer-button">Filtrer</p>
         <p class="action_button" id="rechercher-button">Rechercher</p>
     </article>
 </nav>
-<div class="candidatures-menu" id="filtrer-menu">
-    <h2>Filtrer par</h2>
-    <main>
-        <content>
-            <section id="pole_input" class="small-section">
-                <p>Pôles</p>
-                <div class="container-statut">
-                    <input type="checkbox" name="pspdna" checked>
-                    <p>pspdna</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="pspdca" checked>
-                    <p>pspdca</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="pspdsa" checked>
-                    <p>pspdsa</p>
-                </div>
-            </section>
-            <section>
-                <p>Locatisation</p>
-                <input type="text" id="filtre-ville" placeholder="Ville">
-                <input type="text" id="filtre-code" placeholder="Code Postal">
-            </section>
-        </content>
-        <aside>
-            <button id="reinint-filtre" class="reinint_button LignesHover">
-                <p>Réinitialiser les filtres</p>
-                <img src="layouts\assets\img\logo\close.svg" alt="">
-            </button>
-            <button id="valider-filtre" class="reverse_color">
-                <p>Appliquer</p>
-                <img src="layouts\assets\img\logo\white-filtre.svg" alt="">
-            </button>
-        </aside>  
-    </main>
-</div>
 <div class="candidatures-menu" id="rechercher-menu">
     <h2>Rechercher par</h2>
     <main>
         <content>
             <section>
-                <input type="text" id="recherche-etablissement"  placeholder="Intitulé">
-                <input type="text" id="recherche-adresse" placeholder="Adresse">
+                <p>Intitule</p>
+                <input type="text" id="recherche-poste"  placeholder="Poste">
             </section>
         </content>
         <aside>
@@ -64,7 +26,7 @@
                 <p>Appliquer</p>
                 <img src="layouts\assets\img\logo\white-recherche.svg" alt="">
             </button>
-        </aside>  
+        </aside>
     </main>
 </div>
 <script type='module'>
@@ -80,34 +42,13 @@
         let candidatures = document.querySelector('.liste_items .table-wrapper table tbody').rows
         const entete = Array.from(document.querySelector('.liste_items .table-wrapper table thead tr').cells);
 
-        // * CODES COULEURS * //
-        listManipulation.setColor(candidatures, [
-            {
-                content: 'pspdsa', 
-                class: 'pspdsa'
-            },
-            {
-                content: 'pspdca', 
-                class: 'pspdca'
-            },
-            {
-                content: 'pspdna', 
-                class: 'pspdna'
-            }
-        ], 1);
-
         // * MANIPULATION DE LA LISTE * //
         const rechercher = document.getElementById('rechercher-button');
-        const filtrer = document.getElementById('filtrer-button');
-
-        const appliquer_filtre = document.getElementById('valider-filtre');
         const appliquer_recherche = document.getElementById('valider-recherche');
 
-        const reinit_filtre = document.getElementById('reinint-filtre');
         const reinit_recherche = document.getElementById('reinint-recherche');
 
         const rechercher_menu = document.getElementById('rechercher-menu');
-        const filtrer_menu = document.getElementById('filtrer-menu');
 
         //// Tri par entête ////
         let item_clicked = null;
@@ -145,48 +86,15 @@
 
         //// Tri par recherches et filtres ////
         let candidatures_selection = Array.from(candidatures);
-        let filtrerIsVisible = false;
         let rechercherIsVisible = false;
-
-        const champs_poles = {
-            champs: Array.from(document.getElementById('pole_input').querySelectorAll('input')),
-            index: 1
-        };
-        const champs_infos_recherche = [
+        const champs_infos = [
             {
-                champs: document.getElementById('recherche-etablissement'),
+                champs: document.getElementById('recherche-poste'),
                 index: 0
-            },
-            {
-                champs: document.getElementById('recherche-adresse'),
-                index: 2
-            }
-        ];
-        const champs_infos_filtre = [
-            {
-                champs: document.getElementById('filtre-ville'),
-                index: 3
-            },
-            {
-                champs: document.getElementById('filtre-code'),
-                index: 4
             }
         ];
 
-        filtrer.addEventListener('click', () => {
-            listManipulation.hideMenu(rechercher_menu);
-            rechercherIsVisible = false;
-
-            if(filtrerIsVisible) 
-                listManipulation.hideMenu(filtrer_menu);
-            else 
-                listManipulation.showMenu(filtrer_menu);
-            filtrerIsVisible = !filtrerIsVisible;
-        });
         rechercher.addEventListener('click', () => {
-            listManipulation.hideMenu(filtrer_menu);
-            filtrerIsVisible = false;
-
             if(rechercherIsVisible) 
                 listManipulation.hideMenu(rechercher_menu);
             else
@@ -197,9 +105,7 @@
         //// Application des filtres ////
         function filter() {
             let criteres = [];
-            listManipulation.recoverFields(champs_infos_recherche, criteres);
-            listManipulation.recoverFields(champs_infos_filtre, criteres);
-            listManipulation.recoverCheckbox(champs_poles, criteres);
+            listManipulation.recoverFields(champs_infos, criteres);
 
             // If empty, reset the list
             if(criteres.length === 0) {
@@ -213,22 +119,16 @@
                 listManipulation.resetLines(candidatures_selection);
                 listManipulation.displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
             
-                filtrerIsVisible = !filtrerIsVisible;
                 rechercherIsVisible = !rechercherIsVisible;  
             }
-            listManipulation.hideMenu(filtrer_menu);
             listManipulation.hideMenu(rechercher_menu);
         }
-        appliquer_filtre.addEventListener('click', filter);
         appliquer_recherche.addEventListener('click', filter);
 
         //// Réinitialisation des filtres ////
         function reinitFields() {
-            listManipulation.clearFields(champs_infos_recherche);
-            listManipulation.clearFields(champs_infos_filtre);
-            listManipulation.clearFieldsCheckbox(champs_poles);
+            listManipulation.clearFields(champs_infos);
         }
-        reinit_filtre.addEventListener('click', reinitFields);
         reinit_recherche.addEventListener('click', reinitFields);
     });
 </script>

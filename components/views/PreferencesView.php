@@ -121,7 +121,7 @@ class PreferencesView extends View {
     /**
      * Public method returning the logs history HTML Page 
      *
-     * @param Array $items The list of connexions
+     * @param Array<String> $items The list of connexions
      * @return View HTML Page
      */
     public function displayLogsHistoryContent($items=[]) {
@@ -145,10 +145,10 @@ class PreferencesView extends View {
     /**
      * Public method returning the actions history HTML Page 
      *
-     * @param Array $items The list of connexions
+     * @param Array<String> $items The list of connexions
      * @return View HTML Page
      */
-    public function displayActionsHistoryContent($items) {
+    public function displayActionsHistoryContent($items=[]) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
@@ -166,8 +166,13 @@ class PreferencesView extends View {
 
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant la liste des postes
-    public function getPostesContent($items=[]) {
+    /**
+     * Public method returning the list of jobs HTML Page 
+     *
+     * @param Array<String> $items The list of jobs
+     * @return View HTML Page
+     */
+    public function displayJobsContent($items=[]) {
         $this->generateCommonHeader('Ypopsi - Liste postes', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
@@ -177,22 +182,19 @@ class PreferencesView extends View {
         echo '<content>';
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="historique">';
-        include BARRES.DS.'postes.php';
+        include BARRES.DS.'jobs.php';
         $this->getListItems("Postes", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
 
-        $scripts = [
-            'views/liste-view.js',
-            'models/liste-model.js',
-            'models/objects/Liste.js',
-            'controllers/poste-controller.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant la liste des services
+    /**
+     * Public method returning the list of services HTML Page 
+     *
+     * @param Array<String> $items The list of services
+     * @return View HTML Page
+     */
     public function getServicesContent($items=[]) {
         $this->generateCommonHeader('Ypopsi - Liste services', [
             PAGES_STYLES.DS.'preferences.css', 
@@ -218,12 +220,17 @@ class PreferencesView extends View {
 
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant la liste des établissements
-    public function getEtablissementsContent($items=[]) {
+    /**
+     * Public method returning the list of establishments HTML Page 
+     *
+     * @param Array<String> $items The list of establishments
+     * @return View HTML Page
+     */
+    public function displayEstablishmentsContent($items=[]) {
         $this->generateCommonHeader('Ypopsi - Liste établissements', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
-            PAGES_STYLES.DS.'etablissements.css'
+            PAGES_STYLES.DS.'establishments.css'
         ]);
         $this->generateMenu(false, PREFERENCES);
 
@@ -235,17 +242,15 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        $scripts = [
-            'views/liste-view.js',
-            'models/liste-model.js',
-            'models/objects/Liste.js',
-            'controllers/etablissement-controller.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
         $this->generateCommonFooter();
     }
-    public function getPolesContent($items=[]) {
+    /**
+     * Public method returning the list of poles HTML Page 
+     *
+     * @param Array<String> $items The list of poles
+     * @return View HTML Page
+     */
+    public function displayPolesContent($items=[]) {
         $this->generateCommonHeader('Ypopsi - Liste pôles', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
@@ -259,14 +264,6 @@ class PreferencesView extends View {
         $this->getListItems("Pôles", $items, null, "main-liste");
         echo '</main>';
         echo '</content>';
-
-        $scripts = [
-            'views/liste-view.js',
-            'models/liste-model.js',
-            'models/objects/Liste.js',
-            'controllers/pole-controller.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
 
         $this->generateCommonFooter();
     }

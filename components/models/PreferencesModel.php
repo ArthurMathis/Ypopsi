@@ -176,7 +176,7 @@ class PreferencesModel extends Model {
     /**
      * Public method returning the actions history
      *
-     * @return Array
+     * @return Array<String>
      */
     public function getActionsHistory() {
         $request = "SELECT
@@ -197,14 +197,19 @@ class PreferencesModel extends Model {
 
         return $this->get_request($request);
     }
-    /// Méthode publique retournant les postes de la base de données
-    public function getPostes() {
-        // On initialise la requête
+    /**
+     * Public method returning the list of jobs
+     *
+     * @return Array<String>
+     */
+    public function getJobs(): Array {
         $request = "SELECT 
-        Intitule_Postes AS Poste,
-        Description_Postes AS Description
+        Titled AS Intitulé,
+        TitledFeminin AS 'Initutlé féminin'
 
-        FROM Postes";
+        FROM Jobs
+        
+        ORDER BY Titled";
         
         return $this->get_request($request);
     }
@@ -224,35 +229,39 @@ class PreferencesModel extends Model {
         // On lance la requête
         return $this->get_request($request);
     }
-    /// Méthode publique retournant les services de la base de données
-    public function getEtablissements() {
-        // On initialise la requête
+    /**
+     * Public method returning the list of establishments
+     *
+     * @return Array<String>
+     */
+    public function getEstablishments() {
         $request = "SELECT 
-        Intitule_Etablissements AS Intitule,
-        Adresse_Etablissements AS Adresse,
-        Ville_Etablissements AS Ville, 
-        CodePostal_Etablissements AS Code,
-        Intitule_Poles AS Pôle
+        e.Titled AS Intitulé,
+        p.Titled AS Pôle,
+        e.Address AS Adresse,
+        e.City AS Ville, 
+        e.PostCode AS Code
 
-        FROM Etablissements  AS e
-        LEFT JOIN Poles AS p ON e.Cle_Poles = p.Id_Poles";
+        FROM Establishments  AS e
+        LEFT JOIN Poles AS p ON e.Key_Poles = p.Id";
 
-        // On lance la requête
         return $this->get_request($request);
     }
-    /// Méthode publique retournant les pôles de la base de données
+    /**
+     * Public method returning the list of establishments
+     *
+     * @return Array<String>
+     */
     public function getPoles() {
-        // On initialise la requête
         $request = "SELECT 
-        Intitule_Poles AS Intitule,
-        Description_Poles AS Description,
-        COUNT(e.Id_Etablissements) AS `Nombre d'établissements`
+        p.Titled AS Intitule,
+        COUNT(e.Id) AS `Nombre d'établissements`,
+        p.Description AS Description
 
         FROM Poles AS p
-        LEFT JOIN Etablissements AS e ON e.Cle_Poles = p.Id_Poles
-        GROUP BY p.Id_Poles, p.Intitule_Poles, p.Description_Poles";
+        LEFT JOIN Establishments AS e ON e.key_Poles = p.Id
+        GROUP BY p.Id, p.Titled, p.Description";
 
-        // On lance la requête
         return $this->get_request($request);
     }
 

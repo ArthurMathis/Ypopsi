@@ -62,26 +62,29 @@ class PreferencesController extends Controller {
      */
     public function displayActionsHistory() { return $this->View->displayActionsHistoryContent($this->Model->getActionsHistory()); }
     
-    /// Méthode publique retournant la page Postes
-    public function displayPostes() {
-        $poste = $this->Model->getPostes();
-        return $this->View->getPostesContent($poste);
-    }
+    /**
+     * Public method displaying the list of jobs
+     *
+     * @return View HTML Page
+     */
+    public function displayJobs() { return $this->View->displayJobsContent($this->Model->getJobs()); }
     /// Méthode publique retournant la page Services
     public function displayServices() {
         $poste = $this->Model->getServices();
         return $this->View->getServicesContent($poste);
     }
-    /// Méthode publique retournant la page Etablissements
-    public function displayEtablissements() {
-        $etablissements = $this->Model->getEtablissements();
-        return $this->View->getEtablissementsContent($etablissements);
-    }
-    /// Méthode publique retournant la page Pôles
-    public function displayPoles() {
-        $pole = $this->Model->getPoles();
-        return $this->View->getPolesContent($pole);
-    }
+    /**
+     * Public method displaying the list of establishments
+     *
+     * @return View HTML Page
+     */
+    public function displayEstablishments() { return $this->View->displayEstablishmentsContent($this->Model->getEstablishments()); }
+    /**
+     * Public method displaying the list of poles
+     *
+     * @return View HTML Page
+     */
+    public function displayPoles() { return $this->View->displayPolesContent($this->Model->getPoles()); }
 
     /// Méthode publique retournant le formulaire d'inscription d'un utilisateur
     public function displaySaisieUtilisateur() {

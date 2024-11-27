@@ -668,7 +668,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displayPostes();
+                $preferences->displayJobs();
                 break;
 
             case 'list-qualifications': 
@@ -685,7 +685,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 if($_SESSION['user_role'] == INVITE)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displayEtablissements();
+                $preferences->displayEstablishments();
                 break;
 
             case 'list-services':
