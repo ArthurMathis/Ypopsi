@@ -703,7 +703,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displaySaisieUtilisateur();
+                $preferences->displayInputUsers();
                 break; 
 
             case 'input-jobs':
@@ -741,27 +741,27 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 try {
-                    $infos = [
-                        'identifiant' => $_POST['identifiant'],
-                        'nom' => forms_manip::nameFormat($_POST['nom']  ),
-                        'prenom' => forms_manip::nameFormat($_POST['prenom']),
+                    if(empty($_POST['identifiant']))
+                        throw new Exception("Le champs identifiant doit être rempli.");
+                    elseif(empty($_POST['nom']))
+                        throw new Exception("Le champs nom doit être rempli.");
+                    elseif(empty($_POST['prenom']))
+                        throw new Exception("Le champs prenom doit être rempli.");
+                    elseif(empty($_POST['email']))
+                        throw new Exception("Le champs email doit être rempli.");
+                    elseif(empty($_POST['etablissement']))
+                        throw new Exception("Le champs étabissement doit être rempli.");
+                    elseif(empty($_POST['role']))
+                        throw new Exception("Le champs role doit être rempli.");
+
+                    $data = [
+                        'identifier' => $_POST['identifiant'],
+                        'name' => forms_manip::nameFormat($_POST['nom']  ),
+                        'firstname' => forms_manip::nameFormat($_POST['prenom']),
                         'email' => $_POST['email'],
-                        'etablissement' => $_POST['etablissement'],
+                        'establishment' => $_POST['etablissement'],
                         'role' => $_POST['role']
                     ];
-
-                    if(empty($infos['identifiant']))
-                        throw new Exception("Le champs identifiant doit être rempli.");
-                    elseif(empty($infos['nom']))
-                        throw new Exception("Le champs nom doit être rempli.");
-                    elseif(empty($infos['prenom']))
-                        throw new Exception("Le champs prenom doit être rempli.");
-                    elseif(empty($infos['email']))
-                        throw new Exception("Le champs email doit être rempli.");
-                    elseif(empty($infos['etablissement']))
-                        throw new Exception("Le champs étabissement doit être rempli.");
-                    elseif(empty($infos['role']))
-                        throw new Exception("Le champs role doit être rempli.");
 
                 } catch(Exception $e) {
                     forms_manip::error_alert([
@@ -770,11 +770,11 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                     ]);
                 }
 
-                $infos['mot de passe'] = PasswordGenerator::random_password();
-                $_SESSION['new user data'] = $infos;
+                $data['password'] = PasswordGenerator::random_password();
+                $_SESSION['new user data'] = $data;
                 alert_manipulation::alert([
                     'title' => "Information importante",
-                    'msg' => "Le nouvel utilisateur va être créé avec le mot de passe suivant : <br><b> ". $infos['mot de passe'] . "</b><br>Ce mot de passe ne pourra plus être consulté. Mémorisez-le avant de valider la création du compte ou revenez en arrière.",
+                    'msg' => "Le nouvel utilisateur va être créé avec le mot de passe suivant : <br><b> ". $data['password'] . "</b><br>Ce mot de passe ne pourra plus être consulté. Mémorisez-le avant de valider la création du compte ou revenez en arrière.",
                     'direction' => 'index.php?preferences=inscript-users',
                     'confirm' => true
                 ]);
@@ -786,26 +786,11 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
 
                 try {
                     if(isset($_SESSION['new user data']) && !empty($_SESSION['new user data'])) {
-                        $infos = $_SESSION['new user data'];
+                        $preferences->createUsers($_SESSION['new user data']);
                         unset($_SESSION['new user data']);
                     } else 
                         throw new Exception('Erreur lors de la récupération des informations du candidat, des informations sont manquantes.');
                     
-                    if(empty($infos['identifiant']))
-                        throw new Exception("Le champs identifiant doit être rempli.");
-                    elseif(empty($infos['nom']))
-                        throw new Exception("Le champs nom doit être rempli.");
-                    elseif(empty($infos['prenom']))
-                        throw new Exception("Le champs prenom doit être rempli.");
-                    elseif(empty($infos['email']))
-                        throw new Exception("Le champs email doit être rempli.");
-                    elseif(empty($infos['etablissement']))
-                        throw new Exception("Le champs étabissement doit être rempli.");
-                    elseif(empty($infos['role']))
-                        throw new Exception("Le champs role doit être rempli.");
-                    elseif(empty($infos['mot de passe']))
-                        throw new Exception("Mot de passe introuvable.");
-
                 } catch(Exception $e) {
                     forms_manip::error_alert([
                         'title' => "Erreur lors de l'incription du nouvel utilisateur", 
@@ -813,8 +798,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                         'direction' => "index.php?preferences=input-users"
                     ]);
                 } 
-
-                $preferences->createUtilisateur($infos);
                 break;
 
             case 'inscript-jobs':

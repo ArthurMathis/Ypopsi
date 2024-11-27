@@ -15,9 +15,9 @@
                 <article></article>
             </div>
             <select name="role">
-                <?php foreach($role as $r): ?>
+                <?php foreach($roles as $r): ?>
                     <option value="<?= $r['id']; ?>">
-                        <?= $r['role']; ?>
+                        <?= $r['titled']; ?>
                     </option>
                 <?php endforeach ?>    
             </select>
@@ -27,10 +27,7 @@
         </section>
     </div>
 </form>
-
-<script>
-    // On récupère les données depuis PHP
-    const etablissements = <?php echo json_encode(array_map(function($c) { return $c['Intitule_Etablissements']; }, $etablissements)); ?>;
-    // On prépare les AutoCompletes
-    new AutoComplete(document.getElementById('etablissement'), etablissements);
+<script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
+    new AutoComplete(document.getElementById('etablissement'), <?= json_encode(array_map(function($c) { return $c['Intitulé']; }, $establishments)); ?>);
 </script>

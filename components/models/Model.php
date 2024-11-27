@@ -627,35 +627,21 @@ abstract class Model {
      * @param Array $user The user's data Array
      * @return Void
      */
-    protected function inscriptUtilisateurs($user=[]) {
-        if(empty($user)) 
-            throw new Exception("Impossible d'inscrire un Utilisateur. Données manquantes !");
-
-        else {
-            // On initialise la requête
-            $request = "INSERT INTO utilisateurs (identifiant_utilisateurs, nom_utilisateurs, prenom_utilisateurs, email_utilisateurs, motdepasse_utilisateurs, Cle_Etablissements, Cle_Roles)
-                        VALUES (:identifiant, :nom, :prenom, :email, :motdepasse, :cle_etablissement, :cle_role)";
-
-            // On lance la requête
-            $this->post_request($request, $user);
-        }
+    protected function inscriptUsers($user=[]) {
+        $request = "INSERT INTO Users (Id, Name, Firstname, Email, Password, Key_Establishments, Key_Roles)
+                    VALUES (:identifier, :name, :firstname, :email, :password, :key_establishments, :key_roles)";
+        $this->post_request($request, $user);
     }
     /**
      * Protected method registering one action in the database
      *
-     * @param Int $cle_user The user's primary key
-     * @param Int $cle_action The action primary key
-     * @param Int $cle_instant The instant primary key
+     * @param Int $key_user The user's primary key
+     * @param Int $key_action The action primary key
      * @param String $description The action description
      * @throws Exception If the action's informtions is invalid or no complet
      * @return Void
      */
     protected function inscriptActions(&$key_user, &$key_action, $description=null) {
-        if(empty($key_user) || !is_numeric($key_user))
-            throw new Exception("La clé Utilisateur est nécessaire pour l'enregistrement d'une action !");
-        elseif(empty($key_action) || !is_numeric($key_action))
-            throw new Exception("La clé Action est nécessaire pour l'enregistrement d'une action !");
-        
         if(!empty($description)) {
             $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, Description) VALUES (:user_id, :type_id, :description)";
             $params = [
@@ -677,7 +663,7 @@ abstract class Model {
     /**
      * Protected method registering one candidate in the database
      *
-     * @param Candidatz $candidate The candidate's data 
+     * @param Candidate $candidate The candidate's data 
      * @return Int
      */
     protected function inscriptCandidates(&$candidate): Int {

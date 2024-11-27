@@ -21,7 +21,7 @@ class PreferencesController extends Controller {
      * @param Int $key_user The user's primary key
      * @return View HTML Page
      */
-    public function display($key_user) { return $this->View->displayProfile($this->Model->getProfil($key_user)); }
+    public function display($key_user) { return $this->View->displayProfile($this->Model->getProfile($key_user)); }
     /// Méthode publique retournant la page de modification du mot de passe
     public function displayEdit() {
         return $this->View->getEditpassword();
@@ -93,11 +93,15 @@ class PreferencesController extends Controller {
      */
     public function displayPoles() { return $this->View->displayPolesContent($this->Model->getPoles()); }
 
-    /// Méthode publique retournant le formulaire d'inscription d'un utilisateur
-    public function displaySaisieUtilisateur() {
-        return $this->View->getSaisieUtilisateur(
+    /**
+     * Public method displaying the users html input form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputUsers() {
+        return $this->View->displayInputUsers(
             $this->Model->getRoles(),
-            $this->Model->getAutoCompletEtablissements()
+            $this->Model->getEstablishments()
         );
     }
     /// Méthode publique retournant le formulaire de saisie d'un nouveau poste
@@ -171,15 +175,16 @@ class PreferencesController extends Controller {
         ]);
     }
 
-    /// Méthode publique générant un nouvel utilisateur
-    public function createUtilisateur(&$infos=[]) {
-        // On vérifie l'intégrité des données
-        if($infos == null || empty($infos))
+    /**
+     * Public method creating a new user
+     *
+     * @param Array $data
+     * @return Void
+     */
+    public function createUsers(&$data=[]) {
+        if($data == null || empty($data))
             throw new Exception("Erreur lors de l'inscription du nouvel utilisateur. Donnée manquante !");
-
-        // On génère le nouvel utilisateur    
-        else $this->Model->createUser($infos);
-
+        else $this->Model->createUsers($data);
         alert_manipulation::alert([
             'title' => 'Opération réussie',
             'msg' => "Nouvel utilisateur enregistré !",

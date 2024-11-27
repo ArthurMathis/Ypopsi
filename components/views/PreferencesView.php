@@ -291,20 +291,19 @@ class PreferencesView extends View {
         $this->generateCommonFooter();
     }
 
-    /// Méthode publique retournant la vue saisie utilisateur
-    public function getSaisieUtilisateur($role, $etablissements=[]) {
+    /**
+     * Public method displaying the users html input form
+     *
+     * @param Array $roles
+     * @param Array $establishments
+     * @return View HTML Page
+     */
+    public function displayInputUsers($roles=[], $establishments=[]) {
         $this->generateCommonHeader('Ypopsi - Inscription', [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(true, PREFERENCES);
+        $this->generateMenu(true, null);
 
-        $scripts = [
-            'models/objects/AutoComplet.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
+        include INSCRIPT_FORM.DS.'users.php';
 
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'utilisateur.php';
-
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant la vue saisie d'une poste

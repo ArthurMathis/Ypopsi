@@ -286,13 +286,11 @@ class User {
      * @return User
      */
     static public function makeUser($data=[]): ?User {
-        // Verifying the array's data integrity
         if(empty($data))
             throw new InvalideUtilisateurExceptions("Erreur lors de la génération de l'utilisateur. Tableau de données absent.");
         if(!isset($data['identifier']) ||!isset($data['name']) ||!isset($data['firstname']) || !isset($data['email']) || !isset($data['password']) ||!isset($data['establishment']) || !isset($data['role']))
             throw new InvalideUtilisateurExceptions('Donnnées éronnées. Champs manquants.');
 
-        // Creating the new user
         $u = new User(
             $data['identifier'], 
             $data['name'], 
@@ -303,10 +301,8 @@ class User {
             $data['role']
         );
 
-        // Adding the user's key
         if(isset($data['key']))
             $u->setKey($data['key']);
-
         return $u;
     }
 
@@ -338,8 +334,8 @@ class User {
             'firstname' => $this->getFirstname(),
             'email' => $this->getEmail(),
             'password' => password_hash($this->getPassword(), PASSWORD_DEFAULT),
-            'key_establishment' => $this->getEstablishment(),
-            'key_role' => $this->getRole()
+            'key_establishments' => $this->getEstablishment(),
+            'key_roles' => $this->getRole()
         ];
     } 
 }

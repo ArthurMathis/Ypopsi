@@ -10,11 +10,7 @@
     </section>
     <button type="submit" class="submit_button" value="new_user">Valider</button>
 </form>
-
 <script>
-    // On récupère les donnéesdepuis PHP
     const etablissements = <?php echo json_encode(array_map(function($c) { return $c['Intitule_Etablissements']; }, $etablissements)); ?>;
-    // On prépare les AutoCompletes 
     new AutoComplete(document.getElementById('etablissement'), etablissements);
-
 </script>

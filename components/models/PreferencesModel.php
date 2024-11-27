@@ -13,7 +13,7 @@ class PreferencesModel extends Model {
      * @param Int $user_key The user's primary key
      * @return Array
      */
-    public function getProfil(&$user_key): Array {
+    public function getProfile(&$user_key): Array {
         try {
             //// Profile ////
             $request = "SELECT 
@@ -285,26 +285,23 @@ class PreferencesModel extends Model {
         return $this->get_request($request);
     }
 
-    /// Méthode publique générant un nouvel Utilisateur
-    public function createUser(&$infos=[]) {
-        // On récupère l'établissement
-        $infos['etablissement'] = $this->searchEtablissement($infos['etablissement'])['Id_Etablissements'];
+    /**
+     * Public method creating a new user
+     *
+     * @param Array $data
+     * @return Void
+     */
+    public function createUsers(&$data=[]) {
+        $data['establishment'] = $this->searchEstablishments($data['establishment'])['Id'];
 
-        // On génère un mot de passe
-        // $infos['mot de passe'] = PasswordGenerator::random_password($infos['nom'], $infos['prenom']);
+        $user = User::makeUser($data);
+        unset($data);
 
-        // On crée l'utilisateur
-        $user = Utilisateurs::makeUtilisateurs($infos);
-        unset($infos);
-
-        // On inscrit l'Utilisateur
-        $this->inscriptUtilisateurs($user->exportToSQL());  
-        
-        // On enregistre les logs
+        $this->inscriptUsers($user->exportToSQL());  
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouvel utilisateur",
-            "Création du compte de " . strtoupper($user->getNom()) . " " . forms_manip::nameFormat($user->getPrenom()) 
+            "Création du compte de " . strtoupper($user->getName()) . " " . forms_manip::nameFormat($user->getFirstname()) 
         );
     }
     /// Méthode publique générant un nouveau poste
