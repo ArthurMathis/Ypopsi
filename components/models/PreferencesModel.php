@@ -213,20 +213,40 @@ class PreferencesModel extends Model {
         
         return $this->get_request($request);
     }
-    /// Méthode publique retournant les services de la base de données
-    public function getServices() {
-        // On initialise la requête
+    /**
+     * Public method returning the list of jobs
+     *
+     * @return Array<String>
+     */
+    public function getQualifications(): Array {
         $request = "SELECT 
-        Intitule_Services AS Service,
-        Intitule_Etablissements AS Etablissement
+        Titled AS Intitulé, 
+        CASE MedicalStaff WHEN 1 THEN 'Vrai' ELSE 'Faux' END AS 'Emploi du médical',
+        Abreviation AS Abréviation
+        
+        FROM Qualifications
+        
+        ORDER BY Titled";
+        
+        return $this->get_request($request);
+    }
+    /**
+     * Public method returning the list of jobs
+     *
+     * @return Array<String>
+     */
+    public function getServices() {
+        $request = "SELECT 
+        s.Titled AS Service,
+        e.Titled AS Etablissement
 
-        FROM Services AS s
+        FROM Belong_to AS b
         
-        INNER JOIN Etablissements AS e ON s.cle_Etablissements = e.Id_Etablissements
+        INNER JOIN Services AS s ON b.Key_Services = s.Id
+        INNER JOIN Establishments AS e ON b.Key_Establishments = e.Id
         
-        ORDER BY Service, Etablissement";
-        
-        // On lance la requête
+        ORDER BY Etablissement, Service";
+
         return $this->get_request($request);
     }
     /**

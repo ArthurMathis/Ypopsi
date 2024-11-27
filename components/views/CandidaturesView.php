@@ -16,7 +16,7 @@ class CandidaturesView extends View {
      * @return View HTML Page
      */
     public function getContent($title, $items = [], $nb_items_max=null) {
-        $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'candidatures.css']);
+        $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'applications.css']);
         $this->generateMenu(false, APPLICATIONS);
 
         include BARRES.DS.'applications.php';

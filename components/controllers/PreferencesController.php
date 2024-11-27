@@ -68,11 +68,18 @@ class PreferencesController extends Controller {
      * @return View HTML Page
      */
     public function displayJobs() { return $this->View->displayJobsContent($this->Model->getJobs()); }
-    /// Méthode publique retournant la page Services
-    public function displayServices() {
-        $poste = $this->Model->getServices();
-        return $this->View->getServicesContent($poste);
-    }
+    /**
+     * Public method displaying the list of qualifications
+     *
+     * @return View HTML Page
+     */
+    public function displayQualifications() { return $this->View->displayQualificationsContent($this->Model->getQualifications()); }
+    /**
+     * Public method displaying the list of services
+     *
+     * @return View HTML Page
+     */
+    public function displayServices() { return $this->View->displayServicesContent($this->Model->getServices()); }
     /**
      * Public method displaying the list of establishments
      *

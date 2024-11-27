@@ -1,6 +1,6 @@
 // * IMPORTS * //
-import { List } from "../modules/List.mjs"; 
-import { listManipulation } from "../modules/listManipulation.mjs";
+import { List } from "./modules/List.mjs"; 
+import { listManipulation } from "./modules/listManipulation.mjs";
 
 // * LISTE DYNAMIQUE * //
 const list = new List("main-liste");

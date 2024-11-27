@@ -77,7 +77,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css', 
-            PAGES_STYLES.DS.'utilisateurs.css'
+            PAGES_STYLES.DS.'users.css'
         ]);
         $this->generateMenu(false, PREFERENCES);
 
@@ -102,7 +102,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
-            PAGES_STYLES.DS.'utilisateurs.css'
+            PAGES_STYLES.DS.'users.css'
         ]);
         $this->generateMenu(false, PREFERENCES);
 
@@ -190,12 +190,35 @@ class PreferencesView extends View {
         $this->generateCommonFooter();
     }
     /**
+     * Public method returning the list of qualifications HTML Page 
+     *
+     * @param Array<String> $items The list of qualifications
+     * @return View HTML Page
+     */
+    public function displayQualificationsContent($items=[]) {
+        $this->generateCommonHeader('Ypopsi - Liste postes', [
+            PAGES_STYLES.DS.'preferences.css', 
+            PAGES_STYLES.DS.'liste-page.css'
+        ]);
+        $this->generateMenu(false, PREFERENCES);
+
+        echo '<content>';
+        include(MY_ITEMS.DS.'preferences.php');
+        echo '<main id="historique">';
+        include BARRES.DS.'qualifications.php';
+        $this->getListItems("Qualifications", $items, null, "main-liste");
+        echo '</main>';
+        echo '</content>';
+
+        $this->generateCommonFooter();
+    }
+    /**
      * Public method returning the list of services HTML Page 
      *
      * @param Array<String> $items The list of services
      * @return View HTML Page
      */
-    public function getServicesContent($items=[]) {
+    public function displayServicesContent($items=[]) {
         $this->generateCommonHeader('Ypopsi - Liste services', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'

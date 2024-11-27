@@ -672,6 +672,10 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 break;
 
             case 'list-qualifications': 
+                if($_SESSION['user_role'] == INVITE)
+                    throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                $preferences->displayQualifications();
                 break;
 
             case 'list-poles':
