@@ -74,16 +74,16 @@
                     <p>Nouveau service</p>
                 </div>
                 <div class="container-statut">
-                    <input type="checkbox" name="Nouveau établissement" checked>
-                    <p>Nouveau établissement</p>
+                    <input type="checkbox" name="Nouvel établissement" checked>
+                    <p>Nouvel établissement</p>
                 </div>
                 <div class="container-statut">
                     <input type="checkbox" name="Nouveau pôle" checked>
                     <p>Nouveau pôle</p>
                 </div>
                 <div class="container-statut">
-                    <input type="checkbox" name="Nouveau diplome" checked>
-                    <p>Nouveau diplome</p>
+                    <input type="checkbox" name="Nouvelle qualification" checked>
+                    <p>Nouvelle qualification</p>
                 </div>
             </section>
             <section class="action_statut small-section">

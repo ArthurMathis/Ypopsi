@@ -36,7 +36,7 @@ class PreferencesView extends View {
      *
      * @return View HTML Page
      */
-    public function getEditpassword() {
+    public function displayEditPassword() {
         $this->generateCommonHeader('Ypopsi - Préférences', [
             PAGES_STYLES.DS.'preferences.css', 
             FORMS_STYLES.DS.'edit-user.css'
@@ -306,18 +306,17 @@ class PreferencesView extends View {
 
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant la vue saisie d'une poste
-    public function getSaisiePoste() {
-        // On ajoute l'entete de page
+    /**
+     * Public method displaying the jobs input HTML form
+     *
+     * @return View HTML Page
+     */
+    public function getInputJobs() {
         $this->generateCommonHeader('Ypopsi - Inscription poste', [FORMS_STYLES.DS.'small-form.css']);
+        $this->generateMenu(true, null);
 
-        // On ajoute la barre de navigation
-        $this->generateMenu(true, PREFERENCES);
+        include INSCRIPT_FORM.DS.'jobs.php';
 
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'poste.php';
-
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
     /// Méthode publique retournant la vue saisie d'un service
@@ -339,22 +338,22 @@ class PreferencesView extends View {
         // On ajoute le pied de page
         $this->generateCommonFooter();
     }
-    /// Méthode pubique retournant la vue de siasise d'un établissement
-    public function getSaisieEtablissement($poles=[]) {
-        // On ajoute l'entete de page
+    /**
+     * Public method displaying the establishments HTML input form
+     *
+     * @param Array $poles The list of poles
+     * @return View HTML Page
+     */
+    public function displayInputEstablishments($poles=[]) {
         $this->generateCommonHeader('Ypopsi - Inscription établissement', [FORMS_STYLES.DS.'small-form.css']);
+        $this->generateMenu(true, null);
 
-        // On ajoute la barre de navigation
-        $this->generateMenu(true, PREFERENCES);
+        include INSCRIPT_FORM.DS.'establishments.php';
 
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'etablissements.php';
-
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
     /// Méthode pubique retournant la vue de siasie d'un établissement
-    public function getSaisiePole() {
+    public function displayInputPoles() {
         // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Inscription pôle', [FORMS_STYLES.DS.'small-form.css']);
 

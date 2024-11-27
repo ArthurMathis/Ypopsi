@@ -5,10 +5,11 @@
         <input type="text" id="intitule" name="intitule" placeholder="Intitulé">
         <select id="pole" name="pole">
             <?php foreach($poles as $c): ?>
-                <option value="<?= $c['Intitulé']; ?>">
-                    <?= $c['Intitulé']; ?>
+                <option value="<?= $c['Intitule']; ?>">
+                    <?= $c['Intitule']; ?>
                 </option>
             <?php endforeach ?>    
+            <option value="null">Non rattaché</option>
         </select>
     </section>
     <section>

@@ -601,7 +601,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 
 
             case 'edit-password':
-                $preferences->displayEdit();
+                $preferences->displayEditPassword();
                 break; 
 
             case 'update-password':
@@ -710,26 +710,28 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displaySaisiePoste();
+                $preferences->displayInputJobs();
                 break;  
 
             case 'input-qualifications':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                $preferences->displayInputQualifications();
                 break;   
 
             case 'input-poles':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displaySaisiePole();
+                $preferences->displayInputPoles();
                 break;
 
             case 'input-establishments':
                 if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                $preferences->displaySaisieEtablissement();
+                $preferences->displayInputEstablishments();
                 break;  
 
             case 'input-services': 
@@ -805,15 +807,15 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 try {
-                    $infos = [
-                        'poste' => $_POST['poste'],
-                        'description' => $_POST['description']
-                    ];
+                    if(empty($_POST['titled']) || empty($_POST['titled-feminin']))
+                        throw new Exception("Tous les champs doivent être remplis !");
 
-                    if(empty($infos['poste']))
-                        throw new Exception("Le champs poste doit être rempli !");
-                    if(empty($infos['description']))
-                        throw new Exception("Le champs description doit être rempli !");
+                    $data = [
+                        'titled' => $_POST['titled'],
+                        'titled feminin' => $_POST['titled-feminin']
+                    ];
+                    
+                    $preferences->createJobs($data);
 
                 } catch(Exception $e) {
                     forms_manip::error_alert([
@@ -821,8 +823,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                         'msg' => $e
                     ]);
                 }
-
-                $preferences->createPoste($infos);
                 break;
 
             case 'inscript-qualifications':
@@ -839,9 +839,8 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                         throw new Exception("Le champs intitulé doit être rempli !");
                     elseif(empty($_POST['description']))
                         throw new Exception("Le champs description doit être rempli !");
-
-                    $intitule = $_POST['intitule'];
-                    $desc = $_POST['description'];
+                    
+                    $preferences->createPoles($_POST['intitule'], $_POST['description']);
 
                 } catch(Exception $e) {
                     forms_manip::error_alert([
@@ -849,8 +848,6 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                         'msg' => $e
                     ]);
                 }
-
-                $preferences->createPole($intitule, $desc);
                 break;
 
             case 'inscript-establishments':
@@ -858,24 +855,24 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                     throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                 try {
-                    $infos = [
-                        'intitule' => $_POST['intitule'],
-                        'adresse' =>$_POST['adresse'],
-                        'ville' => $_POST['ville'],
-                        'code postal' => $_POST['code-postal'],
-                        'pole' => $_POST['pole']
-                    ];
-
-                    if(empty($infos['intitule']))
+                    if(empty($_POST['intitule']))
                         throw new Exception('Le champs intitulé doit être rempli !');
-                    elseif(empty($infos['adresse']))
+                    elseif(empty($_POST['adresse']))
                         throw new Exception('Le champs adresse doit être rempli !');
-                    elseif(empty($infos['ville']))
+                    elseif(empty($_POST['ville']))
                         throw new Exception('Le champs ville doit être rempli !');
-                    elseif(empty($infos['code postal']))
+                    elseif(empty($_POST['code-postal']))
                         throw new Exception('Le champs code postal doit être rempli !');
-                    elseif(empty($infos['pole']))
+                    elseif(empty($_POST['pole']))
                         throw new Exception('Le champs pôle doit être rempli !');
+
+                    $data = [
+                        'titled'    => $_POST['intitule'],
+                        'address'   => $_POST['adresse'],
+                        'city'      => $_POST['ville'],
+                        'postcode'  => $_POST['code-postal'],
+                        'key_poles' => $_POST['pole']
+                    ];
 
                 } catch (Exception $e) {
                     forms_manip::error_alert([
@@ -884,7 +881,7 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                     ]);
                 }
 
-                $preferences->createEtablissement($infos);
+                $preferences->createEstablishments($data);
                 break;
 
             case 'inscript-services':

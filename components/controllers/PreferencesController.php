@@ -15,6 +15,7 @@ class PreferencesController extends Controller {
         $this->loadView('PreferencesView');
     }
 
+    // * DISPLAY * //
     /**
      * Public method returning the user's profile 
      *
@@ -22,11 +23,8 @@ class PreferencesController extends Controller {
      * @return View HTML Page
      */
     public function display($key_user) { return $this->View->displayProfile($this->Model->getProfile($key_user)); }
-    /// Méthode publique retournant la page de modification du mot de passe
-    public function displayEdit() {
-        return $this->View->getEditpassword();
-    }
-
+    
+    //// List ////
     /**
      * Public method returning the user list HTML page
      *
@@ -61,7 +59,6 @@ class PreferencesController extends Controller {
      * @return View HTML Page
      */
     public function displayActionsHistory() { return $this->View->displayActionsHistoryContent($this->Model->getActionsHistory()); }
-    
     /**
      * Public method displaying the list of jobs
      *
@@ -93,6 +90,7 @@ class PreferencesController extends Controller {
      */
     public function displayPoles() { return $this->View->displayPolesContent($this->Model->getPoles()); }
 
+    //// Input ////
     /**
      * Public method displaying the users html input form
      *
@@ -104,26 +102,38 @@ class PreferencesController extends Controller {
             $this->Model->getEstablishments()
         );
     }
-    /// Méthode publique retournant le formulaire de saisie d'un nouveau poste
-    public function displaySaisiePoste() {
-        return $this->View->getSaisiePoste();
-    }
-    /// Méthode publique retournant le formulaire de saisie d'un nouveau service
-    public function displaySaisieService() {
-        return $this->View->getSaisieService(
-            $this->Model->getAutoCompletEtablissements()
-        );
-    }
-    /// Méthode publique retournant le formulaire de saisie d'un nouvel établissement
-    public function displaySaisieEtablissement() {
-        return $this->View->getSaisieEtablissement(
-            $this->Model->getPoles()
-        );
-    }
-    /// Méthode publique retournant le formulaire de saisie d'un nouveau pole
-    public function displaySaisiePole() {
-        return $this->View->getSaisiePole();
-    }
+    /**
+     * Public method displaying the jobs HTML input form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputJobs() { return $this->View->getInputJobs(); }
+    /**
+     * Public method displaying the qualifications HTML input form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputQualifications() { return $this->View->getInputJobs(); }
+    /**
+     * Public method dislaying the establishment HTML input form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputEstablishments() { return $this->View->displayInputEstablishments($this->Model->getPoles()); }
+    /**
+     * Public method displaying the hubs HTML input form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputPoles() { return $this->View->displayInputPoles(); }
+
+    //// Edit ////
+        /**
+     * Public method displaying the password HTML edit form
+     *
+     * @return View HTML Page
+     */
+    public function displayEditPassword() { return $this->View->displayEditPassword(); }
     /**
      * Public method displaying the user edit HTML form
      *
@@ -137,44 +147,7 @@ class PreferencesController extends Controller {
         );
     }
 
-    /// Méthode publique mettant à jour le mot de passe de l'utilisateur actuel
-    public function updatePassword(&$password, &$new_password) {
-        if($this->Model->verify_password($password)) {
-            $this->Model->updatePassword($new_password);
-            $this->Model->updatePasswordLogs();
-            alert_manipulation::alert([
-                'title' => 'Opération réussie',
-                'msg' => "Votre mot de passe a bien été modifié !",
-                'direction' => 'index.php'
-            ]);
-
-        } else 
-            forms_manip::error_alert("Erreur lors de la mise à jour du mot de passe", "L'ancien mot de passe ne correspond pas !");
-    }
-    public function updateUser($cle_utilisateur, &$user=[]) {
-        // On met-à-jour
-        $this->Model->updateUser($cle_utilisateur, $user);
-        $this->Model->updateUserLogs($cle_utilisateur);
-        alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "L'utilisateur a bien été modifié !",
-            'direction' => 'index.php?preferences=' . $cle_utilisateur
-        ]);
-    }
-    /// Méthode publique réinitialisant le mot de passe d'un utilisateur
-    public function resetPassword($password, $cle_utilisateur) {
-        // On réinitialise le mot de passe
-        $this->Model->resetPassword($password, $cle_utilisateur);
-        // On incrit les logs
-        $this->Model->resetPasswordLogs($cle_utilisateur);
-        // On redirige la page
-        alert_manipulation::alert([
-            'title' => 'Opération réussie',
-                'msg' => "Le mot de passe a bien été réinitialisé !",
-                'direction' => 'index.php?preferences=' . $cle_utilisateur
-        ]);
-    }
-
+    // * CREATE * //
     /**
      * Public method creating a new user
      *
@@ -191,19 +164,99 @@ class PreferencesController extends Controller {
             'direction' => 'index.php?preferences=list-new-users'
         ]);
     }
-    /// Méthode publique générant un nouveau poste
-    public function createPoste(&$infos=[]) {
-        // On vérifie l'intégrité des données
-        if(empty($infos)) 
-            throw new Exception("Erreur lors de l'inscription du poste. Données manquantes lors de la génération du poste !");
-
-        // On génère le nouveua poste
-        else $this->Model->createPoste($infos);
+    /**
+     * Public method creating a new jobs
+     *
+     * @param Array<String> $data The array containing the new jobs data
+     * @return Void
+     */
+    public function createJobs(&$data=[]) {
+        $this->Model->createJobs($data);
         alert_manipulation::alert([
             'title' => 'Opération réussie',
             'msg' => "Nouveau poste enregistré !",
             'direction' => 'index.php?preferences=list-jobs'
         ]);
+    }
+    /**
+     * Public method creating a new establishment
+     *
+     * @param Array $data
+     * @return Void
+     */
+    public function createEstablishments(&$data=[]) {
+        $this->Model->createEstablishments($data);
+        alert_manipulation::alert([
+            'title' => 'Opération réussie',
+            'msg' => "Nouveau établissement enregistré !",
+            'direction' => 'index.php?preferences=list-establishments'
+        ]);
+    }
+    /**
+     * Public method creating a new poles
+     *
+     * @param String $titled The poles' titled 
+     * @param String $description The poles' description
+     * @return Void
+     */
+    public function createPoles(&$titled, &$description) {
+        $this->Model->createPoles($titled, $description);
+        alert_manipulation::alert([
+            'title' => 'Opération réussie',
+            'msg' => "Nouveau pôle enregistré !",
+            'direction' => 'index.php?preferences=list-poles'
+        ]);
+    } 
+
+    // * UPDATE * //
+    public function updateUser($cle_utilisateur, &$user=[]) {
+        // On met-à-jour
+        $this->Model->updateUser($cle_utilisateur, $user);
+        $this->Model->updateUserLogs($cle_utilisateur);
+        alert_manipulation::alert([
+            'title' => 'Opération réussie',
+            'msg' => "L'utilisateur a bien été modifié !",
+            'direction' => 'index.php?preferences=' . $cle_utilisateur
+        ]);
+    }
+    /// Méthode publique mettant à jour le mot de passe de l'utilisateur actuel
+    public function updatePassword(&$password, &$new_password) {
+        if($this->Model->verify_password($password)) {
+            $this->Model->updatePassword($new_password);
+            $this->Model->updatePasswordLogs();
+            alert_manipulation::alert([
+                'title' => 'Opération réussie',
+                'msg' => "Votre mot de passe a bien été modifié !",
+                'direction' => 'index.php'
+            ]);
+
+        } else 
+            forms_manip::error_alert("Erreur lors de la mise à jour du mot de passe", "L'ancien mot de passe ne correspond pas !");
+    }
+
+    // * RESET * // 
+    /// Méthode publique réinitialisant le mot de passe d'un utilisateur
+    public function resetPassword($password, $cle_utilisateur) {
+        // On réinitialise le mot de passe
+        $this->Model->resetPassword($password, $cle_utilisateur);
+        // On incrit les logs
+        $this->Model->resetPasswordLogs($cle_utilisateur);
+        // On redirige la page
+        alert_manipulation::alert([
+            'title' => 'Opération réussie',
+                'msg' => "Le mot de passe a bien été réinitialisé !",
+                'direction' => 'index.php?preferences=' . $cle_utilisateur
+        ]);
+    }
+
+    // ! OTHERS ! //
+
+    /// Méthode publique retournant le formulaire de saisie d'un nouveau service
+    // Todo : remake
+    public function displaySaisieService() {
+        return $this->View->getSaisieService(
+            $this->Model->getAutoCompletEtablissements()
+        );
     }
     /// Méthode publique générant un nouveau service
     public function createService(&$service, &$etablissement) {
@@ -213,26 +266,6 @@ class PreferencesController extends Controller {
             'title' => 'Opération réussie',
             'msg' => "Nouveau service enregistré !",
             'direction' => 'index.php?preferences=list-services'
-        ]);
-    }
-    /// Méthode publique générant un nouvel établissement
-    public function createEtablissement(&$infos=[]) {
-        // On génère le nouvel établissement
-        $this->Model->createEtablissement($infos);
-        alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau établissement enregistré !",
-            'direction' => 'index.php?preferences=list-establishments'
-        ]);
-    }
-    /// Méthode publique générant un nouveau pôle
-    public function createPole(&$intitule, &$description) {
-        // On génère le nouvel établissement
-        $this->Model->createPole($intitule, $description);
-        alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau pôle enregistré !",
-            'direction' => 'index.php?preferences=list-poles'
         ]);
     }
 }

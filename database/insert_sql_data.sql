@@ -893,7 +893,7 @@ INSERT INTO Types_of_actions (Titled) VALUES
     ('Nouveau service'), 
     ('Nouvel établissement'), 
     ('Nouveau poste'), 
-    ('Nouveau diplome')
+    ('Nouvelle qualification')
 ;
 
 -- User de test --

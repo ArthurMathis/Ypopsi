@@ -821,15 +821,15 @@ abstract class Model {
     /**
      * Protected method registering one job in the database
      *
-     * @param String $poste The job intitule
-     * @param String $description The job description
+     * @param String $titled The job intitule
+     * @param String $titledFeminin The job description
      * @return Void
      */
-    protected function inscriptPoste(&$poste, &$description) {
-        $request = "INSERT INTO Postes (Intitule_Postes, Description_Postes) VALUES (:poste, :description)";
+    protected function inscriptJobs(&$titled, &$titledFeminin) {
+        $request = "INSERT INTO Jobs (Titled, TitledFeminin) VALUES (:titled, :titledFeminin)";
         $params = [
-            "poste"       => $poste,
-            "description" => $description
+            "titled"        => $titled,
+            "titledFeminin" => $titledFeminin
         ];
 
         $this->post_request($request, $params);
@@ -855,40 +855,36 @@ abstract class Model {
     /**
      * Protected method registering one establishment
      *
-     * @param Array<String> $infos The establishment data Array 
+     * @param Array<String> $data The establishment data Array 
      * @return Void
      */
-    protected function inscriptEtablissement(&$infos=[]) {
-        // On initialise la requête 
-        $request = "INSERT INTO Etablissements (Intitule_Etablissements, Adresse_Etablissements, Ville_Etablissements, CodePostal_Etablissements, Cle_Poles) 
-        VALUES (:intitule, :adresse, :ville, :code, :pole)";
+    protected function inscriptEstablishments(&$data=[]) {
+        $request = "INSERT INTO Establishments (Titled, Address, City, PostCode, Key_Poles) 
+                    VALUES (:titled, :address, :city, :postcode, :key_poles)";
         $params = [
-            'intitule' => $infos['intitule'],
-            'adresse'  => $infos['adresse'],
-            'ville'    => $infos['ville'],
-            'code'     => $infos['code postal'],
-            'pole'     => $infos['pole']
+            'titled'    => $data['titled'],
+            'address'   => $data['address'],
+            'city'      => $data['city'],
+            'postcode'  => $data['postcode'],
+            'key_poles' => $data['key_poles']
         ];
 
-        // On lance
         $this->post_request($request, $params);
     }
     /**
      * Protected method registering one hub in the database
      *
-     * @param String $intitule The hub intitule
+     * @param String $titled The hub titled
      * @param String $description The hub description
      * @return Void
      */
-    protected function inscriptPole(&$intitule, &$description) {
-        // On initialise la requête 
-        $request = "INSERT INTO Poles (Intitule_Poles, Description_Poles) VALUES (:intitule, :desc)";
+    protected function inscriptPoles(&$titled, &$description) {
+        $request = "INSERT INTO Poles (Titled, Description) VALUES (:titled, :desc)";
         $params = [
-            'intitule' => $intitule,
-            'desc'     => $description
+            'titled' => $titled,
+            'desc'   => $description
         ];
 
-        // On lance
         $this->post_request($request, $params);
     }
     /**

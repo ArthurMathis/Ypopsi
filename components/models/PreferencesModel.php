@@ -304,16 +304,18 @@ class PreferencesModel extends Model {
             "Création du compte de " . strtoupper($user->getName()) . " " . forms_manip::nameFormat($user->getFirstname()) 
         );
     }
-    /// Méthode publique générant un nouveau poste
-    public function createPoste(&$infos=[]) {
-        // On inscrit le nouveau poste
-        $this->inscriptPoste($infos['poste'], $infos['description']);
-
-        // On enregistre les logs
+    /**
+     * Public method creating a new jobs
+     *
+     * @param Array<String> $data The array containing the new jobs data
+     * @return Void
+     */
+    public function createJobs(&$data=[]) {
+        $this->inscriptJobs($data['titled'], $data['titled feminin']);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouveau poste",
-            "Ajout du poste " . $infos['poste'] . " à la base de données"
+            "Ajout du poste " . $data['titled'] . " à la base de données"
         );
     }
     /// Méthode publique générant un nouveau service
@@ -331,27 +333,29 @@ class PreferencesModel extends Model {
             "Ajout du service " . $service . " dans l'établissement " . $etablissement['Intitule_Etablissements']
         );
     }
-    /// Méthode publique générant un nouvel établissement
-    public function createEtablissement(&$infos=[]) {
-        // On récupère le pôle
-        $infos['pole'] = $this->searchPoles($infos['pole'])['Id_Poles'];
-
-        // On inscrit l'établissement
-        $this->inscriptEtablissement($infos);
-
-        // On enregistre les logs
+    /**
+     * Public method creating a new establishments
+     *
+     * @param Array $data
+     * @return Void
+     */
+    public function createEstablishments(&$data=[]) {
+        $data['key_poles'] = $this->searchPoles($data['key_poles'])['Id'];
+        $this->inscriptEstablishments($data);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouvel établissement",
-            "Ajout de l'établissement " . $infos['intitule']
+            "Ajout de l'établissement " . $data['titled']
         );
     }
-    /// Méthode publique générant un nouveau pôle
-    public function createPole(&$intitule, &$description) {
-        // On inscrit le pôle
-        $this->inscriptPole($intitule, $description);
-
-        // On enregistre les logs
+    /**
+     * Public method creating a new poles
+     *
+     * @param String $titled The poles' titled 
+     * @param String $description The poles' description
+     */
+    public function createPoles(&$intitule, &$description) {
+        $this->inscriptPoles($intitule, $description);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouveau pôle",
