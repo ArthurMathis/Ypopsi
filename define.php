@@ -59,4 +59,3 @@ define("COOPTATION", "Prime de cooptation");
 
 // Chemin d'accés vers les img 
 define("ETOILE", "layouts/assets/img/etoile.svg");
-define('ETOILE_BK',"layouts/assets/img/etoile_noire.svg");

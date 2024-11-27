@@ -268,17 +268,6 @@ class CandidatsView extends View {
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }
-    /**
-     * Protected method generating the candidate's rating tab
-     *
-     * @param Array $candidate The array containing the candidate's data
-     * @return View The HTML Page
-     */
-    protected function getRatingsBoard(&$candidate) {
-        echo '<section class="onglet">';
-        include(MY_ITEMS.DS.'candidate_rating.php'); 
-        echo "</section>";
-    }
 
     /**
      * Protected method generating an contract bubble
