@@ -147,7 +147,7 @@ class CandidaturesModel extends Model {
      * @param Array $application The array containing the application's data
      * @return Void
      */
-    public function inscriptApplication(&$candidate, $application=[]) {
+    public function inscriptApplications(&$candidate, $application=[]) {
         try {
             $request = "INSERT INTO Applications (key_candidates, key_jobs, key_sources";
             $values_request = "VALUES (:candidate, :job, :source";

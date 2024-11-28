@@ -98,28 +98,22 @@ class CandidaturesController extends Controller {
      * @return Void
      */
     public function createApplications(&$candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
-        $candidate->setAvailability($application['availability']);
+        $candidate->setAvailability($application['availability']); 
         try {
-            if($candidate->getKey() === null) { 
-                // TODO : Repenser la méthode de recherche
-                // $search = $this->Model->searchCandidatesByName($candidate->getName(), $candidate->getFirstname(), $candidate->getEmail());
-                $search = null;
+            if (!$this->Model->verifyServices($this->Model->searchServices($application['service'])['Id'], $this->Model->searchEstablishments($application['establishment'])['Id'])) 
+                throw new Exception("Le service n'appartient pas à l'établissement... ");
 
-                if(empty($search)) 
-                    $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);
-                else 
-                    $candidate->setKey($search['Id']);
-            }
-            
-            $this->Model->inscriptApplication($candidate, $application);
-
-        } catch(Exception $e) {
+            if ($candidate->getKey() === null) 
+                $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);
+            $this->Model->inscriptApplications($candidate, $application);
+    
+        } catch (Exception $e) {
             forms_manip::error_alert([
                 'title' => "Erreur lors de l'inscription de la candidature",
                 'msg' => $e
             ]);
         } 
-
+    
         alert_manipulation::alert([
             'title' => 'Candidat inscript !',
             'msg' => strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname()) . " a bien été inscrit(e).",

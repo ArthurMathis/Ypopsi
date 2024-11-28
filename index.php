@@ -111,17 +111,15 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                         'post code'     => !empty($_POST['code-postal']) ? $_POST['code-postal'] : null
                     ];
 
-                    foreach ($_POST["diplomeDate"] as $date) 
+                    if(isset($_POST['diplomeDate'])) foreach ($_POST["diplomeDate"] as $date) 
                         if (empty($date)) 
                             throw new Exception("Chaque diplôme doit avoir une date d'obtention !");
-
                     $qualifications = array_map(
                         function($qualification, $date) { return ['qualification' => $qualification, 'date' => $date]; }, 
                         isset($_POST["diplome"]) ? $_POST["diplome"] : [], 
                         isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : []
                     );
-                    var_dump($qualifications); exit;
-                    
+
                     $helps          = isset($_POST["aide"]) ? $_POST["aide"] : null;
                     $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'] : null;
                     $medical_visit  = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
@@ -162,10 +160,10 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                     $helps = isset($_SESSION['helps']) && !empty($_SESSION['helps']) ? $_SESSION['helps'] : null;
                     $coopteur = isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null; 
                     
-                    unset($_SESSION['candidate']);
-                    unset($_SESSION['qualifications']);
-                    unset($_SESSION['helps']);
-                    unset($_SESSION['coopteur']);
+                    // unset($_SESSION['candidate']);
+                    // unset($_SESSION['qualifications']);
+                    // unset($_SESSION['helps']);
+                    // unset($_SESSION['coopteur']);
 
                     $applications->createApplications($candidate, $application, $qualifications, $helps, $coopteur);
         

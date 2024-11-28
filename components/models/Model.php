@@ -567,7 +567,7 @@ abstract class Model {
     protected function searchHaveTheRightToFromCandidate($key_candidate): ?Array {
         $request = "SELECT * FROM Have_the_right_to WHERE Key_Candidates = :key_candidate";
         $params = ['key_candidate' => $key_candidate];
- 
+
         return $this->get_request($request, $params);
     }
     /**
@@ -1075,14 +1075,19 @@ abstract class Model {
 
     // * OTHER * //
     /**
-     * Protected method verifying if a service is in an establishment
+     * Public method verifying if a service is in an establishment
      *
-     * @param Int $key_service The service's primary key
-     * @param Int $key_establishment The establishment's primary key
+     * @param Int $key_services The service's primary key
+     * @param Int $key_establishments The establishment's primary key
      * @return Bool
      */
-    protected function verifyService($key_service, $key_establishment): Bool {
-        return false;
-        // Todo : méthode à implémenter
+    public function verifyServices($key_services, $key_establishments): Bool {
+        $request = "SELECT COUNT(*) FROM Belong_to 
+        WHERE Key_Services = :key_services AND Key_Establishments = :key_establishments";
+        $params = [
+            'key_services'       => $key_services,
+            'key_establishments' => $key_establishments
+        ];
+        return $this->get_request($request, $params, true, true) > 0; 
     }
 }
