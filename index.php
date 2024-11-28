@@ -97,6 +97,8 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                         throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
                     elseif(count($_POST["diplome"]) !== count($_POST["diplomeDate"]))
                         throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
+                    elseif (empty($_POST["diplome"]) && empty($_POST["diplomeDate"]) || count($_POST["diplome"]) !== count($_POST["diplomeDate"])) 
+                        throw new Exception("Les champs diplôme et date de diplôme doivent être remplis et correspondre !");
 
                     $candidate = [
                         'name'          => forms_manip::nameFormat($_POST["nom"]), 
@@ -109,11 +111,17 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                         'post code'     => !empty($_POST['code-postal']) ? $_POST['code-postal'] : null
                     ];
 
+                    foreach ($_POST["diplomeDate"] as $date) 
+                        if (empty($date)) 
+                            throw new Exception("Chaque diplôme doit avoir une date d'obtention !");
+
                     $qualifications = array_map(
                         function($qualification, $date) { return ['qualification' => $qualification, 'date' => $date]; }, 
                         isset($_POST["diplome"]) ? $_POST["diplome"] : [], 
                         isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : []
                     );
+                    var_dump($qualifications); exit;
+                    
                     $helps          = isset($_POST["aide"]) ? $_POST["aide"] : null;
                     $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'] : null;
                     $medical_visit  = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
