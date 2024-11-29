@@ -2,291 +2,75 @@
 
 require_once('View.php');
 
+/**
+ * Class representing the candidates' views
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * TODO : renommer les méthodes en displayInscript/Edit 
+ */
 class CandidatsView extends View {
-    /// Méthode privée générant une liste de contrats
-    private function makeContratsListe($contrats=[], $nb_items_max) {
-        // On teste la présence de données
-        if(empty($contrats)) 
-            return;
+    /**
+     * Public method returning the candidates list
+     * 
+     * @param String $titre The HTML Page titled
+     * @param Array $items The array containing the candidates' data
+     * @return View The HTML Page
+     */
+    public function getContent($titre, $items=[]) {
+        $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css']);
+        $this->generateMenu(false, APPLICATIONS);
+        include BARRES.DS.'candidates.php';
 
-        // Le nouveau tableaux de contrats
-        $contrats_bulles = [];
+        $this->getListItems($titre, $items, null, 'main-liste');
 
-        // On construit le tableaux de contrats simplifiés 
-        foreach($contrats as $c) if(!empty($c['signature'])){
-            // On définit le statut du contrat
-            $date = instants::currentInstants()->getDate();
-            if($date < $c['date_debut'])
-                $statut = "A venir";
-            elseif($c['date_fin'] < ($date || $c['demission']))
-                $statut = "Terminé";
-            else    
-                $statut = "En cours";
-
-            // On construit le nouvel item    
-            $new_c = [
-                'Statut' => $statut,
-                'Poste' => $c['poste'],
-                'Type de contrat' => $c['type_de_contrat']
-            ];
-            
-            array_push($contrats_bulles, $new_c);
-        }
-
-        // On vérifie la présence d'items dans la liste
-        if(empty($contrats_bulles))
-            return;
-
-        // On génère la bulle
-        $this->getBulles('Contrats', $contrats_bulles, $nb_items_max, null, null);
+        $this->generateCommonFooter();
     }
-    /// Méthode privée générant une liste de contrats
-    private function makePropositionsListe($propositions=[], $nb_items_max) {
-        // On teste la présence de données
-        if(empty($propositions)) 
-            return;
-
-        // Le nouveau tableaux de propositions
-        $propositions_bulles = [];
-
-        // On construit le tableaux de contrats simplifiés
-        foreach($propositions as $p) if(empty($p['signature'])) {
-            $new_p = [
-                'Statut' => empty($p['statut']) ? 'en attente' : 'refusée',
-                'Poste' => $p['poste'],
-                'Type de contrat' => $p['type_de_contrat']
-            ];
-            array_push($propositions_bulles, $new_p);
-        }
-
-        // On vérifie la présence d'items dans la liste
-        if(empty($propositions_bulles))
-            return;
-        
-        // On génère la bulle
-        $this->getBulles("Propositions d'embauche", $propositions_bulles, $nb_items_max, null, null);
-    }
-    /// Méthode privée généranr une liste de candidatures
-    private function makeCandidaturesListe($candidatures=[], $nb_items_max) {
-        // On teste la présence de données
-        if(empty($candidatures)) 
-            return;
-
-        // Le nouveau tableaux de candidatures
-        $candidatures_bulles = [];
-
-        // On construit le tableaux de candidatures simplifiées
-        foreach($candidatures as $c) {
-            $new_c = [
-                'Statut' => $c['statut'],
-                'Poste' => $c['poste'],
-                'Type de contrat' => $c['type_de_contrat']
-            ];
-            array_push($candidatures_bulles, $new_c);
-        }
-
-        // On vérifie la présence d'items dans la liste
-        if(empty($candidatures_bulles))
-            return;
-
-        // On génère la bulle
-        $this->getBulles("Candidatures", $candidatures_bulles, $nb_items_max, null, null);
-    }
-    private function makeRendezVousListe($rendezvous=[], $nb_items_max) {
-        // On teste la présence de données
-        if(empty($rendezvous)) 
-            return;
-
-        // Le nouveau tableau de rendez-vous
-        $rendezvous_bulles = [];
-
-        // On construit le tableaux de rendez-vous simplifiés
-        foreach($rendezvous as $r) {
-            $new_r = [
-                'Recruteur' => forms_manip::majusculeFormat($r['nom']) . ' ' . $r['prenom'],
-                'Date' => $r['date'],
-                'Etablissement' => $r['etablissement']
-            ];
-            array_push($rendezvous_bulles, $new_r);
-        }
-
-        // On vérifie la présence d'items dans la liste
-        if(empty($rendezvous_bulles))
-            return;
-
-        // On génère la bulle
-        $this->getBulles("Rendez-vous", $rendezvous_bulles, $nb_items_max, null, null);
-    }
-
-    /// Méthode publique générant le tableau de bord d'un candidat selon son profil
-    public function getDashboard($item=[]) {
-        // On génère un nouvel onglet
-        echo '<section class="onglet">';
-        $this->makeContratsListe($item['contrats'], 4);
-        $this->makePropositionsListe($item['contrats'], 4);
-        $this->makeCandidaturesListe($item['candidatures'], 4);
-        $this->makeRendezVousListe($item['rendez-vous'], 4);
-
-        if(empty($item['contrats']) && empty($item['candidatures']) && empty($item['rendez-vous']))
-            echo "<h2>Aucun élément enregistré sur le profil du candidat.</h2>";
-
-        echo "</section>";
-    }
-    /// Méthode protégée générant une ContratsBulles selon les information d'un contrat
-    protected function getContratsBulles($item) {
-        include(MY_ITEMS.DS.'contrats_bulles.php');
-    }
-    /// Méthode protégée générant une PorpositionsBulles selon les informations d'une proposition
-    protected function getPropositionsBulles($item=[]) {
-        include(MY_ITEMS.DS.'propositions_bulles.php');
-    }
-    /// Méthode protégée générant une CandidaturesBulles selon les informations d'une Candidature
-    protected function getCandidaturesBulles($item=[]) {
-        include(MY_ITEMS.DS.'candidatures_bulles.php');
-    }
-    /// Méthode protégée générant une RendezVousBulles seln les informations d'un rendez-vous
-    protected function getRendezVousBulles($item=[]) {
-        include(MY_ITEMS.DS.'rendez_vous_bulles.php');
-    }
-
-    /// Méthode publique générant l'onglet contrat d'un candidat
-    protected function getContratsBoard(&$item=[]) {
-        echo '<section class="onglet">';
-        if(!empty($item['contrats'])) {
-            $compt = 0; $i = 0; $size = count($item['contrats']);
-            for($i = 0; $i < $size; $i++) {
-                if(!empty($item['contrats'][$i]['signature'])){
-                    $this->getContratsBulles($item['contrats'][$i]);
-                    $compt++;
-                }
-            }
-               
-            // On vérifie la présence de signature
-            if($compt == 0)
-                echo "<h2>Aucun contrat enregistré</h2>";
-
-        } else 
-            echo "<h2>Aucun contrat enregistré</h2>";   
-
-        // On ajoute le bouton d'ajout
-        $link = 'index.php?candidats=saisie-contrats&cle_candidat=' . $item['candidat']['id'];
-        include(MY_ITEMS.DS.'add_button.php'); 
-        echo "</section>";
-    }
-    /// Méthode publique générant l'onglet Porpositions d'un candidat selon les informations de son profil
-    protected function getPropositionsBoard(&$item) {
-        echo '<section class="onglet">';
-        if(!empty($item['contrats'])) foreach($item['contrats'] as $obj) 
-            $this->getPropositionsBulles($obj);
-        else echo "<h2>Aucune proposition enregistrée </h2>"; 
-        
-        // On ajoute le bouton d'ajout
-        $link = 'index.php?candidats=saisie-propositions&cle_candidat=' . $item['candidat']['id'];
-        include(MY_ITEMS.DS.'add_button.php'); 
-        echo "</section>";
-    }
-    /// Méthode publique générant l'onglet Candidatures d'un candidat selon les informations de son profil
-    protected function getCandidaturesBoard(&$item) {
-        echo '<section class="onglet">';
-        if(!empty($item['candidatures'])) foreach($item['candidatures'] as $obj)
-            $this->getCandidaturesBulles($obj);
-        else echo "<h2>Aucune candidature enregistrée </h2>";
-        
-        // On ajoute le bouton d'ajout
-        $link = 'index.php?candidats=saisie-candidatures&cle_candidat=' . $item['candidat']['id'];
-        include(MY_ITEMS.DS.'add_button.php');  
-        echo "</section>";
-    }
-    /// Méthode publique générant l'onglet rendez-vous d'un candidat selon les informations de son profil
-    protected function getRendezVousBoard(&$item=[]) {
-        echo '<section class="onglet">';
-        if(!empty($item['rendez-vous'])) foreach($item['rendez-vous'] as $obj)
-            $this->getRendezVousBulles($obj);
-        else echo "<h2>Aucun rendez-vous enregistré </h2>"; 
-        
-        // On ajoute le bouton d'ajout
-        $link = 'index.php?candidats=saisie-rendez-vous&cle_candidat=' . $item['candidat']['id'];
-        include(MY_ITEMS.DS.'add_button.php'); 
-        echo "</section>";
-    }
-    /// Méthode protégée générant l'onglet de notation d'un candidat selon les informations de son profil
-    protected function getNotationBoard(&$item=[]) {
-        echo '<section class="onglet">';
-        include(MY_ITEMS.DS.'notation.php'); 
-        echo "</section>";
-    }
-
-    /// Méthode retournant le contenu de la page profil d'un candidat selon ses informations
-    public function getContentCandidat($title, &$item=[]) {
-        // On ajoute l'entete de page
+    /**
+     * Public method generating the candidte's profil page dashboards 
+     *
+     * @param String $title The page's title
+     * @param Array $item The candidate's data
+     * @return View The HTML Page
+     */
+    public function displayContentCandidate($title, &$item=[]) {
         $this->generateCommonHeader($title, [PAGES_STYLES.DS.'candidats.css']);
-
-        $buttons = [
-            'Tableau de bord',
-            'Contrats',
-            'Propositions',
-            'Candidatures',
-            'Rendez-vous',
-            'Notation'
-        ] ;
-
-        // On ajoute la barre de navigation
-        $this->generateMenu();
+        $this->generateMenu(false, NULL);
 
         echo "<content>";
-        include(MY_ITEMS.DS.'Candidat_profil.php');
+        include(MY_ITEMS.DS.'candidate_profile.php');
         echo "<main>";
-        include(BARRES.DS.'nav.php');
+        $buttons = ['Tableau de bord', 'Contrats', 'Propositions', 'Candidatures', 'Rendez-vous'] ;
+        include(BARRES.DS.'candidate_profile.php');
         $this->getDashboard($item);
-        $this->getContratsBoard($item);
-        $this->getPropositionsBoard($item);
-        $this->getCandidaturesBoard($item);
-        $this->getRendezVousBoard($item);
-        $this->getNotationBoard($item);
+        $this->getContractsBoard($item['contracts'], $item['candidate']['Id']);
+        $this->getOffersBoard($item['contracts'], $item['candidate']['Id']);
+        $this->getApplicationsBoard($item['applications'], $item['candidate']['Id']);
+        $this->getMeetingsBoard($item['meeting'], $item['candidate']['Id']);
         echo "</main>";
         echo "</content>";
 
-        // On importe les scripts JavaScript
-        $scripts = [
-            'views/candidats-view.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
+        // $scripts = ['views/candidats-view.js'];
+        // include(COMMON.DS.'import-scripts.php');
 
-        // include(SCRIPTS.DS.'import-candidats.php');
-
-        // On ajoute le pied de page  
-        $this->generateCommonFooter();
-    }
-    public function getContent($titre, &$items=[]) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css']);
-
-        // On ajoute les barres de navigation
-        $this->generateMenu();
-        include BARRES.DS.'liste-candidats.php';
-
-        $this->getListesItems($titre, $items, null, 'main-liste');
-
-        // On importe les scripts JavaScript
-        $scripts = [
-            'views/liste-view.js',
-            'models/liste-model.js',
-            'models/objects/Liste.js',
-            'controllers/candidats-controller.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
 
-    /// Méthode publique retournant la formulaire d'ajout d'une proposition
-    public function getContentProposition($title, $cle_candidat, $poste=[], $service=[], $typeContrat=[]) {
-        // On ajoute l'entete de page
+    // * DISPLAY INPUT * //
+    /**
+     * Public function Returning the offers' html form 
+     *
+     * @param String $title The HTML Page title
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $jobs The array containing the jobs list
+     * @param Array $services The array containing the services list
+     * @param Array $establishments The array containing the establishments list
+     * @param Array $types_of_contracts The array containing the tupes of contracts list
+     * @param Array $offer The array containing the offer's data
+     * @return View The HTML Page
+     */
+    public function displayInputOffers($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contracts=[], $offer=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-
-        // On ajoute la barre de navigation
-        $this->generateMenu(true);
+        $this->generateMenu(true, null);
 
         $scripts = [
             'models/objects/AutoComplet.js',
@@ -294,150 +78,340 @@ class CandidatsView extends View {
         ];
         include(COMMON.DS.'import-scripts.php');
         
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'proposition.php';
-        include FORMULAIRES.DS.'waves.php';
+        include INSCRIPT_FORM.DS.'offer.php';
 
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant la formulaire d'ajout d'une proposition
-    public function getContentPropositionFromCandidatures($title, $cle_candidature, $statut_candidature) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-
-        // On ajoute la barre de navigation
-        $this->generateMenu(true);
-
-        $scripts = [
-            'views/form-view.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'proposition-from-candidature.php';
-        include FORMULAIRES.DS.'waves.php';
-
-        // On ajoute le pied de page
-        $this->generateCommonFooter();
-    }
-    /// Méthode publique retournant la formulaire d'ajout d'une proposition selon une candidature sans service
-    public function getContentPropositionFromEmptyCandidatures($title, $cle_candidature, $statut_candidature, $service=[]) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-
-        $scripts = [
-            'models/objects/AutoComplet.js',
-            'views/form-view.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
-        // On ajoute la barre de navigation
-        $this->generateMenu(true);
-
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'proposition-from-empty-candidature.php';
-        include FORMULAIRES.DS.'waves.php';
-
-        // On ajoute le pied de page
-        $this->generateCommonFooter();
-    }
-    /// Méthode publique retournant la formulaire d'ajout d'un contrat
-    public function getContentContrats($title, $cle_candidat, $poste=[], $service=[], $typeContrat=[]) {
-        // On ajoute l'entete de page
+    /**
+     * Public method returning the HTML form to register an contract
+     *
+     * @param String $title The HTML page's title
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $jobs The array containing the list of jobs
+     * @param Array $services The array containing the list of services
+     * @param Array $establishments The array containing the list of establishments
+     * @param Array $types_of_contrats The array containing the list of types of contractss
+     * @return View The HTML Page
+     */
+    public function displayInputContracts($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contrats=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
+        $this->generateMenu(true, null);
 
-        // On ajoute la barre de navigation
-        $this->generateMenu(true);
+        include INSCRIPT_FORM.DS.'contracts.php';
 
-        $scripts = [
-            'models/objects/AutoComplet.js',
-            'views/form-view.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'contrats.php';
-        include FORMULAIRES.DS.'waves.php';
-
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant le formulaire d'ajout d'un contrat
-    public function GetContentRendezVous($title, $cle_candidat, $utilisateur=[], $etablissement=[]) {
-        // On ajoute l'entete de page
+    /**
+     * Public method returning the meeting's HTML form
+     *
+     * @param String $title The HTML page's title
+     * @param Int $key_candidate The candidate's primary key
+     * @param String $user_establishment The user's establishment
+     * @param Array $users
+     * @param Array $establisments
+     * @return View The HTML Page
+     */
+    public function displayInputMeetings($title, $key_candidate, $user_establishment, $users=[], $establisments=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
+        $this->generateMenu(true, null);
 
-        // On ajoute la barre de navigation
-        $this->generateMenu(true);
-
-        $scripts = [
-            'models/objects/AutoComplet.js'
-        ];
+        $scripts = ['models/objects/AutoComplet.js'];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le formulaire de'inscription
-        include INSCRIPT_FORM.DS.'rendez-vous.php';
-        include FORMULAIRES.DS.'waves.php';
+        include INSCRIPT_FORM.DS.'meeting.php';
 
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
 
+    // * DISPLAY EDIT * //
+    /**
+     * Public method building the edit candidates'ratings HTML form 
+     *
+     * @param Array $candidate The arrayu containing the candidate's data
+     * @return View The HTML page
+     */
+    public function displayEditRatings($candidate=[]) {
+        $this->generateCommonHeader(
+            'Ypopsi - Modification de la notation de ' . forms_manip::majusculeFormat($candidate['Name']) . ' ' . $candidate['Firstname'], 
+            [FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-rating.css']
+        );
+        $this->generateMenu(true, null);
 
-    public function getEditNotation($item=[]) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader('Ypopsi - Modification de la notation de ' . forms_manip::majusculeFormat($item['nom']) . ' ' . $item['prenom'], 
-        [FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-notation.css']);
+        include EDIT_FORM.DS.'rating.php';
 
-        // On ajoute les barres de navigation
-        $this->generateMenu(true);
-
-        // On ajoute le formulaire de connexion
-        include EDIT_FORM.DS.'notation.php';
-        include FORMULAIRES.DS.'waves.php';
-
-        // On importe les scripts JavaScript
-        $scripts = [
-            'controllers/edit-notation-controller.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
-    public function getEditCandidat($item=[]) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader('Ypopsi - Modification de ' . forms_manip::majusculeFormat($item['candidat']['nom']) . ' ' . $item['candidat']['prenom'], [FORMS_STYLES.DS.'big-form.css']);
+    /**
+     * Public method building the edit candidates HTML form 
+     *
+     * @param Array $item The array containing the candidate's data
+     * @param Array $qualifications The array containing the list of qualifications
+     * @param Array $helps The array containing the list of helps
+     * @param Array $employee The array containing the the list of employee
+     * @return View The HTML Page
+     */
+    public function displayEditCandidates($item=[], $qualifications=[], $helps=[], $employee=[]) {
+        $this->generateCommonHeader('Ypopsi - Modification de ' . forms_manip::majusculeFormat($item['candidate']['Name']) . ' ' . $item['candidate']['Firstname'], [FORMS_STYLES.DS.'big-form.css']);
+        $this->generateMenu(true, null);
 
-        // On ajoute les barres de navigation
-        $this->generateMenu(true);
+        include EDIT_FORM.DS.'candidate.php';
 
-        $scripts = [
-            'models/objects/AutoComplet.js',
-            'views/form-view.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
-
-        // On ajoute le formulaire de connexion
-        include EDIT_FORM.DS.'candidat.php';
-        include FORMULAIRES.DS.'waves.php';
-
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
-    public function getEditRendezVous($cle_candidat, $cle_utilisateur, $cle_instant, $item=[]) {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader('Ypopsi - Mise-à-jour rendez-vous', [FORMS_STYLES.DS.'small-form.css']);
+    /**
+     * Public method building the edit meetings HTML form 
+     *
+     * @param Array $meeting The array containing the meeting's data
+     * @param Array $users The array containing the list of users
+     * @param Array $establisments The array containing the list of establisments
+     * @return View The HTML Page
+     */
+    public function displayEditMeetings($meeting=[], $users=[], $establisments=[]) {
+        $this->generateCommonHeader('Ypopsi - Mise-à-jour rendez-vous', [FORMS_STYLES.DS.'big-form.css']);
+        $this->generateMenu(true, null);
 
-        // On ajoute les barres de navigation
-        $this->generateMenu(true);
+        include EDIT_FORM.DS.'meeting.php';
 
-        // On ajoute le formulaire de connexion
-        include EDIT_FORM.DS.'rendez-vous.php';
-        include FORMULAIRES.DS.'waves.php';
-
-        // On ajoute le pied de page  
         $this->generateCommonFooter();
     }
+
+    // * GET * //
+    /**
+     * Public method generatiing one candidate's profil dashbord 
+     *
+     * @param Array $item The array containing the candidate's data
+     * @return View The HTML Page
+     */
+    public function getDashboard($item=[]) { include(MY_ITEMS.DS.'dashboard.php'); }
+
+    /**
+     * Protected method generating the candidate's contracts tab
+     *
+     * @param Array $contracts The array containing the candidate's contract
+     * @param Int $key_candidate The candidate's primary key
+     * @return View The HTML Page
+     */
+    protected function getContractsBoard(&$contracts=[], $key_candidate) {  
+        echo '<section class="onglet">';
+        $compt = 0; 
+        $size = empty($contracts) ? 0 :count($contracts);
+        for($i = 0; $i < $size; $i++) {
+            if(!empty($contracts[$i]['signature'])){
+                $this->getContractsBubble($contracts[$i]);
+                $compt++;
+            }
+        }
+
+        if($compt === 0)
+            echo "<h2>Aucun contrat enregistré</h2>";
+        $link = 'index.php?candidates=input-contracts&key_candidate=' . $key_candidate;
+        include(MY_ITEMS.DS.'add_button.php'); 
+        echo "</section>";
+    }
+    /**
+     * Protected method generating the candidate's offers tab
+     *
+     * @param Array $offers The array containing the candidate's offers
+     * @param Int $key_candidate The candidate's primary key
+     * @return View The HTML Page
+     */
+    protected function getOffersBoard(&$offers, $key_candidate) {
+        echo '<section class="onglet">';
+        if(!empty($offers)) 
+            foreach($offers as $obj) 
+                $this->getOffersBubble($obj, $key_candidate);
+        else 
+            echo "<h2>Aucune proposition enregistrée </h2>"; 
+        
+        $link = 'index.php?candidates=input-offers&key_candidate=' . $key_candidate;
+        include(MY_ITEMS.DS.'add_button.php'); 
+        echo "</section>";
+    }
+    /**
+     * Protected method generating the candidate's applications tab
+     *
+     * @param Array $applications The array containing the candidate's applications
+     * @param Int $key_candidate The candidate's primary key
+     * @return View The HTML Page
+     */
+    protected function getApplicationsBoard(&$applications, &$key_candidate) {
+        echo '<section class="onglet">';
+        if(!empty($applications)) foreach($applications as $obj)
+            $this->getApplicationsBubble($obj, $key_candidate);
+        else echo "<h2>Aucune candidature enregistrée </h2>";
+        
+        $link = 'index.php?candidates=input-applications&key_candidate=' . $key_candidate;
+        include(MY_ITEMS.DS.'add_button.php');  
+        echo "</section>";
+    }
+    /**
+     * Protected method generating the candidate's meetings tab
+     *
+     * @param Array $meetings The array containing the candidate's meetings
+     * @param Int $key_candidate The candidate's primary key
+     * @return View The HTML Page
+     */
+    protected function getMeetingsBoard(&$meetings, $key_candidate) {
+        echo '<section class="onglet">';
+        if(!empty($meetings)) 
+            foreach($meetings as $obj)
+                $this->getMeetingsBubble($obj, $key_candidate);
+        else 
+            echo "<h2>Aucun rendez-vous enregistré </h2>"; 
+        
+        $link = 'index.php?candidates=input-meetings&key_candidate=' . $key_candidate;
+        include(MY_ITEMS.DS.'add_button.php'); 
+        echo "</section>";
+    }
+
+    /**
+     * Protected method generating an contract bubble
+     *
+     * @param Array $item The contract's data array
+     * @return HTMLElement
+     */
+    protected function getContractsBubble($item=[]) { include(MY_ITEMS.DS.'contracts_bubble.php'); }
+    /**
+     * Protected method generating an offer bubble
+     *
+     * @param Array $item The offer's data array
+     * @param Int $key_candidate The candidate's primary key
+     * @return HTMLElement
+     */
+    protected function getOffersBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'offers_bubble.php'); }
+    /**
+     * Protected method generating an application bubble
+     *
+     * @param Array $item The application's data array
+     * @param Int $key_candidate The candidate's primary key
+     * @return HTMLElement
+     */
+    protected function getApplicationsBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'applications_bubble.php'); }
+    /**
+     * Protected method generating an meeting bubble
+     *
+     * @param Array $item The meeting's data array
+     * @param Int $key_candidate The candidate's primary key
+     * @return HTMLElement
+     */
+    protected function getMeetingsBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'meetings_bubble.php'); }
+
+    // * MAKE * //
+    // ! Méthodes générant les listes du dashboard ; à ne plus utiliser ! //
+    /**
+     * Private method generating the list of the candidate's contracts
+     *
+     * @param Array $contrats The array containing the contracts to the list
+     * @param Int $nb_items_max The maximum number of elements
+     * @return Void
+     */
+    // private function makeContractsList($contracts=[], $nb_items_max) {
+    //     if(empty($contracts)) 
+    //         return;
+    // 
+    //     $contracts_bubbles = [];
+    //     foreach($contracts as $c) if(!empty($c['signature'])){
+    //         $date = Moment::currentMoment()->getDate();
+    //         if($date < $c['date_debut'])
+    //             $statut = "A venir";
+    //         elseif($c['date_fin'] < ($date || $c['demission']))
+    //             $statut = "Terminé";
+    //         else    
+    //             $statut = "En cours";
+    // 
+    //         $new_c = [
+    //             'Statut' => $statut,
+    //             'Poste' => $c['poste'],
+    //             'Type de contrat' => $c['type_de_contrat']
+    //         ];
+    //         
+    //         array_push($contracts_bubbles, $new_c);
+    //     }
+    // 
+    //     if(empty($contracts_bubbles))
+    //         return;
+    // 
+    //     $this->getBubble('Contrats', $contracts_bubbles, $nb_items_max, null, null);
+    // }
+    /**
+     * Private method generating the list of the candidate's offers
+     *
+     * @param Array $offers The array containing the offers to the list
+     * @param Int $nb_items_max The maximum number of elements
+     * @return Void
+     */
+    // private function makeOffersList($offers=[], $nb_items_max) {
+    //     if(empty($offers)) 
+    //         return;
+    // 
+    //     $offers_bubbles = [];
+    //     foreach($offers as $p) if(empty($p['signature'])) {
+    //         $new_p = [
+    //             'Statut' => empty($p['statut']) ? 'en attente' : 'refusée',
+    //             'Poste' => $p['poste'],
+    //             'Type de contrat' => $p['type_de_contrat']
+    //         ];
+    //         array_push($offers_bubbles, $new_p);
+    //     }
+    // 
+    //     if(empty($offers_bubbles))
+    //         return;
+    // 
+    //     $this->getBubble("Propositions d'embauche", $offers_bubbles, $nb_items_max, null, null);
+    // }
+    /**
+     * Private method generating the list of the candidate's applications
+     *
+     * @param Array $offers The array containing the applications to the list
+     * @param Int $nb_items_max The maximum number of elements
+     * @return Void
+     */
+    // private function makeApplicationsList($applications=[], $nb_items_max) {
+    //     if(empty($applications)) 
+    //         return;
+    // 
+    //     $applications_bubbles = [];
+    //     foreach($applications as $c) {
+    //         $new_c = [
+    //             'Poste' => $c['poste'],
+    //             'Type de contrat' => $c['type_de_contrat']
+    //         ];
+    //         if($c['acceptee'])
+    //             $new_c['Statut'] = ACCEPTED;
+    //         elseif($c['refusee'])
+    //             $new_c['Statut'] = REFUSED;
+    //         array_push($applications_bubbles, $new_c);
+    //     }
+    // 
+    //     if(empty($applications_bubbles))
+    //         return;
+    // 
+    //     $this->getBubble("Candidatures", $applications_bubbles, $nb_items_max, null, null);
+    // }
+    /**
+     * Private method generating the candidate's list of meetings
+     *
+     * @param Array $meetings Te array containing the candidate's meetings
+     * @param Int $nb_items_max The maximum number of elements in the list
+     * @return Void
+     */
+    // private function makeMeetingsList($meetings=[], $nb_items_max) {
+    //     if(empty($meetings)) 
+    //         return;
+    // 
+    //     $meetings_bubbles = [];
+    //     foreach($meetings as $r) {
+    //         $new_r = [
+    //             'Recruteur' => forms_manip::majusculeFormat($r['nom']) . ' ' . $r['prenom'],
+    //             'Date' => $r['date'],
+    //             'Etablissement' => $r['etablissement']
+    //         ];
+    //         array_push($meetings_bubbles, $new_r);
+    //     }
+    // 
+    //     if(empty($meetings_bubbles))
+    //         return;
+    // 
+    //     $this->getBubble("Rendez-vous", $meetings_bubbles, $nb_items_max, null, null);
+    // }
 }

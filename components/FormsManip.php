@@ -23,14 +23,13 @@ class forms_manip {
     /**
      * Public static method formating a name
      *
-     * @param string $str The name 
-     * @return string The formated string
+     * @param String $str The name 
+     * @return String The formated string
      */
-    public static function nameFormat($str): string {
+    public static function nameFormat($str): String {
         if(!is_string($str))
             throw new Exception("Le formatage d'un nom doit se réaliser sur une chaine de caractères. ");
 
-        // return ucwords(strtolower($str));
         return ucwords(strtolower(preg_replace('/[^A-Za-z0-9\- ]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $str))));
     }
 
@@ -41,18 +40,11 @@ class forms_manip {
      * @return string|null
      */
     public static function numberFormat($number): ?string {
-        // Vérifier si la chaîne est null ou vide
-        if (is_null($number) || empty($number)) 
-            throw new InvalidArgumentException("Le numéro de téléphone est vide ou non défini.");
-        
-        // On supprime tous les caractères non numériques
         $number = preg_replace('/\D/', '', $number);
     
-        // On vérifie la longueur du numéro
-        if (strlen($number) > 10) 
-            throw new InvalidArgumentException("Le numéro de téléphone est trop long.");   
+        if (strlen($number) !== 0 && strlen($number) !== 10)
+            throw new InvalidArgumentException("Le numéro de téléphone incorrect.");   
     
-        // On ajoute des zéros devant si nécessaire pour obtenir 10 chiffres
         $number = str_pad($number, 10, '0', STR_PAD_LEFT);
         return preg_replace('/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', '$1.$2.$3.$4.$5', $number);         
     }

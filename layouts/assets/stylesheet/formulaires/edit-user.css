@@ -2,11 +2,7 @@ main {
     position: relative;
     display: flex;
     justify-content: center;
-
-    width: 80%;
-    height: calc(100vh - 8rem);
-
-    padding-right: 15%;
+    align-items: center;
 }
 
 /******** Formulaire ********/
@@ -16,15 +12,13 @@ form {
     align-items: center;
     gap: var(--gap);
 
-    width: 740px;
-    max-width: calc(80vw - 6rem);
-    height: 680px;
-    max-height: calc(100vh - 12rem);
     z-index: 1;
 
     background-color: rgba(254, 254, 254, 0.3);
     backdrop-filter: blur(10px);
     box-shadow: var(--small-bulle-shadow);
+
+    transform: translateY(-15%);
 }
 form h3 {
     margin-top: var(--margin);
@@ -33,16 +27,6 @@ form h3 {
 form p {
     color: var(--black);
 }
-form section {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-    gap: var(--margin);
-
-    width: 100%;
-}
-
 
 body > content > aside {
     z-index: 1;

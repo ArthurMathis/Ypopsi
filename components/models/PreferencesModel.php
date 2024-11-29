@@ -1,299 +1,321 @@
 <?php 
 
 require_once(MODELS.DS.'Model.php');
-require_once(CLASSE.DS.'Instants.php');
-require_once(CLASSE.DS.'Candidats.php');
-require_once(CLASSE.DS.'Utilisateurs.php');
+require_once(CLASSE.DS.'Moment.php');
+require_once(CLASSE.DS.'Candidate.php');
+require_once(CLASSE.DS.'User.php');
 require_once(COMPONENTS.DS.'Passwordgenerator.php');
 
 class PreferencesModel extends Model {
-    /// Méthode publique retournant les informations du l'utilisateur actuelk
-    public function getProfil(&$cle_utilisateur): array {
-        // On récupère les informations de l'utilisateur
+    /**
+     * Public method returning the user's data profile
+     *
+     * @param Int $user_key The user's primary key
+     * @return Array
+     */
+    public function getProfile(&$user_key): Array {
         try {
-            // On initialise la requête
+            //// Profile ////
             $request = "SELECT 
-            Id_Utilisateurs As Cle,
-            Nom_Utilisateurs AS Nom,
-            Prenom_Utilisateurs AS Prenom, 
-            Intitule_Role AS Role, 
-            Email_Utilisateurs AS Email,
-            LENGTH(MotDePasse_Utilisateurs) AS 'Mot de passe'
+            u.Id As id,
+            u.Name AS name,
+            u.Firstname AS firstname, 
+            r.Titled AS titled_role, 
+            r.Id AS role, 
+            u.Email AS email, 
+            e.Titled AS establishments
 
-            FROM Utilisateurs AS u
-            INNER JOIN Roles AS r ON u.Cle_Roles = r.Id_Role
+            FROM Users AS u
+            INNER JOIN Roles AS r ON u.Key_Roles = r.Id
+            INNER JOIN Establishments AS e on u.Key_Establishments = e.Id
+
             
-            WHERE u.Id_Utilisateurs = :cle";
-            $params = ['cle' => $cle_utilisateur];
+            WHERE u.Id= :user_key";
+            $params = ['user_key' => $user_key];
 
-            // On implémente les données
-            $infos = ['utilisateur' => $this->get_request($request, $params)[0]];
+            $data = ['user' => $this->get_request($request, $params)[0]];
 
-        } catch(Exception $e) {
-            forms_manip::error_alert($e);
-        }
-
-
-        // On récupère l'historique de connexions de l'utilisateur
-        try {
-            // On initialise la requête
+            //// Logs history ////
             $request = "SELECT
-            Intitule_Types AS Action,
-            Jour_Instants AS Date,
-            Heure_Instants AS Heure
+            t.Titled AS Action,
+            DATE(a.Moment) AS Date,
+            DATE_FORMAT(a.Moment, '%H:%i:%s') AS Hour
 
             FROM Actions AS a
-            INNER JOIN Types AS t ON a.Cle_Types = t.Id_Types
-            INNER JOIN Instants AS i ON a.Cle_Instants = i.Id_Instants
+            INNER JOIN Types_of_actions AS t ON a.Key_Types_of_actions = t.Id
 
-            WHERE t.Intitule_Types IN ('Connexion', 'Déconnexion')
-            AND a.Cle_Utilisateurs = :cle
-            ORDER BY Date DESC, Heure DESC";
+            WHERE t.titled IN ('Connexion', 'Déconnexion')
+            AND a.Key_Users = :user_key
+            ORDER BY Date DESC";
 
-            // On implémente les données
-            $infos['connexions'] = $this->get_request($request, $params);;
+            $data['logs'] = $this->get_request($request, $params);
+
+            //// Actions history //// 
+            $request = "SELECT
+            t.Titled AS Action,
+            DATE_FORMAT(a.Moment, '%Y-%m-%d') AS Date,
+            DATE_FORMAT(a.Moment, '%H:%i:%s') AS Hour
+
+            FROM Actions AS a
+            INNER JOIN Types_of_actions AS t ON a.Key_Types_of_actions = t.Id
+
+            WHERE t.titled NOT IN ('Connexion', 'Déconnexion')
+            AND a.Key_Users = :user_key
+            ORDER BY Date DESC";
+
+            $data['actions'] = $this->get_request($request, $params);
 
         } catch(Exception $e) {
             forms_manip::error_alert($e);
         }
         
-
-        // On récupère l'historique d'actions de l'utilisateur
-        try {
-            // On initialise la requête
-            $request = "SELECT
-            Intitule_Types AS Action,
-            Jour_Instants AS Date,
-            Heure_Instants AS Heure
-
-            FROM Actions AS a
-            INNER JOIN Types AS t ON a.Cle_Types = t.Id_Types
-            INNER JOIN Instants AS i ON a.Cle_Instants = i.Id_Instants
-
-            WHERE t.Intitule_Types NOT IN ('Connexion', 'Déconnexion')
-            AND a.Cle_Utilisateurs = :cle
-            ORDER BY Date DESC, Heure_Instants DESC";
-
-            // On implémente les données
-            $infos['actions'] = $this->get_request($request, $params);
-
-        } catch(Exception $e) {
-            forms_manip::error_alert($e);
-        }
-     
-        // On retourne les données
-        return $infos;
+        return $data;
     }
-    public function getEditProfil($cle_utilisateur): array {
-        // On initialise la requête
+    /**
+     * Public method returning the user's data
+     *
+     * @param Int $user_key The user's primary key
+     * @return Array
+     */
+    public function getEditProfile($user_key): Array {
         $request = "SELECT 
-        Id_Utilisateurs AS cle, 
-        Nom_Utilisateurs AS nom,
-        Prenom_Utilisateurs AS prenom, 
-        Id_Role AS role, 
-        Email_Utilisateurs AS email
+        u.Id AS id, 
+        u.Name AS name,
+        u.Firstname AS firstname, 
+        r.Id AS role, 
+        u.Email AS email
 
-        FROM Utilisateurs AS u
-        INNER JOIN Roles AS r ON u.Cle_Roles = r.Id_Role
+        FROM Users AS u
+        INNER JOIN Roles AS r ON u.Key_Roles = r.Id
         
-        WHERE u.Id_Utilisateurs = :cle";
-        $params = ['cle' => $cle_utilisateur];
+        WHERE u.Id = :user_key";
+        $params = ['user_key' => $user_key];
 
-        // On lance la requête
         return  $this->get_request($request, $params, true, true);
     }
 
-    /// Méthode publique récupérant la liste des Utilisateurs
-    public function getUtilisateurs() {
-        // On initialise la requête 
+    /**
+     * Public method returning the list of users
+     * 
+     * @return Array
+     */
+    public function getUsers(): Array {
         $request = "SELECT 
-        Id_Utilisateurs AS Cle,
-        Intitule_Role AS Role,
-        Nom_Utilisateurs AS Nom, 
-        Prenom_Utilisateurs AS Prenom,
-        Email_Utilisateurs AS Email,
-        Intitule_Etablissements AS Etablissement
+        u.Id AS Cle,
+        r.Titled AS Role,
+        u.Name AS Nom, 
+        u.Firstname AS Prenom,
+        u.Email AS Email,
+        e.Titled AS Etablissement
 
-        FROM Utilisateurs AS u
-        INNER JOIN Roles AS r ON u.Cle_Roles = r.Id_Role
-        INNER JOIN Etablissements AS e ON u.Cle_Etablissements = e.Id_Etablissements
+        FROM Users AS u
+        INNER JOIN Roles AS r ON u.Key_Roles = r.Id
+        INNER JOIN Establishments AS e ON u.Key_Establishments = e.Id
 
         ORDER BY Role, Cle";
 
-        // On lance la requête
         return $this->get_request($request);
     }
-    /// Méthode publique récupérant les nouveaux utilisateurs 
-    public function getNouveauxUtilisateurs() {
+    /**
+     * Public method returning the list of new users
+     *
+     * @return Void
+     */
+    public function getNewUsers() {
         // On initialise la requête
         $request = "SELECT
-        Id_Utilisateurs AS Cle,
-        Intitule_Role AS Role, 
-        Nom_Utilisateurs AS Nom,
-        Prenom_Utilisateurs AS Prenom, 
-        Intitule_Etablissements AS Etablissement
-        
-        FROM Utilisateurs AS u
-        INNER JOIN Roles AS r ON u.cle_Roles = r.Id_Role
-        INNER JOIN Etablissements AS e ON u.Cle_Etablissements = e.Id_Etablissements
+        u.Id AS Cle,
+        r.Titled AS Role,
+        u.Name AS Nom, 
+        u.Firstname AS Prenom,
+        u.Email AS Email,
+        e.Titled AS Etablissement
 
-        WHERE MotDePasseTemp_Utilisateurs = 1
+        FROM Users AS u
+        INNER JOIN Roles AS r ON u.Key_Roles = r.Id
+        INNER JOIN Establishments AS e ON u.Key_Establishments = e.Id
+
+        WHERE u.PasswordTemp = 1
         
         ORDER BY Role";
 
         // On lance la requête
         return $this->get_request($request);
     }
-    /// Méthode publique récupérant l'historique de connexion
-    public function getConnexionHistorique() {
-        // On initialise la requête
+    /**
+     * Public method returning the connexion logs
+     *
+     * @return Void
+     */
+    public function getLogsHistory() {
         $request = "SELECT
-        Intitule_Types AS Action,
-        Intitule_Role AS Role,
-        Nom_Utilisateurs AS Nom,
-        Prenom_Utilisateurs AS Prenom, 
-        Jour_Instants AS Date,
-        Heure_Instants AS Heure
+        t.titled AS Action,
+        r.titled AS Role,
+        u.name AS Nom,
+        u.firstname AS Prenom, 
+        a.moment AS Date
 
         FROM Actions AS a
-        INNER JOIN Utilisateurs AS u ON a.Cle_Utilisateurs = u.Id_Utilisateurs
-        INNER JOIN Roles AS r ON u.Cle_Roles = r.Id_Role
-        INNER JOIN Types AS t ON a.Cle_Types = t.Id_Types
-        INNER JOIN Instants AS i ON a.Cle_Instants = i.Id_Instants
+        INNER JOIN Users AS u ON a.key_Users = u.Id
+        INNER JOIN Roles AS r ON u.key_Roles = r.Id
+        INNER JOIN Types_of_actions AS t ON a.key_Types_of_actions = t.Id
 
-        WHERE t.Intitule_Types IN ('Connexion', 'Déconnexion')
+        WHERE t.titled IN ('Connexion', 'Déconnexion')
+
+        ORDER BY Date DESC";
+
+        $temp = $this->get_request($request);
+        foreach ($temp as &$row) {
+            $datetime = new DateTime($row['Date']);
+            $row['Date'] = $datetime->format('Y-m-d');
+            $row['Heure'] = $datetime->format('H:i:s');
+        }
+
+        return $temp;
+    }
+    /**
+     * Public method returning the actions history
+     *
+     * @return Array<String>
+     */
+    public function getActionsHistory() {
+        $request = "SELECT
+        t.titled AS Action,
+        CONCAT(u.name, ' ', u.firstname) AS Utilisateur,
+        DATE_FORMAT(a.moment, '%Y-%m-%d') AS Date,
+        DATE_FORMAT(a.moment, '%H:%i:%s') AS Heure,
+        a.description AS Description
+
+        FROM Actions AS a
+        INNER JOIN Users AS u ON a.key_Users = u.Id
+        INNER JOIN Roles AS r ON u.key_Roles = r.Id
+        INNER JOIN Types_of_actions AS t ON a.key_Types_of_actions = t.Id
+
+        WHERE t.titled NOT IN ('Connexion', 'Déconnexion')
 
         ORDER BY Date DESC, Heure DESC";
 
-        // On lance la requête
         return $this->get_request($request);
     }
-    /// Méthode publique récupérant l'historique d'action
-    public function getActionHistorique() {
-        // On initialise la requête
-        $request = "SELECT
-        Intitule_Types AS Action,
-        CONCAT(u.Nom_Utilisateurs, ' ', u.Prenom_Utilisateurs) AS Utilisateur,
-        Jour_Instants AS Date,
-        Description_Actions AS Description
-
-        FROM Actions AS a
-        INNER JOIN Utilisateurs AS u ON a.Cle_Utilisateurs = u.Id_Utilisateurs
-        INNER JOIN Types AS t ON a.Cle_Types = t.Id_Types
-        INNER JOIN Instants AS i ON a.Cle_Instants = i.Id_Instants
-
-        WHERE t.Intitule_Types NOT IN ('Connexion', 'Déconnexion')
-
-        ORDER BY Date DESC, Heure_Instants DESC";
-
-        // On lance la requête
-        return $this->get_request($request);
-    }
-    /// Méthode publique récupérant les roles de la base de données
-    public function getRoles() {
-        // On initialise la requête
+    /**
+     * Public method returning the list of jobs
+     *
+     * @return Array<String>
+     */
+    public function getJobs(): Array {
         $request = "SELECT 
-        Id_Role AS id,
-        Intitule_Role AS role
+        Titled AS Intitulé,
+        TitledFeminin AS 'Initutlé féminin'
 
-        FROM Roles
-
-        ORDER BY id DESC";
-
-        // On lance la requête
-        return $this->get_request($request);
-    }
-    /// Méthode publique retournant les postes de la base de données
-    public function getPostes() {
-        // On initialise la requête
-        $request = "SELECT 
-        Intitule_Postes AS Poste,
-        Description_Postes AS Description
-
-        FROM Postes";
+        FROM Jobs
+        
+        ORDER BY Titled";
         
         return $this->get_request($request);
     }
-    /// Méthode publique retournant les services de la base de données
+    /**
+     * Public method returning the list of jobs
+     *
+     * @return Array<String>
+     */
+    public function getQualifications(): Array {
+        $request = "SELECT 
+        Titled AS Intitulé, 
+        CASE MedicalStaff WHEN 1 THEN 'Vrai' ELSE 'Faux' END AS 'Emploi du médical',
+        Abreviation AS Abréviation
+        
+        FROM Qualifications
+        
+        ORDER BY Titled";
+        
+        return $this->get_request($request);
+    }
+    /**
+     * Public method returning the list of jobs
+     *
+     * @return Array<String>
+     */
     public function getServices() {
-        // On initialise la requête
         $request = "SELECT 
-        Intitule_Services AS Service,
-        Intitule_Etablissements AS Etablissement
+        s.Titled AS Service,
+        e.Titled AS Etablissement
 
-        FROM Services AS s
+        FROM Belong_to AS b
         
-        INNER JOIN Etablissements AS e ON s.cle_Etablissements = e.Id_Etablissements
+        INNER JOIN Services AS s ON b.Key_Services = s.Id
+        INNER JOIN Establishments AS e ON b.Key_Establishments = e.Id
         
-        ORDER BY Service, Etablissement";
-        
-        // On lance la requête
+        ORDER BY Etablissement, Service";
+
         return $this->get_request($request);
     }
-    /// Méthode publique retournant les services de la base de données
-    public function getEtablissements() {
-        // On initialise la requête
+    /**
+     * Public method returning the list of establishments
+     *
+     * @return Array<String>
+     */
+    public function getEstablishments() {
         $request = "SELECT 
-        Intitule_Etablissements AS Intitule,
-        Adresse_Etablissements AS Adresse,
-        Ville_Etablissements AS Ville, 
-        CodePostal_Etablissements AS Code,
-        Intitule_Poles AS Pôle
+        e.Titled AS Intitulé,
+        p.Titled AS Pôle,
+        e.Address AS Adresse,
+        e.City AS Ville, 
+        e.PostCode AS Code
 
-        FROM Etablissements  AS e
-        LEFT JOIN Poles AS p ON e.Cle_Poles = p.Id_Poles";
+        FROM Establishments  AS e
+        LEFT JOIN Poles AS p ON e.Key_Poles = p.Id";
 
-        // On lance la requête
         return $this->get_request($request);
     }
-    /// Méthode publique retournant les pôles de la base de données
+    /**
+     * Public method returning the list of establishments
+     *
+     * @return Array<String>
+     */
     public function getPoles() {
-        // On initialise la requête
         $request = "SELECT 
-        Intitule_Poles AS Intitule,
-        Description_Poles AS Description,
-        COUNT(e.Id_Etablissements) AS `Nombre d'établissements`
+        p.Titled AS Intitule,
+        COUNT(e.Id) AS `Nombre d'établissements`,
+        p.Description AS Description
 
         FROM Poles AS p
-        LEFT JOIN Etablissements AS e ON e.Cle_Poles = p.Id_Poles
-        GROUP BY p.Id_Poles, p.Intitule_Poles, p.Description_Poles";
+        LEFT JOIN Establishments AS e ON e.key_Poles = p.Id
+        GROUP BY p.Id, p.Titled, p.Description";
 
-        // On lance la requête
         return $this->get_request($request);
     }
 
-    /// Méthode publique générant un nouvel Utilisateur
-    public function createUser(&$infos=[]) {
-        // On récupère l'établissement
-        $infos['etablissement'] = $this->searchEtablissement($infos['etablissement'])['Id_Etablissements'];
+    /**
+     * Public method creating a new user
+     *
+     * @param Array $data
+     * @return Void
+     */
+    public function createUsers(&$data=[]) {
+        $data['establishment'] = $this->searchEstablishments($data['establishment'])['Id'];
 
-        // On génère un mot de passe
-        // $infos['mot de passe'] = PasswordGenerator::random_password($infos['nom'], $infos['prenom']);
+        $user = User::makeUser($data);
+        unset($data);
 
-        // On crée l'utilisateur
-        $user = Utilisateurs::makeUtilisateurs($infos);
-        unset($infos);
-
-        // On inscrit l'Utilisateur
-        $this->inscriptUtilisateurs($user->exportToSQL());  
-        
-        // On enregistre les logs
+        $this->inscriptUsers($user->exportToSQL());  
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouvel utilisateur",
-            "Création du compte de " . strtoupper($user->getNom()) . " " . forms_manip::nameFormat($user->getPrenom()) 
+            "Création du compte de " . strtoupper($user->getName()) . " " . forms_manip::nameFormat($user->getFirstname()) 
         );
     }
-    /// Méthode publique générant un nouveau poste
-    public function createPoste(&$infos=[]) {
-        // On inscrit le nouveau poste
-        $this->inscriptPoste($infos['poste'], $infos['description']);
-
-        // On enregistre les logs
+    /**
+     * Public method creating a new jobs
+     *
+     * @param Array<String> $data The array containing the new jobs data
+     * @return Void
+     */
+    public function createJobs(&$data=[]) {
+        $this->inscriptJobs($data['titled'], $data['titled feminin']);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouveau poste",
-            "Ajout du poste " . $infos['poste'] . " à la base de données"
+            "Ajout du poste " . $data['titled'] . " à la base de données"
         );
     }
     /// Méthode publique générant un nouveau service
@@ -311,43 +333,46 @@ class PreferencesModel extends Model {
             "Ajout du service " . $service . " dans l'établissement " . $etablissement['Intitule_Etablissements']
         );
     }
-    /// Méthode publique générant un nouvel établissement
-    public function createEtablissement(&$infos=[]) {
-        // On récupère le pôle
-        $infos['pole'] = $this->searchPole($infos['pole'])['Id_Poles'];
-
-        // On inscrit l'établissement
-        $this->inscriptEtablissement($infos);
-
-        // On enregistre les logs
+    /**
+     * Public method creating a new establishments
+     *
+     * @param Array $data
+     * @return Void
+     */
+    public function createEstablishments(&$data=[]) {
+        $data['key_poles'] = $this->searchPoles($data['key_poles'])['Id'];
+        $this->inscriptEstablishments($data);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouvel établissement",
-            "Ajout de l'établissement " . $infos['intitule']
+            "Ajout de l'établissement " . $data['titled']
         );
     }
-    /// Méthode publique générant un nouveau pôle
-    public function createPole(&$intitule, &$description) {
-        // On inscrit le pôle
-        $this->inscriptPole($intitule, $description);
-
-        // On enregistre les logs
+    /**
+     * Public method creating a new poles
+     *
+     * @param String $titled The poles' titled 
+     * @param String $description The poles' description
+     */
+    public function createPoles(&$intitule, &$description) {
+        $this->inscriptPoles($intitule, $description);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouveau pôle",
             "Ajout du pôle " . $intitule
         );
     }
-    /// Méthode publique vérifiant le mot de passe de l'utilisateur
+    /**
+     * Public method checking if the input password is right
+     *
+     * @param String $password The password written in input
+     * @return Void
+     */
     public function verify_password(&$password) {
-        // On initialise la requête
-        $request = "SELECT * FROM Utilisateurs WHERE Id_Utilisateurs = :cle";
-        $params = ['cle' => $_SESSION['user_key']];
+        $request = "SELECT * FROM Users WHERE Id = :key";
+        $params = ['key' => $_SESSION['user_key']];
 
-        $user = $this->get_request($request, $params, 1, 1)[0];
-
-        // On compare les mots de passe
-        return password_verify($password, $user['MotDePasse_Utilisateurs']);
+        return password_verify($password, $this->get_request($request, $params, 1, 1)['Password']);
     }
     /// Méthode publique réinitialisant le mot de passe d'un utilisateur
     public function resetPassword($password, $cle_utilisateur) {
@@ -370,12 +395,12 @@ class PreferencesModel extends Model {
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour mot de passe",
-            strtoupper($_SESSION['user_nom']) . " " . forms_manip::nameFormat($_SESSION['user_prenom']) . " a mis-à-jour son mot de passe"
+            strtoupper($_SESSION['user_name']) . " " . forms_manip::nameFormat($_SESSION['user_firstname']) . " a mis-à-jour son mot de passe"
         );
     }
     public function updateUserLogs($cle_utilisateur) {
         // On récupère les données du candidat
-        $candidat = $this->searchUser($cle_utilisateur);
+        $candidat = $this->searchUsers($cle_utilisateur);
 
         // On enregistre les logs
         $this->writeLogs(
@@ -387,7 +412,7 @@ class PreferencesModel extends Model {
     /// Méthode publique enregistrant les réinitialisations de mots de passe dans les logs
     public function resetPasswordLogs($cle_utilisateur) {
         // On récpère l'utilisateur
-        $user = $this->searchUser($cle_utilisateur);
+        $user = $this->searchUsers($cle_utilisateur);
         // On enregistre les logs
         $this->writeLogs(
             $_SESSION['user_key'],

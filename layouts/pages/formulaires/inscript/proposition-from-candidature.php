@@ -1,4 +1,4 @@
-<form class="small-form" method="post" action="index.php?candidats=inscript-propositions-from-candidatures&cle_candidature=<?= $cle_candidature; ?>">
+<form class="small-form" method="post" action="index.php?candidats=inscript-offerss-from-candidatures&cle_candidature=<?= $cle_candidature; ?>">
     <h3>Saissisez les informations de la proposition</h3>
     <section class="double-items">
         <div class="input-container">
@@ -32,5 +32,5 @@
 
 <script>
     // On ajuste la sélection de date
-    setMinDateFin('date_debut', 'date_fin');
+    SetMinEndDate('date_debut', 'date_fin');
 </script>

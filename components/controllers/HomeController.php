@@ -3,12 +3,12 @@
 require_once('Controller.php');
 
 /**
- * Class representing the home page controller
+ *  Class representing the home page controller
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
 class HomeController extends Controller {
     /**
-     * Class constructor
+     *  Class constructor
      */
     public function __construct() {
         $this->loadModel('HomeModel');
@@ -16,12 +16,10 @@ class HomeController extends Controller {
     }
 
     /**
-     * Public function returning the home page 
-     *
+     *  Public function returning the home page 
      * @return void
      */
     public function displayHome() {
-        // ON récupère les données de la page
         $items = $this->Model->getNonTraiteeCandidatures();
         $dashboard = [
             [
@@ -40,7 +38,6 @@ class HomeController extends Controller {
             ]
         ];
         
-        // On génère la vue
-        return $this->View->getContent($items, $dashboard);
+        return $this->View->displayHomePage($items, $dashboard);
     }
 }

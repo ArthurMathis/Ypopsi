@@ -13,17 +13,16 @@ class LoginView extends View {
      * @return void
      */
     public function getContent() {
-        // On ajoute l'entete de page
-        $this->generateCommonHeader('Ypopsi - Connexion', [FORMS_STYLES.DS.'small-form.css']);
+        $this->generateCommonHeader(
+            'Ypopsi - Connexion', 
+            [
+                FORMS_STYLES.DS.'small-form.css',
+                FORMS_STYLES.DS.'connexion.css'
+            ]
+        );
 
-        // On ajoute la barre de navigation
-        $this->generateMenu(true, false, false);
-
-        // On ajoute le formulaire de connexion
         include FORMULAIRES.DS.'connexion.php';
-        include FORMULAIRES.DS.'waves.php';
 
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
 }

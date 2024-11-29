@@ -2,108 +2,226 @@
 
 require_once('Controller.php');
 
+/**
+ * Class representing the control page controller
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class PreferencesController extends Controller {
-    /// Constructeur de la classe
+    /**
+     * Class' constructor
+     */
     public function __construct() {
         $this->loadModel('PreferencesModel');
         $this->loadView('PreferencesView');
     }
 
-    /// Méthode publique retournant la page de préférences
-    public function display($cle_utilisateur) {
-        return $this->View->getContent(
-            $this->Model->getProfil($cle_utilisateur)
-        );
-    }
-    /// Méthode publique retournant la page de modification du mot de passe
-    public function displayEdit() {
-        return $this->View->getEditpassword();
-    }
-
-    /// Méthode publique retournant la page Utilisateurs
-    public function displayUtilisateurs() {
-        return $this->View->getUtilisateursContent(
-            $this->Model->getUtilisateurs(),
+    // * DISPLAY * //
+    /**
+     * Public method returning the user's profile 
+     *
+     * @param Int $key_user The user's primary key
+     * @return View HTML Page
+     */
+    public function display($key_user) { return $this->View->displayProfile($this->Model->getProfile($key_user)); }
+    
+    //// List ////
+    /**
+     * Public method returning the user list HTML page
+     *
+     * @return View - HTML Page
+     */
+    public function displayUsers() {
+        return $this->View->displayUsersContent(
+            $this->Model->getUsers(),
             'index.php?preferences='
         );
     }
-    /// Méthode publique retournant la page de nouvels utilisateurs
-    public function displayNouveauxUtilisateurs() {
-        return $this->View->getNouveauxUtilisateursContent(
-            $this->Model->getNouveauxUtilisateurs(),
+    /**
+     * Public method returning the list of new users HTML Page
+     *
+     * @return View HTML Page
+     */
+    public function displayNewUsers() {
+        return $this->View->displayNewUsersContent(
+            $this->Model->getNewUsers(),
             'index.php?preferences='
         );
     }
-    /// Méthode publique retournant la page Historique
-    public function displayConnexionHistorique() {
-        $items = $this->Model->getConnexionHistorique();
-        return $this->View->getConnexionHistoriqueContent($items);
-    }
-    /// Méthode publique retournant la page Historique
-    public function displayActionHistorique() {
-        $items = $this->Model->getActionHistorique();
-        return $this->View->getActionHistoriqueContent($items);
-    }
-    /// Méthode publique retournant la page Postes
-    public function displayPostes() {
-        $poste = $this->Model->getPostes();
-        return $this->View->getPostesContent($poste);
-    }
-    /// Méthode publique retournant la page Services
-    public function displayServices() {
-        $poste = $this->Model->getServices();
-        return $this->View->getServicesContent($poste);
-    }
-    /// Méthode publique retournant la page Etablissements
-    public function displayEtablissements() {
-        $etablissements = $this->Model->getEtablissements();
-        return $this->View->getEtablissementsContent($etablissements);
-    }
-    /// Méthode publique retournant la page Pôles
-    public function displayPoles() {
-        $pole = $this->Model->getPoles();
-        return $this->View->getPolesContent($pole);
-    }
+    /**
+     * Public method returning the logs history HTML Page
+     *
+     * @return View HTML Page
+     */
+    public function displayLogsHistory() { return $this->View->displayLogsHistoryContent($this->Model->getLogsHistory()); }
+    /**
+     * Public method returning the actions history HTML Page
+     *
+     * @return View HTML Page
+     */
+    public function displayActionsHistory() { return $this->View->displayActionsHistoryContent($this->Model->getActionsHistory()); }
+    /**
+     * Public method displaying the list of jobs
+     *
+     * @return View HTML Page
+     */
+    public function displayJobs() { return $this->View->displayJobsContent($this->Model->getJobs()); }
+    /**
+     * Public method displaying the list of qualifications
+     *
+     * @return View HTML Page
+     */
+    public function displayQualifications() { return $this->View->displayQualificationsContent($this->Model->getQualifications()); }
+    /**
+     * Public method displaying the list of services
+     *
+     * @return View HTML Page
+     */
+    public function displayServices() { return $this->View->displayServicesContent($this->Model->getServices()); }
+    /**
+     * Public method displaying the list of establishments
+     *
+     * @return View HTML Page
+     */
+    public function displayEstablishments() { return $this->View->displayEstablishmentsContent($this->Model->getEstablishments()); }
+    /**
+     * Public method displaying the list of poles
+     *
+     * @return View HTML Page
+     */
+    public function displayPoles() { return $this->View->displayPolesContent($this->Model->getPoles()); }
 
-    /// Méthode publique retournant le formulaire d'inscription d'un utilisateur
-    public function displaySaisieUtilisateur() {
-        return $this->View->getSaisieUtilisateur(
+    //// Input ////
+    /**
+     * Public method displaying the users html input form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputUsers() {
+        return $this->View->displayInputUsers(
             $this->Model->getRoles(),
-            $this->Model->getAutoCompletEtablissements()
+            $this->Model->getEstablishments()
         );
     }
-    /// Méthode publique retournant le formulaire de saisie d'un nouveau poste
-    public function displaySaisiePoste() {
-        return $this->View->getSaisiePoste();
-    }
-    /// Méthode publique retournant le formulaire de saisie d'un nouveau service
-    public function displaySaisieService() {
-        return $this->View->getSaisieService(
-            $this->Model->getAutoCompletEtablissements()
-        );
-    }
-    /// Méthode publique retournant le formulaire de saisie d'un nouvel établissement
-    public function displaySaisieEtablissement() {
-        return $this->View->getSaisieEtablissement(
-            $this->Model->getPoles()
-        );
-    }
-    /// Méthode publique retournant le formulaire de saisie d'un nouveau pole
-    public function displaySaisiePole() {
-        return $this->View->getSaisiePole();
-    }
-    public function displayEditUtilisateur($cle_utilisateur) {
-        return $this->View->getEditUtilisateur(
-            $this->Model->getEditProfil($cle_utilisateur),
-            $this->Model->getAccessibleRoles()
+    /**
+     * Public method displaying the jobs HTML input form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputJobs() { return $this->View->getInputJobs(); }
+    /**
+     * Public method displaying the qualifications HTML input form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputQualifications() { return $this->View->getInputJobs(); }
+    /**
+     * Public method dislaying the establishment HTML input form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputEstablishments() { return $this->View->displayInputEstablishments($this->Model->getPoles()); }
+    /**
+     * Public method displaying the hubs HTML input form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputPoles() { return $this->View->displayInputPoles(); }
+
+    //// Edit ////
+        /**
+     * Public method displaying the password HTML edit form
+     *
+     * @return View HTML Page
+     */
+    public function displayEditPassword() { return $this->View->displayEditPassword(); }
+    /**
+     * Public method displaying the user edit HTML form
+     *
+     * @param Int $user_key The suer's primary key
+     * @return View HTML Page
+     */
+    public function displayEditUsers($user_key) {
+        return $this->View->displayEditUsers(
+            $this->Model->getEditProfile($user_key),
+            $this->Model->getRoles()
         );
     }
 
+    // * CREATE * //
+    /**
+     * Public method creating a new user
+     *
+     * @param Array $data
+     * @return Void
+     */
+    public function createUsers(&$data=[]) {
+        if($data == null || empty($data))
+            throw new Exception("Erreur lors de l'inscription du nouvel utilisateur. Donnée manquante !");
+        else $this->Model->createUsers($data);
+        alert_manipulation::alert([
+            'title' => 'Opération réussie',
+            'msg' => "Nouvel utilisateur enregistré !",
+            'direction' => 'index.php?preferences=list-new-users'
+        ]);
+    }
+    /**
+     * Public method creating a new jobs
+     *
+     * @param Array<String> $data The array containing the new jobs data
+     * @return Void
+     */
+    public function createJobs(&$data=[]) {
+        $this->Model->createJobs($data);
+        alert_manipulation::alert([
+            'title' => 'Opération réussie',
+            'msg' => "Nouveau poste enregistré !",
+            'direction' => 'index.php?preferences=list-jobs'
+        ]);
+    }
+    /**
+     * Public method creating a new establishment
+     *
+     * @param Array $data
+     * @return Void
+     */
+    public function createEstablishments(&$data=[]) {
+        $this->Model->createEstablishments($data);
+        alert_manipulation::alert([
+            'title' => 'Opération réussie',
+            'msg' => "Nouveau établissement enregistré !",
+            'direction' => 'index.php?preferences=list-establishments'
+        ]);
+    }
+    /**
+     * Public method creating a new poles
+     *
+     * @param String $titled The poles' titled 
+     * @param String $description The poles' description
+     * @return Void
+     */
+    public function createPoles(&$titled, &$description) {
+        $this->Model->createPoles($titled, $description);
+        alert_manipulation::alert([
+            'title' => 'Opération réussie',
+            'msg' => "Nouveau pôle enregistré !",
+            'direction' => 'index.php?preferences=list-poles'
+        ]);
+    } 
+
+    // * UPDATE * //
+    public function updateUser($cle_utilisateur, &$user=[]) {
+        // On met-à-jour
+        $this->Model->updateUser($cle_utilisateur, $user);
+        $this->Model->updateUserLogs($cle_utilisateur);
+        alert_manipulation::alert([
+            'title' => 'Opération réussie',
+            'msg' => "L'utilisateur a bien été modifié !",
+            'direction' => 'index.php?preferences=' . $cle_utilisateur
+        ]);
+    }
     /// Méthode publique mettant à jour le mot de passe de l'utilisateur actuel
     public function updatePassword(&$password, &$new_password) {
-        // On vérifie que le mot de passe saisi est le bon 
         if($this->Model->verify_password($password)) {
-            // On met-à-jour le mot de passe
             $this->Model->updatePassword($new_password);
             $this->Model->updatePasswordLogs();
             alert_manipulation::alert([
@@ -115,16 +233,8 @@ class PreferencesController extends Controller {
         } else 
             forms_manip::error_alert("Erreur lors de la mise à jour du mot de passe", "L'ancien mot de passe ne correspond pas !");
     }
-    public function updateUser($cle_utilisateur, &$user=[]) {
-        // On met-à-jour
-        $this->Model->updateUser($cle_utilisateur, $user);
-        $this->Model->updateUserLogs($cle_utilisateur);
-        alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "L'utilisateur a bien été modifié !",
-            'direction' => 'index.php?preferences=' . $cle_utilisateur
-        ]);
-    }
+
+    // * RESET * // 
     /// Méthode publique réinitialisant le mot de passe d'un utilisateur
     public function resetPassword($password, $cle_utilisateur) {
         // On réinitialise le mot de passe
@@ -139,34 +249,14 @@ class PreferencesController extends Controller {
         ]);
     }
 
-    /// Méthode publique générant un nouvel utilisateur
-    public function createUtilisateur(&$infos=[]) {
-        // On vérifie l'intégrité des données
-        if($infos == null || empty($infos))
-            throw new Exception("Erreur lors de l'inscription du nouvel utilisateur. Donnée manquante !");
+    // ! OTHERS ! //
 
-        // On génère le nouvel utilisateur    
-        else $this->Model->createUser($infos);
-
-        alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouvel utilisateur enregistré !",
-            'direction' => 'index.php?preferences=liste-nouveaux-utilisateurs'
-        ]);
-    }
-    /// Méthode publique générant un nouveau poste
-    public function createPoste(&$infos=[]) {
-        // On vérifie l'intégrité des données
-        if(empty($infos)) 
-            throw new Exception("Erreur lors de l'inscription du poste. Données manquantes lors de la génération du poste !");
-
-        // On génère le nouveua poste
-        else $this->Model->createPoste($infos);
-        alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau poste enregistré !",
-            'direction' => 'index.php?preferences=liste-postes'
-        ]);
+    /// Méthode publique retournant le formulaire de saisie d'un nouveau service
+    // Todo : remake
+    public function displaySaisieService() {
+        return $this->View->getSaisieService(
+            $this->Model->getAutoCompletEtablissements()
+        );
     }
     /// Méthode publique générant un nouveau service
     public function createService(&$service, &$etablissement) {
@@ -175,27 +265,7 @@ class PreferencesController extends Controller {
         alert_manipulation::alert([
             'title' => 'Opération réussie',
             'msg' => "Nouveau service enregistré !",
-            'direction' => 'index.php?preferences=liste-services'
-        ]);
-    }
-    /// Méthode publique générant un nouvel établissement
-    public function createEtablissement(&$infos=[]) {
-        // On génère le nouvel établissement
-        $this->Model->createEtablissement($infos);
-        alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau établissement enregistré !",
-            'direction' => 'index.php?preferences=liste-etablissements'
-        ]);
-    }
-    /// Méthode publique générant un nouveau pôle
-    public function createPole(&$intitule, &$description) {
-        // On génère le nouvel établissement
-        $this->Model->createPole($intitule, $description);
-        alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau pôle enregistré !",
-            'direction' => 'index.php?preferences=liste-poles'
+            'direction' => 'index.php?preferences=list-services'
         ]);
     }
 }
