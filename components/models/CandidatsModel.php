@@ -277,7 +277,7 @@ class CandidatsModel extends Model {
         $offer['poste'] = $this->searchJobs($offer['poste'])['Id'];
         $offer['service'] = $this->searchServices($offer['service'])['Id'];
         $offer['etablissement'] = $this->searchEstablishments($offer['etablissement'])['Id'];
-        if($this->verifyServices($offer['service'], $offer['etablissement']))
+        if(!$this->verifyServices($offer['service'], $offer['etablissement']))
             throw new Exception("Ce service n'existe pas dans l'établissement sélectionné...");
 
         $this->inscriptContracts(
