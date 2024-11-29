@@ -1082,14 +1082,4 @@ abstract class Model {
     public function verifyServices($key_services, $key_establishments): Bool {
         return !empty($this->searchBelongTo($key_services, $key_establishments));
     }
-    // public function verifyServices($key_services, $key_establishments): Bool {
-    //     $request = "SELECT COUNT(*) AS count FROM Belong_to 
-    //     WHERE Key_Services = :key_services AND Key_Establishments = :key_establishments";
-    //     $params = [
-    //         'key_services'       => $key_services,
-    //         'key_establishments' => $key_establishments
-    //     ];
-    // 
-    //     return $this->get_request($request, $params, true, true)['count'] > 0; 
-    // }
 }

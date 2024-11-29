@@ -179,7 +179,6 @@ class CandidatController extends Controller {
     public function createOffers($key_candidate, $offer, $key_application = null) {
         if(!empty($key_application))
             $this->Model->setApplicationsAccepted($key_application);
-
         $this->Model->createOffers($key_candidate, $offer);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
