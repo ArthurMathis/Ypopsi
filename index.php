@@ -587,7 +587,7 @@ switch(true) {
                     break;
 
                 case 'update-users':
-                    if(isset($_GET['cle_utilisateur']) && !empty($_GET['cle_utilisateur']) && is_numeric($_GET['cle_utilisateur'])) {
+                    if(isset($_GET['user_key']) && !empty($_GET['user_key']) && is_numeric($_GET['user_key'])) {
                         try {
                             if(empty( $_POST['nom'])) 
                                 throw new Exception('Le champs nom doit être rempli !');
@@ -599,8 +599,8 @@ switch(true) {
                                 throw new Exception('Le champs rôle doit être rempli !');
 
                             $user = [
-                                'nom' => $_POST['nom'],
-                                'prenom' => $_POST['prenom'],
+                                'name' => $_POST['nom'],
+                                'firstname' => $_POST['prenom'],
                                 'email' => $_POST['email'],
                                 'role' => $_POST['role']
                             ];
@@ -611,13 +611,11 @@ switch(true) {
                             ]);
                         }
                         
-                        $preferences->updateUser($_GET['cle_utilisateur'], $user);
+                        $preferences->updateUsers($_GET['user_key'], $user);
 
                     } else 
                         throw new Exception ('La clé utilisateur est nécessaire pour la mise-à-jour !');
                     break;    
-
-                    
 
                 case 'edit-password':
                     $preferences->displayEditPassword();
