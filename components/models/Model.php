@@ -927,24 +927,22 @@ abstract class Model {
     /**
      * Public method updating one user's data
      *
-     * @param Int $cle_utilisateur The user's primary key
-     * @param Array<String> $user The user's data Array
+     * @param Int $key_users The user's primary key
+     * @param Array<String> $users The user's data Array
      * @return Void
      */
-    public function updateUser($cle_utilisateur, $user=[]) {
-        // On initialise la requête
-        $request = "UPDATE Utilisateurs 
-        SET Nom_Utilisateurs = :nom, Prenom_Utilisateurs = :prenom, Email_Utilisateurs = :email, Cle_Roles = :role
-        WHERE Id_Utilisateurs = :cle";
+    public function updateUsers($key_users, $users=[]) {
+        $request = "UPDATE Users
+        SET Name = :name, Firstname = :firstname, Email = :email, Key_Roles = :role
+        WHERE Id = :cle";
         $params = [
-            'nom'    => $user['nom'],
-            'prenom' => $user['prenom'],
-            'email'  => $user['email'],
-            'role'   => $user['role'],
-            'cle'    => $cle_utilisateur
+            'name'    => $users['name'],
+            'firstname' => $users['firstname'],
+            'email'  => $users['email'],
+            'role'   => $users['role'],
+            'cle'    => $key_users
         ];
 
-        // On lance la requête
         return $this->get_request($request, $params);
     }
     /**
