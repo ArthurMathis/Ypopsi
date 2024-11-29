@@ -628,7 +628,7 @@ abstract class Model {
      * @return Void
      */
     protected function inscriptUsers($user=[]) {
-        $request = "INSERT INTO Users (Id, Name, Firstname, Email, Password, Key_Establishments, Key_Roles)
+        $request = "INSERT INTO Users (Identifier, Name, Firstname, Email, Password, Key_Establishments, Key_Roles)
                     VALUES (:identifier, :name, :firstname, :email, :password, :key_establishments, :key_roles)";
         $this->post_request($request, $user);
     }

@@ -293,7 +293,6 @@ class PreferencesModel extends Model {
      */
     public function createUsers(&$data=[]) {
         $data['establishment'] = $this->searchEstablishments($data['establishment'])['Id'];
-
         $user = User::makeUser($data);
         unset($data);
 
