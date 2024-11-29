@@ -97,11 +97,11 @@ class CandidaturesController extends Controller {
      * @param String $coopteur The employee's name who advises the new candidate 
      * @return Void
      */
-    public function createApplications(&$candidate, &$application=[], &$qualifications=[], &$helps=[], $coopteur) {
+    public function createApplications($candidate, $application=[], $qualifications=[], $helps=[], $coopteur) {
         $candidate->setAvailability($application['availability']); 
         try {
-            if (!$this->Model->verifyServices($this->Model->searchServices($application['service'])['Id'], $this->Model->searchEstablishments($application['establishment'])['Id'])) 
-                throw new Exception("Le service n'appartient pas à l'établissement... ");
+            if(!$this->Model->verifyServices($this->Model->searchServices($application['service'])['Id'], $this->Model->searchEstablishments($application['establishment'])['Id'])) 
+                throw new Exception("Ce service n'existe pas dans l'établissement sélectionné...");
 
             if ($candidate->getKey() === null) 
                 $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);
@@ -112,12 +112,6 @@ class CandidaturesController extends Controller {
                 'title' => "Erreur lors de l'inscription de la candidature",
                 'msg' => $e
             ]);
-        } 
-    
-        alert_manipulation::alert([
-            'title' => 'Candidat inscript !',
-            'msg' => strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname()) . " a bien été inscrit(e).",
-            'direction' => "index.php?candidates=" . $candidate->getKey()
-        ]);
+        }
     }
 }

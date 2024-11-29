@@ -50,15 +50,16 @@
         </section>
     </div>
 </form>
+<script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
 
-
-<script>
     new AutoComplete(document.getElementById('poste'), <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $jobs)); ?>);
     new AutoComplete(document.getElementById('service'), <?php echo json_encode(array_map(function($c) {  return $c['titled'];  }, $services)); ?>);
     new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) {  return $c['titled'];  }, $establishments)); ?>);
     new AutoComplete(document.getElementById('type_contrat'), <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $types_of_contrats)); ?>);
 
-    SetMinEndDate('date_debut', 'date_fin');
+    formManipulation.SetMinEndDate('date_debut', 'date_fin');
 
     const inputTypeContrat = document.getElementById('type_contrat');
     const inputDateFin = document.getElementById('date_fin').parentElement;

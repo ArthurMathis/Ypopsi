@@ -97,11 +97,6 @@ class CandidatsView extends View {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
 
-        $scripts = [
-            'models/objects/AutoComplet.js',
-            'views/form-view.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
         include INSCRIPT_FORM.DS.'contracts.php';
 
         $this->generateCommonFooter();

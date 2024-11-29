@@ -146,26 +146,32 @@ if(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
                     elseif(empty($_POST["source"])) 
                         throw new Exception("Le champs source doit être rempli par une chaine de caractères");
 
-                    $application = [
-                        'job'              => $_POST["poste"],
-                        'service'          => !empty($_POST["service"]) ? $_POST["service"] : null,
-                        'establishment'    => !empty($_POST["etablissement"]) ?  $_POST["etablissement"] : null,
-                        'type of contract' => !empty($_POST["type_de_contrat"]) ?  $_POST["type_de_contrat"] : null,
-                        'availability'     => $_POST["disponibilite"],
-                        'source'           => $_POST["source"]
-                    ];
+                    $applications->createApplications(
+                        $_SESSION['candidate'],
+                        [
+                            'job'              => $_POST["poste"],
+                            'service'          => !empty($_POST["service"]) ? $_POST["service"] : null,
+                            'establishment'    => !empty($_POST["etablissement"]) ?  $_POST["etablissement"] : null,
+                            'type of contract' => !empty($_POST["type_de_contrat"]) ?  $_POST["type_de_contrat"] : null,
+                            'availability'     => $_POST["disponibilite"],
+                            'source'           => $_POST["source"]
+                        ],
+                        isset($_SESSION['qualifications']) && !empty($_SESSION['qualifications']) ? $_SESSION['qualifications'] : null,
+                        isset($_SESSION['helps']) && !empty($_SESSION['helps']) ? $_SESSION['helps'] : null,
+                        isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null
+                    );
 
                     $candidate = $_SESSION['candidate'];
-                    $qualifications = isset($_SESSION['qualifications']) && !empty($_SESSION['qualifications']) ? $_SESSION['qualifications'] : null;
-                    $helps = isset($_SESSION['helps']) && !empty($_SESSION['helps']) ? $_SESSION['helps'] : null;
-                    $coopteur = isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null; 
+                    unset($_SESSION['candidate']);
+                    unset($_SESSION['qualifications']);
+                    unset($_SESSION['helps']);
+                    unset($_SESSION['coopteur']);
                     
-                    // unset($_SESSION['candidate']);
-                    // unset($_SESSION['qualifications']);
-                    // unset($_SESSION['helps']);
-                    // unset($_SESSION['coopteur']);
-
-                    $applications->createApplications($candidate, $application, $qualifications, $helps, $coopteur);
+                    alert_manipulation::alert([
+                        'title' => 'Candidat inscript !',
+                        'msg' => strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname()) . " a bien été inscrit(e).",
+                        'direction' => "index.php?candidates=" . $candidate->getKey()
+                    ]);
         
                 } catch(Exception $e) {
                     forms_manip::error_alert([

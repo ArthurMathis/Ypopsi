@@ -277,8 +277,8 @@ class CandidatsModel extends Model {
         $offer['poste'] = $this->searchJobs($offer['poste'])['Id'];
         $offer['service'] = $this->searchServices($offer['service'])['Id'];
         $offer['etablissement'] = $this->searchEstablishments($offer['etablissement'])['Id'];
-        if(empty($this->searchBelongTo($offer['service'], $offer['etablissement'])))
-            throw new Exception("Le service ne fait pas parti de l'étiablissement !");
+        if($this->verifyServices($offer['service'], $offer['etablissement']))
+            throw new Exception("Ce service n'existe pas dans l'établissement sélectionné...");
 
         $this->inscriptContracts(
             $key_candidate,
@@ -316,8 +316,8 @@ class CandidatsModel extends Model {
         $contract['type'] = $this->searchTypesOfContracts($contract['type'])['Id'];
         $contract['start_date'] = Moment::fromDate($contract['start_date']);
         $contract['end_date'] = Moment::fromDate($contract['end_date']);
-        $contract['signature'] = Moment::currentMoment();
 
+        $contract['signature'] = Moment::currentMoment();
         $contract = Contract::makeContract($contract);
         $this->inscriptContracts(
             $key_candidate,
