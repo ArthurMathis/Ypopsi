@@ -316,8 +316,10 @@ class CandidatsModel extends Model {
         $contract['type'] = $this->searchTypesOfContracts($contract['type'])['Id'];
         $contract['start_date'] = Moment::fromDate($contract['start_date']);
         $contract['end_date'] = Moment::fromDate($contract['end_date']);
-
         $contract['signature'] = Moment::currentMoment();
+
+        if(!$this->verifyServices($contract['service'], $contract['establishment']))
+            throw new Exception("Ce service n'existe pas dans l'établissement sélectionné...");
         $contract = Contract::makeContract($contract);
         $this->inscriptContracts(
             $key_candidate,

@@ -194,7 +194,7 @@ class CandidatController extends Controller {
      * @param Array $contract
      * @return Void
      */
-    public function createContracts($key_candidate, &$contract=[]) {
+    public function createContracts($key_candidate, &$contract=[]) {   
         $this->Model->createContracts($key_candidate, $contract);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
