@@ -724,28 +724,28 @@ switch(true) {
                     break; 
 
                 case 'input-jobs':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                     $preferences->displayInputJobs();
                     break;  
 
                 case 'input-qualifications':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                     $preferences->displayInputQualifications();
                     break;   
 
                 case 'input-poles':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                     $preferences->displayInputPoles();
                     break;
 
                 case 'input-establishments':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                     $preferences->displayInputEstablishments();
@@ -820,7 +820,7 @@ switch(true) {
                     break;
 
                 case 'inscript-jobs':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                     try {
@@ -843,12 +843,12 @@ switch(true) {
                     break;
 
                 case 'inscript-qualifications':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                     break; 
 
                 case 'inscript-poles':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                     try {
@@ -868,7 +868,7 @@ switch(true) {
                     break;
 
                 case 'inscript-establishments':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                     try {
@@ -902,6 +902,9 @@ switch(true) {
                     break;
 
                 case 'inscript-services':
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
+                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                    
                     try {
                         $service = $_POST['service'];
                         $etablissement = $_POST['etablissement'];
