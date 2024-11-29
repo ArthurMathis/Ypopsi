@@ -374,50 +374,63 @@ class PreferencesModel extends Model {
 
         return password_verify($password, $this->get_request($request, $params, 1, 1)['Password']);
     }
-    /// Méthode publique réinitialisant le mot de passe d'un utilisateur
-    public function resetPassword($password, $cle_utilisateur) {
-        // On initialise la requête
-        $request = "UPDATE Utilisateurs
-        SET MotDePasse_Utilisateurs = :password, MotDePassetemp_Utilisateurs = true
-        WHERE Id_Utilisateurs = :cle";
+    /**
+     * Public method reinitializing the user's password
+     *
+     * @param String $password The user's new password
+     * @param Int $key_users The user's primary key
+     * @return Void
+     */
+    public function resetPassword($password, $key_users) {
+        $request = "UPDATE Users
+        SET Password = :password, PasswordTemp = true
+        WHERE Id = :key_users";
         $params = [
-            'cle' => $cle_utilisateur,
+            'key_users' => $key_users,
             'password' => password_hash($password, PASSWORD_DEFAULT)
         ];
         
-        // On lance la requête
         $this->post_request($request, $params);
     }
 
-    /// Méthode publique enregistrant les mise-à-jour de mots de passe dans les logs
+    /**
+     * Public method registering the user's password update logs
+     *
+     * @return Void
+     */
     public function updatePasswordLogs() {
-        // On enregistre les logs
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour mot de passe",
             strtoupper($_SESSION['user_name']) . " " . forms_manip::nameFormat($_SESSION['user_firstname']) . " a mis-à-jour son mot de passe"
         );
     }
-    public function updateUserLogs($cle_utilisateur) {
-        // On récupère les données du candidat
-        $candidat = $this->searchUsers($cle_utilisateur);
-
-        // On enregistre les logs
+    /**
+     * Public method registering the user's data update logs
+     *
+     * @param Int $key_users The user's primary key
+     * @return Void
+     */
+    public function updateUsersLogs($key_users) {
+        $candidat = $this->searchUsers($key_users);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour utilisateur",
-            "Mise-à-jour du profil de " . strtoupper($candidat['Nom_Utilisateurs']) . " " . forms_manip::nameFormat($candidat['Prenom_Utilisateurs'])
+            "Mise-à-jour du profil de " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname'])
         );
     }
-    /// Méthode publique enregistrant les réinitialisations de mots de passe dans les logs
-    public function resetPasswordLogs($cle_utilisateur) {
-        // On récpère l'utilisateur
-        $user = $this->searchUsers($cle_utilisateur);
-        // On enregistre les logs
+    /**
+     * Public method registering the user's password reset logs
+     *
+     * @param Int $key_users The user's primary key
+     * @return Void
+     */
+    public function resetPasswordLogs($key_users) {
+        $user = $this->searchUsers($key_users);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour mot de passe",
-            "Le mot de passe de " . strtoupper($user['Nom_Utilisateurs']) . " " . forms_manip::nameFormat($user['Prenom_Utilisateurs']) . " a été réinitialisé"
+            "Le mot de passe de " . strtoupper($user['Name']) . " " . forms_manip::nameFormat($user['Firstname']) . " a été réinitialisé"
         );
     }
 }

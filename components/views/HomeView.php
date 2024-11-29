@@ -20,9 +20,6 @@ class HomeView extends View {
         $this->getDashboard($dashboard);
         echo "</aside>";
         echo "</content>";
-        
-        $scripts = ['controllers/home-controller.mjs'];
-        include(COMMON.DS.'import-scripts.php');
 
         $this->generateCommonFooter();
     }
