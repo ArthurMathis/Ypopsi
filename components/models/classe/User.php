@@ -142,10 +142,8 @@ class User {
      * @return void
      */
     public function setKey($key) {
-        // On vérifie que l'id est un nombre positif ou nul
         if($key == null || !is_numeric($key)) 
             throw new InvalideUtilisateurExceptions("La clé primaire doit être un entier !");
-        // On vérifie que l'id est un nombre positif ou nul
         elseif($key < 0) 
             throw new InvalideUtilisateurExceptions("La clé primaire doit être supéieure ou égale à 0 !");
 
