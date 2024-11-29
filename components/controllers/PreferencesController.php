@@ -209,14 +209,20 @@ class PreferencesController extends Controller {
     } 
 
     // * UPDATE * //
-    public function updateUser($cle_utilisateur, &$user=[]) {
-        // On met-à-jour
-        $this->Model->updateUser($cle_utilisateur, $user);
-        $this->Model->updateUserLogs($cle_utilisateur);
+    /**
+     * Undocumented function
+     *
+     * @param Int $key_users The user's primary key
+     * @param Array $user The user's data
+     * @return Void
+     */
+    public function updateUsers($key_users, &$user=[]) {
+        $this->Model->updateUsers($key_users, $user);
+        $this->Model->updateUsersLogs($key_users);
         alert_manipulation::alert([
             'title' => 'Opération réussie',
             'msg' => "L'utilisateur a bien été modifié !",
-            'direction' => 'index.php?preferences=' . $cle_utilisateur
+            'direction' => 'index.php?preferences=' . $key_users
         ]);
     }
     /// Méthode publique mettant à jour le mot de passe de l'utilisateur actuel
