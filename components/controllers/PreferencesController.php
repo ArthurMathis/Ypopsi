@@ -155,9 +155,7 @@ class PreferencesController extends Controller {
      * @return Void
      */
     public function createUsers(&$data=[]) {
-        if($data == null || empty($data))
-            throw new Exception("Erreur lors de l'inscription du nouvel utilisateur. Donnée manquante !");
-        else $this->Model->createUsers($data);
+        $this->Model->createUsers($data);
         alert_manipulation::alert([
             'title' => 'Opération réussie',
             'msg' => "Nouvel utilisateur enregistré !",
