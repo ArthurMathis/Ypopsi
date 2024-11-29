@@ -179,7 +179,7 @@ CREATE TABLE Contracts (
 
   CHECK(PropositionDate <= StartDate AND StartDate <= EndDate),
   CHECK(PropositionDate <= SignatureDate AND SignatureDate <= EndDate),
-  CHECK(StartDate <= ResignationDate AND ResignationDate <= EndDate)
+  CHECK(ResignationDate <= EndDate)
 );
 
 -- Needs --
