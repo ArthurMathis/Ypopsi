@@ -14,12 +14,14 @@
             <a href="index.php?applications=home" class="LignesHover <?php if($currentPage == APPLICATIONS) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/white/applications.svg" alt="liste des candidatures">
             </a>
+            <!--
             <a href="#" class="LignesHover <?php if($currentPage == NEEDS) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/white/needs.svg" alt="liste des besoins">
             </a>
             <a href="#" class="LignesHover <?php if($currentPage == STATS) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/white/statistics.svg" alt="statistiques">
             </a>
+            -->
         </section>
         <section>
             <a href="index.php?preferences=home" class="LignesHover <?php if($currentPage == PREFERENCES) echo 'selected'?>">
@@ -46,12 +48,14 @@
             <a href="index.php?applications=home" class="LignesHover <?php if($currentPage == APPLICATIONS) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/applications.svg" alt="liste des candidatures">
             </a>
+            <!--
             <a href="#" class="LignesHover <?php if($currentPage == NEEDS) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/needs.svg" alt="liste des besoins">
             </a>
             <a href="#" class="LignesHover <?php if($currentPage == STATS) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/statistics.svg" alt="statistiques">
             </a>
+            -->
         </section>
         <section>
             <a href="index.php?preferences=home" class="LignesHover <?php if($currentPage == PREFERENCES) echo 'selected'?>">
