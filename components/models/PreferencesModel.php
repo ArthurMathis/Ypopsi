@@ -383,8 +383,8 @@ class PreferencesModel extends Model {
      */
     public function resetPassword($password, $key_users) {
         $request = "UPDATE Users
-        SET POassword = :password, PasswordTemp = true
-        WHERE Id_Utilisateurs = :key_users";
+        SET Password = :password, PasswordTemp = true
+        WHERE Id = :key_users";
         $params = [
             'key_users' => $key_users,
             'password' => password_hash($password, PASSWORD_DEFAULT)
@@ -430,7 +430,7 @@ class PreferencesModel extends Model {
         $this->writeLogs(
             $_SESSION['user_key'],
             "Mise-à-jour mot de passe",
-            "Le mot de passe de " . strtoupper($user['Nom_Utilisateurs']) . " " . forms_manip::nameFormat($user['Prenom_Utilisateurs']) . " a été réinitialisé"
+            "Le mot de passe de " . strtoupper($user['Name']) . " " . forms_manip::nameFormat($user['Firstname']) . " a été réinitialisé"
         );
     }
 }
