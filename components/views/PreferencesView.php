@@ -328,7 +328,7 @@ class PreferencesView extends View {
         $this->generateMenu(true, PREFERENCES);
 
         $scripts = [
-            'models/objects/AutoComplet.js'
+            'models/objects/AutoComplet.mjs'
         ];
         include(COMMON.DS.'import-scripts.php');
 

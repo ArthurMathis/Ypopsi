@@ -73,7 +73,7 @@ class CandidatsView extends View {
         $this->generateMenu(true, null);
 
         $scripts = [
-            'models/objects/AutoComplet.js',
+            'models/objects/AutoComplet.mjs',
             'views/form-view.js'
         ];
         include(COMMON.DS.'import-scripts.php');
@@ -114,9 +114,6 @@ class CandidatsView extends View {
     public function displayInputMeetings($title, $key_candidate, $user_establishment, $users=[], $establisments=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
         $this->generateMenu(true, null);
-
-        $scripts = ['models/objects/AutoComplet.js'];
-        include(COMMON.DS.'import-scripts.php');
 
         include INSCRIPT_FORM.DS.'meeting.php';
 

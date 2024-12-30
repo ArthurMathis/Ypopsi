@@ -86,12 +86,14 @@ class AutoComplete {
         if (filteredSuggestions.length > 0) {
             suggestionBox.classList.add('autocomplete-items');
 
+            console.log('Bonjour');
             // On génère les items de suggestion
             filteredSuggestions.forEach(suggestion => {
                 const item = document.createElement('div');
                 item.innerHTML = suggestion;
                 item.addEventListener('click', () => {
                     this.inputElement.value = suggestion;
+                    this.inputElement.dataset.selectedPrimaryKey = 3;
                     this.inputElement.dispatchEvent(new Event('AutoCompleteSelect'));
                     this.closeAllLists();
                 });

@@ -24,10 +24,23 @@
     <button type="submit" value="new_user">Enregistrer</button>
 </form>
 
-<script>
-    const recruteur = <?php echo json_encode(array_map(function($c) { return $c['name']; }, $users)); ?>;
-    const etablissement = <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $establisments)); ?>;
+<script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs"; 
 
-    new AutoComplete(document.getElementById('recruteur'), recruteur);
-    new AutoComplete(document.getElementById('etablissement'), etablissement);
+    new AutoComplete(document.getElementById('recruteur'), <?php echo json_encode(array_map(function($c) { return $c['name']; }, $users)); ?>);
+    new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $establisments)); ?>);
+
+    // On gère l'émission des données
+    document.querySelector('form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        e.target.querySelectorAll('input').forEach(elmt => {
+            if(elmt.parentElement.classList.contains('autocomplete')) {
+                const value = elmt.value;
+                elmt.value = elmt.dataset.selectedPrimaryKey;
+                console.log(`L'élément : ${elmt} est de classe autocomplete. Sa value était : ${value}, sa nouvelle value est : ${elmt.value}`);
+            }
+        });
+
+        // e.target.submit();
+    });
 </script>
