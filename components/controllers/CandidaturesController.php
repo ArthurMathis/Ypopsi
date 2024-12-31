@@ -100,9 +100,9 @@ class CandidaturesController extends Controller {
     public function createApplications($candidate, $application=[], $qualifications=[], $helps=[], $coopteur) {
         $candidate->setAvailability($application['availability']); 
         try {
-            if(!$this->Model->verifyServices($this->Model->searchServices($application['service'])['Id'], $this->Model->searchEstablishments($application['establishment'])['Id'])) 
-                throw new Exception("Ce service n'existe pas dans l'établissement sélectionné...");
-
+            if ($application['service'] && $application['establishment'] && !$this->Model->verifyServices($application['service'], $application['establishment']))
+                throw new Exception("Le service " . $this->Model->searchServices($application['service'])['Titled'] . " n'existe pas dans l'établissement " . $this->Model->searchEstablishmets($application['establishment'])['Titled'] . "...");
+            
             if ($candidate->getKey() === null) 
                 $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);
             $this->Model->inscriptApplications($candidate, $application);

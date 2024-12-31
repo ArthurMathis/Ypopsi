@@ -120,17 +120,12 @@ class CandidaturesModel extends Model {
      */
     public function createCandidate(&$candidate, $qualifications=[], $helps=[], $coopteur=null) {
         $candidate->setKey($this->inscriptCandidates($candidate));
-
         if(!empty($qualifications)) 
             foreach($qualifications as $item) 
-                $this->inscriptGetQualifications($candidate->getKey(), $this->searchQualifications($item['qualification'])['Id'], $item['date']);
-
-        if(!empty($helps)) {
-            foreach($helps as $item) {
+                $this->inscriptGetQualifications($candidate->getKey(), $item['qualification'], $item['date']);
+        if(!empty($helps)) 
+            foreach($helps as $item) 
                 $this->inscriptHaveTheRightTo($candidate->getKey(), $item, $item == $this->searchHelps(COOPTATION)['Id'] ? $coopteur : null);   
-            }
-        }
-                
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Nouveau candidat", 

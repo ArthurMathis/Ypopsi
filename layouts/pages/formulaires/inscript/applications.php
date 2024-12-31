@@ -52,10 +52,13 @@
 
 <script type="module">
     import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs"; 
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
 
-    new AutoComplete(document.getElementById('poste'), <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $job)); ?>);
-    new AutoComplete(document.getElementById('service'), <?php echo json_encode(array_map(function($c) {  return $c['titled'];  }, $service)); ?>);
-    new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) {  return $c['titled'];  }, $establishment)); ?>);
-    new AutoComplete(document.getElementById('type_de_contrat'), <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $typeOfContract)); ?>);
-    new AutoComplete(document.getElementById('source'), <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $source)); ?>);
+    new AutoComplete(document.getElementById('poste'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $job)); ?>);
+    new AutoComplete(document.getElementById('service'), <?php echo json_encode(array_map(function($c) {  return ['text' => $c['text'], 'key' => $c['id']];  }, $service)); ?>);
+    new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) {  return ['text' => $c['text'], 'key' => $c['id']];  }, $establishment)); ?>);
+    new AutoComplete(document.getElementById('type_de_contrat'), <?php echo json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $typeOfContract)); ?>);
+    new AutoComplete(document.getElementById('source'), <?php echo json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $source)); ?>);
+
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

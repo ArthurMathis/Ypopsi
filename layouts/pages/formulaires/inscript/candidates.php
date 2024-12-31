@@ -67,6 +67,8 @@
 </form>
 
 <script type="module">
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+
     document.addEventListener('elementCreated', function(e) {
         if(e.detail.element.parentNode === document.getElementById('aide-section')) {
             const aideSection = document.getElementById('aide-section');
@@ -77,8 +79,8 @@
         }
     });
 
-    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+    new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $diplome)); ?>, 'Licence', <?= count($diplome); ?>, null); 
+    new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $aide)); ?>, <?= count($aide); ?>);
 
-    const diplome = new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode($diplome); ?>, 'Licence', <?= count($diplome); ?>, null); 
-    const aide = new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode($aide); ?>, <?= count($aide); ?>);
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

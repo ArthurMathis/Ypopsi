@@ -89,10 +89,12 @@ class AutoComplete {
 
             // On génère les items de suggestion
             filteredSuggestions.forEach(suggestion => {
+                // On teste la correspondance avec la saisie
                 const item = document.createElement('div');
                 item.innerHTML = suggestion.text;
                 if(this.inputElement.value == suggestion.text) this.setDataset(suggestion.key);
 
+                // On ajoute un event de sélection
                 item.addEventListener('click', () => {
                     this.inputElement.value = suggestion.text;
                     this.setDataset(suggestion.key);

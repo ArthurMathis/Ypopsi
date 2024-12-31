@@ -9,9 +9,11 @@ require_once(CONTROLLERS.DS.'CandidaturesController.php');
 require_once(CONTROLLERS.DS.'CandidatsController.php');
 require_once(CONTROLLERS.DS.'PreferencesController.php');
 
+// Starting the session
 session_start();
 env_start();
 
+// Testing the identification
 if (!isset($_GET['login']) && (!isset($_SESSION['user_key']) || empty($_SESSION['user_key']))) {
     (new LoginController())->displayLogin();
     exit;
@@ -25,10 +27,11 @@ if (!isset($_GET['login']) && (!isset($_SESSION['user_key']) || empty($_SESSION[
         'direction' => 'index.php?preferences=edit-password',
         'button' => true
     ]);
-    
 }
 
+// Analysing the request
 switch(true) {
+    // Login requests
     case isset($_GET['login']):
         $login = new LoginController();
         switch($_GET['login']) { 
@@ -65,8 +68,9 @@ switch(true) {
                 $login->displayLogin();
                 break;
         }
-        exit;
+        break;
         
+    // Applications requests
     case isset($_GET['applications']):
         $applications = new CandidaturesController();
         try {
@@ -98,10 +102,9 @@ switch(true) {
                             throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
                         elseif(empty($_POST["prenom"]))
                             throw new Exception("Le champs prenom doit être rempli par une chaine de caractères !");
-                        elseif(empty($_POST["diplome"])) {
-                            if(!empty($_POST["diplomeDate"])) 
-                                throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
-                        } elseif(empty($_POST["diplomeDate"]))
+                        elseif(empty($_POST["diplome"]) && !empty($_POST["diplomeDate"])) 
+                            throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
+                        elseif(empty($_POST["diplomeDate"]))
                             throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
                         elseif(count($_POST["diplome"]) !== count($_POST["diplomeDate"]))
                             throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
@@ -119,18 +122,16 @@ switch(true) {
                             'post code'     => !empty($_POST['code-postal']) ? $_POST['code-postal'] : null
                         ];
 
-                        if(isset($_POST['diplomeDate'])) foreach ($_POST["diplomeDate"] as $date) 
-                            if (empty($date)) 
-                                throw new Exception("Chaque diplôme doit avoir une date d'obtention !");
+                        if(isset($_POST['diplomeDate'])) foreach ($_POST["diplomeDate"] as $date)
+                            if (empty($date)) throw new Exception("Chaque diplôme doit avoir une date d'obtention !");
                         $qualifications = array_map(
-                            function($qualification, $date) { return ['qualification' => $qualification, 'date' => $date]; }, 
+                            function($qualification, $date) { return ['qualification' => (int)$qualification, 'date' => $date]; }, 
                             isset($_POST["diplome"]) ? $_POST["diplome"] : [], 
                             isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : []
                         );
-
-                        $helps          = isset($_POST["aide"]) ? $_POST["aide"] : null;
-                        $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'] : null;
-                        $medical_visit  = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
+                        $helps         = isset($_POST["aide"]) ? array_map(function($elmt) { return (int)$elmt; }, $_POST["aide"]) : null;
+                        $coopteur      = isset($_POST["coopteur"]) ? $_POST['coopteur'] : null;
+                        $medical_visit = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
 
                         $applications->checkCandidate($candidate, $qualifications, $helps, $medical_visit, $coopteur);
 
@@ -144,23 +145,23 @@ switch(true) {
 
                 case 'inscript-applications' :
                     if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application...");
 
-                    try { 
+                    try {
                         if(empty($_POST["poste"])) 
-                            throw new Exception("Le champs poste doit être rempli par une chaine de caractères");
+                            throw new Exception("Le champs poste est nécessaire pour cette action.");
                         elseif(empty($_POST["disponibilite"])) 
-                            throw new Exception("Le champs disponibilité doit être rempli par une chaine de caractères");
+                            throw new Exception("Le champs disponibilité est nécessaire pour cette action.");
                         elseif(empty($_POST["source"])) 
-                            throw new Exception("Le champs source doit être rempli par une chaine de caractères");
+                            throw new Exception("Le champs source est nécessaire pour cette action.");
 
                         $applications->createApplications(
                             $_SESSION['candidate'],
                             [
-                                'job'              => $_POST["poste"],
-                                'service'          => !empty($_POST["service"]) ? $_POST["service"] : null,
-                                'establishment'    => !empty($_POST["etablissement"]) ?  $_POST["etablissement"] : null,
-                                'type of contract' => !empty($_POST["type_de_contrat"]) ?  $_POST["type_de_contrat"] : null,
+                                'job'              => (int)$_POST["poste"],
+                                'service'          => !empty($_POST["service"]) ? (int)$_POST["service"] : null,
+                                'establishment'    => !empty($_POST["etablissement"]) ?  (int)$_POST["etablissement"] : null,
+                                'type of contract' => !empty($_POST["type_de_contrat"]) ?  (int)$_POST["type_de_contrat"] : null,
                                 'availability'     => $_POST["disponibilite"],
                                 'source'           => $_POST["source"]
                             ],
@@ -199,8 +200,9 @@ switch(true) {
                 'msg' => $e
             ]);
         }
-        exit;
-        
+        break;
+    
+    // Candidates requests
     case isset($_GET['candidates']):
         $candidates = new CandidatController();
         if(is_numeric($_GET['candidates'])) 
@@ -559,7 +561,7 @@ switch(true) {
                 'msg' => $e
             ]);
         }
-        exit;    
+        break;    
 
     case (isset($_GET['preferences'])):
         $preferences = new PreferencesController();
@@ -949,7 +951,7 @@ switch(true) {
                 'msg' => $e
             ]);
         }
-        exit;
+        break;
 
     default: (new HomeController())->displayHome();
 }

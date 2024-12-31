@@ -81,18 +81,21 @@
     </div> 
 </form>
 <script type="module">
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs"; 
+
     document.addEventListener('elementCreated', function(e) {
         if(e.detail.element.parentNode === document.getElementById('aide-section')) {
             const aideSection = document.getElementById('aide-section');
             const inputAide = aideSection.querySelectorAll('select');
             
+            // TODO : Corriger 3 -> solution durable 
             const obj = new formManipulation.cooptInput(inputAide[inputAide.length - 1], 'coopteur', 3, <?= json_encode($employee); ?>);
             obj.input.addEventListener('change', (e) => obj.react());
         }
     });
 
-    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs"; 
+    new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $qualifications)); ?>, 'Licence', <?= count($qualifications); ?>, null); 
+    new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $helps)); ?>, <?= count($helps); ?>);
 
-    const diplome = new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode($qualifications); ?>, 'Intitulé', <?= count($qualifications); ?>, ); 
-    const aide = new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode($helps); ?>, <?= count($helps); ?>);
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

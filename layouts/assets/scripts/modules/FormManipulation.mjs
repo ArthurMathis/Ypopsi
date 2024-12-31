@@ -23,19 +23,16 @@ function setMinEndDate(startDateInput, endDateInput) {
  * @function manageSubit
  * @description Function receiving the submit event from the form and manage their parameters to send the right data (with AutoComplete input and others...)
  * @param {SubmitEvent} event The event for submit the form
+ * @author Arthur MATHIS
  */
 function manageSubmit(event) {
     event.preventDefault();
     event.target.querySelectorAll('input').forEach(elmt => {
-        if(elmt.parentElement.classList.contains('autocomplete')) {
-            const value = elmt.value;
+        if(elmt.value && elmt.parentElement.classList.contains('autocomplete')) {
+            console.log(`L'élément ${elmt} contient la valeur : ${elmt.value} et doit prendre la valeur : ${elmt.dataset.selectedPrimaryKey}.`);
             elmt.value = elmt.dataset.selectedPrimaryKey;
-            console.log(`L'élément : ${elmt} est de classe autocomplete. Sa value était : ${value}, sa nouvelle value est : ${elmt.value}`);
         }
     });
-
-
-
     event.target.submit();
 }
 
@@ -121,7 +118,10 @@ class cooptInput {
      * @description Function generating the suggestion window
      */
     createInput() {
-        // TODO : remplacer le autocomplete input par une liste déroulante
+        // TODO : remplacer l'autocomplete input par une liste déroulante
+        // *  Autocomplete remanier pour renvoyer une clé primaire
+        // ! Utile de remanier cette méthode ? 
+
         this.elmt = document.createElement('select');
         this.elmt.name = this.inputName;
         this.suggestions.forEach(c => {
@@ -285,6 +285,8 @@ class implementInputList extends implementInput {
     constructor(inputName, inputParent, suggestions=[], nbMaxInput=null) {
         super(inputName, inputParent, nbMaxInput);
         this.suggestions = Array.from(suggestions);
+
+        console.log(this.suggestions);
     }
 
     /**
@@ -297,7 +299,7 @@ class implementInputList extends implementInput {
         inputElement.name = this.inputName + '[]';
         this.suggestions.forEach(c => {
             const option = document.createElement('option');
-            option.value = c.id;
+            option.value = c.key;
             option.textContent = c.text;
         
             inputElement.appendChild(option);
@@ -393,7 +395,8 @@ class implementInputAutoCompleteDate extends implementInput {
     
         const tab = [];
         this.suggestions.forEach(c => { tab.push(c.text); });
-        this.inputElement = new AutoComplete(input, tab);
+        // this.inputElement = new AutoComplete(input, tab);
+        this.inputElement = new AutoComplete(input, this.suggestions);
 
         return inputElement;
     }

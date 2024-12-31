@@ -167,55 +167,52 @@ abstract class Model {
      * @return Array
      */
     public function getAutoCompUsers(): Array {
-        $request = "SELECT
-        Id as id,
-        CONCAT(Name, ' ', Firstname) as name
-        FROM Users ORDER BY name";
+        $request = "SELECT Id as id, CONCAT(Name, ' ', Firstname) as text FROM Users ORDER BY name";
         return $this->get_request($request, [], false, true);
         }
     /**
      * Public method returning the establishments list to autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getEstablishments() {
-        $request = "SELECT Id, Titled FROM Establishments ORDER BY titled";
+    public function getEstablishments(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM Establishments ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
     /**
      * Public method returning the services list to the autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getServices() {
-        $request = "SELECT titled FROM Services ORDER BY titled";
+    public function getServices(): Array {
+        $request = "SELECT Id AS id, titled AS text FROM Services ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
     /**
      * Public method returning the sources list to the autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getSources() {
-        $request = "SELECT titled FROM Sources ORDER BY titled";
+    public function getSources(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM Sources ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
     /**
      * Public method returning the types of contracts list to the autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getTypesOfContracts() {
-        $request = "SELECT titled FROM Types_of_contracts ORDER BY titled";
+    public function getTypesOfContracts(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM Types_of_contracts ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
     /**
      * Public method returning the job lost to the autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getJobs() {
-        $request = "SELECT titled FROM jobs ORDER BY titled";
+    public function getJobs(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM jobs ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
     /**
@@ -224,24 +221,24 @@ abstract class Model {
      * @return Void
      */
     public function getQualifications() {
-        $request = "SELECT Titled AS text FROM Qualifications";
+        $request = "SELECT Id AS id, Titled AS text FROM Qualifications";
         return $this->get_request($request, [], false, true);
     }
     /**
      * Public method returning the assistants list to autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getHelps() {
-        $request = "SELECT Id AS id, Titled AS text FROM Helps";
+    public function getHelps(): Array {
+        $request = "SELECT Id as id, Titled AS text FROM Helps";
         return $this->get_request($request, [], false, true);
     }
     /**
      * Public method returning the candidate who have a job in the foundation list to autocomplete items
      *
-     * @return Void
+     * @return Array|NULL
      */
-    public function getEmployee() {
+    public function getEmployee(): ?Array {
         $request = "SELECT 
         c.Id AS id,
         CONCAT(c.Name, ' ', c.Firstname) AS text
@@ -259,19 +256,14 @@ abstract class Model {
     /**
      * Public method returning the role liste without the owner
      *
-     * @return Void
+     * @return Array
      */
-    public function getRoles() {
-        $request = "SELECT 
-        Id AS id,
-        Titled AS titled
-
-        FROM Roles";
-
+    public function getRoles(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM Roles";
         return $this->get_request($request);
     }
 
-    
+
 // * SEARCH * //
 
     /**
@@ -672,7 +664,7 @@ abstract class Model {
     protected function inscriptCandidates(&$candidate): Int {
         $request = "INSERT INTO Candidates (Name, Firstname, Gender, Phone, Email, Address, City, PostCode, Availability";
         $values_request = " VALUES (:name, :firstname, :gender, :phone, :email, :address, :city, :post_code, :availability";
-
+        
         if($candidate->getMedicalVisit()) {
             $request .= " , MedicalVisit";
             $values_request .= ", :visite";
@@ -683,7 +675,6 @@ abstract class Model {
 
         $this->post_request($request, $candidate->exportToSQL());
         $lastId = $this->getConnection()->lastInsertId();
-
         return $lastId;
     }
     /**
