@@ -44,5 +44,5 @@
     new AutoComplete(document.getElementById('service'), services);
 
     // On ajuste la sélection de date
-    SetMinEndDate('date debut', 'date fin');
+    setMinEndDate('date debut', 'date fin');
 </script>

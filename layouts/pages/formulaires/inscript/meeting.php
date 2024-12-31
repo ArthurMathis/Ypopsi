@@ -26,21 +26,11 @@
 
 <script type="module">
     import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs"; 
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
 
     new AutoComplete(document.getElementById('recruteur'), <?php echo json_encode(array_map(function($c) { return ['text' => $c['name'], 'key' => $c['id']]; }, $users)); ?>);                                                                                                                                                                                                                                                  
     new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) { return ['text' => $c['Titled'], 'key' => $c['Id']]; }, $establisments)); ?>);
 
     // On gère l'émission des données
-    document.querySelector('form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        e.target.querySelectorAll('input').forEach(elmt => {
-            if(elmt.parentElement.classList.contains('autocomplete')) {
-                const value = elmt.value;
-                elmt.value = elmt.dataset.selectedPrimaryKey;
-                console.log(`L'élément : ${elmt} est de classe autocomplete. Sa value était : ${value}, sa nouvelle value est : ${elmt.value}`);
-            }
-        });
-
-        e.target.submit();
-    });
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

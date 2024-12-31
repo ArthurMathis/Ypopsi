@@ -79,7 +79,7 @@ class AutoComplete {
         let filteredSuggestions;
         if(this.inputElement.value) 
             filteredSuggestions = this.suggestions.filter(suggestion =>
-                suggestion.toLowerCase().trim().startsWith(this.inputElement.value.toLowerCase().trim())
+                suggestion.text.toLowerCase().trim().startsWith(this.inputElement.value.toLowerCase().trim())
             ); 
         else filteredSuggestions = Array.from(this.suggestions);
 
