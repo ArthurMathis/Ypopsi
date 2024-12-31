@@ -3,7 +3,7 @@
     <section>
         <p>Entretien</p>
         <div class="autocomplete">
-            <input type="text" id="recruteur" name="recruteur" placeholder="Recruteur" autocomplete="off" value="<?= $_SESSION['user_identifier']; ?>">
+            <input type="text" id="recruteur" name="recruteur" placeholder="Recruteur" autocomplete="off" value="<?= $_SESSION['user_name'] . " " . $_SESSION['user_firstname']; ?>">
             <article></article>
         </div>
         <div class="autocomplete">
@@ -27,8 +27,8 @@
 <script type="module">
     import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs"; 
 
-    new AutoComplete(document.getElementById('recruteur'), <?php echo json_encode(array_map(function($c) { return $c['name']; }, $users)); ?>);
-    new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $establisments)); ?>);
+    new AutoComplete(document.getElementById('recruteur'), <?php echo json_encode(array_map(function($c) { return ['text' => $c['name'], 'key' => $c['id']]; }, $users)); ?>);                                                                                                                                                                                                                                                  
+    new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) { return ['text' => $c['Titled'], 'key' => $c['Id']]; }, $establisments)); ?>);
 
     // On gère l'émission des données
     document.querySelector('form').addEventListener('submit', (e) => {
@@ -41,6 +41,6 @@
             }
         });
 
-        // e.target.submit();
+        e.target.submit();
     });
 </script>

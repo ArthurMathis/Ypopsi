@@ -167,16 +167,19 @@ abstract class Model {
      * @return Array
      */
     public function getAutoCompUsers(): Array {
-        $request = "SELECT CONCAT(Name, ' ', Firstname) as name FROM Users ORDER BY name";
+        $request = "SELECT
+        Id as id,
+        CONCAT(Name, ' ', Firstname) as name
+        FROM Users ORDER BY name";
         return $this->get_request($request, [], false, true);
-    }
+        }
     /**
      * Public method returning the establishments list to autocomplete items
      *
      * @return Void
      */
     public function getEstablishments() {
-        $request = "SELECT titled FROM Establishments ORDER BY titled";
+        $request = "SELECT Id, Titled FROM Establishments ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
     /**
