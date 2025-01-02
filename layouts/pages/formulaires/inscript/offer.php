@@ -71,10 +71,10 @@
     import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
     import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
 
-    new AutoComplete(document.getElementById('poste'), <?= json_encode(array_map(function($c) { return $c['titled']; }, $jobs)); ?>);
-    new AutoComplete(document.getElementById('service'), <?= json_encode(array_map(function($c) {  return $c['titled'];  }, $services)); ?>);
-    new AutoComplete(document.getElementById('etablissement'), <?= json_encode(array_map(function($c) {  return $c['titled'];  }, $establishments)); ?>);
-    new AutoComplete(document.getElementById('type_contrat'), <?= json_encode(array_map(function($c) { return $c['titled']; }, $types_of_contracts)); ?>);
+    new AutoComplete(document.getElementById('poste'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $jobs)); ?>);
+    new AutoComplete(document.getElementById('service'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $services)); ?>);
+    new AutoComplete(document.getElementById('etablissement'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $establishments)); ?>);
+    new AutoComplete(document.getElementById('type_contrat'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $types_of_contracts)); ?>);
 
     formManipulation.setMinEndDate('date_debut', 'date_fin');
 

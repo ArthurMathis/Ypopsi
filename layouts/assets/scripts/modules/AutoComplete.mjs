@@ -35,13 +35,16 @@ class AutoComplete {
         // On vérifie les pré-saisies
         if(this.inputElement.value) {
             console.log(`On analyse les données correspondant à la saisie : ${this.inputElement.value}.`);
-            this.suggestions.forEach(s => {
-                console.log(`On compare avec : ${s.text}.`);
-                if(s.text == this.inputElement.value) {
-                    this.setDataset(s.key);
-                    console.log(`On sélectionne la clé : ${s.key}.`);
+            let i = 0, finded = false;
+            while(!finded && i < this.suggestions.length) {
+                console.log(`On compare avec : ${this.suggestions[i].text}.`);
+                if(this.suggestions[i].text == this.inputElement.value) {
+                    finded = true;
+                    this.setDataset(this.suggestions[i].key);
+                    console.log(`On sélectionne la clé : ${this.suggestions[i].key}.`);
                 }
-            });
+                i++;
+            }
         }
 
         // On gère la sélection des suggestions avec les flèches directionnelles

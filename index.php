@@ -158,10 +158,10 @@ switch(true) {
                         $applications->createApplications(
                             $_SESSION['candidate'],
                             [
-                                'job'              => (int)$_POST["poste"],
-                                'service'          => !empty($_POST["service"]) ? (int)$_POST["service"] : null,
-                                'establishment'    => !empty($_POST["etablissement"]) ?  (int)$_POST["etablissement"] : null,
-                                'type of contract' => !empty($_POST["type_de_contrat"]) ?  (int)$_POST["type_de_contrat"] : null,
+                                'job'              => (int) $_POST["poste"],
+                                'service'          => !empty($_POST["service"]) ? (int) $_POST["service"] : null,
+                                'establishment'    => !empty($_POST["etablissement"]) ?  (int) $_POST["etablissement"] : null,
+                                'type of contract' => !empty($_POST["type_de_contrat"]) ?  (int) $_POST["type_de_contrat"] : null,
                                 'availability'     => $_POST["disponibilite"],
                                 'source'           => $_POST["source"]
                             ],

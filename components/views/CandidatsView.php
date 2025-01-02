@@ -71,12 +71,6 @@ class CandidatsView extends View {
     public function displayInputOffers($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contracts=[], $offer=[]) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
-
-        $scripts = [
-            'models/objects/AutoComplet.mjs',
-            'views/form-view.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
         
         include INSCRIPT_FORM.DS.'offer.php';
 
