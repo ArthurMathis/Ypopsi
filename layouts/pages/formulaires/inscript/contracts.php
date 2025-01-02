@@ -2,31 +2,42 @@
     <div class="form-container">
         <h3>Saisissez les informations du contrat</h3>
         <section>
-            <p>Informations du poste</p>
-            <div class="autocomplete">
-                <input type="text" id="poste" name="poste" placeholder="Poste" autocomplete="off">
-                <article></article>
+            <div class="input-container">
+                <p>Poste *</p>
+                <div class="autocomplete">
+                    <input type="text" id="poste" name="poste" placeholder="Poste" autocomplete="off" required>
+                    <article></article>
+                </div>
             </div>
-            <div class="autocomplete">
-                <input type="text" id="service" name="service" placeholder="Services" autocomplete="off">
-                <article></article>
+            <div class="input-container">
+                <p>Service *</p>
+                <div class="autocomplete">
+                    <input type="text" id="service" name="service" placeholder="Services" autocomplete="off" required>
+                    <article></article>
+                </div>
             </div>
-            <div class="autocomplete">
-                <input type="text" id="etablissement" name="etablissement" placeholder="Etablissements" autocomplete="off">
-                <article></article>
+            <div class="input-container">
+                <p>Etablissement *</p>
+                <div class="autocomplete">
+                    <input type="text" id="etablissement" name="etablissement" placeholder="Etablissements" autocomplete="off" required>
+                    <article></article>
+                </div>
             </div>
-            <div class="autocomplete">
-                <input type="text" id="type_contrat" name="type_contrat" placeholder="Type de contrats" autocomplete="off">
-                <article></article>
+            <div class="input-container">
+                <p>Type de contrat *</p>
+                <div class="autocomplete">
+                    <input type="text" id="type_contrat" name="type_contrat" placeholder="Type de contrats" autocomplete="off" required>
+                    <article></article>
+                </div>
             </div>
         </section>
         <section class="double-items">
             <div class="input-container">
-                <label for="date_debut">Date de début</label>
-                <input type="date" name="date_debut" id="date_debut" min="<?php echo Moment::currentMoment()->getDate(); ?>">
+                <label for="date_debut">Date de début *</label>
+                <input type="date" name="date_debut" id="date_debut" min="<?php echo Moment::currentMoment()->getDate(); ?>" required>
             </div>
             <div class="input-container">
-                <label for="date_fin">Date de fin</label>
+                <label for="date_fin">Date de fin *</label>
                 <input type="date" name="date_fin" id="date_fin">
             </div>  
         </section>

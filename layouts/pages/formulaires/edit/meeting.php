@@ -1,4 +1,4 @@
-<?php $editable = time() < strtotime($item['date'] . ' ' . $item['heure']); ?>
+<?php $editable = time() <= strtotime($item['date'] . ' ' . $item['heure']); ?>
 <form class="big-form" method="post" action="index.php?candidates=update-meetings&key_meeting=<?= $meeting['key_meeting']; ?>&key_candidate=<?= $meeting['key_candidate']; ?>">
     <div class="form-container">
     <h3>Saissisez les informations du rendez-vous</h3>

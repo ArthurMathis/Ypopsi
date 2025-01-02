@@ -137,4 +137,12 @@ class AutoComplete {
     setDataset(data) {
         this.inputElement.dataset.selectedPrimaryKey = data;
     }
+
+    /**
+     * @function arrayToSuggestions
+     * @description Fonction statique convertissant un tableau d'objets en un tableau de suggestions.
+     * @param {Array<Object>} candidates Tableau d'objets contenant les propriétés 'text' et 'id'.
+     * @returns {Array<Object>} Tableau de suggestions formatées.
+     */
+    static arrayToSuggestions(candidates) { return candidates.map(c => ({ text: c.text, key: c.id })); }
 }

@@ -66,25 +66,28 @@
         </section>
     </div>
 </form>
-
 <script type="module">
     import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
     import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
 
-    new AutoComplete(document.getElementById('poste'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $jobs)); ?>);
-    new AutoComplete(document.getElementById('service'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $services)); ?>);
-    new AutoComplete(document.getElementById('etablissement'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $establishments)); ?>);
-    new AutoComplete(document.getElementById('type_contrat'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $types_of_contracts)); ?>);
+    new AutoComplete(document.getElementById('poste'), AutoComplete.arrayToSuggestions(<?= json_encode($jobs) ?>));
+    new AutoComplete(document.getElementById('service'), AutoComplete.arrayToSuggestions(<?= json_encode($services) ?>));
+    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($establishments) ?>));
+    new AutoComplete(document.getElementById('type_contrat'), AutoComplete.arrayToSuggestions(<?= json_encode($types_of_contracts) ?>));
+    // new AutoComplete(document.getElementById('poste'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $jobs)); ?>);
+    // new AutoComplete(document.getElementById('service'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $services)); ?>);
+    // new AutoComplete(document.getElementById('etablissement'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $establishments)); ?>);
+    // new AutoComplete(document.getElementById('type_contrat'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $types_of_contracts)); ?>);
 
     formManipulation.setMinEndDate('date_debut', 'date_fin');
 
     const inputTypeContrat = document.getElementById('type_contrat');
-    const inputDateFin = document.getElementById('date_fin').parentElement;
-    const checkContratType = () => {
-        if (inputTypeContrat.value.trim().toUpperCase() === 'CDI') 
-            inputDateFin.style.display = 'none';
-        else 
-            inputDateFin.style.display = 'flex';  
+    const inputDateFin = document.getElementById('date_fin');
+    const checkContratType = (input) => {
+        if (inputTypeContrat.value.trim().toUpperCase() === 'CDI') {
+            inputDateFin.value = '';
+            inputDateFin.parentElement.style.display = 'none';
+        } else inputDateFin.parentElement.style.display = 'flex';  
     };
 
     inputTypeContrat.addEventListener('input', checkContratType);

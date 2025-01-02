@@ -1,33 +1,33 @@
 <form method="post" action="index.php?candidates=update-candidates&key_candidate=<?= $item['candidate']['Id']?>">
     <div class="form-container">
-        <h3>Nouveau candidat</h3>
+        <h3><?= "Informations de " . strtoupper($item['candidate']['Name']) . " " . $item['candidate']['Firstname'] ?></h3>
         <section>
             <div class="input-container">
                 <p>Nom *</p>
-                <input type="text" id="nom" name="nom" placeholder="Dupond" value="<?= $item['candidate']['Name']?>">
+                <input type="text" id="nom" name="nom" placeholder="Dupond" value="<?= $item['candidate']['Name'] ?>" required>
             </div>
             <div class="input-container">
                 <p>Prénom *</p>
-                <input type="text" id="prenom" name="prenom" placeholder="Prénom" value="<?= $item['candidate']['Firstname']?>">
+                <input type="text" id="prenom" name="prenom" placeholder="Prénom" value="<?= $item['candidate']['Firstname'] ?>" required>
             </div>
             <div class="input-container">
                 <p>Email</p>
-                <input type="email" id="email" name="email" placeholder="Adresse email" value="<?= $item['candidate']['Email']?>">
+                <input type="email" id="email" name="email" placeholder="Adresse email" value="<?= $item['candidate']['Email'] ?>">
             </div>
             <div class="input-container">
                 <p>Numéro de téléphone</p>
-                <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone" value="<?= $item['candidate']['Phone']?>">
+                <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone" value="<?= $item['candidate']['Phone'] ?>">
             </div>
         </section>
         <section>
             <div class="input-container">
                 <p>Adresse</p>
-                <input type="text" id="adresse" name="adresse" placeholder="1er Grand Rue" value="<?= $item['candidate']['Address']?>">
+                <input type="text" id="adresse" name="adresse" placeholder="1er Grand Rue" value="<?= $item['candidate']['Address'] ?>">
             </div>
             <div class="double-items">
                 <div class="input-container">
                     <p>Commune</p>
-                    <input type="text" id="ville" name="ville" placeholder="Colmar" value="<?= $item['candidate']['City']?>">
+                    <input type="text" id="ville" name="ville" placeholder="Colmar" value="<?= $item['candidate']['City'] ?>">
                 </div>
                 <div class="input-container">
                     <p>Code postal</p>

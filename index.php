@@ -458,11 +458,11 @@ switch(true) {
                         $data = [
                             'name'                => forms_manip::nameFormat($_POST['nom']),
                             'firstname'           => forms_manip::nameFormat($_POST['prenom']),
-                            'email'               => !empty($_POST['email']) ? forms_manip::numberFormat($_POST['email']) : null,
-                            'phone'               => !empty($_POST['telephone']) ? forms_manip::numberFormat($_POST['telephone']) : null,
-                            'address'             => $_POST['adresse'],
-                            'city'                => forms_manip::nameFormat($_POST['ville']),
-                            'post_code'           => $_POST['code-postal'],
+                            'email'               => empty($_POST['email']) ? null : $_POST['email'],
+                            'phone'               => empty($_POST['telephone']) ? null : forms_manip::numberFormat($_POST['telephone']),
+                            'address'             => empty($_POST['adresse']) ? null : $_POST['adresse'],
+                            'city'                => empty(forms_manip::nameFormat($_POST['ville'])) ? null : forms_manip::nameFormat($_POST['ville']),
+                            'post_code'           => empty($_POST['code-postal']) ? null : $_POST['code-postal'],
                             'qualifications'      => array_map(
                                                         function($qualification, $date) { return ['qualification' => $qualification, 'date' => $date]; }, 
                                                         isset($_POST["diplome"]) ? $_POST["diplome"] : [], 

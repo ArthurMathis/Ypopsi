@@ -66,8 +66,8 @@ class HomeModel extends Model {
         
         FROM Meetings AS meet
         INNER JOIN Candidates AS c ON meet.Key_Candidates = c.Id
-        
-        WHERE meet.Key_Users = :cle";
+        WHERE meet.Key_Users = :cle AND NOW() <= meet.Date
+        ORDER BY meet.Date";
         $params = ['cle' => $_SESSION['user_key']];
 
         return $this->get_request($request, $params);
