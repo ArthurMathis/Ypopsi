@@ -67,6 +67,7 @@
 </form>
 
 <script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
     import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
 
     document.addEventListener('elementCreated', function(e) {
@@ -79,8 +80,8 @@
         }
     });
 
-    new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $diplome)); ?>, 'Licence', <?= count($diplome); ?>, null); 
-    new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $aide)); ?>, <?= count($aide); ?>);
+    new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', AutoComplete.arrayToSuggestions(<?= json_encode($diplome) ?>), 'Licence', <?= count($diplome); ?>, null); 
+    new formManipulation.implementInputList('aide', 'aide-section', AutoComplete.arrayToSuggestions(<?= json_encode($aide) ?>), <?= count($aide); ?>);
 
     document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

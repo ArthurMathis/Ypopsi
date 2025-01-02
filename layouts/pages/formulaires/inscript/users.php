@@ -29,5 +29,5 @@
 </form>
 <script type="module">
     import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
-    new AutoComplete(document.getElementById('etablissement'), <?= json_encode(array_map(function($c) { return $c['Intitulé']; }, $establishments)); ?>);
+    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($etablissements) ?>));
 </script>

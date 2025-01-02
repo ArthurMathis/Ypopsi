@@ -10,7 +10,7 @@
     </section>
     <button type="submit" class="submit_button" value="new_user">Valider</button>
 </form>
-<script>
-    const etablissements = <?php echo json_encode(array_map(function($c) { return $c['Intitule_Etablissements']; }, $etablissements)); ?>;
-    new AutoComplete(document.getElementById('etablissement'), etablissements);
+<script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
+    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($etablissements) ?>));
 </script>

@@ -54,11 +54,11 @@
     import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs"; 
     import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
 
-    new AutoComplete(document.getElementById('poste'), <?= json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $job)); ?>);
-    new AutoComplete(document.getElementById('service'), <?php echo json_encode(array_map(function($c) {  return ['text' => $c['text'], 'key' => $c['id']];  }, $service)); ?>);
-    new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) {  return ['text' => $c['text'], 'key' => $c['id']];  }, $establishment)); ?>);
-    new AutoComplete(document.getElementById('type_de_contrat'), <?php echo json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $typeOfContract)); ?>);
-    new AutoComplete(document.getElementById('source'), <?php echo json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $source)); ?>);
+    new AutoComplete(document.getElementById('poste'), AutoComplete.arrayToSuggestions(<?= json_encode($job) ?>));
+    new AutoComplete(document.getElementById('service'), AutoComplete.arrayToSuggestions(<?= json_encode($service) ?>));
+    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($establishment) ?>));
+    new AutoComplete(document.getElementById('type_de_contrat'), AutoComplete.arrayToSuggestions(<?= json_encode($typeOfContract) ?>));
+    new AutoComplete(document.getElementById('source'), AutoComplete.arrayToSuggestions(<?= json_encode($source) ?>));
 
     document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

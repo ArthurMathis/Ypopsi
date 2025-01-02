@@ -27,9 +27,9 @@
 <script type="module">
     import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs"; 
     import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
-
-    new AutoComplete(document.getElementById('recruteur'), <?php echo json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $users)); ?>);                                                                                                                                                                                                                                                  
-    new AutoComplete(document.getElementById('etablissement'), <?php echo json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $establisments)); ?>);
+    
+    new AutoComplete(document.getElementById('recruteur'), AutoComplete.arrayToSuggestions(<?= json_encode($users) ?>));                                                                                                                                                                                                                                                  
+    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($establisments) ?>));
 
     document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>
