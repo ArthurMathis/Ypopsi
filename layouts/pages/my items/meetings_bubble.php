@@ -37,4 +37,4 @@
             </a>
         <?php endif ?>
     </footer>
-</div
+</div>

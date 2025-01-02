@@ -61,7 +61,7 @@ class CandidatsModel extends Model {
         $request = "SELECT
         m.Id AS key_meeting,
         c.Id AS key_candidate,
-        u.Identifier AS Recruteur,
+        CONCAT(u.Name, ' ', u.Firstname) AS Recruteur,
         e.Titled AS Etablissement,
         DATE_FORMAT(m.Date, '%Y-%m-%d') AS Date, 
         DATE_FORMAT(m.Date, '%H:%i') AS Horaire,

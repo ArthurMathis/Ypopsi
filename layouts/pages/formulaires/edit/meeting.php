@@ -13,18 +13,16 @@
                 <article></article>
             </div>
         </section>
-        <?php if($editable): ?>
-            <section class="double-items">
-                <div class="input-container">
-                    <label for="date">Date</label>
-                    <input type="date" name="date" id="date" value="<?= $meeting['Date']; ?>" min="<?= Moment::currentMoment()->getDate(); ?>">
-                </div>
-                <div class="input-container">
-                    <label for="time">Horaire</label>
-                    <input type="time" name="time" id="time" value="<?= $meeting['Horaire']; ?>">
-                </div>
-            </section>
-        <?php endif ?>
+        <section class="double-items" <?php if(!$editable): ?> style="display: none" <?php endif ?>>
+            <div class="input-container">
+                <label for="date">Date</label>
+                <input type="date" name="date" id="date" value="<?= $meeting['Date']; ?>" <?php if($editable): ?> min="<?= Moment::currentMoment()->getDate(); ?>" <?php endif ?>>
+            </div>
+            <div class="input-container">
+                <label for="time">Horaire</label>
+                <input type="time" name="time" id="time" value="<?= $meeting['Horaire']; ?>">
+            </div>
+        </section>
         <section>
             <label for="description">Compte rendu</label>
             <textarea name="description" id="description"><?= $meeting['description']; ?></textarea>
@@ -35,10 +33,15 @@
     </div>  
 </form>
 
-<script>
-    const recruteur = <?php echo json_encode(array_map(function($c) { return $c['name']; }, $users)); ?>;
-    const etablissement = <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $establisments)); ?>;
+<script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+    
+    const recruteur = <?php echo json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $users)); ?>;
+    const etablissement = <?php echo json_encode(array_map(function($c) { return ['text' => $c['text'], 'key' => $c['id']]; }, $establisments)); ?>;
 
     new AutoComplete(document.getElementById('recruteur'), recruteur);
     new AutoComplete(document.getElementById('etablissement'), etablissement);
+
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

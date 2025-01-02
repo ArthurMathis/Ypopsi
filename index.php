@@ -500,14 +500,14 @@ switch(true) {
                             throw new Exception("Le champs horaire doit être rempli !");
                             
                         $meeting = [
-                            'employee' => $_POST['recruteur'],
-                            'establishment' => $_POST['etablissement'],
-                            'date' => Moment::getTimestampFromDate($_POST['date'], $_POST['time']),
-                            'description' => $_POST['description'], 
+                            'employee'      => (int) $_POST['recruteur'],
+                            'establishment' => (int) $_POST['etablissement'],
+                            'date'          => Moment::getTimestampFromDate($_POST['date'], $_POST['time']),
+                            'description'   => $_POST['description'],
                         ];
 
-                        if(Moment::currentMoment()->isTallerThan(Moment::fromDate($_POST['date'], $_POST['time'])->getTimestamp()))
-                            throw new Exception("La date du rendez-vous est antérieure à aujourd'hui.");
+                        // if(Moment::currentMoment()->isTallerThan(Moment::fromDate($_POST['date'], $_POST['time'])->getTimestamp()))
+                        //     throw new Exception("La date du rendez-vous est antérieure à aujourd'hui.");
 
                         $candidates->updateMeetings($_GET['key_meeting'], $_GET['key_candidate'], $meeting);
 

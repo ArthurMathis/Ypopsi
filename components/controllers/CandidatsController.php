@@ -230,16 +230,8 @@ class CandidatController extends Controller {
      * @return Void
      */
     public function updateMeetings($key_meeting, $key_candidate, &$meeting=[]) {
-        $this->Model->updateMeetings(
-            $key_meeting, 
-            $this->Model->searchUsers($meeting['employee'])['Id'], 
-            $key_candidate, 
-            $this->Model->searchEstablishments($meeting['establishment'])['Id'], 
-            $meeting['date'], 
-            $meeting['description']
-        );
+        $this->Model->updateMeetings($key_meeting, $meeting['employee'], $key_candidate, $meeting['establishment'], $meeting['date'], $meeting['description']);
         $this->Model->updateMeetingsLogs($key_candidate);
-
         alert_manipulation::alert([
             'title' => "Rendez-vous mise-à-jour",
             'msg' => "Vous avez mis-à-jour le rendez-vous du candidat",
