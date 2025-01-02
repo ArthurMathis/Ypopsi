@@ -1,27 +1,30 @@
+<?php $editable = time() < strtotime($item['date'] . ' ' . $item['heure']); ?>
 <form class="big-form" method="post" action="index.php?candidates=update-meetings&key_meeting=<?= $meeting['key_meeting']; ?>&key_candidate=<?= $meeting['key_candidate']; ?>">
     <div class="form-container">
     <h3>Saissisez les informations du rendez-vous</h3>
         <section>
             <p>Entretien</p>
             <div class="autocomplete">
-                <input type="text" id="recruteur" name="recruteur" placeholder="Recruteur" autocomplete="off" value="<?= $meeting['Recruteur']; ?>">
+                <input type="text" id="recruteur" name="recruteur" placeholder="Recruteur" autocomplete="off" value="<?= $meeting['Recruteur']; ?>" <?php if(!$editable) echo "readonly"; ?>>
                 <article></article>
             </div>
             <div class="autocomplete">
-                <input type="text" id="etablissement" name="etablissement" placeholder="Etablissement" autocomplete="off" value="<?= $meeting['Etablissement']; ?>">
+                <input type="text" id="etablissement" name="etablissement" placeholder="Etablissement" autocomplete="off" value="<?= $meeting['Etablissement']; ?>"  <?php if(!$editable) echo "readonly"; ?>>
                 <article></article>
             </div>
         </section>
-        <section class="double-items">
-            <div class="input-container">
-                <label for="date">Date</label>
-                <input type="date" name="date" id="date" value="<?= $meeting['Date']; ?>" min="<?= Moment::currentMoment()->getDate(); ?>">
-            </div>
-            <div class="input-container">
-                <label for="time">Horaire</label>
-                <input type="time" name="time" id="time" value="<?= $meeting['Horaire']; ?>">
-            </div>
-        </section>
+        <?php if($editable): ?>
+            <section class="double-items">
+                <div class="input-container">
+                    <label for="date">Date</label>
+                    <input type="date" name="date" id="date" value="<?= $meeting['Date']; ?>" min="<?= Moment::currentMoment()->getDate(); ?>">
+                </div>
+                <div class="input-container">
+                    <label for="time">Horaire</label>
+                    <input type="time" name="time" id="time" value="<?= $meeting['Horaire']; ?>">
+                </div>
+            </section>
+        <?php endif ?>
         <section>
             <label for="description">Compte rendu</label>
             <textarea name="description" id="description"><?= $meeting['description']; ?></textarea>

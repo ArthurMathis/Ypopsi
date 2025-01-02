@@ -74,7 +74,7 @@
             const aideSection = document.getElementById('aide-section');
             const inputAide = aideSection.querySelectorAll('select');
             
-            const obj = new formManipulation.cooptInput(inputAide[inputAide.length - 1], 'coopteur', 3, <?= json_encode($employer); ?>);
+            const obj = new formManipulation.cooptInput(inputAide[inputAide.length - 1], 'coopteur', 3, <?= json_encode($employer); ?>); // 3 -> Id 
             obj.input.addEventListener('change', (e) => obj.react());
         }
     });

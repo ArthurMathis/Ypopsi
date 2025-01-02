@@ -32,7 +32,7 @@ class CandidatsView extends View {
      * @param Array $item The candidate's data
      * @return View The HTML Page
      */
-    public function displayContentCandidate($title, &$item=[]) {
+    public function displayContentCandidate($title, $item=[]) {
         $this->generateCommonHeader($title, [PAGES_STYLES.DS.'candidats.css']);
         $this->generateMenu(false, NULL);
 
