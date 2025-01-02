@@ -300,37 +300,28 @@ class CandidatsModel extends Model {
      * @return Void
      */
     public function createContracts($key_candidate, &$contract=[]) {
-        $contract['candidate'] = $key_candidate;
-        $contract['job'] = $this->searchJobs($contract['job'])['Id'];
-        $contract['service'] = $this->searchServices($contract['service'])['Id'];
-        $contract['establishment'] = $this->searchEstablishments($contract['establishment'])['Id'];
-        $contract['type'] = $this->searchTypesOfContracts($contract['type'])['Id'];
-        $contract['start_date'] = Moment::fromDate($contract['start_date']);
-        $contract['end_date'] = Moment::fromDate($contract['end_date']);
-        $contract['signature'] = Moment::currentMoment();
-
         if(!$this->verifyServices($contract['service'], $contract['establishment']))
             throw new Exception("Ce service n'existe pas dans l'établissement sélectionné...");
-        $contract = Contract::makeContract($contract);
         $this->inscriptContracts(
             $key_candidate,
-            $contract->getJob(),
-            $contract->getService(),
-            $contract->getEstablishment(),
-            $contract->getType(),
-            date('Y-m-d H:i:s', $contract->getStartDate()->getTimestamp()),
-            date('Y-m-d H:i:s', $contract->getEndDate()->getTimestamp()),
-            date('Y-m-d H:i:s', $contract->getSignature()->getTimestamp()),
-            $contract->getHourlyRate(),
-            $contract->getNightWork(),
-            $contract->getWeekEndWork()
-        ); 
+            $contract['job'],
+            $contract['service'],
+            $contract['establishment'],
+            $contract['type'],
+            $contract['start_date'],
+            empty($contract['end_date']) ? null : $contract['end_date'],
+            (new DateTime)->format('Y-m-d H:i:s'),
+            isset($contract['salary']) ? $contract['salary'] : null, 
+            isset($contract['hourly_rate']) ? $contract['hourly_rate'] : null,
+            isset($contract['night_work']) ? $contract['night_work'] : false,
+            isset($contract['week_end_work']) ? $contract['week_end_work'] : false,
+        );
         
-        $candidate = $this->searchCandidates($contract->getCandidate());
+        $candidate = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Nouveau contrat", 
-            "Nouveau contrat de " . strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " au poste de " . $this->searchJobs($contract->getJob())['Titled']
+            "Nouveau contrat de " . strtoupper($candidate['Name']) . " " . forms_manip::nameFormat($candidate['Firstname']) . " au poste de " . $this->searchJobs($contract['job'])['Titled']
         );
     }
 

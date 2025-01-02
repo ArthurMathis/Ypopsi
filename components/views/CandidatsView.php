@@ -49,9 +49,6 @@ class CandidatsView extends View {
         echo "</main>";
         echo "</content>";
 
-        // $scripts = ['views/candidats-view.js'];
-        // include(COMMON.DS.'import-scripts.php');
-
         $this->generateCommonFooter();
     }
 

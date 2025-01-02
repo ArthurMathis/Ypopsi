@@ -1,5 +1,7 @@
 <?php
 
+ob_start();
+
 require_once('define.php');
 require_once(COMPONENTS.DS.'AlertManipulation.php');
 require_once(COMPONENTS.DS.'FormsManip.php');
@@ -375,19 +377,19 @@ switch(true) {
                             throw new Exception('Le champs date de début doit être rempli !');
 
                         $data = [
-                            'job' => $_POST['poste'],
-                            'service' => $_POST['service'],
-                            'establishment' => $_POST['etablissement'],
-                            'type' => $_POST['type_contrat'],
-                            'start_date' => $_POST['date_debut']
+                            'job'           => (int) $_POST['poste'],
+                            'service'       => (int) $_POST['service'],
+                            'establishment' => (int) $_POST['etablissement'],
+                            'type'          => (int) $_POST['type_contrat'],
+                            'start_date'    => $_POST['date_debut']
                         ];
 
                         if(!empty($_POST['date_fin']))
                             $data['end_date'] = $_POST['date_fin'];
                         if(!empty($_POST['salaire_mensuel']))
-                            $data['salary'] = intval($_POST['salaire_mensuel']);
+                            $data['salary'] = (int) $_POST['salaire_mensuel'];
                         if(!empty($_POST['taux_horaire_hebdomadaire'])) 
-                            $data['hourly_rate'] = $_POST['taux_horaire_hebdomadaire'];
+                            $data['hourly_rate'] = (int) $_POST['taux_horaire_hebdomadaire'];
                         if(isset($_POST['travail_nuit']))
                             $data['night_work'] = true;
                         if(isset($_POST['travail_wk']))
