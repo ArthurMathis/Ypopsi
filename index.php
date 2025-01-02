@@ -98,6 +98,7 @@ switch(true) {
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                     try {
+                        // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST["nom"]))
                             throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
                         elseif(empty($_POST["prenom"]))
@@ -148,6 +149,7 @@ switch(true) {
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application...");
 
                     try {
+                        // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST["poste"])) 
                             throw new Exception("Le champs poste est nécessaire pour cette action.");
                         elseif(empty($_POST["disponibilite"])) 
@@ -272,6 +274,7 @@ switch(true) {
                             'time'          => $_POST['time']
                         ];
 
+                        // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($data['recruteur']))
                             throw new Exception("Le champs recruteur doit être rempli !");
                         elseif(empty($data['etablissement']))
@@ -295,6 +298,7 @@ switch(true) {
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                     
                     try {
+                        // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST['poste']))
                             throw new Exception("Le champs poste doit être rempli !");
                         elseif(empty($_POST['service']))
@@ -305,17 +309,19 @@ switch(true) {
                             throw new Exception("Le champs type de contrat doit être rempli !");
                         elseif(empty($_POST['date_debut']))
                             throw new Exception('Le champs date de début doit être rempli !');
-                        if($_POST['type_contrat'] == 'CDI' && !empty($_POST['date_fin'])) 
-                            throw new Exception("La date de fin ne peut pas être remplie pour un CDI !");
-                        elseif($_POST['type_contrat'] != 'CDI' &&empty($_POST['date_fin'])) 
-                                throw new Exception("La date de fin doit être remplie !");
+
+                        // TODO : intégrer ces vérifications directement dans le javascript
+                        // if($_POST['type_contrat'] == 'CDI' && !empty($_POST['date_fin'])) 
+                        //     throw new Exception("La date de fin ne peut pas être remplie pour un CDI !");
+                        // elseif($_POST['type_contrat'] != 'CDI' &&empty($_POST['date_fin'])) 
+                        //         throw new Exception("La date de fin doit être remplie !");
 
                         $data = [
-                            'poste' => $_POST['poste'],
-                            'service' => $_POST['service'],
-                            'etablissement' => $_POST['etablissement'],
-                            'type_de_contrat' => $_POST['type_contrat'],
-                            'date debut' => $_POST['date_debut'],
+                            'poste'           => (int) $_POST['poste'],
+                            'service'         => (int) $_POST['service'],
+                            'etablissement'   => (int) $_POST['etablissement'],
+                            'type_de_contrat' => (int) $_POST['type_contrat'],
+                            'date debut'      => $_POST['date_debut'],
                         ];
 
                         if(!empty($_POST['date_fin']))
@@ -328,16 +334,16 @@ switch(true) {
                             $data['travail nuit'] = true;
                         if(isset($_POST['travail_wk']))
                             $data['travail nuit'] = true;
-        
+                        
                         if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate'])) 
                             $candidates->createOffers(
                                 $_GET['key_candidate'],
                                 $data, 
-                                isset($_GET['key_application']) && is_numeric($_GET['key_application']) ? $_GET['key_application'] : NULL
+                                isset($_GET['key_application']) && is_numeric($_GET['key_application']) ? $_GET['key_application'] : null
                             );
                         else 
                             throw new Exception("Clé candidat introuvable !");  
-
+                        
                     } catch(Exception $e) {
                         forms_manip::error_alert([
                             'title' => "Erreur lors de l'inscription de la proposition",
@@ -352,11 +358,11 @@ switch(true) {
 
                     if(!isset($_GET['key_candidate']) || !is_numeric($_GET['key_candidate']))
                         throw new Exception("La clé candidat est inrouvale !"); 
-
+                    
                     if(isset($_GET['key_offer']) && is_numeric($_GET['key_offer'])) 
                         $candidates->signContracts($_GET['key_candidate'], $_GET['key_offer']);
-                        
                     else try {
+                        // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST['poste']))
                             throw new Exception("Le champs poste doit être rempli !");
                         elseif(empty($_POST['service']))

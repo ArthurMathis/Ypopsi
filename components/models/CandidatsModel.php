@@ -269,18 +269,14 @@ class CandidatsModel extends Model {
      * @return Void
      */
     public function createOffers($key_candidate, $offer=[]) {
-        $offer['poste'] = $this->searchJobs($offer['poste'])['Id'];
-        $offer['service'] = $this->searchServices($offer['service'])['Id'];
-        $offer['etablissement'] = $this->searchEstablishments($offer['etablissement'])['Id'];
         if(!$this->verifyServices($offer['service'], $offer['etablissement']))
             throw new Exception("Ce service n'existe pas dans l'établissement sélectionné...");
-
         $this->inscriptContracts(
             $key_candidate,
             $offer['poste'],
             $offer['service'],
             $offer['etablissement'],
-            $this->searchTypesOfContracts($offer['type_de_contrat'])['Id'],
+            $offer['type_de_contrat'],
             $offer['date debut'], 
             isset($offer['date fin']) ? $offer['date fin'] : null, 
             null,

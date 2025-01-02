@@ -1071,7 +1071,7 @@ abstract class Model {
      *
      * @param Int $key_services The service's primary key
      * @param Int $key_establishments The establishment's primary key
-     * @return Bool
+     * @return Bool TRUE if it is in ; FALSE if it is not
      */
     public function verifyServices($key_services, $key_establishments): Bool {
         return !empty($this->searchBelongTo($key_services, $key_establishments));

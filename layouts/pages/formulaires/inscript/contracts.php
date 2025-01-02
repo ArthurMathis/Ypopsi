@@ -84,4 +84,6 @@
     inputTypeContrat.addEventListener('input', checkContratType);
     inputTypeContrat.addEventListener('AutoCompleteSelect', checkContratType);
     checkContratType();
+
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>
