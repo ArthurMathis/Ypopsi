@@ -252,13 +252,8 @@ class CandidatsModel extends Model {
      * @return Void
      */
     public function createMeetings($key_candidate, &$meeting=[]) {
-        $this->inscriptMeetings(
-            $this->searchUsers($meeting['recruteur'])['Id'], 
-            $key_candidate, 
-            $this->searchEstablishments($meeting['etablissement'])['Id'], 
-            (new DateTime($meeting['date'] . ' ' . $meeting['time'], new DateTimeZone('Europe/Paris')))->getTimestamp()
-        );
-
+        $timestamp = (new DateTime($meeting['date'] . ' ' . $meeting['time'], new DateTimeZone('Europe/Paris')))->getTimestamp();
+        $this->inscriptMeetings($meeting['recruteur'], $key_candidate, $meeting['etablissement'], $timestamp);
         $candidate = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'], 

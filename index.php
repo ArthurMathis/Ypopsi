@@ -266,10 +266,10 @@ switch(true) {
 
                     try {
                         $data = [
-                            'recruteur' => $_POST['recruteur'],
-                            'etablissement' => $_POST['etablissement'],
-                            'date' => $_POST['date'],
-                            'time' => $_POST['time']
+                            'recruteur'     => (int) $_POST['recruteur'],
+                            'etablissement' => (int) $_POST['etablissement'],
+                            'date'          => $_POST['date'],
+                            'time'          => $_POST['time']
                         ];
 
                         if(empty($data['recruteur']))

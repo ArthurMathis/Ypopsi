@@ -28,10 +28,8 @@ function setMinEndDate(startDateInput, endDateInput) {
 function manageSubmit(event) {
     event.preventDefault();
     event.target.querySelectorAll('input').forEach(elmt => {
-        if(elmt.value && elmt.parentElement.classList.contains('autocomplete')) {
-            console.log(`L'élément ${elmt} contient la valeur : ${elmt.value} et doit prendre la valeur : ${elmt.dataset.selectedPrimaryKey}.`);
+        if(elmt.value && elmt.parentElement.classList.contains('autocomplete')) 
             elmt.value = elmt.dataset.selectedPrimaryKey;
-        }
     });
     event.target.submit();
 }
@@ -285,8 +283,6 @@ class implementInputList extends implementInput {
     constructor(inputName, inputParent, suggestions=[], nbMaxInput=null) {
         super(inputName, inputParent, nbMaxInput);
         this.suggestions = Array.from(suggestions);
-
-        console.log(this.suggestions);
     }
 
     /**
