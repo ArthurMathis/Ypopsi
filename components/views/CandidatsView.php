@@ -16,7 +16,7 @@ class CandidatsView extends View {
      * @param Array $items The array containing the candidates' data
      * @return View The HTML Page
      */
-    public function getContent($titre, $items=[]) {
+    public function getContent(string $titre, array $items) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css']);
         $this->generateMenu(false, APPLICATIONS);
         include BARRES.DS.'candidates.php';
@@ -32,7 +32,7 @@ class CandidatsView extends View {
      * @param Array $item The candidate's data
      * @return View The HTML Page
      */
-    public function displayContentCandidate($title, $item=[]) {
+    public function displayContentCandidate(string $title, array $item) {
         $this->generateCommonHeader($title, [PAGES_STYLES.DS.'candidats.css']);
         $this->generateMenu(false, NULL);
 
@@ -62,10 +62,10 @@ class CandidatsView extends View {
      * @param Array $services The array containing the services list
      * @param Array $establishments The array containing the establishments list
      * @param Array $types_of_contracts The array containing the tupes of contracts list
-     * @param Array $offer The array containing the offer's data
+     * @param Array|Null $offer The array containing the offer's data (if it is existing)
      * @return View The HTML Page
      */
-    public function displayInputOffers($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contracts=[], $offer=[]) {
+    public function displayInputOffers(string $title, int $key_candidate, array $jobs, array $services, array $establishments, array $types_of_contracts, array|null $offer = null) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
         
@@ -84,7 +84,7 @@ class CandidatsView extends View {
      * @param Array $types_of_contrats The array containing the list of types of contractss
      * @return View The HTML Page
      */
-    public function displayInputContracts($title, $key_candidate, $jobs=[], $services=[], $establishments=[], $types_of_contrats=[]) {
+    public function displayInputContracts(string $title, int $key_candidate, array $jobs, array $services, array $establishments, array $types_of_contrats) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
 
@@ -102,7 +102,7 @@ class CandidatsView extends View {
      * @param Array $establisments
      * @return View The HTML Page
      */
-    public function displayInputMeetings($title, $key_candidate, $user_establishment, $users=[], $establisments=[]) {
+    public function displayInputMeetings(string $title, int $key_candidate, string $user_establishment, array $users, array $establisments) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
         $this->generateMenu(true, null);
 
@@ -118,7 +118,7 @@ class CandidatsView extends View {
      * @param Array $candidate The arrayu containing the candidate's data
      * @return View The HTML page
      */
-    public function displayEditRatings($candidate=[]) {
+    public function displayEditRatings(array $candidate) {
         $this->generateCommonHeader(
             'Ypopsi - Modification de la notation de ' . forms_manip::majusculeFormat($candidate['Name']) . ' ' . $candidate['Firstname'], 
             [FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-rating.css']
@@ -138,7 +138,7 @@ class CandidatsView extends View {
      * @param Array $employee The array containing the the list of employee
      * @return View The HTML Page
      */
-    public function displayEditCandidates($item=[], $qualifications=[], $helps=[], $employee=[]) {
+    public function displayEditCandidates(array $item, array $qualifications, array $helps, array $employee) {
         $this->generateCommonHeader('Ypopsi - Modification de ' . forms_manip::majusculeFormat($item['candidate']['Name']) . ' ' . $item['candidate']['Firstname'], [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
 
@@ -154,7 +154,7 @@ class CandidatsView extends View {
      * @param Array $establisments The array containing the list of establisments
      * @return View The HTML Page
      */
-    public function displayEditMeetings($meeting=[], $users=[], $establisments=[]) {
+    public function displayEditMeetings(array $meeting, array $users, array $establisments) {
         $this->generateCommonHeader('Ypopsi - Mise-à-jour rendez-vous', [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
 
@@ -170,16 +170,16 @@ class CandidatsView extends View {
      * @param Array $item The array containing the candidate's data
      * @return View The HTML Page
      */
-    public function getDashboard($item=[]) { include(MY_ITEMS.DS.'dashboard.php'); }
+    public function getDashboard(array $item) { include(MY_ITEMS.DS.'dashboard.php'); }
 
     /**
      * Protected method generating the candidate's contracts tab
      *
-     * @param Array $contracts The array containing the candidate's contract
+     * @param Array|Null $contracts The array containing the candidate's contract (if he has)
      * @param Int $key_candidate The candidate's primary key
      * @return View The HTML Page
      */
-    protected function getContractsBoard(&$contracts=[], $key_candidate) {  
+    protected function getContractsBoard(array|null &$contracts, int $key_candidate) {  
         echo '<section class="onglet">';
         $compt = 0; 
         $size = empty($contracts) ? 0 :count($contracts);
@@ -199,11 +199,11 @@ class CandidatsView extends View {
     /**
      * Protected method generating the candidate's offers tab
      *
-     * @param Array $offers The array containing the candidate's offers
+     * @param Array|Null $offers The array containing the candidate's offers (if he has)
      * @param Int $key_candidate The candidate's primary key
      * @return View The HTML Page
      */
-    protected function getOffersBoard(&$offers, $key_candidate) {
+    protected function getOffersBoard(array|null &$offers, int $key_candidate) {
         echo '<section class="onglet">';
         if(!empty($offers)) 
             foreach($offers as $obj) 
@@ -218,11 +218,11 @@ class CandidatsView extends View {
     /**
      * Protected method generating the candidate's applications tab
      *
-     * @param Array $applications The array containing the candidate's applications
+     * @param Array|Null $applications The array containing the candidate's applications (if he has)
      * @param Int $key_candidate The candidate's primary key
      * @return View The HTML Page
      */
-    protected function getApplicationsBoard(&$applications, &$key_candidate) {
+    protected function getApplicationsBoard(array|null &$applications, int $key_candidate) {
         echo '<section class="onglet">';
         if(!empty($applications)) foreach($applications as $obj)
             $this->getApplicationsBubble($obj, $key_candidate);
@@ -235,11 +235,11 @@ class CandidatsView extends View {
     /**
      * Protected method generating the candidate's meetings tab
      *
-     * @param Array $meetings The array containing the candidate's meetings
+     * @param Array|Null $meetings The array containing the candidate's meetings (if he has)
      * @param Int $key_candidate The candidate's primary key
      * @return View The HTML Page
      */
-    protected function getMeetingsBoard(&$meetings, $key_candidate) {
+    protected function getMeetingsBoard(array|null &$meetings, int $key_candidate) {
         echo '<section class="onglet">';
         if(!empty($meetings)) 
             foreach($meetings as $obj)
@@ -258,7 +258,7 @@ class CandidatsView extends View {
      * @param Array $item The contract's data array
      * @return HTMLElement
      */
-    protected function getContractsBubble($item=[]) { include(MY_ITEMS.DS.'contracts_bubble.php'); }
+    protected function getContractsBubble(array $item) { include(MY_ITEMS.DS.'contracts_bubble.php'); }
     /**
      * Protected method generating an offer bubble
      *
@@ -266,7 +266,7 @@ class CandidatsView extends View {
      * @param Int $key_candidate The candidate's primary key
      * @return HTMLElement
      */
-    protected function getOffersBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'offers_bubble.php'); }
+    protected function getOffersBubble(array $item, int $key_candidate) { include(MY_ITEMS.DS.'offers_bubble.php'); }
     /**
      * Protected method generating an application bubble
      *
@@ -274,7 +274,7 @@ class CandidatsView extends View {
      * @param Int $key_candidate The candidate's primary key
      * @return HTMLElement
      */
-    protected function getApplicationsBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'applications_bubble.php'); }
+    protected function getApplicationsBubble(array $item, int $key_candidate) { include(MY_ITEMS.DS.'applications_bubble.php'); }
     /**
      * Protected method generating an meeting bubble
      *
@@ -282,124 +282,5 @@ class CandidatsView extends View {
      * @param Int $key_candidate The candidate's primary key
      * @return HTMLElement
      */
-    protected function getMeetingsBubble($item=[], $key_candidate) { include(MY_ITEMS.DS.'meetings_bubble.php'); }
-
-    // * MAKE * //
-    // ! Méthodes générant les listes du dashboard ; à ne plus utiliser ! //
-    /**
-     * Private method generating the list of the candidate's contracts
-     *
-     * @param Array $contrats The array containing the contracts to the list
-     * @param Int $nb_items_max The maximum number of elements
-     * @return Void
-     */
-    // private function makeContractsList($contracts=[], $nb_items_max) {
-    //     if(empty($contracts)) 
-    //         return;
-    // 
-    //     $contracts_bubbles = [];
-    //     foreach($contracts as $c) if(!empty($c['signature'])){
-    //         $date = Moment::currentMoment()->getDate();
-    //         if($date < $c['date_debut'])
-    //             $statut = "A venir";
-    //         elseif($c['date_fin'] < ($date || $c['demission']))
-    //             $statut = "Terminé";
-    //         else    
-    //             $statut = "En cours";
-    // 
-    //         $new_c = [
-    //             'Statut' => $statut,
-    //             'Poste' => $c['poste'],
-    //             'Type de contrat' => $c['type_de_contrat']
-    //         ];
-    //         
-    //         array_push($contracts_bubbles, $new_c);
-    //     }
-    // 
-    //     if(empty($contracts_bubbles))
-    //         return;
-    // 
-    //     $this->getBubble('Contrats', $contracts_bubbles, $nb_items_max, null, null);
-    // }
-    /**
-     * Private method generating the list of the candidate's offers
-     *
-     * @param Array $offers The array containing the offers to the list
-     * @param Int $nb_items_max The maximum number of elements
-     * @return Void
-     */
-    // private function makeOffersList($offers=[], $nb_items_max) {
-    //     if(empty($offers)) 
-    //         return;
-    // 
-    //     $offers_bubbles = [];
-    //     foreach($offers as $p) if(empty($p['signature'])) {
-    //         $new_p = [
-    //             'Statut' => empty($p['statut']) ? 'en attente' : 'refusée',
-    //             'Poste' => $p['poste'],
-    //             'Type de contrat' => $p['type_de_contrat']
-    //         ];
-    //         array_push($offers_bubbles, $new_p);
-    //     }
-    // 
-    //     if(empty($offers_bubbles))
-    //         return;
-    // 
-    //     $this->getBubble("Propositions d'embauche", $offers_bubbles, $nb_items_max, null, null);
-    // }
-    /**
-     * Private method generating the list of the candidate's applications
-     *
-     * @param Array $offers The array containing the applications to the list
-     * @param Int $nb_items_max The maximum number of elements
-     * @return Void
-     */
-    // private function makeApplicationsList($applications=[], $nb_items_max) {
-    //     if(empty($applications)) 
-    //         return;
-    // 
-    //     $applications_bubbles = [];
-    //     foreach($applications as $c) {
-    //         $new_c = [
-    //             'Poste' => $c['poste'],
-    //             'Type de contrat' => $c['type_de_contrat']
-    //         ];
-    //         if($c['acceptee'])
-    //             $new_c['Statut'] = ACCEPTED;
-    //         elseif($c['refusee'])
-    //             $new_c['Statut'] = REFUSED;
-    //         array_push($applications_bubbles, $new_c);
-    //     }
-    // 
-    //     if(empty($applications_bubbles))
-    //         return;
-    // 
-    //     $this->getBubble("Candidatures", $applications_bubbles, $nb_items_max, null, null);
-    // }
-    /**
-     * Private method generating the candidate's list of meetings
-     *
-     * @param Array $meetings Te array containing the candidate's meetings
-     * @param Int $nb_items_max The maximum number of elements in the list
-     * @return Void
-     */
-    // private function makeMeetingsList($meetings=[], $nb_items_max) {
-    //     if(empty($meetings)) 
-    //         return;
-    // 
-    //     $meetings_bubbles = [];
-    //     foreach($meetings as $r) {
-    //         $new_r = [
-    //             'Recruteur' => forms_manip::majusculeFormat($r['nom']) . ' ' . $r['prenom'],
-    //             'Date' => $r['date'],
-    //             'Etablissement' => $r['etablissement']
-    //         ];
-    //         array_push($meetings_bubbles, $new_r);
-    //     }
-    // 
-    //     if(empty($meetings_bubbles))
-    //         return;
-    // 
-    //     $this->getBubble("Rendez-vous", $meetings_bubbles, $nb_items_max, null, null);
-    // }
+    protected function getMeetingsBubble(array $item, int $key_candidate) { include(MY_ITEMS.DS.'meetings_bubble.php'); }
 }
