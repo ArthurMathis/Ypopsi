@@ -29,9 +29,9 @@ class CandidaturesController extends Controller {
     public function displayInputCandidate() {
         return $this->View->displayInputCandidatesContent(
             'Ypopsi - Nouveau candidat', 
-            $this->Model->getQualifications(),
-            $this->Model->getHelps(),
-            $this->Model->getEmployee()
+            $this->Model->getQualificationsForAutoComplete(),
+            $this->Model->getHelpsForAutoComplete(),
+            $this->Model->getEmployeeForAutoComplete()
         );
     }
     /**
@@ -42,11 +42,11 @@ class CandidaturesController extends Controller {
     public function displayInputApplications() {
         return $this->View->displayInputApplicationsContent(
             "Ypopsi - Recherche d'un candidat", 
-            $this->Model->getJobs(),
-            $this->Model->getServices(),
-            $this->Model->getEstablishments(),
-            $this->Model->getTypesOfContracts(),
-            $this->Model->getSources()
+            $this->Model->getJobsForAutoComplete(),
+            $this->Model->getServicesForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete(),
+            $this->Model->getTypesOfContractsForAutoComplete(),
+            $this->Model->getSourcesForAutoComplete()
         );
     }
 

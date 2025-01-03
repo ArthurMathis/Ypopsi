@@ -1,6 +1,8 @@
 <?php
 
-ob_start();
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 require_once('define.php');
 require_once(COMPONENTS.DS.'AlertManipulation.php');
@@ -572,7 +574,7 @@ switch(true) {
         break;    
 
     case (isset($_GET['preferences'])):
-        $preferences = new PreferencesController();
+        $preferences = new PreferencesController(); 
         if(is_numeric($_GET['preferences'])) {
             if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                 throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");

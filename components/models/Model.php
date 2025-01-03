@@ -166,7 +166,7 @@ abstract class Model {
      *
      * @return Array
      */
-    public function getAutoCompUsers(): Array {
+    public function getUsersForAutoComplete(): Array {
         $request = "SELECT Id as id, CONCAT(Name, ' ', Firstname) as text FROM Users ORDER BY name";
         return $this->get_request($request, [], false, true);
         }
@@ -175,7 +175,7 @@ abstract class Model {
      *
      * @return Array
      */
-    public function getEstablishments(): Array {
+    public function getEstablishmentsForAutoComplete(): Array {
         $request = "SELECT Id AS id, Titled AS text FROM Establishments ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
@@ -184,7 +184,7 @@ abstract class Model {
      *
      * @return Array
      */
-    public function getServices(): Array {
+    public function getServicesForAutoComplete(): Array {
         $request = "SELECT Id AS id, titled AS text FROM Services ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
@@ -193,7 +193,7 @@ abstract class Model {
      *
      * @return Array
      */
-    public function getSources(): Array {
+    public function getSourcesForAutoComplete(): Array {
         $request = "SELECT Id AS id, Titled AS text FROM Sources ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
@@ -202,7 +202,7 @@ abstract class Model {
      *
      * @return Array
      */
-    public function getTypesOfContracts(): Array {
+    public function getTypesOfContractsForAutoComplete(): Array {
         $request = "SELECT Id AS id, Titled AS text FROM Types_of_contracts ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
@@ -211,7 +211,7 @@ abstract class Model {
      *
      * @return Array
      */
-    public function getJobs(): Array {
+    public function getJobsForAutoComplete(): Array {
         $request = "SELECT Id AS id, Titled AS text FROM jobs ORDER BY titled";
         return $this->get_request($request, [], false, true);
     }
@@ -220,7 +220,7 @@ abstract class Model {
      *
      * @return Void
      */
-    public function getQualifications() {
+    public function getQualificationsForAutoComplete() {
         $request = "SELECT Id AS id, Titled AS text FROM Qualifications";
         return $this->get_request($request, [], false, true);
     }
@@ -229,7 +229,7 @@ abstract class Model {
      *
      * @return Array
      */
-    public function getHelps(): Array {
+    public function getHelpsForAutoComplete(): Array {
         $request = "SELECT Id as id, Titled AS text FROM Helps";
         return $this->get_request($request, [], false, true);
     }
@@ -238,7 +238,7 @@ abstract class Model {
      *
      * @return Array|NULL
      */
-    public function getEmployee(): ?Array {
+    public function getEmployeeForAutoComplete(): ?Array {
         $request = "SELECT 
         c.Id AS id,
         CONCAT(c.Name, ' ', c.Firstname) AS text
@@ -258,7 +258,7 @@ abstract class Model {
      *
      * @return Array
      */
-    public function getRoles(): Array {
+    public function getRolesForAutoComplete(): Array {
         $request = "SELECT Id AS id, Titled AS text FROM Roles";
         return $this->get_request($request);
     }

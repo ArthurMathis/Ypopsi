@@ -7,6 +7,7 @@ require_once('Controller.php');
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
 class PreferencesController extends Controller {
+    // protected const $link = 'index.php?preferences=';
     /**
      * Class' constructor
      */
@@ -98,7 +99,7 @@ class PreferencesController extends Controller {
      */
     public function displayInputUsers() {
         return $this->View->displayInputUsers(
-            $this->Model->getRoles(),
+            $this->Model->getRolesForAutoComplete(),
             $this->Model->getEstablishments()
         );
     }
@@ -143,7 +144,7 @@ class PreferencesController extends Controller {
     public function displayEditUsers($user_key) {
         return $this->View->displayEditUsers(
             $this->Model->getEditProfile($user_key),
-            $this->Model->getRoles()
+            $this->Model->getRolesForAutoComplete()
         );
     }
 
@@ -157,8 +158,8 @@ class PreferencesController extends Controller {
     public function createUsers(&$data=[]) {
         $this->Model->createUsers($data);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouvel utilisateur enregistré !",
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouvel utilisateur enregistré !",
             'direction' => 'index.php?preferences=list-new-users'
         ]);
     }
@@ -171,8 +172,8 @@ class PreferencesController extends Controller {
     public function createJobs(&$data=[]) {
         $this->Model->createJobs($data);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau poste enregistré !",
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau poste enregistré !",
             'direction' => 'index.php?preferences=list-jobs'
         ]);
     }
@@ -185,8 +186,8 @@ class PreferencesController extends Controller {
     public function createEstablishments(&$data=[]) {
         $this->Model->createEstablishments($data);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau établissement enregistré !",
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau établissement enregistré !",
             'direction' => 'index.php?preferences=list-establishments'
         ]);
     }
@@ -200,8 +201,8 @@ class PreferencesController extends Controller {
     public function createPoles(&$titled, &$description) {
         $this->Model->createPoles($titled, $description);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau pôle enregistré !",
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau pôle enregistré !",
             'direction' => 'index.php?preferences=list-poles'
         ]);
     } 
@@ -218,8 +219,8 @@ class PreferencesController extends Controller {
         $this->Model->updateUsers($key_users, $user);
         $this->Model->updateUsersLogs($key_users);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "L'utilisateur a bien été modifié !",
+            'title'     => 'Opération réussie',
+            'msg'       => "L'utilisateur a bien été modifié !",
             'direction' => 'index.php?preferences=' . $key_users
         ]);
     }
@@ -229,8 +230,8 @@ class PreferencesController extends Controller {
             $this->Model->updatePassword($new_password);
             $this->Model->updatePasswordLogs();
             alert_manipulation::alert([
-                'title' => 'Opération réussie',
-                'msg' => "Votre mot de passe a bien été modifié !",
+                'title'     => 'Opération réussie',
+                'msg'       => "Votre mot de passe a bien été modifié !",
                 'direction' => 'index.php'
             ]);
 
@@ -240,16 +241,13 @@ class PreferencesController extends Controller {
 
     // * RESET * // 
     /// Méthode publique réinitialisant le mot de passe d'un utilisateur
-    public function resetPassword($password, $cle_utilisateur) {
-        // On réinitialise le mot de passe
-        $this->Model->resetPassword($password, $cle_utilisateur);
-        // On incrit les logs
-        $this->Model->resetPasswordLogs($cle_utilisateur);
-        // On redirige la page
+    public function resetPassword($password, $key_users) {
+        $this->Model->resetPassword($password, $key_users);
+        $this->Model->resetPasswordLogs($key_users);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-                'msg' => "Le mot de passe a bien été réinitialisé !",
-                'direction' => 'index.php?preferences=' . $cle_utilisateur
+            'title'     => 'Opération réussie',
+            'msg'       => "Le mot de passe a bien été réinitialisé !",
+            'direction' => 'index.php?preferences=' . $key_users
         ]);
     }
 
@@ -267,8 +265,8 @@ class PreferencesController extends Controller {
         // On génère le nouveau poste
         $this->Model->createService($service, $etablissement);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau service enregistré !",
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau service enregistré !",
             'direction' => 'index.php?preferences=list-services'
         ]);
     }

@@ -43,12 +43,11 @@ class CandidatsModel extends Model {
         $candidate = $this->searchCandidates($key_candidate);
         $candidate['qualifications'] = $this->getQualificationsFromCandidates($key_candidate);
         $candidate['helps'] = $this->getHelpsFromCandidates($key_candidate);
-
         return [
-            'candidate' => $candidate,
-            'employee' => $this->searchCoopter($key_candidate),
-            'helps' => $this->getHelps(),
-            'qualifications' => $this->getQualifications()
+            'candidate'      => $candidate,
+            'employee'       => $this->searchCoopter($key_candidate),
+            'helps'          => $this->getHelpsForAutoComplete(),
+            'qualifications' => $this->getQualificationsForAutoComplete()
         ];
     }
     /**
@@ -92,12 +91,12 @@ class CandidatsModel extends Model {
             $employee = $employee['text']; 
 
         return [
-            'candidate' => $candidate,
-            'helps' => $this->getHelpsFromCandidates($key_candidate),
-            'employee' => $employee, 
+            'candidate'    => $candidate,
+            'helps'        => $this->getHelpsFromCandidates($key_candidate),
+            'employee'     => $employee,
             'applications' => $this->getApplicationsFromCandidates($key_candidate),
-            'contracts' => $this->getContractsFromCandidates($key_candidate),
-            'meeting' => $this->getMeetingFromCandidates($key_candidate)
+            'contracts'    => $this->getContractsFromCandidates($key_candidate),
+            'meeting'      => $this->getMeetingFromCandidates($key_candidate)
         ];
     }
     /**
@@ -342,7 +341,7 @@ class CandidatsModel extends Model {
         WHERE have.Key_Candidates = :key_candidate AND have.Key_Helps = :key_help";
         $params = [
             'key_candidate' => $key_candidate,
-            'key_help' => $this->searchHelps(COOPTATION)['Id']
+            'key_help'      => $this->searchHelps(COOPTATION)['Id']
         ];
 
         return $this->get_request($request, $params, true, false);

@@ -48,8 +48,8 @@ class CandidatController extends Controller {
             "Nouveau rendez-vous",
             $key_candidate,
             $this->Model->searchEstablishments($_SESSION['key_establishment'])['Titled'], 
-            $this->Model->getAutoCompUsers(),
-            $this->Model->getEstablishments()
+            $this->Model->getUsersForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete()
         );
     }
     /**
@@ -92,10 +92,10 @@ class CandidatController extends Controller {
         return $this->View->displayInputOffers(
             "Ypopsi - Nouvelle proposition", 
             $key_candidate,
-            $this->Model->getJobs(),
-            $this->Model->getServices(),
-            $this->Model->getEstablishments(),
-            $this->Model->getTypesOfContracts(), 
+            $this->Model->getJobsForAutoComplete(),
+            $this->Model->getServicesForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete(),
+            $this->Model->getTypesOfContractsForAutoComplete(), 
             $offer
         );
     }
@@ -109,10 +109,10 @@ class CandidatController extends Controller {
         return $this->View->displayInputContracts(
             "Ypopsi - Nouveau contrat", 
             $key_candidate,
-            $this->Model->getJobs(),
-            $this->Model->getServices(),
-            $this->Model->getEstablishments(),
-            $this->Model->getTypesOfContracts()
+            $this->Model->getJobsForAutoComplete(),
+            $this->Model->getServicesForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete(),
+            $this->Model->getTypesOfContractsForAutoComplete()
         );
     }
 
@@ -126,9 +126,9 @@ class CandidatController extends Controller {
     public function displayEditCandidates($key_candidate) {
         return $this->View->displayEditCandidates(
             $this->Model->getEditCandidates($key_candidate),
-            $this->Model->getQualifications(),
-            $this->Model->getHelps(),
-            $this->Model->getEmployee()
+            $this->Model->getQualificationsForAutoComplete(),
+            $this->Model->getHelpsForAutoComplete(),
+            $this->Model->getEmployeeForAutoComplete()
         );
     }
     /**
@@ -149,8 +149,8 @@ class CandidatController extends Controller {
     public function displayEditMeetings($key_meeting) { 
         return $this->View->displayEditMeetings(
             $this->Model->getEditMeetings($key_meeting),
-            $this->Model->getAutoCompUsers(),
-            $this->Model->getEstablishments()
+            $this->Model->getUsersForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete()
         ); 
     }
     
