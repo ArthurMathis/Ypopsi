@@ -10,7 +10,7 @@ class HomeModel extends Model {
     /**
      * Public method searching the unprocessed application in the database
      *
-     * @return void
+     * @return Void
      */
     public function getNonTraiteeCandidatures(): ?Array {
         $request = "SELECT 
@@ -35,7 +35,7 @@ class HomeModel extends Model {
     /**
      * Public method searching the contract proposals in the database
      *
-     * @return void
+     * @return Void
      */
     public function getReductProposition(): ?Array {
         $request = "SELECT 
@@ -55,19 +55,19 @@ class HomeModel extends Model {
     /**
      * Public method searching the metting list
      *
-     * @return Array|NULL
+     * @return Array|Null
      */
     public function getReductRendezVous(): ?Array {
         $request = "SELECT 
-        c.Name AS Nom, 
-        c.Firstname AS Prenom,
-        DATE_FORMAT(meet.Date, '%d/%m/%Y') AS Jour,
-        DATE_FORMAT(meet.Date, '%H:%i') AS Heure
-        
-        FROM Meetings AS meet
-        INNER JOIN Candidates AS c ON meet.Key_Candidates = c.Id
-        WHERE meet.Key_Users = :cle AND NOW() <= meet.Date
-        ORDER BY meet.Date";
+            c.Name AS Nom, 
+            c.Firstname AS Prenom,
+            DATE_FORMAT(meet.Date, '%d/%m/%Y') AS Jour,
+            DATE_FORMAT(meet.Date, '%H:%i') AS Heure
+            
+            FROM Meetings AS meet
+            INNER JOIN Candidates AS c ON meet.Key_Candidates = c.Id
+            WHERE meet.Key_Users = :cle AND NOW() <= meet.Date
+            ORDER BY meet.Date";
         $params = ['cle' => $_SESSION['user_key']];
 
         return $this->get_request($request, $params);

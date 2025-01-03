@@ -1,10 +1,6 @@
 <?php
 
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
-
-require_once('define.php');
+require_once('define.php'); // test_process();
 require_once(COMPONENTS.DS.'AlertManipulation.php');
 require_once(COMPONENTS.DS.'FormsManip.php');
 require_once(CONTROLLERS.DS.'LoginController.php');

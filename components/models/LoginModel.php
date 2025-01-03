@@ -12,12 +12,12 @@ class LoginModel extends Model {
     /**
      * Public method connecting the user to the application 
      * 
-     * @param String $identifiant The user's id (ex: name.f)
-     * @param String $motdepasse The user's password
+     * @param String $identifier The user's id (ex: name.f)
+     * @param String $password The user's password
      * @return Void
      */
-    public function connectUser($identifiant, $motdepasse) {
-        $user = $this->verifyUser($identifiant, $motdepasse);
+    public function connectUser(string $identifier, string $password) {
+        $user = $this->verifyUser($identifier, $password);
         
         $_SESSION['user_key']           = $user->getKey();
         $_SESSION['user_identifier']    = $user->getIdentifier();
@@ -60,7 +60,7 @@ class LoginModel extends Model {
      * @param String $password The user's password
      * @return Utilisateurs|NULL The user, if the informations are corrects and null,  if they aren't
      */
-    private function verifyUser($identifier, $password): ?User{
+    private function verifyUser(string $identifier, string $password): ?User{
         $request = "SELECT * FROM Users WHERE Identifier = :identifier";
         $params = [":identifier" => $identifier];
         $users = $this->get_request($request, $params, false, true);

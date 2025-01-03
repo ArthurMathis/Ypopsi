@@ -17,40 +17,28 @@ class LoginController extends Controller {
     /**
      * Public method returning the login form
      *
-     * @return void
+     * @return Void
      */
-    function displayLogin() {
-        return $this->View->getContent();
-    }
+    function displayLogin() { return $this->View->getContent(); }
 
     /**
      * Public method connecting one user to the application
      *
-     * @param string $identifiant THe user's id (ex: name.f)
-     * @param string $motdepasse The user's password
-     * @return void
+     * @param String $identifier THe user's id (ex: name.f)
+     * @param String $pasword The user's password
+     * @return Void
      */
-    public function checkIdentification($identifiant, $motdepasse) {
-        $this->Model->connectUser($identifiant, $motdepasse);
+    public function checkIdentification(string $identifier, string $pasword) {
+        $this->Model->connectUser($identifier, $pasword);
         header('Location: index.php');
-        // alert_manipulation::alert([
-        //     'title' => 'Connexion réussie',
-        //     'msg' => 'Bienvene ' . strtoupper($_SESSION['user_name']) . ' ' . forms_manip::nameFormat($_SESSION['user_firstname']),
-        //     'direction' => 'index.php'
-        // ]);
     }
     /**
      * Public method disconnecting the current user to the application
      *
-     * @return void
+     * @return Void
      */
     public function closeSession() {
         $this->Model->deconnectUser();
         header('Location: index.php?login=get_connexion');
-        // alert_manipulation::alert([
-        //     'title' => 'Déconnexion réussie',
-        //     'msg' => 'A bientot !',
-        //     'direction' => 'index.php'
-        // ]);
     }
 }
