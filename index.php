@@ -440,10 +440,10 @@ switch(true) {
 
                     try {
                         $rating = [
-                            'notation' => max($_POST['notation']),
-                            'a' => isset($_POST['a']) ? 1 : 0,
-                            'b' => isset($_POST['b']) ? 1 : 0,
-                            'c' => isset($_POST['c']) ? 1 : 0,
+                            'notation'    => max($_POST['notation']),
+                            'a'           => isset($_POST['a']) ? 1 : 0,
+                            'b'           => isset($_POST['b']) ? 1 : 0,
+                            'c'           => isset($_POST['c']) ? 1 : 0,
                             'description' => $_POST['description']
                         ];
                         if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
@@ -611,10 +611,10 @@ switch(true) {
                                 throw new Exception('Le champs rôle doit être rempli !');
 
                             $user = [
-                                'name' => $_POST['nom'],
+                                'name'      => $_POST['nom'],
                                 'firstname' => $_POST['prenom'],
-                                'email' => $_POST['email'],
-                                'role' => $_POST['role']
+                                'email'     => $_POST['email'],
+                                'role'      => $_POST['role']
                             ];
 
                         } catch(Exception $e) {

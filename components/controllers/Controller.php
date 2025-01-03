@@ -16,6 +16,8 @@ abstract class Controller {
 
     /**
      * Public method downloading the model into the controller
+     * 
+     * @param String $model The name of model file
      */
     public function loadModel(string $model) {
         require_once(MODELS.DS.$model.'.php');
@@ -23,6 +25,8 @@ abstract class Controller {
     }
     /**
      * Public method downloading the view into the controller
+     * 
+     * @param $view The name of view file
      */
     public function loadView(string $view) {
         require_once(VIEWS.DS.$view.'.php');

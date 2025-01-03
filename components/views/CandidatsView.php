@@ -5,8 +5,6 @@ require_once('View.php');
 /**
  * Class representing the candidates' views
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
- * 
- * TODO : renommer les méthodes en displayInscript/Edit 
  */
 class CandidatsView extends View {
     /**

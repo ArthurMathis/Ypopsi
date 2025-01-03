@@ -338,9 +338,16 @@ class PreferencesModel extends Model {
      * @param Array $data
      * @return Void
      */
-    public function createEstablishments(&$data=[]) {
-        $data['key_poles'] = $this->searchPoles($data['key_poles'])['Id'];
-        $this->inscriptEstablishments($data);
+    public function createEstablishments(array &$data) {
+        $data['key_poles'] = $this->searchPoles($data['key_poles'])['Id']; // Todo : utiliser la nouvelle version de l'AutoComplete pour éviter la recherche et renvoyer directement la clé primaire
+        // $this->inscriptEstablishments($data);
+        $this->inscriptEstablishments(
+            $_POST['intitule'],
+            $_POST['adresse'],
+            $_POST['ville'],
+            $_POST['code-postal'],
+            $_POST['pole']
+        );
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouvel établissement",

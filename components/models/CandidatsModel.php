@@ -4,7 +4,10 @@ require_once('Model.php');
 require_once(CLASSE.DS.'Moment.php');
 require_once(CLASSE.DS.'Contract.php');
 
-
+/**
+ * Class representing the model of candidates
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class CandidatsModel extends Model {
     // * GET * //
     /**
@@ -39,7 +42,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array
      */
-    public function getEditCandidates($key_candidate) {
+    public function getEditCandidates(int $key_candidate) {
         $candidate = $this->searchCandidates($key_candidate);
         $candidate['qualifications'] = $this->getQualificationsFromCandidates($key_candidate);
         $candidate['helps'] = $this->getHelpsFromCandidates($key_candidate);
@@ -56,7 +59,7 @@ class CandidatsModel extends Model {
      * @param Int $key_meeting The meeting's primary key
      * @return Array
      */
-    public function getEditMeetings($key_meeting): Array {
+    public function getEditMeetings(int $key_meeting): Array {
         $request = "SELECT
         m.Id AS key_meeting,
         c.Id AS key_candidate,
@@ -82,7 +85,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array
      */
-    public function displayContentCandidate($key_candidate): Array {
+    public function displayContentCandidate(int $key_candidate): Array {
         $candidate = $this->searchCandidates($key_candidate);
         $candidate['qualifications'] = $this->getQualificationsFromCandidates($key_candidate);
 
@@ -105,7 +108,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array|NULL
      */
-    private function getQualificationsFromCandidates($key_candidate): ?Array {
+    private function getQualificationsFromCandidates(int $key_candidate): ?Array {
         $request = "SELECT 
         q.Titled AS titled, 
         g.Date AS date
@@ -125,7 +128,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array
      */
-    private function getApplicationsFromCandidates($key_candidate): Array {
+    private function getApplicationsFromCandidates(int $key_candidate): Array {
         $request = "SELECT 
         app.Id AS cle,
         app.IsAccepted AS acceptee, 
@@ -162,33 +165,33 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array|NULL
      */ 
-    private function getContractsFromCandidates($key_candidate): ?Array {
+    private function getContractsFromCandidates(int $key_candidate): ?Array {
         $request = "SELECT 
-        c.Id AS cle,
-        j.titled AS poste,
-        s.titled AS service,
-        e.titled AS etablissement,
-        t.titled AS type_de_contrat,
-        c.StartDate AS date_debut,
-        c.EndDate AS date_fin,
-        c.PropositionDate AS proposition,
-        c.SignatureDate AS signature,
-        c.ResignationDate AS demission,
-        c.IsRefused AS statut, 
-        c.Salary AS salaire,
-        c.HourlyRate AS heures,
-        c.NightWork AS nuit,
-        c.WeekEndWork AS week_end
+            c.Id AS cle,
+            j.titled AS poste,
+            s.titled AS service,
+            e.titled AS etablissement,
+            t.titled AS type_de_contrat,
+            c.StartDate AS date_debut,
+            c.EndDate AS date_fin,
+            c.PropositionDate AS proposition,
+            c.SignatureDate AS signature,
+            c.ResignationDate AS demission,
+            c.IsRefused AS statut, 
+            c.Salary AS salaire,
+            c.HourlyRate AS heures,
+            c.NightWork AS nuit,
+            c.WeekEndWork AS week_end
 
-        FROM Contracts as c
-        INNER JOIN Jobs AS j ON c.Key_Jobs = j.Id
-        INNER JOIN Services AS s ON c.Key_services = s.Id
-        INNER JOIN Establishments AS e ON c.Key_Establishments = e.Id
-        INNER JOIN Types_of_contracts AS t ON c.Key_Types_of_contracts = t.Id
+            FROM Contracts as c
+            INNER JOIN Jobs AS j ON c.Key_Jobs = j.Id
+            INNER JOIN Services AS s ON c.Key_services = s.Id
+            INNER JOIN Establishments AS e ON c.Key_Establishments = e.Id
+            INNER JOIN Types_of_contracts AS t ON c.Key_Types_of_contracts = t.Id
 
-        WHERE c.Key_Candidates = :key
-        
-        ORDER BY c.Id DESC";
+            WHERE c.Key_Candidates = :key
+            
+            ORDER BY c.Id DESC";
         $params = ['key' => $key_candidate];
 
         return $this->get_request($request, $params);
@@ -199,22 +202,22 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array|NULL
      */
-    private function getMeetingFromCandidates($key_candidate): ?Array {
+    private function getMeetingFromCandidates(int $key_candidate): ?Array {
         $request = "SELECT 
-        meet.Id AS key_meeting,
-        u.Name AS nom,
-        u.Firstname AS prenom,
-        DATE(meet.Date) AS date,
-        DATE_FORMAT(meet.Date, '%H:%i') AS heure,
-        e.Titled AS etablissement,
-        meet.Description AS description
+            meet.Id AS key_meeting,
+            u.Name AS nom,
+            u.Firstname AS prenom,
+            DATE(meet.Date) AS date,
+            DATE_FORMAT(meet.Date, '%H:%i') AS heure,
+            e.Titled AS etablissement,
+            meet.Description AS description
 
-        FROM  Meetings AS meet
-        INNER JOIN Users AS u ON meet.Key_Users = u.Id
-        INNER JOIN Candidates AS c ON meet.Key_Candidates = c.Id
-        INNER JOIN Establishments AS e ON e.Id = meet.Key_Establishments
+            FROM  Meetings AS meet
+            INNER JOIN Users AS u ON meet.Key_Users = u.Id
+            INNER JOIN Candidates AS c ON meet.Key_Candidates = c.Id
+            INNER JOIN Establishments AS e ON e.Id = meet.Key_Establishments
 
-        WHERE meet.Key_Candidates = :key";
+            WHERE meet.Key_Candidates = :key";
         $params = ['key' => $key_candidate];
     
         return $this->get_request($request, $params);
@@ -226,16 +229,16 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array|NULL
      */
-    private function getHelpsFromCandidates($key_candidate): ?Array {
+    private function getHelpsFromCandidates(int $key_candidate): ?Array {
         $request = "SELECT 
-        helps.Titled AS intitule,
-        c.Id AS id
+            helps.Titled AS intitule,
+            c.Id AS id
 
 
-        FROM Have_the_right_to AS have
-        INNER JOIN helps ON helps.Id = have.Key_Helps
-        LEFT JOIN Candidates AS c ON have.Key_Employee = c.Id
-        WHERE have.Key_Candidates = " . $key_candidate;
+            FROM Have_the_right_to AS have
+            INNER JOIN helps ON helps.Id = have.Key_Helps
+            LEFT JOIN Candidates AS c ON have.Key_Employee = c.Id
+            WHERE have.Key_Candidates = " . $key_candidate;
 
         $result = $this->get_request($request);
     
@@ -250,9 +253,9 @@ class CandidatsModel extends Model {
      * @param Array $meeting The array containing the meeting's data
      * @return Void
      */
-    public function createMeetings($key_candidate, &$meeting=[]) {
-        $timestamp = (new DateTime($meeting['date'] . ' ' . $meeting['time'], new DateTimeZone('Europe/Paris')))->getTimestamp();
-        $this->inscriptMeetings($meeting['recruteur'], $key_candidate, $meeting['etablissement'], $timestamp);
+    public function createMeetings(int $key_candidate, array &$meeting) {
+        $date = (new DateTime($meeting['date'] . ' ' . $meeting['time'], new DateTimeZone('Europe/Paris')))->format('Y-m-d H:i:s');
+        $this->inscriptMeetings($meeting['recruteur'], $key_candidate, $meeting['etablissement'], $date);
         $candidate = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'], 
@@ -267,7 +270,7 @@ class CandidatsModel extends Model {
      * @param Array $offer The array containing the offer's data
      * @return Void
      */
-    public function createOffers($key_candidate, $offer=[]) {
+    public function createOffers(int $key_candidate, array $offer) {
         if(!$this->verifyServices($offer['service'], $offer['etablissement']))
             throw new Exception("Ce service n'existe pas dans l'établissement sélectionné...");
         $this->inscriptContracts(
@@ -298,7 +301,7 @@ class CandidatsModel extends Model {
      * @param Array $contract The array containing the contract's data
      * @return Void
      */
-    public function createContracts($key_candidate, &$contract=[]) {
+    public function createContracts(int $key_candidate, array &$contract) {
         if(!$this->verifyServices($contract['service'], $contract['establishment']))
             throw new Exception("Ce service n'existe pas dans l'établissement sélectionné...");
         $this->inscriptContracts(
@@ -331,7 +334,7 @@ class CandidatsModel extends Model {
      * @param int $key_candidate The candidte's primary key
      * @return Array|NULL The array containing the employee's data
      */
-    private function searchCoopter($key_candidate): ?Array {
+    private function searchCoopter(int $key_candidate): ?Array {
         $request = "SELECT 
         CONCAT(c.Name, ' ', c.Firstname) AS text
 
@@ -353,7 +356,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Candidate
      */
-    public function makeCandidate($key_candidate): Candidate {
+    public function makeCandidate(int $key_candidate): Candidate {
         $result = $this->searchCandidates($key_candidate);
         $candidate = new Candidate(
             $result['Name'], 
@@ -376,7 +379,7 @@ class CandidatsModel extends Model {
      * @param Int $key_meeting The meeting's primary key
      * @return Void
      */
-    public function deletingMeetings($key_meeting) {
+    public function deletingMeetings(int $key_meeting) {
         $meeting = $this->searchMeetings($key_meeting);
         $candidate = $this->searchCandidates($meeting['Key_Users']); 
         $this->deleteMeetings($key_meeting);
@@ -392,7 +395,7 @@ class CandidatsModel extends Model {
      * @param Int $key_application The application's primary key
      * @return Void
      */
-    public function setApplicationsAccepted($key_application) {
+    public function setApplicationsAccepted(int $key_application) {
         $request = "UPDATE Applications SET IsAccepted = TRUE AND IsRefused = FALSE WHERE Id = :key_application";
         $params = ['key_application' => $key_application];
 
@@ -404,7 +407,7 @@ class CandidatsModel extends Model {
      * @param Int $key_application The application's primary key
      * @return Void
      */
-    public function setApplicationsRefused($key_application) {
+    public function setApplicationsRefused(int $key_application) {
         $request = "UPDATE Applications SET IsAccepted = FALSE, IsRefused = TRUE WHERE Id = :key_application";
         $params = ['key_application' => $key_application];
 
@@ -417,7 +420,7 @@ class CandidatsModel extends Model {
      * @param Bool $status The new offer's satus (TRUE: refused offer ; FALSE, not refused offer)
      * @return Void
      */
-    public function setOfferStatus($key_offer, $status = true) {
+    public function setOfferStatus(int $key_offer, bool $status = true) {
         $request = "UPDATE Contracts SET IsRefused = :status WHERE Id = :key_offer";
         $params = [
             'key_offer' => $key_offer,
@@ -433,7 +436,7 @@ class CandidatsModel extends Model {
      * @param Int $key_application The application's primary key
      * @return Void
      */
-    public function dismissApplications(&$key_application) {
+    public function dismissApplications(int $key_application) {
         $this->setApplicationsRefused($key_application);
         $candidat = $this->searchCandidatesFromApplications($key_application);
         $this->writeLogs(
@@ -449,7 +452,7 @@ class CandidatsModel extends Model {
      * @param Int $key_offer Tyhe offer's primary key
      * @return Void
      */
-    public function rejectOffers(&$key_offer) {
+    public function rejectOffers(int $key_offer) {
         $this->setOfferStatus($key_offer); 
         $contract = $this->searchContracts($key_offer); 
         $candidate = $this->searchCandidates($contract['Key_Candidates']); 
@@ -467,7 +470,7 @@ class CandidatsModel extends Model {
      * @param Int $key_contract The contract's primary key
      * @return Void
      */
-    public function addSignatureToContract($key_candidate, $key_contract) {
+    public function addSignatureToContract(int $key_candidate, int $key_contract) {
         $request = "UPDATE Contracts SET SignatureDate = :date WHERE Id = :key_contract";
         $params = [
             'date'         => date('Y-m-d H:i:s', Moment::currentMoment()->getTimestamp()),
@@ -488,7 +491,7 @@ class CandidatsModel extends Model {
      * @param Int $key_contract The contract's primary key
      * @return Void
      */ 
-    public function setResignationToContract($key_contract) {
+    public function setResignationToContract(int $key_contract) {
         $request = "UPDATE Contracts SET ResignationDate = :date WHERE Id = :key_contract";
         $params = [
             'date'         => date('Y-m-d H:i:s', Moment::currentMoment()->getTimestamp()),
@@ -507,14 +510,13 @@ class CandidatsModel extends Model {
     // * UPDATE * // 
 
     /**
-     * Undocumented function
-
+     * Public method making an update to a candidate and his data (qualifications and helps)
      * 
-     * @param Int $key_candidate
-     * @param array $data
-     * @return void
+     * @param Int $key_candidate The candidate's primary key
+     * @param Array $data The array containing his data
+     * @return Void
      */
-    public function makeUpdateCandidates($key_candidate, $data=[]) {
+    public function makeUpdateCandidates(int $key_candidate, array $data) {
         $this->updateCandidates(
             $key_candidate,
             $data['name'],
@@ -567,7 +569,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function updateRatingsLogs($key_candidate) {
+    public function updateRatingsLogs(int $key_candidate) {
         $candidat = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],
@@ -581,7 +583,7 @@ class CandidatsModel extends Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function updateMeetingsLogs($key_candidate) {
+    public function updateMeetingsLogs(int $key_candidate) {
         $candidat = $this->searchCandidates($key_candidate);
         $this->writeLogs(
             $_SESSION['user_key'],

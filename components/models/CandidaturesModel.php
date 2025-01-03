@@ -118,7 +118,7 @@ class CandidaturesModel extends Model {
      * @param String $coopteur The employee's name who advises the new candidate 
      * @return Void
      */
-    public function createCandidate(&$candidate, $qualifications=[], $helps=[], $coopteur=null) {
+    public function createCandidate(Candidate &$candidate, array $qualifications, array $helps, string $coopteur = null) {
         $candidate->setKey($this->inscriptCandidates($candidate));
         if(!empty($qualifications)) 
             foreach($qualifications as $item) 

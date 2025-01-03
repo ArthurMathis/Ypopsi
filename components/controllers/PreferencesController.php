@@ -183,7 +183,7 @@ class PreferencesController extends Controller {
      * @param Array $data
      * @return Void
      */
-    public function createEstablishments(&$data=[]) {
+    public function createEstablishments(array &$data) {
         $this->Model->createEstablishments($data);
         alert_manipulation::alert([
             'title'     => 'Opération réussie',
@@ -215,8 +215,8 @@ class PreferencesController extends Controller {
      * @param Array $user The user's data
      * @return Void
      */
-    public function updateUsers($key_users, &$user=[]) {
-        $this->Model->updateUsers($key_users, $user);
+    public function updateUsers(int $key_users, array &$user) {
+        $this->Model->updateUsers($key_users, $user['name'], $user['firstname'], $user['email'], $user['role']);
         $this->Model->updateUsersLogs($key_users);
         alert_manipulation::alert([
             'title'     => 'Opération réussie',
