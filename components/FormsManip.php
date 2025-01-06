@@ -8,10 +8,10 @@ class forms_manip {
     /**
      * Public static methoc generating one error notification
      *
-     * @param array $infos The error informations
-     * @return void
+     * @param Array $infos The error informations
+     * @return Void
      */
-    public static function error_alert($infos=[]) {
+    public static function error_alert(array $infos) {
         if(!isset($infos['icon']) || empty($infos['icon']))
             $infos['icon'] = "error";
         if(!isset($infos['button']))
@@ -26,20 +26,19 @@ class forms_manip {
      * @param String $str The name 
      * @return String The formated string
      */
-    public static function nameFormat($str): String {
+    public static function nameFormat(string $str): String {
         if(!is_string($str))
             throw new Exception("Le formatage d'un nom doit se réaliser sur une chaine de caractères. ");
-
         return ucwords(strtolower(preg_replace('/[^A-Za-z0-9\- ]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $str))));
     }
 
     /**
      * Public static method formating a phone number
      *
-     * @param string $number The phone number
-     * @return string|null
+     * @param String $number The phone number
+     * @return String|Null
      */
-    public static function numberFormat($number): ?string {
+    public static function numberFormat(string $number): ?String {
         $number = preg_replace('/\D/', '', $number);
     
         if (strlen($number) !== 0 && strlen($number) !== 10)
@@ -52,14 +51,13 @@ class forms_manip {
     /**
      * Public static method formating string in uppercase without special characters
      *
-     * @param string $str The string
-     * @return string
+     * @param String $str The string
+     * @return String
      */
-    static public function majusculeFormat($str): string {
+    static public function majusculeFormat(string $str): String {
         if(!is_string($str))
             throw new Exception("Le formatage d'un nom doit se réaliser sur une chaine de caractères. ");
 
-        // Convertit les caractères accentués en caractères non accentués et en majuscule
         return strtoupper(preg_replace('/[^A-Za-z0-9\- ]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $str)));
     }
 }

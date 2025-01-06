@@ -34,9 +34,9 @@ class PasswordGenerator {
     /**
      * Public static method generating a random password
      *
-     * @return string The new password
+     * @return String The new password
      */
-    public static function random_password(): string {
+    public static function random_password(): String {
         $password = '';
         $password .= PasswordGenerator::$majuscule[rand(0, strlen(PasswordGenerator::$majuscule) - 1)];
         $password .= PasswordGenerator::$minuscule[rand(0, strlen(PasswordGenerator::$minuscule) - 1)];
