@@ -113,6 +113,12 @@ class PreferencesController extends Controller {
      */
     public function displayInputQualifications() { return $this->View->displayInputQualifications(); }
     /**
+     * Public method dislaying the service HTML input form
+     *
+     * @return View HTML Page
+     */
+    public function displaySaisieService() { return $this->View->displayInputServices($this->Model->getEstablishmentsForAutoComplete()); }
+    /**
      * Public method dislaying the establishment HTML input form
      *
      * @return View HTML Page
@@ -188,6 +194,22 @@ class PreferencesController extends Controller {
             'title'     => 'Opération réussie',
             'msg'       => "Nouveau diplome enregistré !",
             'direction' => 'index.php?preferences=list-jobs'
+        ]);
+    }
+    /**
+     * Public method creatng a  new service
+     *
+     * @param String $service The titled of the new service
+     * @param Array<Int> $establishments The array containing th primary key of the establishments containing the new service
+     * @param String|Null $description The description of the new service
+     * @return Void
+     */
+    public function createServices(string $service, array $establishments, ?string $description) {
+        $this->Model->createServices($service, $establishments, $description);
+        alert_manipulation::alert([
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau service enregistré !",
+            'direction' => 'index.php?preferences=list-services'
         ]);
     }
     /**
@@ -272,26 +294,6 @@ class PreferencesController extends Controller {
             'title'     => 'Opération réussie',
             'msg'       => "Le mot de passe a bien été réinitialisé !",
             'direction' => 'index.php?preferences=' . $key_users
-        ]);
-    }
-
-    // ! OTHERS ! //
-
-    /// Méthode publique retournant le formulaire de saisie d'un nouveau service
-    // Todo : remake
-    public function displaySaisieService() {
-        return $this->View->displayInputServices(
-            $this->Model->getAutoCompletEtablissements()
-        );
-    }
-    /// Méthode publique générant un nouveau service
-    public function createService(&$service, &$etablissement) {
-        // On génère le nouveau poste
-        $this->Model->createService($service, $etablissement);
-        alert_manipulation::alert([
-            'title'     => 'Opération réussie',
-            'msg'       => "Nouveau service enregistré !",
-            'direction' => 'index.php?preferences=list-services'
         ]);
     }
 }

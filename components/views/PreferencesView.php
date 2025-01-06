@@ -333,17 +333,14 @@ class PreferencesView extends View {
      * 
      * Todo : Remake
      *
-     * @param Array $etablissements The array containing the establishemnts data
+     * @param Array $establishments The array containing the establishemnts data
      * @return Void
      */
-    public function displayInputServices(array $etablissements) {
-        $this->generateCommonHeader('Ypopsi - Inscription service', [FORMS_STYLES.DS.'small-form.css']);
-        $this->generateMenu(true, PREFERENCES);
+    public function displayInputServices(array $establishments) {
+        $this->generateCommonHeader('Ypopsi - Inscription service', [FORMS_STYLES.DS.'big-form.css']);
+        $this->generateMenu(true, null);
 
-        $scripts = ['models/objects/AutoComplet.mjs'];
-        include(COMMON.DS.'import-scripts.php');
-
-        include INSCRIPT_FORM.DS.'service.php';
+        include INSCRIPT_FORM.DS.'services.php';
 
         $this->generateCommonFooter();
     }

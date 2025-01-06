@@ -756,6 +756,9 @@ switch(true) {
                     break;  
 
                 case 'input-services': 
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
+                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
                     $preferences->displaySaisieService();
                     break;
 
@@ -926,11 +929,12 @@ switch(true) {
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                     
                     try {
-                        $service = $_POST['service'];
-                        $etablissement = $_POST['etablissement'];
-                    
-                        if(empty($service) || empty($etablissement))
-                            throw new Exception("Les champs service est établissements doivent être remplis !");
+                        if(empty($_POST['titled']))
+                            throw new Exception("Le champs intitulé doit être rempli.");
+                        elseif(empty($_POST['establishments']))
+                            throw new Exception("Il est impossible d'enregistrer un service sans établissement...");
+                        
+                        $preferences->createServices($_POST['titled'], $_POST['establishments'], isset($_POST['description']) ? $_POST['description'] : null);
 
                     } catch (Exception $e) {
                         forms_manip::error_alert([
@@ -938,8 +942,6 @@ switch(true) {
                             'msg' => $e
                         ]);
                     }
-
-                    $preferences->createService($service, $etablissement);
                     break;
 
 

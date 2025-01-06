@@ -340,18 +340,21 @@ class PreferencesModel extends Model {
 
     //// Foundation ////
     /**
-     * Public method registering a new service 
+     * Public method creatng a  new service
      *
-     * @param String $service The name of service
-     * @param Int $key_establishments the primary key of the establishent which contains the service
+     * @param String $service The titled of the new service
+     * @param Array<Int> $establishments The array containing th primary key of the establishments containing the new service
+     * @param String|Null $description The description of the new service
      * @return Void
      */
-    public function createService(string &$service, int $key_establishments) {
-        $this->inscriptService($service, $key_establishments);
+    public function createServices(string $service, array $establishments, ?string $description = null) {
+        $service = $this->inscriptServices($service, $description);
+        foreach($establishments as $elmt) 
+            $this->inscriptBelongTo($service, $elmt);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouveau service",
-            "Ajout du service " . $service . " dans l'établissement " . $this->searchEstablishments($key_establishments)['Intitule_Etablissements']
+            "Ajout du service " . $this->searchServices($service)['Titled'] . "."
         );
     }
     /**
@@ -362,7 +365,6 @@ class PreferencesModel extends Model {
      */
     public function createEstablishments(array &$data) {
         $data['key_poles'] = $this->searchPoles($data['key_poles'])['Id']; // Todo : utiliser la nouvelle version de l'AutoComplete pour éviter la recherche et renvoyer directement la clé primaire
-        // $this->inscriptEstablishments($data);
         $this->inscriptEstablishments(
             $_POST['intitule'],
             $_POST['adresse'],

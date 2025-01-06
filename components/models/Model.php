@@ -128,6 +128,27 @@ abstract class Model {
             ]);
         }
     }
+    /**
+     * Private method executing a POST request to the database
+     *
+     * @param String $request The SQL request
+     * @param Array<String>  $params The request data Array
+     * @return Int The primary key og the new element
+     */
+    // protected function post_request(string $request, array $params): Int {
+    //     try {
+    //         $query = $this->getConnection()->prepare($request);
+    //         $query->execute($params);
+    //         $lastId = $this->getConnection()->lastInsertId();
+    //         return $lastId;
+    // 
+    //     } catch(PDOException $e){
+    //         forms_manip::error_alert([
+    //             'title' => 'Erreur lors de la requête à la base de données',
+    //             'msg' => $e
+    //         ]);
+    //     }
+    // }
 
 
 // * GET * //
@@ -555,12 +576,15 @@ abstract class Model {
      * protected method registering one user in the database
      *
      * @param Array $user The user's data Array
-     * @return Void
+     * @return Int The primary key of the new service
      */
-    protected function inscriptUsers(array $user) {
+    protected function inscriptUsers(array $user): Int {
         $request = "INSERT INTO Users (Identifier, Name, Firstname, Email, Password, Key_Establishments, Key_Roles)
                     VALUES (:identifier, :name, :firstname, :email, :password, :key_establishments, :key_roles)";
+
         $this->post_request($request, $user);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one action in the database
@@ -569,9 +593,9 @@ abstract class Model {
      * @param Int $key_action The action primary key
      * @param String $description The action description
      * @throws Exception If the action's informtions is invalid or no complet
-     * @return Void
+     * @return Int The primary key og the new Action
      */
-    protected function inscriptActions(int $key_user, int $key_action, string $description = null) {
+    protected function inscriptActions(int $key_user, int $key_action, string $description = null): Int {
         if(!empty($description)) {
             $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, Description) VALUES (:user_id, :type_id, :description)";
             $params = [
@@ -589,12 +613,14 @@ abstract class Model {
         }
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one candidate in the database
      *
      * @param Candidate $candidate The candidate's data 
-     * @return Int
+     * @return Int The primary key of the new Candidate
      */
     protected function inscriptCandidates(Candidate $candidate): Int {
         $request = "INSERT INTO Candidates (Name, Firstname, Gender, Phone, Email, Address, City, PostCode, Availability";
@@ -618,9 +644,9 @@ abstract class Model {
      * @param Int $key_candidate The candidate's primary key
      * @param Int $key_qualification The degree primary key
      * @param String $date The year of obtaining
-     * @return Void
+     * @return Int The primary key of the new GetQualifications
      */
-    protected function inscriptGetQualifications(int $key_candidate, int $key_qualification, string $date) {
+    protected function inscriptGetQualifications(int $key_candidate, int $key_qualification, string $date): Int {
         $request = "INSERT INTO Get_qualifications (Key_Candidates, Key_Qualifications, Date) VALUES (:key_candidate, :key_qualification, :date)";
         $params = [
             "key_candidate"     => $key_candidate,
@@ -629,18 +655,18 @@ abstract class Model {
         ];
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one Have_the_right_to in the database
-     *
-     * TODO : Tester cette méthode
      * 
      * @param Int $key_candidate The candidate's primary key
      * @param Int $key_helps The assistance primary key
      * @param Int $key_employee The recommander's primary key
-     * @return Void
+     * @return Int The primary key of the new HaveTheRightTo
      */
-    protected function inscriptHaveTheRightTo(int $key_candidate, int $key_helps, int $key_employee = null) {
+    protected function inscriptHaveTheRightTo(int $key_candidate, int $key_helps, int $key_employee = null): Int {
         $request = "INSERT INTO Have_the_right_to (Key_Candidates, Key_Helps";
         $values_request = " VALUES (:key_candidate, :key_helps";
         $params = [
@@ -658,6 +684,8 @@ abstract class Model {
         unset($values_request);
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one meeting in the database 
@@ -666,9 +694,9 @@ abstract class Model {
      * @param Int $key_candidate The candidate's primary key
      * @param Int $key_establishment The establishment primary key
      * @param String $moment The meeting's moment 
-     * @return Void
+     * @return Int The primary key of the new Meeting
      */
-    protected function inscriptMeetings(int $key_user, int $key_candidate, int $key_establishment, string $moment) {
+    protected function inscriptMeetings(int $key_user, int $key_candidate, int $key_establishment, string $moment): Int {
         $request = "INSERT INTO Meetings (Date, Key_Users, Key_Candidates, Key_Establishments) VALUES (:moment, :key_user, :key_candidate, :key_establishment)";
         $params = [
             "moment"            => $moment,
@@ -678,6 +706,8 @@ abstract class Model {
         ];
     
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected methood registering a new contract
@@ -694,9 +724,9 @@ abstract class Model {
      * @param Int|Null $hourly_rate The number of hours to be completed in a working week
      * @param Bool|Null $night_work If the candidate has to work on nights
      * @param Bool|Null $wk_work If the candidate has to work on week-ends
-     * @return Void
+     * @return Int The primary key of the new Contract
      */
-    protected function inscriptContracts(int $key_candidate, int $key_job, int $key_service, int $key_establishment, int $key_type_of_contract, string $start_date, ?string $end_date = null, ?string $signature_date = null, ?int $salary = null, ?int $hourly_rate = null, ?bool $night_work = false, ?bool $wk_work = false) {
+    protected function inscriptContracts(int $key_candidate, int $key_job, int $key_service, int $key_establishment, int $key_type_of_contract, string $start_date, ?string $end_date = null, ?string $signature_date = null, ?int $salary = null, ?int $hourly_rate = null, ?bool $night_work = false, ?bool $wk_work = false): Int {
         $request = "INSERT INTO Contracts (Key_Candidates, Key_Jobs, Key_Services, Key_Establishments, Key_Types_of_contracts, StartDate";
         $request_values = " VALUES (:key_candidate, :key_job, :key_service, :key_establishment, :key_type_of_contract, :start_date";
         $params = [
@@ -742,6 +772,8 @@ abstract class Model {
         $request .= ')' . $request_values . ')';
         unset($request_values);
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
 
     /**
@@ -749,9 +781,9 @@ abstract class Model {
      *
      * @param String $titled The job intitule
      * @param String $titledFeminin The job description
-     * @return Void
+     * @return Int The primary key of the new Job
      */
-    protected function inscriptJobs(string $titled, string $titledFeminin) {
+    protected function inscriptJobs(string $titled, string $titledFeminin): Int {
         $request = "INSERT INTO Jobs (Titled, TitledFeminin) VALUES (:titled, :titledFeminin)";
         $params = [
             "titled"        => $titled,
@@ -759,22 +791,26 @@ abstract class Model {
         ];
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one service in the database
      *
      * @param String $service The service intitule
-     * @param Int $key_establishment The primary key of the establishment containing the service
-     * @return Void
+     * @param String|Null $description The description of the new service
+     * @return Int The primary key of the new service
      */
-    protected function inscriptService(string $service, int $key_establishment) {
-        $request = "INSERT INTO Services (Intitule_Services, key_Establishments) VALUES (:service, :etablissement)";
+    protected function inscriptServices(string $service, ?string $description): Int {
+        $request = "INSERT INTO Services (Titled, Description) VALUES (:service, :description)";
         $params = [
             'service'       => $service,
-            'etablissement' => $key_establishment
+            'description'   => $description
         ];
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one establishment
@@ -784,9 +820,9 @@ abstract class Model {
      * @param String $titled The establishment city
      * @param Int $titled The establishment postcode
      * @param Int $titled The primary key of the hub containing the establishment 
-     * @return Void
+     * @return Int The primary key of the new Establishment
      */
-    protected function inscriptEstablishments(string $titled, string $address, string $city, int $postcode, int $key_poles) {
+    protected function inscriptEstablishments(string $titled, string $address, string $city, int $postcode, int $key_poles): Int {
         $request = "INSERT INTO Establishments (Titled, Address, City, PostCode, Key_Poles) 
                     VALUES (:titled, :address, :city, :postcode, :key_poles)";
         $params = [
@@ -798,15 +834,35 @@ abstract class Model {
         ];
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
+    }
+    /**
+     * Undocumented function
+     *
+     * @param Int $key_service The primary key of the service
+     * @param Int $key_establishment The primary key of the establishment
+     * @return Int The primary key of the new BelongTo
+     */
+    protected function inscriptBelongTo(int $key_service, int $key_establishment): Int {
+        $request = "INSERT INTO Belong_to (Key_Establishments, Key_Services) VALUES (:key_establishment, :key_service)";
+        $params = [
+            'key_service'       => $key_service,
+            'key_establishment' => $key_establishment
+        ];
+
+        $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one hub in the database
      *
      * @param String $titled The hub titled
      * @param String $description The hub description
-     * @return Void
+     * @return Int The primary key of the new Pole
      */
-    protected function inscriptPoles(string $titled, string $description) {
+    protected function inscriptPoles(string $titled, string $description): Int {
         $request = "INSERT INTO Poles (Titled, Description) VALUES (:titled, :desc)";
         $params = [
             'titled' => $titled,
@@ -814,6 +870,8 @@ abstract class Model {
         ];
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Public method registering a new qualification

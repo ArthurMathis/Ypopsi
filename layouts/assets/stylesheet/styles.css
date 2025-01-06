@@ -317,12 +317,12 @@ form .checkbox-liste {
   width: 100%;
   height: fit-content;
 }
-form .checkbox-liste .checkbox-item {
+form .checkbox-item {
   display: flex;
   height: fit-content;
   gap: 10px;
 }
-form .checkbox-liste .checkbox-item label {
+form .checkbox-item label {
   width: fit-content;
   height: fit-content;
   
