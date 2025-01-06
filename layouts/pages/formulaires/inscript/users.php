@@ -17,7 +17,7 @@
             <select name="role">
                 <?php foreach($roles as $r): ?>
                     <option value="<?= $r['id']; ?>">
-                        <?= $r['titled']; ?>
+                        <?= $r['text']; ?>
                     </option>
                 <?php endforeach ?>    
             </select>
@@ -29,5 +29,9 @@
 </form>
 <script type="module">
     import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
-    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($etablissements) ?>));
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+
+    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($establishments) ?>));
+
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

@@ -7,6 +7,7 @@ require_once(CLASSE.DS.'User.php');
 require_once(COMPONENTS.DS.'Passwordgenerator.php');
 
 class PreferencesModel extends Model {
+    // * GET * //
     /**
      * Public method returning the user's data profile
      *
@@ -285,6 +286,7 @@ class PreferencesModel extends Model {
         return $this->get_request($request);
     }
 
+    // * CREATE * //
     /**
      * Public method creating a new user
      *
@@ -303,6 +305,8 @@ class PreferencesModel extends Model {
             "Création du compte de " . strtoupper($user->getName()) . " " . forms_manip::nameFormat($user->getFirstname()) 
         );
     }
+
+    //// Work ////
     /**
      * Public method creating a new jobs
      *
@@ -317,6 +321,24 @@ class PreferencesModel extends Model {
             "Ajout du poste " . $data['titled'] . " à la base de données"
         );
     }
+    /**
+     * Public method creating a new qualification
+     *
+     * @param String $titled The titled of the new qualification
+     * @param Bool $medical_staff Boolean showing if the new qualification is for medical jobs or not
+     * @param String|Null $abbreviation The abbreviation of the titled
+     * @return Void
+     */
+    public function createQualifications(string $titled, bool $medical_staff = false, ?string $abbreviation = null) {
+        $this->inscriptQualifications($titled, $medical_staff, $abbreviation);
+        $this->writeLogs(
+            $_SESSION['user_key'],
+            "Nouveau diplome",
+            "Ajout de la qualification " . $titled . " à la base de données"
+        );
+    }
+
+    //// Foundation ////
     /**
      * Public method registering a new service 
      *
@@ -368,6 +390,8 @@ class PreferencesModel extends Model {
             "Ajout du pôle " . $intitule
         );
     }
+
+    // * OTHER * //
     /**
      * Public method checking if the input password is right
      *

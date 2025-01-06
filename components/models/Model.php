@@ -51,7 +51,7 @@ abstract class Model {
      * @param String|Null optionnal $description The action description 
      * @return Void
      */
-    protected function writeLogs(int &$user_key, string $action, string|null $description = null) {
+    protected function writeLogs(int $user_key, string $action, ?string $description = null) {
         try {
             $this->inscriptActions(
                 $user_key, 
@@ -77,9 +77,9 @@ abstract class Model {
      * @param Array<String> $params The request data parameters
      * @param Boolean $unique TRUE if the waiting result is one unique item, FALSE otherwise
      * @param Boolean $present TRUE if if the waiting result can't be null, FALSE otherwise
-     * @return Array|null
+     * @return Array|Null
      */
-    protected function get_request(string $request, array|null $params = [], bool $unique = false, bool $present = false): ?Array { 
+    protected function get_request(string $request, ?array $params = [], bool $unique = false, bool $present = false): ?Array { 
         if(empty($unique) || empty($present))  
             $present = false;
 
@@ -116,7 +116,7 @@ abstract class Model {
      * @param Array<String>  $params The request data Array
      * @return Void
      */
-    protected function post_request(string &$request, array $params) {
+    protected function post_request(string $request, array $params) {
         try {
             $query = $this->getConnection()->prepare($request);
             $query->execute($params);
@@ -249,8 +249,6 @@ abstract class Model {
             $request = "SELECT * FROM Poles WHERE Id = :pole";
         elseif(is_string($pole))
             $request = "SELECT * FROM Poles WHERE Titled = :pole";  
-        // else 
-        //     throw new Exception("paramètre invalide");
 
         $params = ['pole' => $pole];
 
@@ -285,8 +283,6 @@ abstract class Model {
             $request = "SELECT * FROM Services WHERE Id = :service";
         elseif(is_string($service))
             $request =  "SELECT * FROM Services WHERE Titled = :service";
-        // else 
-        //     throw new Exception("La saisie du type de contrat est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
 
         $params = ['service' => $service];
 
@@ -600,7 +596,7 @@ abstract class Model {
      * @param Candidate $candidate The candidate's data 
      * @return Int
      */
-    protected function inscriptCandidates(Candidate &$candidate): Int {
+    protected function inscriptCandidates(Candidate $candidate): Int {
         $request = "INSERT INTO Candidates (Name, Firstname, Gender, Phone, Email, Address, City, PostCode, Availability";
         $values_request = " VALUES (:name, :firstname, :gender, :phone, :email, :address, :city, :post_code, :availability";
 
@@ -619,14 +615,12 @@ abstract class Model {
     /**
      * Protected method registering one Get_qualfications in the database
      * 
-     * todo : gérer le typage de la date (string ? datetime ?)
-     * 
      * @param Int $key_candidate The candidate's primary key
      * @param Int $key_qualification The degree primary key
-     * @param Int $date The year of obtaining
+     * @param String $date The year of obtaining
      * @return Void
      */
-    protected function inscriptGetQualifications($key_candidate, $key_qualification, $date) {
+    protected function inscriptGetQualifications(int $key_candidate, int $key_qualification, string $date) {
         $request = "INSERT INTO Get_qualifications (Key_Candidates, Key_Qualifications, Date) VALUES (:key_candidate, :key_qualification, :date)";
         $params = [
             "key_candidate"     => $key_candidate,
@@ -702,7 +696,7 @@ abstract class Model {
      * @param Bool|Null $wk_work If the candidate has to work on week-ends
      * @return Void
      */
-    protected function inscriptContracts(int $key_candidate, int $key_job, int $key_service, int $key_establishment, int $key_type_of_contract, string $start_date, string|null $end_date = null, string|null $signature_date = null, int|null $salary = null, int|null $hourly_rate = null, bool|null $night_work = false, bool|null $wk_work = false) {
+    protected function inscriptContracts(int $key_candidate, int $key_job, int $key_service, int $key_establishment, int $key_type_of_contract, string $start_date, ?string $end_date = null, ?string $signature_date = null, ?int $salary = null, ?int $hourly_rate = null, ?bool $night_work = false, ?bool $wk_work = false) {
         $request = "INSERT INTO Contracts (Key_Candidates, Key_Jobs, Key_Services, Key_Establishments, Key_Types_of_contracts, StartDate";
         $request_values = " VALUES (:key_candidate, :key_job, :key_service, :key_establishment, :key_type_of_contract, :start_date";
         $params = [
@@ -757,7 +751,7 @@ abstract class Model {
      * @param String $titledFeminin The job description
      * @return Void
      */
-    protected function inscriptJobs(string &$titled, string &$titledFeminin) {
+    protected function inscriptJobs(string $titled, string $titledFeminin) {
         $request = "INSERT INTO Jobs (Titled, TitledFeminin) VALUES (:titled, :titledFeminin)";
         $params = [
             "titled"        => $titled,
@@ -773,7 +767,7 @@ abstract class Model {
      * @param Int $key_establishment The primary key of the establishment containing the service
      * @return Void
      */
-    protected function inscriptService(string &$service, int $key_establishment) {
+    protected function inscriptService(string $service, int $key_establishment) {
         $request = "INSERT INTO Services (Intitule_Services, key_Establishments) VALUES (:service, :etablissement)";
         $params = [
             'service'       => $service,
@@ -812,7 +806,7 @@ abstract class Model {
      * @param String $description The hub description
      * @return Void
      */
-    protected function inscriptPoles(string &$titled, string &$description) {
+    protected function inscriptPoles(string $titled, string $description) {
         $request = "INSERT INTO Poles (Titled, Description) VALUES (:titled, :desc)";
         $params = [
             'titled' => $titled,
@@ -822,17 +816,21 @@ abstract class Model {
         $this->post_request($request, $params);
     }
     /**
-     * Protected method registering one degree in the database
+     * Public method registering a new qualification
      *
-     * @param String $diplome The degree intitule
+     * @param String $titled The titled of the new qualification
+     * @param Boolean $medical_staff Boolean showing if the new qualification is for medical jobs or not
+     * @param String|Null $abbreviation The abbreviation of the titled
      * @return Void
      */
-    protected function inscriptDiplome(string $diplome) {
-        // On initialise la requête
-        $request = "INSERT INTO Diplomes (Intitule_Diplomes) VALUES (:intitule)";
-        $params = ["intitule" => $diplome];
+    protected function inscriptQualifications(string $titled, bool $medical_staff = false, ?string $abbreviation) {
+        $request = "INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES (:titled, :medical_staff, :abbreviation)";
+        $params = [
+            "titled"        => $titled,
+            "medical_staff" => $medical_staff ? 1 : 0,
+            "abbreviation"  => $abbreviation
+        ];
 
-        // On lance la requête
         $this->post_request($request, $params);
     }
 
@@ -845,7 +843,7 @@ abstract class Model {
      * @param String $password The new user's password
      * @return Void
      */
-    public function updatePassword(string &$password) {
+    public function updatePassword(string $password) {
         $request = "UPDATE Users
         SET Password = :password, PasswordTemp = false
         WHERE Id = :key";
@@ -917,7 +915,7 @@ abstract class Model {
      * @param Int $post_code The candidate's post code
      * @return Void
      */
-    public function updateCandidates(int $key_candidate, string $name, string $firstname, string|null $email = null, string|null $phone = null, string|null $address = null, string|null $city = null, int|null $post_code = null) {
+    public function updateCandidates(int $key_candidate, string $name, string $firstname, ?string $email = null, ?string $phone = null, ?string $address = null, ?string $city = null, ?int $post_code = null) {
         $request = "UPDATE Candidates 
         SET Name = :name, Firstname = :firstname, Email = :email, Phone = :phone, Address = :address, City = :city, PostCode = :post_code
         Where Id = :key_candidate";

@@ -849,6 +849,22 @@ switch(true) {
                 case 'inscript-qualifications':
                     if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                    try {
+                        if(empty($_POST['titled']))
+                            throw new Exception("Le champs intitulé doit être rempli. ");
+
+                        $preferences->createQualifications(
+                            $_POST['titled'], 
+                            empty($_POST['medical_staff']) ? null : $_POST['medical_staff'],
+                            empty($_POST['abreviation']) ? null : $_POST['abreviation']
+                        );
+                    } catch(Exception $e) {
+                        forms_manip::error_alert([
+                            'title' => "Erreur lors de l'inscription du nouveau poste", 
+                            'msg' => $e
+                        ]);
+                    }
                     break; 
 
                 case 'inscript-poles':

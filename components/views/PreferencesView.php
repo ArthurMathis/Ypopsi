@@ -63,7 +63,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader("Mise-à-jour de l'utilisateur", [FORMS_STYLES.DS.'small-form.css']);
         $this->generateMenu(true, null);
 
-        include EDIT_FORM.DS.'user.php';
+        include EDIT_FORM.DS.'users.php';
 
         $this->generateCommonFooter();
     }
@@ -293,6 +293,7 @@ class PreferencesView extends View {
         $this->generateCommonFooter();
     }
 
+    //// Display Input ////
     /**
      * Public method displaying the users html input form
      *
@@ -313,11 +314,24 @@ class PreferencesView extends View {
      *
      * @return View HTML Page
      */
-    public function getInputJobs() {
+    public function displayInputJobs() {
         $this->generateCommonHeader('Ypopsi - Inscription poste', [FORMS_STYLES.DS.'small-form.css']);
         $this->generateMenu(true, null);
 
         include INSCRIPT_FORM.DS.'jobs.php';
+
+        $this->generateCommonFooter();
+    }
+    /**
+     * Public method displaying the qualifications input HTML form
+     *
+     * @return View HTML Page
+     */
+    public function displayInputQualifications() {
+        $this->generateCommonHeader('Ypopsi - Inscription poste', [FORMS_STYLES.DS.'small-form.css']);
+        $this->generateMenu(true, null);
+
+        include INSCRIPT_FORM.DS.'qualifications.php';
 
         $this->generateCommonFooter();
     }
@@ -329,7 +343,7 @@ class PreferencesView extends View {
      * @param Array $etablissements The array containing the establishemnts data
      * @return Void
      */
-    public function getSaisieService(array $etablissements) {
+    public function displayInputServices(array $etablissements) {
         $this->generateCommonHeader('Ypopsi - Inscription service', [FORMS_STYLES.DS.'small-form.css']);
         $this->generateMenu(true, PREFERENCES);
 

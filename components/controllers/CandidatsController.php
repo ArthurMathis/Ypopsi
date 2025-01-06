@@ -78,8 +78,9 @@ class CandidatController extends Controller {
     public function displayInputOffers(int $key_candidate, int|null $key_application = null, int|null $key_need = null) {
         if(!empty($key_application)) 
             $offer = $this->Model->searchApplications($key_application);
-        elseif(!empty($key_need))
-            $offer = []; // Todo : à compléter si la feature 'besoins' est développée 
+        // Todo : à compléter si la feature 'besoins' est développée 
+        // elseif(!empty($key_need))
+        //     $offer = []; 
 
         if(isset($offer['Key_Jobs']) && is_numeric($offer['Key_Jobs']))
             $offer['Key_Jobs'] = $this->Model->searchJobs($offer['Key_Jobs'])['Titled'];
@@ -99,7 +100,7 @@ class CandidatController extends Controller {
             $this->Model->getServicesForAutoComplete(),
             $this->Model->getEstablishmentsForAutoComplete(),
             $this->Model->getTypesOfContractsForAutoComplete(), 
-            $offer
+            isset($offer) ? $offer : null
         );
     }
     /**

@@ -97,7 +97,7 @@ class PreferencesController extends Controller {
     public function displayInputUsers() {
         return $this->View->displayInputUsers(
             $this->Model->getRolesForAutoComplete(),
-            $this->Model->getEstablishments()
+            $this->Model->getEstablishmentsForAutoComplete()
         );
     }
     /**
@@ -105,13 +105,13 @@ class PreferencesController extends Controller {
      *
      * @return View HTML Page
      */
-    public function displayInputJobs() { return $this->View->getInputJobs(); }
+    public function displayInputJobs() { return $this->View->displayInputJobs(); }
     /**
      * Public method displaying the qualifications HTML input form
      *
      * @return View HTML Page
      */
-    public function displayInputQualifications() { return $this->View->getInputJobs(); }
+    public function displayInputQualifications() { return $this->View->displayInputQualifications(); }
     /**
      * Public method dislaying the establishment HTML input form
      *
@@ -171,6 +171,22 @@ class PreferencesController extends Controller {
         alert_manipulation::alert([
             'title'     => 'Opération réussie',
             'msg'       => "Nouveau poste enregistré !",
+            'direction' => 'index.php?preferences=list-jobs'
+        ]);
+    }
+    /**
+     * Public method creating a new qualification
+     *
+     * @param String $titled The titled of the new qualification
+     * @param Boolean $medical_staff Boolean showing if the new qualification is for medical jobs or not
+     * @param String|Null $abbreviation The abbreviation of the titled
+     * @return Void
+     */
+    public function createQualifications(string $titled, bool $medical_staff = false, ?string $abbreviation = null) {
+        $this->Model->createQualifications($titled, $medical_staff, $abbreviation);
+        alert_manipulation::alert([
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau diplome enregistré !",
             'direction' => 'index.php?preferences=list-jobs'
         ]);
     }
@@ -264,7 +280,7 @@ class PreferencesController extends Controller {
     /// Méthode publique retournant le formulaire de saisie d'un nouveau service
     // Todo : remake
     public function displaySaisieService() {
-        return $this->View->getSaisieService(
+        return $this->View->displayInputServices(
             $this->Model->getAutoCompletEtablissements()
         );
     }
