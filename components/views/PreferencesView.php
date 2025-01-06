@@ -235,13 +235,6 @@ class PreferencesView extends View {
         echo '</main>';
         echo '</content>';
 
-        $scripts = [
-            'views/liste-view.js',
-            'models/liste-model.js',
-            'models/objects/Liste.js',
-            'controllers/service-controller.js'
-        ];
-        include(COMMON.DS.'import-scripts.php');
 
         $this->generateCommonFooter();
     }

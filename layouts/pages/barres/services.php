@@ -51,9 +51,7 @@
         // * MANIPULATION DE LA LISTE * //
         const rechercher = document.getElementById('rechercher-button');
         const appliquer_recherche = document.getElementById('valider-recherche');
-
         const reinit_recherche = document.getElementById('reinint-recherche');
-
         const rechercher_menu = document.getElementById('rechercher-menu');
 
         //// Tri par entête ////
@@ -128,9 +126,6 @@
                 listManipulation.deleteLines(candidatures);
                 listManipulation.resetLines(candidatures_selection);
                 listManipulation.displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
-            
-                filtrerIsVisible = !filtrerIsVisible;
-                rechercherIsVisible = !rechercherIsVisible;  
             }
             listManipulation.hideMenu(rechercher_menu);
         }
