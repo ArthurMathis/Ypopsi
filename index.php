@@ -1,6 +1,6 @@
 <?php
 
-require_once('define.php'); // test_process();
+require_once('define.php'); test_process();
 require_once(COMPONENTS.DS.'AlertManipulation.php');
 require_once(COMPONENTS.DS.'FormsManip.php');
 require_once(CONTROLLERS.DS.'LoginController.php');
@@ -103,13 +103,9 @@ switch(true) {
                             throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
                         elseif(empty($_POST["prenom"]))
                             throw new Exception("Le champs prenom doit être rempli par une chaine de caractères !");
-                        elseif(empty($_POST["diplome"]) && !empty($_POST["diplomeDate"])) 
+                        elseif(empty($_POST["diplome"]) && !empty($_POST["diplomeDate"]) || !empty($_POST["diplome"]) && empty($_POST["diplomeDate"])) 
                             throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
-                        elseif(empty($_POST["diplomeDate"]))
-                            throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
-                        elseif(count($_POST["diplome"]) !== count($_POST["diplomeDate"]))
-                            throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
-                        elseif (empty($_POST["diplome"]) && empty($_POST["diplomeDate"]) || count($_POST["diplome"]) !== count($_POST["diplomeDate"])) 
+                        elseif (!empty($_POST["diplome"]) && !empty($_POST["diplomeDate"]) && count($_POST["diplome"]) !== count($_POST["diplomeDate"])) 
                             throw new Exception("Les champs diplôme et date de diplôme doivent être remplis et correspondre !");
 
                         $candidate = [

@@ -15,7 +15,7 @@ class CandidaturesView extends View {
      * @param Int $nb_items_max
      * @return View HTML Page
      */
-    public function getContent($title, $items = [], $nb_items_max=null) {
+    public function getContent(string $title, array $items, int $nb_items_max = null) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'applications.css']);
         $this->generateMenu(false, APPLICATIONS);
 
@@ -34,7 +34,7 @@ class CandidaturesView extends View {
      * @param Array<String> $employer The list of employees
      * @return void
      */
-    public function displayInputCandidatesContent($title, $diplome=[], $aide=[], $employer=[]) {
+    public function displayInputCandidatesContent(string $title, array $diplome, array $aide, array $employer) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
 
@@ -52,7 +52,7 @@ class CandidaturesView extends View {
      * @param Array $source The array containing the list of sources
      * @return View HTML Page
      */
-    public function displayInputApplicationsContent($title, $job=[], $service=[], $establishment=[], $typeOfContract=[], $source=[]) {
+    public function displayInputApplicationsContent(string $title, array $job, array $service, array $establishment, array $typeOfContract, array $source) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
 

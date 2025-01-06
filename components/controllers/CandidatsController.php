@@ -33,10 +33,11 @@ class CandidatController extends Controller {
      * @param Int $Key_candidate The candidate's primary key
      * @return View HTML PAGE
      */
-    public function displayCandidate(int $Key_candidate) { 
+    public function displayCandidate(int $key_candidate) {
+        $item = $this->Model->displayContentCandidate($key_candidate); 
         return $this->View->displayContentCandidate(
             "Candidat " . $item['candidate']['Name'] . ' ' . $item['candidate']['Firstname'], 
-            $this->Model->displayContentCandidate($Key_candidate)
+            $this->Model->displayContentCandidate($key_candidate)
         );
     }
 

@@ -315,25 +315,12 @@ abstract class Model {
      * @return Array
      */ 
     public function searchUsers(int|string $user): Array {
+        $params = ['user' => $user];
         if(is_numeric($user)) 
             $request = "SELECT * FROM Users WHERE Id = :user";
         elseif(is_string($user)) 
             $request = "SELECT * FROM Users WHERE Identifier = :user";
         return $this->get_request($request, $params, true, true);
-        // if($user == null)
-        //     throw new Exception("Le nom ou l'identifiant de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
-        // 
-        // $params = ['user' => $user];
-        // if(is_numeric($user)) {
-        //     $request = "SELECT * FROM Users WHERE Id = :user";
-        //     return $this->get_request($request, $params, true, true);
-        // 
-        // } elseif(is_string($user)) {
-        //     $request = "SELECT * FROM Users WHERE Identifier = :user";
-        //     return $this->get_request($request, $params, true, true);
-        // 
-        // } else 
-        //     throw new Exception("Le type n'a pas pu être reconnu. Le nom (string) ou l'identifiant (int) de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
     }
     /**
      * Protected method searching one role in the database
@@ -373,8 +360,8 @@ abstract class Model {
      * @return Array
      */
     public function searchCandidates(int $key_candidate): Array {
-        $request = "SELECT * FROM Candidates WHERE Id = :candidate";
-        $params = ['candidate' => $key_candidate];
+        $request = "SELECT * FROM Candidates WHERE Id = :key_candidate";
+        $params = ['key_candidate' => $key_candidate];
 
         return $this->get_request($request, $params, true, true);
     }
@@ -887,7 +874,7 @@ abstract class Model {
             'name'      => $name,
             'firstname' => $firstname,
             'email'     => $email,
-            'role'      => $role,
+            'role'      => $key_roles,
             'cle'       => $key_users
         ];
 

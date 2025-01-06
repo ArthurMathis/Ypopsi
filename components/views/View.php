@@ -26,7 +26,7 @@ class View {
      * @param String|Null $currentPage The current tab
      * @return Void
      */
-    public function generateMenu(bool $form = false, string|null $currentPage) { include BARRES.DS.'navbarre.php'; }
+    public function generateMenu(bool $form = false, string|null $currentPage = null) { include BARRES.DS.'navbarre.php'; }
 
     /**
      * Public method generating a list.php from an data array

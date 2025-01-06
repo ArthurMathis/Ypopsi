@@ -58,7 +58,7 @@
         </section>
         <section id='visite-section' class="imp-section">
             <p>Visite médicale</p>
-            <input id="viste_medicale" name="viste_medicale" type="date" min="<?= date('Y-m-d'); ?>">
+            <input id="visite_medicale" name="visite_medicale" type="date" min="<?= date('Y-m-d'); ?>">
         </section>
         <section class="buttons_actions">
             <button type="submit" class="submit_button" value="new_user">Inscrire</button>
