@@ -12,7 +12,7 @@ class PreferencesView extends View {
      * @param Array $items The array containing the user's data
      * @return View HTML Page
      */
-    public function displayProfile($items=[]) {
+    public function displayProfile(array $items) {
         $this->generateCommonHeader('Ypopsi - Préférences', [PAGES_STYLES.DS.'preferences.css']);
         $this->generateMenu(false, PREFERENCES);
 
@@ -55,9 +55,11 @@ class PreferencesView extends View {
     /**
      * Public method displaying the edit user HTML form
      *
+     * @param Array $user The array containing the user's data
+     * @param Array $role The array containing the data of user's role
      * @return View HTML Page
      */
-    public function displayEditUsers($user=[], $role=[]) {
+    public function displayEditUsers(array $user, array $role) {
         $this->generateCommonHeader("Mise-à-jour de l'utilisateur", [FORMS_STYLES.DS.'small-form.css']);
         $this->generateMenu(true, null);
 
@@ -73,7 +75,7 @@ class PreferencesView extends View {
      * @param String $direction The redirection link to the user profile
      * @return View HTML Page
      */
-    public function displayUsersContent($items=[], $direction) {
+    public function displayUsersContent(array $items, string $direction) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css', 
@@ -98,7 +100,7 @@ class PreferencesView extends View {
      * @param String $direction The redirection link to the user profile
      * @return View HTML Page
      */
-    public function displayNewUsersContent($items=[], $direction) {
+    public function displayNewUsersContent(array $items, string $direction) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
@@ -124,7 +126,7 @@ class PreferencesView extends View {
      * @param Array<String> $items The list of connexions
      * @return View HTML Page
      */
-    public function displayLogsHistoryContent($items=[]) {
+    public function displayLogsHistoryContent(array $items) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
@@ -148,7 +150,7 @@ class PreferencesView extends View {
      * @param Array<String> $items The list of connexions
      * @return View HTML Page
      */
-    public function displayActionsHistoryContent($items=[]) {
+    public function displayActionsHistoryContent(array $items) {
         $this->generateCommonHeader('Ypopsi - Liste utilisateurs', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
@@ -172,7 +174,7 @@ class PreferencesView extends View {
      * @param Array<String> $items The list of jobs
      * @return View HTML Page
      */
-    public function displayJobsContent($items=[]) {
+    public function displayJobsContent(array $items) {
         $this->generateCommonHeader('Ypopsi - Liste postes', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
@@ -195,7 +197,7 @@ class PreferencesView extends View {
      * @param Array<String> $items The list of qualifications
      * @return View HTML Page
      */
-    public function displayQualificationsContent($items=[]) {
+    public function displayQualificationsContent(array $items) {
         $this->generateCommonHeader('Ypopsi - Liste postes', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
@@ -218,7 +220,7 @@ class PreferencesView extends View {
      * @param Array<String> $items The list of services
      * @return View HTML Page
      */
-    public function displayServicesContent($items=[]) {
+    public function displayServicesContent(array $items) {
         $this->generateCommonHeader('Ypopsi - Liste services', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
@@ -249,7 +251,7 @@ class PreferencesView extends View {
      * @param Array<String> $items The list of establishments
      * @return View HTML Page
      */
-    public function displayEstablishmentsContent($items=[]) {
+    public function displayEstablishmentsContent(array $items) {
         $this->generateCommonHeader('Ypopsi - Liste établissements', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css',
@@ -273,7 +275,7 @@ class PreferencesView extends View {
      * @param Array<String> $items The list of poles
      * @return View HTML Page
      */
-    public function displayPolesContent($items=[]) {
+    public function displayPolesContent(array $items) {
         $this->generateCommonHeader('Ypopsi - Liste pôles', [
             PAGES_STYLES.DS.'preferences.css', 
             PAGES_STYLES.DS.'liste-page.css'
@@ -298,7 +300,7 @@ class PreferencesView extends View {
      * @param Array $establishments
      * @return View HTML Page
      */
-    public function displayInputUsers($roles=[], $establishments=[]) {
+    public function displayInputUsers(array $roles, array $establishments) {
         $this->generateCommonHeader('Ypopsi - Inscription', [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
 
@@ -319,23 +321,23 @@ class PreferencesView extends View {
 
         $this->generateCommonFooter();
     }
-    /// Méthode publique retournant la vue saisie d'un service
-    public function getSaisieService($etablissements=[]) {
-        // On ajoute l'entete de page
+    /**
+     * Public method displaying the service input HTML form
+     * 
+     * Todo : Remake
+     *
+     * @param Array $etablissements The array containing the establishemnts data
+     * @return Void
+     */
+    public function getSaisieService(array $etablissements) {
         $this->generateCommonHeader('Ypopsi - Inscription service', [FORMS_STYLES.DS.'small-form.css']);
-
-        // On ajoute la barre de navigation
         $this->generateMenu(true, PREFERENCES);
 
-        $scripts = [
-            'models/objects/AutoComplet.mjs'
-        ];
+        $scripts = ['models/objects/AutoComplet.mjs'];
         include(COMMON.DS.'import-scripts.php');
 
-        // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'service.php';
 
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
     /**
@@ -344,7 +346,7 @@ class PreferencesView extends View {
      * @param Array $poles The list of poles
      * @return View HTML Page
      */
-    public function displayInputEstablishments($poles=[]) {
+    public function displayInputEstablishments(array $poles) {
         $this->generateCommonHeader('Ypopsi - Inscription établissement', [FORMS_STYLES.DS.'small-form.css']);
         $this->generateMenu(true, null);
 
@@ -352,18 +354,19 @@ class PreferencesView extends View {
 
         $this->generateCommonFooter();
     }
-    /// Méthode pubique retournant la vue de siasie d'un établissement
+    /**
+     * Public method displaying thehubs inputs HTML form
+     * 
+     * Todo : Remake
+     *
+     * @return Void
+     */
     public function displayInputPoles() {
-        // On ajoute l'entete de page
         $this->generateCommonHeader('Ypopsi - Inscription pôle', [FORMS_STYLES.DS.'small-form.css']);
-
-        // On ajoute la barre de navigation
         $this->generateMenu(true, PREFERENCES);
 
-        // On ajoute le formulaire de'inscription
         include INSCRIPT_FORM.DS.'pole.php';
 
-        // On ajoute le pied de page
         $this->generateCommonFooter();
     }
 }

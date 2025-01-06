@@ -13,7 +13,7 @@ class PreferencesModel extends Model {
      * @param Int $user_key The user's primary key
      * @return Array
      */
-    public function getProfile(&$user_key): Array {
+    public function getProfile(int $user_key): Array {
         try {
             //// Profile ////
             $request = "SELECT 
@@ -66,7 +66,7 @@ class PreferencesModel extends Model {
             $data['actions'] = $this->get_request($request, $params);
 
         } catch(Exception $e) {
-            forms_manip::error_alert($e);
+            forms_manip::error_alert(['msg' => $e]);
         }
         
         return $data;
@@ -77,7 +77,7 @@ class PreferencesModel extends Model {
      * @param Int $user_key The user's primary key
      * @return Array
      */
-    public function getEditProfile($user_key): Array {
+    public function getEditProfile(int $user_key): Array {
         $request = "SELECT 
         u.Id AS id, 
         u.Name AS name,
@@ -178,7 +178,7 @@ class PreferencesModel extends Model {
      *
      * @return Array<String>
      */
-    public function getActionsHistory() {
+    public function getActionsHistory(): Array {
         $request = "SELECT
         t.titled AS Action,
         CONCAT(u.name, ' ', u.firstname) AS Utilisateur,
@@ -235,7 +235,7 @@ class PreferencesModel extends Model {
      *
      * @return Array<String>
      */
-    public function getServices() {
+    public function getServices(): Array {
         $request = "SELECT 
         s.Titled AS Service,
         e.Titled AS Etablissement
@@ -254,7 +254,7 @@ class PreferencesModel extends Model {
      *
      * @return Array<String>
      */
-    public function getEstablishments() {
+    public function getEstablishments(): Array {
         $request = "SELECT 
         e.Titled AS Intitulé,
         p.Titled AS Pôle,
@@ -272,7 +272,7 @@ class PreferencesModel extends Model {
      *
      * @return Array<String>
      */
-    public function getPoles() {
+    public function getPoles(): Array {
         $request = "SELECT 
         p.Titled AS Intitule,
         COUNT(e.Id) AS `Nombre d'établissements`,
@@ -291,7 +291,7 @@ class PreferencesModel extends Model {
      * @param Array $data
      * @return Void
      */
-    public function createUsers(&$data=[]) {
+    public function createUsers(array &$data) {
         $data['establishment'] = $this->searchEstablishments($data['establishment'])['Id'];
         $user = User::makeUser($data);
         unset($data);
@@ -309,7 +309,7 @@ class PreferencesModel extends Model {
      * @param Array<String> $data The array containing the new jobs data
      * @return Void
      */
-    public function createJobs(&$data=[]) {
+    public function createJobs(Array &$data) {
         $this->inscriptJobs($data['titled'], $data['titled feminin']);
         $this->writeLogs(
             $_SESSION['user_key'],
@@ -317,19 +317,19 @@ class PreferencesModel extends Model {
             "Ajout du poste " . $data['titled'] . " à la base de données"
         );
     }
-    /// Méthode publique générant un nouveau service
-    public function createService(&$service, &$etablissement) {
-        // On récupère l'établissement
-        $etablissement = $this->searchEtablissement($etablissement);
-
-        // On inscrit le service
-        $this->inscriptService($service, $etablissement['Id_Etablissements']);
-
-        // On enregistre les logs
+    /**
+     * Public method registering a new service 
+     *
+     * @param String $service The name of service
+     * @param Int $key_establishments the primary key of the establishent which contains the service
+     * @return Void
+     */
+    public function createService(string &$service, int $key_establishments) {
+        $this->inscriptService($service, $key_establishments);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouveau service",
-            "Ajout du service " . $service . " dans l'établissement " . $etablissement['Intitule_Etablissements']
+            "Ajout du service " . $service . " dans l'établissement " . $this->searchEstablishments($key_establishments)['Intitule_Etablissements']
         );
     }
     /**
@@ -360,7 +360,7 @@ class PreferencesModel extends Model {
      * @param String $titled The poles' titled 
      * @param String $description The poles' description
      */
-    public function createPoles(&$intitule, &$description) {
+    public function createPoles(string &$intitule, string &$description) {
         $this->inscriptPoles($intitule, $description);
         $this->writeLogs(
             $_SESSION['user_key'],
@@ -374,7 +374,7 @@ class PreferencesModel extends Model {
      * @param String $password The password written in input
      * @return Void
      */
-    public function verify_password(&$password) {
+    public function verify_password(string &$password) {
         $request = "SELECT * FROM Users WHERE Id = :key";
         $params = ['key' => $_SESSION['user_key']];
 
@@ -387,7 +387,7 @@ class PreferencesModel extends Model {
      * @param Int $key_users The user's primary key
      * @return Void
      */
-    public function resetPassword($password, $key_users) {
+    public function resetPassword(string $password, int $key_users) {
         $request = "UPDATE Users
         SET POassword = :password, PasswordTemp = true
         WHERE Id_Utilisateurs = :key_users";
@@ -417,7 +417,7 @@ class PreferencesModel extends Model {
      * @param Int $key_users The user's primary key
      * @return Void
      */
-    public function updateUsersLogs($key_users) {
+    public function updateUsersLogs(int $key_users) {
         $candidat = $this->searchUsers($key_users);
         $this->writeLogs(
             $_SESSION['user_key'],
@@ -431,7 +431,7 @@ class PreferencesModel extends Model {
      * @param Int $key_users The user's primary key
      * @return Void
      */
-    public function resetPasswordLogs($key_users) {
+    public function resetPasswordLogs(int $key_users) {
         $user = $this->searchUsers($key_users);
         $this->writeLogs(
             $_SESSION['user_key'],

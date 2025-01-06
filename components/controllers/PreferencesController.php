@@ -7,7 +7,14 @@ require_once('Controller.php');
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
 class PreferencesController extends Controller {
-    // protected const $link = 'index.php?preferences=';
+    /**
+     * Protected and constante attribute containing the url for preferences pages
+     * 
+     * @var string
+     */
+    protected const URL = 'index.php?preferences=';
+
+
     /**
      * Class' constructor
      */
@@ -23,7 +30,7 @@ class PreferencesController extends Controller {
      * @param Int $key_user The user's primary key
      * @return View HTML Page
      */
-    public function display($key_user) { return $this->View->displayProfile($this->Model->getProfile($key_user)); }
+    public function display(int $key_user) { return $this->View->displayProfile($this->Model->getProfile($key_user)); }
     
     //// List ////
     /**
@@ -31,23 +38,13 @@ class PreferencesController extends Controller {
      *
      * @return View - HTML Page
      */
-    public function displayUsers() {
-        return $this->View->displayUsersContent(
-            $this->Model->getUsers(),
-            'index.php?preferences='
-        );
-    }
+    public function displayUsers() { return $this->View->displayUsersContent($this->Model->getUsers(), self::URL); }
     /**
      * Public method returning the list of new users HTML Page
      *
      * @return View HTML Page
      */
-    public function displayNewUsers() {
-        return $this->View->displayNewUsersContent(
-            $this->Model->getNewUsers(),
-            'index.php?preferences='
-        );
-    }
+    public function displayNewUsers() { return $this->View->displayNewUsersContent($this->Model->getNewUsers(), self::URL); }
     /**
      * Public method returning the logs history HTML Page
      *
@@ -141,7 +138,7 @@ class PreferencesController extends Controller {
      * @param Int $user_key The suer's primary key
      * @return View HTML Page
      */
-    public function displayEditUsers($user_key) {
+    public function displayEditUsers(int $user_key) {
         return $this->View->displayEditUsers(
             $this->Model->getEditProfile($user_key),
             $this->Model->getRolesForAutoComplete()
@@ -155,7 +152,7 @@ class PreferencesController extends Controller {
      * @param Array $data
      * @return Void
      */
-    public function createUsers(&$data=[]) {
+    public function createUsers(array &$data) {
         $this->Model->createUsers($data);
         alert_manipulation::alert([
             'title'     => 'Opération réussie',
@@ -169,7 +166,7 @@ class PreferencesController extends Controller {
      * @param Array<String> $data The array containing the new jobs data
      * @return Void
      */
-    public function createJobs(&$data=[]) {
+    public function createJobs(array &$data) {
         $this->Model->createJobs($data);
         alert_manipulation::alert([
             'title'     => 'Opération réussie',
@@ -198,7 +195,7 @@ class PreferencesController extends Controller {
      * @param String $description The poles' description
      * @return Void
      */
-    public function createPoles(&$titled, &$description) {
+    public function createPoles(string &$titled, string &$description) {
         $this->Model->createPoles($titled, $description);
         alert_manipulation::alert([
             'title'     => 'Opération réussie',
@@ -224,8 +221,14 @@ class PreferencesController extends Controller {
             'direction' => 'index.php?preferences=' . $key_users
         ]);
     }
-    /// Méthode publique mettant à jour le mot de passe de l'utilisateur actuel
-    public function updatePassword(&$password, &$new_password) {
+    /**
+     * Public method updating the current user's password
+     *
+     * @param String $password The previous password
+     * @param String $new_password The new password
+     * @return Void
+     */
+    public function updatePassword(string &$password, string &$new_password) {
         if($this->Model->verify_password($password)) {
             $this->Model->updatePassword($new_password);
             $this->Model->updatePasswordLogs();
@@ -235,13 +238,18 @@ class PreferencesController extends Controller {
                 'direction' => 'index.php'
             ]);
 
-        } else 
-            forms_manip::error_alert("Erreur lors de la mise à jour du mot de passe", "L'ancien mot de passe ne correspond pas !");
+        } else forms_manip::error_alert(['msg' => "Erreur lors de la mise à jour du mot de passe, L'ancien mot de passe ne correspond pas !"]);
     }
 
     // * RESET * // 
-    /// Méthode publique réinitialisant le mot de passe d'un utilisateur
-    public function resetPassword($password, $key_users) {
+    /**
+     *Public method for resetting a user's password
+     *
+     * @param String $password
+     * @param Int $key_users
+     * @return Void
+     */
+    public function resetPassword(string $password, int $key_users) {
         $this->Model->resetPassword($password, $key_users);
         $this->Model->resetPasswordLogs($key_users);
         alert_manipulation::alert([
