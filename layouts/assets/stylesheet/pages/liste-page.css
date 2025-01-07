@@ -122,10 +122,9 @@
     color: var(--black);
 }
 
-
 .liste_items {
     width: 100%;
-    height: calc(100dvh - (var(--navbarre-size) + var(--radius) + var(--very-big-radius) + 40px));
+    height: calc(100dvh - (var(--navbarre-size) + var(--radius) + 2 * var(--very-big-radius) + 41px));
     padding-top: var(--very-big-radius);
 }
 .liste_items .table-wrapper, .liste_items .entete {

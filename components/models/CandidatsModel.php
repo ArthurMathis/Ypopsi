@@ -239,8 +239,6 @@ class CandidatsModel extends Model {
             INNER JOIN helps ON helps.Id = have.Key_Helps
             LEFT JOIN Candidates AS c ON have.Key_Employee = c.Id
             WHERE have.Key_Candidates = " . $key_candidate;
-
-        $result = $this->get_request($request);
     
         return $this->get_request($request);
     }
@@ -288,7 +286,7 @@ class CandidatsModel extends Model {
             isset($offer['travail wk']) ? $offer['travail wk'] : null
         );
         $candidat = $this->searchCandidates($key_candidate);
-        $this-> writeLogs(
+        $this->writeLogs(
             $_SESSION['user_key'],
             "Nouvelle proposition",
             "Nouvelle proposition de contrat pour " . strtoupper($candidat['Name']) . " " . forms_manip::nameFormat($candidat['Firstname']) . " au poste de " . forms_manip::nameFormat($this->searchJobs($offer['poste'])['Titled'])

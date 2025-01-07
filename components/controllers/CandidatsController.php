@@ -182,7 +182,7 @@ class CandidatController extends Controller {
      * @param Int|Null $key_application The application's primary key (if the offer is made from an application)
      * @return Void
      */
-    public function createOffers(int $key_candidate, array $offer, int|null $key_application = null) {
+    public function createOffers(int $key_candidate, array $offer, ?int $key_application = null) {
         if(!empty($key_application))
             $this->Model->setApplicationsAccepted($key_application);
         $this->Model->createOffers($key_candidate, $offer);
