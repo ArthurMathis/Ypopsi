@@ -59,3 +59,10 @@ define("COOPTATION", "Prime de cooptation");
 
 // Chemin d'accés vers les img 
 define("ETOILE", "layouts/assets/img/etoile.svg");
+
+// Analyse des erreurs
+function test_process() {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}

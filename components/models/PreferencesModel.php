@@ -7,13 +7,14 @@ require_once(CLASSE.DS.'User.php');
 require_once(COMPONENTS.DS.'Passwordgenerator.php');
 
 class PreferencesModel extends Model {
+    // * GET * //
     /**
      * Public method returning the user's data profile
      *
      * @param Int $user_key The user's primary key
      * @return Array
      */
-    public function getProfile(&$user_key): Array {
+    public function getProfile(int $user_key): Array {
         try {
             //// Profile ////
             $request = "SELECT 
@@ -66,7 +67,7 @@ class PreferencesModel extends Model {
             $data['actions'] = $this->get_request($request, $params);
 
         } catch(Exception $e) {
-            forms_manip::error_alert($e);
+            forms_manip::error_alert(['msg' => $e]);
         }
         
         return $data;
@@ -77,7 +78,7 @@ class PreferencesModel extends Model {
      * @param Int $user_key The user's primary key
      * @return Array
      */
-    public function getEditProfile($user_key): Array {
+    public function getEditProfile(int $user_key): Array {
         $request = "SELECT 
         u.Id AS id, 
         u.Name AS name,
@@ -178,7 +179,7 @@ class PreferencesModel extends Model {
      *
      * @return Array<String>
      */
-    public function getActionsHistory() {
+    public function getActionsHistory(): Array {
         $request = "SELECT
         t.titled AS Action,
         CONCAT(u.name, ' ', u.firstname) AS Utilisateur,
@@ -235,7 +236,7 @@ class PreferencesModel extends Model {
      *
      * @return Array<String>
      */
-    public function getServices() {
+    public function getServices(): Array {
         $request = "SELECT 
         s.Titled AS Service,
         e.Titled AS Etablissement
@@ -254,7 +255,7 @@ class PreferencesModel extends Model {
      *
      * @return Array<String>
      */
-    public function getEstablishments() {
+    public function getEstablishments(): Array {
         $request = "SELECT 
         e.Titled AS Intitulé,
         p.Titled AS Pôle,
@@ -272,7 +273,7 @@ class PreferencesModel extends Model {
      *
      * @return Array<String>
      */
-    public function getPoles() {
+    public function getPoles(): Array {
         $request = "SELECT 
         p.Titled AS Intitule,
         COUNT(e.Id) AS `Nombre d'établissements`,
@@ -285,13 +286,14 @@ class PreferencesModel extends Model {
         return $this->get_request($request);
     }
 
+    // * CREATE * //
     /**
      * Public method creating a new user
      *
      * @param Array $data
      * @return Void
      */
-    public function createUsers(&$data=[]) {
+    public function createUsers(array &$data) {
         $data['establishment'] = $this->searchEstablishments($data['establishment'])['Id'];
         $user = User::makeUser($data);
         unset($data);
@@ -303,13 +305,15 @@ class PreferencesModel extends Model {
             "Création du compte de " . strtoupper($user->getName()) . " " . forms_manip::nameFormat($user->getFirstname()) 
         );
     }
+
+    //// Work ////
     /**
      * Public method creating a new jobs
      *
      * @param Array<String> $data The array containing the new jobs data
      * @return Void
      */
-    public function createJobs(&$data=[]) {
+    public function createJobs(Array &$data) {
         $this->inscriptJobs($data['titled'], $data['titled feminin']);
         $this->writeLogs(
             $_SESSION['user_key'],
@@ -317,19 +321,40 @@ class PreferencesModel extends Model {
             "Ajout du poste " . $data['titled'] . " à la base de données"
         );
     }
-    /// Méthode publique générant un nouveau service
-    public function createService(&$service, &$etablissement) {
-        // On récupère l'établissement
-        $etablissement = $this->searchEtablissement($etablissement);
+    /**
+     * Public method creating a new qualification
+     *
+     * @param String $titled The titled of the new qualification
+     * @param Bool $medical_staff Boolean showing if the new qualification is for medical jobs or not
+     * @param String|Null $abbreviation The abbreviation of the titled
+     * @return Void
+     */
+    public function createQualifications(string $titled, bool $medical_staff = false, ?string $abbreviation = null) {
+        $this->inscriptQualifications($titled, $medical_staff, $abbreviation);
+        $this->writeLogs(
+            $_SESSION['user_key'],
+            "Nouveau diplome",
+            "Ajout de la qualification " . $titled . " à la base de données"
+        );
+    }
 
-        // On inscrit le service
-        $this->inscriptService($service, $etablissement['Id_Etablissements']);
-
-        // On enregistre les logs
+    //// Foundation ////
+    /**
+     * Public method creatng a  new service
+     *
+     * @param String $service The titled of the new service
+     * @param Array<Int> $establishments The array containing th primary key of the establishments containing the new service
+     * @param String|Null $description The description of the new service
+     * @return Void
+     */
+    public function createServices(string $service, array $establishments, ?string $description = null) {
+        $service = $this->inscriptServices($service, $description);
+        foreach($establishments as $elmt) 
+            $this->inscriptBelongTo($service, $elmt);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouveau service",
-            "Ajout du service " . $service . " dans l'établissement " . $etablissement['Intitule_Etablissements']
+            "Ajout du service " . $this->searchServices($service)['Titled'] . "."
         );
     }
     /**
@@ -338,9 +363,15 @@ class PreferencesModel extends Model {
      * @param Array $data
      * @return Void
      */
-    public function createEstablishments(&$data=[]) {
-        $data['key_poles'] = $this->searchPoles($data['key_poles'])['Id'];
-        $this->inscriptEstablishments($data);
+    public function createEstablishments(array &$data) {
+        $data['key_poles'] = $this->searchPoles($data['key_poles'])['Id']; // Todo : utiliser la nouvelle version de l'AutoComplete pour éviter la recherche et renvoyer directement la clé primaire
+        $this->inscriptEstablishments(
+            $_POST['intitule'],
+            $_POST['adresse'],
+            $_POST['ville'],
+            $_POST['code-postal'],
+            $_POST['pole']
+        );
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouvel établissement",
@@ -353,7 +384,7 @@ class PreferencesModel extends Model {
      * @param String $titled The poles' titled 
      * @param String $description The poles' description
      */
-    public function createPoles(&$intitule, &$description) {
+    public function createPoles(string &$intitule, string &$description) {
         $this->inscriptPoles($intitule, $description);
         $this->writeLogs(
             $_SESSION['user_key'],
@@ -361,13 +392,15 @@ class PreferencesModel extends Model {
             "Ajout du pôle " . $intitule
         );
     }
+
+    // * OTHER * //
     /**
      * Public method checking if the input password is right
      *
      * @param String $password The password written in input
      * @return Void
      */
-    public function verify_password(&$password) {
+    public function verify_password(string &$password) {
         $request = "SELECT * FROM Users WHERE Id = :key";
         $params = ['key' => $_SESSION['user_key']];
 
@@ -380,7 +413,7 @@ class PreferencesModel extends Model {
      * @param Int $key_users The user's primary key
      * @return Void
      */
-    public function resetPassword($password, $key_users) {
+    public function resetPassword(string $password, int $key_users) {
         $request = "UPDATE Users
         SET Password = :password, PasswordTemp = true
         WHERE Id = :key_users";
@@ -410,7 +443,7 @@ class PreferencesModel extends Model {
      * @param Int $key_users The user's primary key
      * @return Void
      */
-    public function updateUsersLogs($key_users) {
+    public function updateUsersLogs(int $key_users) {
         $candidat = $this->searchUsers($key_users);
         $this->writeLogs(
             $_SESSION['user_key'],
@@ -424,7 +457,7 @@ class PreferencesModel extends Model {
      * @param Int $key_users The user's primary key
      * @return Void
      */
-    public function resetPasswordLogs($key_users) {
+    public function resetPasswordLogs(int $key_users) {
         $user = $this->searchUsers($key_users);
         $this->writeLogs(
             $_SESSION['user_key'],

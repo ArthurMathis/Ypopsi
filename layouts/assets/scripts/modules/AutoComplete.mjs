@@ -14,6 +14,8 @@ class AutoComplete {
         this.inputElement = inputElement;
         this.suggestions = suggestions;
         this.currentFocus = -1;
+        this.dataset = null;  
+
         this.createAutoComplete();
     }
 
@@ -29,6 +31,18 @@ class AutoComplete {
         // On ajoute les détection d'évênements
         this.inputElement.addEventListener('input', () => { this.autoSuggest(suggestionBox); });
         this.inputElement.addEventListener('click', () => { this.autoSuggest(suggestionBox); });
+
+        // On vérifie les pré-saisies
+        if(this.inputElement.value) {
+            let i = 0, finded = false;
+            while(!finded && i < this.suggestions.length) {
+                if(this.suggestions[i].text == this.inputElement.value) {
+                    finded = true;
+                    this.setDataset(this.suggestions[i].key);
+                }
+                i++;
+            }
+        }
 
         // On gère la sélection des suggestions avec les flèches directionnelles
         this.inputElement.addEventListener('keydown', (e) => {
@@ -50,20 +64,7 @@ class AutoComplete {
         });
 
         // On ajoute les events de fermeture des suggestions
-        document.addEventListener('click', (e) => {
-            if (e.target !== this.inputElement) 
-                this.closeAllLists();
-        });
-    }
-
-    /**
-     * @function closeAllLists
-     * @description Ferme toutes les listes de suggestions ouvertes.
-     */
-    closeAllLists() {
-        const items = document.querySelectorAll('.autocomplete-items div');
-        items.forEach(item => item.remove());
-        this.currentFocus = -1;
+        document.addEventListener('click', (e) => { if (e.target !== this.inputElement) this.closeAllLists(); });
     }
 
     /**
@@ -78,7 +79,7 @@ class AutoComplete {
         let filteredSuggestions;
         if(this.inputElement.value) 
             filteredSuggestions = this.suggestions.filter(suggestion =>
-                suggestion.toLowerCase().trim().startsWith(this.inputElement.value.toLowerCase().trim())
+                suggestion.text.toLowerCase().trim().startsWith(this.inputElement.value.toLowerCase().trim())
             ); 
         else filteredSuggestions = Array.from(this.suggestions);
 
@@ -88,10 +89,15 @@ class AutoComplete {
 
             // On génère les items de suggestion
             filteredSuggestions.forEach(suggestion => {
+                // On teste la correspondance avec la saisie
                 const item = document.createElement('div');
-                item.innerHTML = suggestion;
+                item.innerHTML = suggestion.text;
+                if(this.inputElement.value == suggestion.text) this.setDataset(suggestion.key);
+
+                // On ajoute un event de sélection
                 item.addEventListener('click', () => {
-                    this.inputElement.value = suggestion;
+                    this.inputElement.value = suggestion.text;
+                    this.setDataset(suggestion.key);
                     this.inputElement.dispatchEvent(new Event('AutoCompleteSelect'));
                     this.closeAllLists();
                 });
@@ -100,12 +106,40 @@ class AutoComplete {
         }
     }
 
+    /**
+     * @function closeAllLists
+     * @description Ferme toutes les listes de suggestions ouvertes.
+     */
+    closeAllLists() {
+        const items = document.querySelectorAll('.autocomplete-items div');
+        items.forEach(item => item.remove());
+        this.currentFocus = -1;
+    }
+    /**
+     * @function addFocus
+     * @description Méthode sélectionnant une suggestion
+     * @param {HTMLAllCollection} items La liste des suggestions affichées dans la page
+     * @param {Integer} index L'index de la nouvelle suggestion sélectionnée
+     */
     addFocus(items, index) {
-        // On retire la précédente suggestion active
         if(0 < index) items[index - 1].classList.remove('active');
         if(index < items.length - 1) items[index + 1].classList.remove('active');
 
-        // On active la nouvelle
         items[index].classList.add('active');
     }
+    /**
+     * @function setDataset
+     * @param {Integer|String} data La valeur à retourner
+     */
+    setDataset(data) {
+        this.inputElement.dataset.selectedPrimaryKey = data;
+    }
+
+    /**
+     * @function arrayToSuggestions
+     * @description Fonction statique convertissant un tableau d'objets en un tableau de suggestions.
+     * @param {Array<Object>} elements Tableau d'objets contenant les propriétés 'text' et 'id'.
+     * @returns {Array<Object>} Tableau de suggestions formatées.
+     */
+    static arrayToSuggestions(elements) { return elements.map(c => ({ text: c.text, key: c.id })); }
 }

@@ -2,6 +2,10 @@
 
 require_once('Controller.php');
 
+/**
+ * Class representing the controller of candidates
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class CandidatController extends Controller {
     /**
      * Class' constructor
@@ -29,9 +33,12 @@ class CandidatController extends Controller {
      * @param Int $Key_candidate The candidate's primary key
      * @return View HTML PAGE
      */
-    public function displayCandidate($Key_candidate) { 
-        $item = $this->Model->displayContentCandidate($Key_candidate);
-        return $this->View->displayContentCandidate("Candidat " . $item['candidate']['Name'] . ' ' . $item['candidate']['Firstname'], $item);
+    public function displayCandidate(int $key_candidate) {
+        $item = $this->Model->displayContentCandidate($key_candidate); 
+        return $this->View->displayContentCandidate(
+            "Candidat " . $item['candidate']['Name'] . ' ' . $item['candidate']['Firstname'], 
+            $this->Model->displayContentCandidate($key_candidate)
+        );
     }
 
     // * DISPLAY INPUT * //
@@ -41,13 +48,13 @@ class CandidatController extends Controller {
      * @param Int $key_candidate The candidate's primary ket
      * @return View HTML page
      */
-    public function displayInputMeetings($key_candidate) {
+    public function displayInputMeetings(int $key_candidate) {
         return $this->View->displayInputMeetings(
             "Nouveau rendez-vous",
             $key_candidate,
             $this->Model->searchEstablishments($_SESSION['key_establishment'])['Titled'], 
-            $this->Model->getAutoCompUsers(),
-            $this->Model->getEstablishments()
+            $this->Model->getUsersForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete()
         );
     }
     /**
@@ -56,7 +63,7 @@ class CandidatController extends Controller {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function displayInputApplications($key_candidate) { 
+    public function displayInputApplications(int $key_candidate) { 
         $_SESSION['candidate'] = $this->Model->makeCandidate($key_candidate);
         header('Location: index.php?applications=input-applications');
     }
@@ -64,17 +71,16 @@ class CandidatController extends Controller {
      * Public method returning the offer's HTML form
      *
      * @param Int $key_candidate The candidate's primary key
-     * @param Int|NULL $key_application The candidate's primary key
-     * @param Int|NULL $key_need The candidate's primary key
+     * @param Int|Null $key_application The candidate's primary key
+     * @param Int|Null $key_need The candidate's primary key
      * @return Void
      */
-    public function displayInputOffers($key_candidate, $key_application=null, $key_need=null) {
+    public function displayInputOffers(int $key_candidate, int|null $key_application = null, int|null $key_need = null) {
         if(!empty($key_application)) 
             $offer = $this->Model->searchApplications($key_application);
-        elseif(!empty($key_need))
-            $offer = [];
-        else 
-            $offer = [];
+        // Todo : à compléter si la feature 'besoins' est développée 
+        // elseif(!empty($key_need))
+        //     $offer = []; 
 
         if(isset($offer['Key_Jobs']) && is_numeric($offer['Key_Jobs']))
             $offer['Key_Jobs'] = $this->Model->searchJobs($offer['Key_Jobs'])['Titled'];
@@ -90,11 +96,11 @@ class CandidatController extends Controller {
         return $this->View->displayInputOffers(
             "Ypopsi - Nouvelle proposition", 
             $key_candidate,
-            $this->Model->getJobs(),
-            $this->Model->getServices(),
-            $this->Model->getEstablishments(),
-            $this->Model->getTypesOfContracts(), 
-            $offer
+            $this->Model->getJobsForAutoComplete(),
+            $this->Model->getServicesForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete(),
+            $this->Model->getTypesOfContractsForAutoComplete(), 
+            isset($offer) ? $offer : null
         );
     }
     /**
@@ -103,14 +109,14 @@ class CandidatController extends Controller {
      * @param [type] $key_candidate
      * @return void
      */
-    public function displayInputContracts($key_candidate) {
+    public function displayInputContracts(int $key_candidate) {
         return $this->View->displayInputContracts(
             "Ypopsi - Nouveau contrat", 
             $key_candidate,
-            $this->Model->getJobs(),
-            $this->Model->getServices(),
-            $this->Model->getEstablishments(),
-            $this->Model->getTypesOfContracts()
+            $this->Model->getJobsForAutoComplete(),
+            $this->Model->getServicesForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete(),
+            $this->Model->getTypesOfContractsForAutoComplete()
         );
     }
 
@@ -121,12 +127,12 @@ class CandidatController extends Controller {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function displayEditCandidates($key_candidate) {
+    public function displayEditCandidates(int $key_candidate) {
         return $this->View->displayEditCandidates(
             $this->Model->getEditCandidates($key_candidate),
-            $this->Model->getQualifications(),
-            $this->Model->getHelps(),
-            $this->Model->getEmployee()
+            $this->Model->getQualificationsForAutoComplete(),
+            $this->Model->getHelpsForAutoComplete(),
+            $this->Model->getEmployeeForAutoComplete()
         );
     }
     /**
@@ -135,7 +141,7 @@ class CandidatController extends Controller {
      * @param Int $key_candidate The candidate's primary key
      * @return Void
      */
-    public function displayEditRatings($key_candidate) {
+    public function displayEditRatings(int $key_candidate) {
         return $this->View->displayEditRatings($this->Model->searchCandidates($key_candidate));
     }
     /**
@@ -144,11 +150,11 @@ class CandidatController extends Controller {
      * @param Int $key_meeting The meeting's primary key
      * @return View HTML Page
      */
-    public function displayEditMeetings($key_meeting) { 
+    public function displayEditMeetings(int $key_meeting) { 
         return $this->View->displayEditMeetings(
             $this->Model->getEditMeetings($key_meeting),
-            $this->Model->getAutoCompUsers(),
-            $this->Model->getEstablishments()
+            $this->Model->getUsersForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete()
         ); 
     }
     
@@ -160,7 +166,7 @@ class CandidatController extends Controller {
      * @param Array $meeting The array containing the meeting's data
      * @return Void
      */
-    public function createMeetings($key_candidate, &$meeting=[]) {
+    public function createMeetings(int $key_candidate, array &$meeting) {
         $this->Model->createMeetings($key_candidate, $meeting);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
@@ -173,10 +179,10 @@ class CandidatController extends Controller {
      *
      * @param Int $key_candidate The candidate's primary key
      * @param Array $offer The arrayu containing the offer's data
-     * @param Int|NULL $key_application The application's primary key (if the offer is made from an application)
+     * @param Int|Null $key_application The application's primary key (if the offer is made from an application)
      * @return Void
      */
-    public function createOffers($key_candidate, $offer, $key_application = null) {
+    public function createOffers(int $key_candidate, array $offer, int|null $key_application = null) {
         if(!empty($key_application))
             $this->Model->setApplicationsAccepted($key_application);
         $this->Model->createOffers($key_candidate, $offer);
@@ -193,7 +199,7 @@ class CandidatController extends Controller {
      * @param Array $contract
      * @return Void
      */
-    public function createContracts($key_candidate, &$contract=[]) {   
+    public function createContracts(int $key_candidate, array &$contract) {   
         $this->Model->createContracts($key_candidate, $contract);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
@@ -210,8 +216,8 @@ class CandidatController extends Controller {
      * @param Array $rating
      * @return Void
      */
-    public function updateRatings($key_candidate, &$rating=[]) {
-        $this->Model->updateRatings($key_candidate, $rating);
+    public function updateRatings(int $key_candidate, array &$rating) {
+        $this->Model->updateRatings($key_candidate, $rating['notation'], $rating['description'], $rating['a'], $rating['b'], $rating['c']);
         $this->Model->updateRatingsLogs($key_candidate);
         alert_manipulation::alert([
             'title' => "Candidat mise-à-jour",
@@ -227,17 +233,9 @@ class CandidatController extends Controller {
      * @param Array $rdv
      * @return Void
      */
-    public function updateMeetings($key_meeting, $key_candidate, &$meeting=[]) {
-        $this->Model->updateMeetings(
-            $key_meeting, 
-            $this->Model->searchUsers($meeting['employee'])['Id'], 
-            $key_candidate, 
-            $this->Model->searchEstablishments($meeting['establishment'])['Id'], 
-            $meeting['date'], 
-            $meeting['description']
-        );
+    public function updateMeetings(int $key_meeting, int $key_candidate, array &$meeting) {
+        $this->Model->updateMeetings($key_meeting, $meeting['employee'], $key_candidate, $meeting['establishment'], $meeting['date'], $meeting['description']);
         $this->Model->updateMeetingsLogs($key_candidate);
-
         alert_manipulation::alert([
             'title' => "Rendez-vous mise-à-jour",
             'msg' => "Vous avez mis-à-jour le rendez-vous du candidat",
@@ -251,7 +249,7 @@ class CandidatController extends Controller {
      * @param Array $data The array containing the candidate's new data
      * @return Void
      */
-    public function updateCandidates($key_candidate, &$data=[]) {
+    public function updateCandidates(int $key_candidate, array &$data) {
         $this->Model->makeUpdateCandidates($key_candidate, $data);
         alert_manipulation::alert([
             'title' => "Candidat mise-à-jour",
@@ -268,7 +266,7 @@ class CandidatController extends Controller {
      * @param Int $key_candidate The candidate'sprimary key
      * @return Void 
      */
-    public function deleteMeetings($key_meeting, $key_candidate) {
+    public function deleteMeetings(int $key_meeting, int $key_candidate) {
         $this->Model->deletingMeetings($key_meeting);
         alert_manipulation::alert([
             'title' => "Rendez-vous annulé",
@@ -284,7 +282,7 @@ class CandidatController extends Controller {
      * @param Int $key_applications The application's primary key
      * @return Void
      */
-    public function dismissApplications($key_applications) {
+    public function dismissApplications(int $key_applications) {
         $this->Model->dismissApplications($key_applications);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
@@ -298,7 +296,7 @@ class CandidatController extends Controller {
      * @param Int $key_offer The offer's primary key
      * @return Void
      */
-    public function rejectOffers($key_offer) {
+    public function rejectOffers(int $key_offer) {
         $this->Model->rejectOffers($key_offer); 
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
@@ -313,7 +311,7 @@ class CandidatController extends Controller {
      * @param Int $key_contract The contract's primary key
      * @return Void
      */
-    public function signContracts($key_candidate, $key_contract) {
+    public function signContracts(int $key_candidate, int $key_contract) {
         $this->Model->addSignatureToContract($key_candidate, $key_contract);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',
@@ -327,7 +325,7 @@ class CandidatController extends Controller {
      * @param Int $key_contract The contract's primary key
      * @return Void 
      */
-    public function resignContracts($key_contract){
+    public function resignContracts(int $key_contract){
         $this->Model->setResignationToContract($key_contract);
         alert_manipulation::alert([
             'title' => 'Action enregistrée',

@@ -433,8 +433,7 @@ function filterByDate(item, index, critere_date=[]) {
                 break;   
 
             default: 
-                console.log("Critère non reconnu");
-                console.log(critere_date[i]);
+                console.error(`Critère non reconnu ${critere_date[i]}`);
                 break;
         } 
         i++;
@@ -554,11 +553,9 @@ function sortBy(items, index, croissant = true) {
 
     let search = Array.from(items);
     const item = items[0].cells[index].textContent.trim();
-    if (!isNaN(Date.parse(item))) {
-        console.log('On trit selon les dates');
+    if (!isNaN(Date.parse(item))) 
         search.sort((item1, item2) => sortByDate(item1, item2, index));
-
-    } else if (!isNaN(parseInt(item))) 
+    else if (!isNaN(parseInt(item))) 
         search.sort((item1, item2) => sortByInteger(item1, item2, index));
     else 
         search.sort((item1, item2) => sortByString(item1, item2, index));

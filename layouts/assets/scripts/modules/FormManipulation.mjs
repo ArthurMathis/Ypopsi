@@ -1,13 +1,13 @@
 import { AutoComplete } from "./AutoComplete.mjs";
 
 /**
- * @function SetMinEndDate
+ * @function setMinEndDate
  * @description Function checking that the start date is less than or equal to the end date
  * @param {HTMLInputElement} startDateInput The start date's input
  * @param {HTMLInputElement} endDateInput  The end date's input
  * @author Arthur MATHIS
  */
-function SetMinEndDate(startDateInput, endDateInput) {
+function setMinEndDate(startDateInput, endDateInput) {
     const startInput = document.getElementById(startDateInput);
     const endInput = document.getElementById(endDateInput);
 
@@ -17,6 +17,21 @@ function SetMinEndDate(startDateInput, endDateInput) {
         if(endInput.value && endInput.value < startInput.value)
             endInput.value = startInput.value;
     });
+}
+
+/**
+ * @function manageSubit
+ * @description Function receiving the submit event from the form and manage their parameters to send the right data (with AutoComplete input and others...)
+ * @param {SubmitEvent} event The event for submit the form
+ * @author Arthur MATHIS
+ */
+function manageSubmit(event) {
+    event.preventDefault();
+    event.target.querySelectorAll('input').forEach(elmt => {
+        if(elmt.value && elmt.parentElement.classList.contains('autocomplete')) 
+            elmt.value = elmt.dataset.selectedPrimaryKey;
+    });
+    event.target.submit();
 }
 
 /**
@@ -101,21 +116,9 @@ class cooptInput {
      * @description Function generating the suggestion window
      */
     createInput() {
-        console.log('Bonjour');
-        // TODO : remplacer le autocomplete input par une liste déroulante
-        // this.elmt = document.createElement('div');
-        // this.elmt.className = 'autocomplete'
-        // const new_i = document.createElement('input');
-        // new_i.type = 'text';
-        // new_i.name = this.inputName;
-        // new_i.autocomplete = 'off';
-        // 
-        // this.elmt.appendChild(new_i);
-        // this.elmt.appendChild(document.createElement('article'));
-        // 
-        // const tab = [];
-        // this.suggestions.forEach(c => { tab.push(c.text); });
-        // this.autocomplete = new AutoComplete(new_i, tab);
+        // TODO : remplacer l'autocomplete input par une liste déroulante
+        // *  Autocomplete remanier pour renvoyer une clé primaire
+        // ! Utile de remanier cette méthode ? 
 
         this.elmt = document.createElement('select');
         this.elmt.name = this.inputName;
@@ -292,7 +295,7 @@ class implementInputList extends implementInput {
         inputElement.name = this.inputName + '[]';
         this.suggestions.forEach(c => {
             const option = document.createElement('option');
-            option.value = c.id;
+            option.value = c.key;
             option.textContent = c.text;
         
             inputElement.appendChild(option);
@@ -388,7 +391,8 @@ class implementInputAutoCompleteDate extends implementInput {
     
         const tab = [];
         this.suggestions.forEach(c => { tab.push(c.text); });
-        this.inputElement = new AutoComplete(input, tab);
+        // this.inputElement = new AutoComplete(input, tab);
+        this.inputElement = new AutoComplete(input, this.suggestions);
 
         return inputElement;
     }
@@ -408,8 +412,10 @@ class implementInputAutoCompleteDate extends implementInput {
         return inputElement;
     }
 }
+
 export const formManipulation = { 
-    SetMinEndDate, 
+    setMinEndDate, 
+    manageSubmit,
     setCooptInput, 
     cooptInput, 
     implementInputAutoComplete, 

@@ -141,33 +141,6 @@ body > content > main .candidatures-menu {
     background-attachment: fixed;
 }
 
-/*
-#list-users .liste_items .table-wrapper table th:first-of-type {
-    padding-left: var(--gap);
+.liste_items {
+    padding-bottom: var(--very-big-radius);
 }
-#list-users .liste_items .table-wrapper table th:first-of-type::before {
-    content: "";
-    position: absolute;
-    left: var(--big-radius);
-    top: 50%;
-
-    display: block;
-    width: var(--font-size-small);
-    height: var(--font-size-small);
-    z-index: 0;
-    
-    border-radius: var(--font-size-small);
-    transform: translateY(-50%);
-}
-#list-users .liste_items .table-wrapper table tbody tr.moderateur th:first-of-type::before {
-    background-color: var(--color2);
-}
-#list-users .liste_items .table-wrapper table tbody tr.administrateur th:first-of-type::before {
-    background-color: var(--color4);
-}
-#list-users .liste_items .table-wrapper table tbody tr.utilisateur th:first-of-type::before {
-    background-color: var(--color3);
-}
-#list-users .liste_items .table-wrapper table tbody tr.invite th:first-of-type::before {
-    background-color: var(--color5);
-}*/

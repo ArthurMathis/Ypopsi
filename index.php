@@ -1,6 +1,6 @@
 <?php
 
-require_once('define.php');
+require_once('define.php'); // test_process();
 require_once(COMPONENTS.DS.'AlertManipulation.php');
 require_once(COMPONENTS.DS.'FormsManip.php');
 require_once(CONTROLLERS.DS.'LoginController.php');
@@ -9,9 +9,11 @@ require_once(CONTROLLERS.DS.'CandidaturesController.php');
 require_once(CONTROLLERS.DS.'CandidatsController.php');
 require_once(CONTROLLERS.DS.'PreferencesController.php');
 
+// Starting the session
 session_start();
 env_start();
 
+// Testing the identification
 if (!isset($_GET['login']) && (!isset($_SESSION['user_key']) || empty($_SESSION['user_key']))) {
     (new LoginController())->displayLogin();
     exit;
@@ -25,10 +27,11 @@ if (!isset($_GET['login']) && (!isset($_SESSION['user_key']) || empty($_SESSION[
         'direction' => 'index.php?preferences=edit-password',
         'button' => true
     ]);
-    
 }
 
+// Analysing the request
 switch(true) {
+    // Login requests
     case isset($_GET['login']):
         $login = new LoginController();
         switch($_GET['login']) { 
@@ -65,8 +68,9 @@ switch(true) {
                 $login->displayLogin();
                 break;
         }
-        exit;
+        break;
         
+    // Applications requests
     case isset($_GET['applications']):
         $applications = new CandidaturesController();
         try {
@@ -94,18 +98,14 @@ switch(true) {
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
                     try {
+                        // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST["nom"]))
                             throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
                         elseif(empty($_POST["prenom"]))
                             throw new Exception("Le champs prenom doit être rempli par une chaine de caractères !");
-                        elseif(empty($_POST["diplome"])) {
-                            if(!empty($_POST["diplomeDate"])) 
-                                throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
-                        } elseif(empty($_POST["diplomeDate"]))
+                        elseif(empty($_POST["diplome"]) && !empty($_POST["diplomeDate"]) || !empty($_POST["diplome"]) && empty($_POST["diplomeDate"])) 
                             throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
-                        elseif(count($_POST["diplome"]) !== count($_POST["diplomeDate"]))
-                            throw new Exception("Le nombre de diplômes et de dates de diplômes ne correspond pas.");
-                        elseif (empty($_POST["diplome"]) && empty($_POST["diplomeDate"]) || count($_POST["diplome"]) !== count($_POST["diplomeDate"])) 
+                        elseif (!empty($_POST["diplome"]) && !empty($_POST["diplomeDate"]) && count($_POST["diplome"]) !== count($_POST["diplomeDate"])) 
                             throw new Exception("Les champs diplôme et date de diplôme doivent être remplis et correspondre !");
 
                         $candidate = [
@@ -119,18 +119,16 @@ switch(true) {
                             'post code'     => !empty($_POST['code-postal']) ? $_POST['code-postal'] : null
                         ];
 
-                        if(isset($_POST['diplomeDate'])) foreach ($_POST["diplomeDate"] as $date) 
-                            if (empty($date)) 
-                                throw new Exception("Chaque diplôme doit avoir une date d'obtention !");
+                        if(isset($_POST['diplomeDate'])) foreach ($_POST["diplomeDate"] as $date)
+                            if (empty($date)) throw new Exception("Chaque diplôme doit avoir une date d'obtention !");
                         $qualifications = array_map(
-                            function($qualification, $date) { return ['qualification' => $qualification, 'date' => $date]; }, 
+                            function($qualification, $date) { return ['qualification' => (int)$qualification, 'date' => $date]; }, 
                             isset($_POST["diplome"]) ? $_POST["diplome"] : [], 
                             isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : []
                         );
-
-                        $helps          = isset($_POST["aide"]) ? $_POST["aide"] : null;
-                        $coopteur       = isset($_POST["coopteur"]) ? $_POST['coopteur'] : null;
-                        $medical_visit  = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
+                        $helps         = isset($_POST["aide"]) ? array_map(function($elmt) { return (int)$elmt; }, $_POST["aide"]) : null;
+                        $coopteur      = isset($_POST["coopteur"]) ? $_POST['coopteur'] : null;
+                        $medical_visit = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
 
                         $applications->checkCandidate($candidate, $qualifications, $helps, $medical_visit, $coopteur);
 
@@ -144,23 +142,24 @@ switch(true) {
 
                 case 'inscript-applications' :
                     if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application...");
 
-                    try { 
+                    try {
+                        // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST["poste"])) 
-                            throw new Exception("Le champs poste doit être rempli par une chaine de caractères");
+                            throw new Exception("Le champs poste est nécessaire pour cette action.");
                         elseif(empty($_POST["disponibilite"])) 
-                            throw new Exception("Le champs disponibilité doit être rempli par une chaine de caractères");
+                            throw new Exception("Le champs disponibilité est nécessaire pour cette action.");
                         elseif(empty($_POST["source"])) 
-                            throw new Exception("Le champs source doit être rempli par une chaine de caractères");
+                            throw new Exception("Le champs source est nécessaire pour cette action.");
 
                         $applications->createApplications(
                             $_SESSION['candidate'],
                             [
-                                'job'              => $_POST["poste"],
-                                'service'          => !empty($_POST["service"]) ? $_POST["service"] : null,
-                                'establishment'    => !empty($_POST["etablissement"]) ?  $_POST["etablissement"] : null,
-                                'type of contract' => !empty($_POST["type_de_contrat"]) ?  $_POST["type_de_contrat"] : null,
+                                'job'              => (int) $_POST["poste"],
+                                'service'          => !empty($_POST["service"]) ? (int) $_POST["service"] : null,
+                                'establishment'    => !empty($_POST["etablissement"]) ?  (int) $_POST["etablissement"] : null,
+                                'type of contract' => !empty($_POST["type_de_contrat"]) ?  (int) $_POST["type_de_contrat"] : null,
                                 'availability'     => $_POST["disponibilite"],
                                 'source'           => $_POST["source"]
                             ],
@@ -199,8 +198,9 @@ switch(true) {
                 'msg' => $e
             ]);
         }
-        exit;
-        
+        break;
+    
+    // Candidates requests
     case isset($_GET['candidates']):
         $candidates = new CandidatController();
         if(is_numeric($_GET['candidates'])) 
@@ -264,12 +264,13 @@ switch(true) {
 
                     try {
                         $data = [
-                            'recruteur' => $_POST['recruteur'],
-                            'etablissement' => $_POST['etablissement'],
-                            'date' => $_POST['date'],
-                            'time' => $_POST['time']
+                            'recruteur'     => (int) $_POST['recruteur'],
+                            'etablissement' => (int) $_POST['etablissement'],
+                            'date'          => $_POST['date'],
+                            'time'          => $_POST['time']
                         ];
 
+                        // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($data['recruteur']))
                             throw new Exception("Le champs recruteur doit être rempli !");
                         elseif(empty($data['etablissement']))
@@ -293,6 +294,7 @@ switch(true) {
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                     
                     try {
+                        // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST['poste']))
                             throw new Exception("Le champs poste doit être rempli !");
                         elseif(empty($_POST['service']))
@@ -303,17 +305,19 @@ switch(true) {
                             throw new Exception("Le champs type de contrat doit être rempli !");
                         elseif(empty($_POST['date_debut']))
                             throw new Exception('Le champs date de début doit être rempli !');
-                        if($_POST['type_contrat'] == 'CDI' && !empty($_POST['date_fin'])) 
-                            throw new Exception("La date de fin ne peut pas être remplie pour un CDI !");
-                        elseif($_POST['type_contrat'] != 'CDI' &&empty($_POST['date_fin'])) 
-                                throw new Exception("La date de fin doit être remplie !");
+
+                        // TODO : intégrer ces vérifications directement dans le javascript
+                        // if($_POST['type_contrat'] == 'CDI' && !empty($_POST['date_fin'])) 
+                        //     throw new Exception("La date de fin ne peut pas être remplie pour un CDI !");
+                        // elseif($_POST['type_contrat'] != 'CDI' &&empty($_POST['date_fin'])) 
+                        //         throw new Exception("La date de fin doit être remplie !");
 
                         $data = [
-                            'poste' => $_POST['poste'],
-                            'service' => $_POST['service'],
-                            'etablissement' => $_POST['etablissement'],
-                            'type_de_contrat' => $_POST['type_contrat'],
-                            'date debut' => $_POST['date_debut'],
+                            'poste'           => (int) $_POST['poste'],
+                            'service'         => (int) $_POST['service'],
+                            'etablissement'   => (int) $_POST['etablissement'],
+                            'type_de_contrat' => (int) $_POST['type_contrat'],
+                            'date debut'      => $_POST['date_debut'],
                         ];
 
                         if(!empty($_POST['date_fin']))
@@ -326,16 +330,16 @@ switch(true) {
                             $data['travail nuit'] = true;
                         if(isset($_POST['travail_wk']))
                             $data['travail nuit'] = true;
-        
+                        
                         if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate'])) 
                             $candidates->createOffers(
                                 $_GET['key_candidate'],
                                 $data, 
-                                isset($_GET['key_application']) && is_numeric($_GET['key_application']) ? $_GET['key_application'] : NULL
+                                isset($_GET['key_application']) && is_numeric($_GET['key_application']) ? $_GET['key_application'] : null
                             );
                         else 
                             throw new Exception("Clé candidat introuvable !");  
-
+                        
                     } catch(Exception $e) {
                         forms_manip::error_alert([
                             'title' => "Erreur lors de l'inscription de la proposition",
@@ -350,11 +354,11 @@ switch(true) {
 
                     if(!isset($_GET['key_candidate']) || !is_numeric($_GET['key_candidate']))
                         throw new Exception("La clé candidat est inrouvale !"); 
-
+                    
                     if(isset($_GET['key_offer']) && is_numeric($_GET['key_offer'])) 
                         $candidates->signContracts($_GET['key_candidate'], $_GET['key_offer']);
-                        
                     else try {
+                        // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST['poste']))
                             throw new Exception("Le champs poste doit être rempli !");
                         elseif(empty($_POST['service']))
@@ -367,19 +371,19 @@ switch(true) {
                             throw new Exception('Le champs date de début doit être rempli !');
 
                         $data = [
-                            'job' => $_POST['poste'],
-                            'service' => $_POST['service'],
-                            'establishment' => $_POST['etablissement'],
-                            'type' => $_POST['type_contrat'],
-                            'start_date' => $_POST['date_debut']
+                            'job'           => (int) $_POST['poste'],
+                            'service'       => (int) $_POST['service'],
+                            'establishment' => (int) $_POST['etablissement'],
+                            'type'          => (int) $_POST['type_contrat'],
+                            'start_date'    => $_POST['date_debut']
                         ];
 
                         if(!empty($_POST['date_fin']))
                             $data['end_date'] = $_POST['date_fin'];
                         if(!empty($_POST['salaire_mensuel']))
-                            $data['salary'] = intval($_POST['salaire_mensuel']);
+                            $data['salary'] = (int) $_POST['salaire_mensuel'];
                         if(!empty($_POST['taux_horaire_hebdomadaire'])) 
-                            $data['hourly_rate'] = $_POST['taux_horaire_hebdomadaire'];
+                            $data['hourly_rate'] = (int) $_POST['taux_horaire_hebdomadaire'];
                         if(isset($_POST['travail_nuit']))
                             $data['night_work'] = true;
                         if(isset($_POST['travail_wk']))
@@ -428,10 +432,10 @@ switch(true) {
 
                     try {
                         $rating = [
-                            'notation' => max($_POST['notation']),
-                            'a' => isset($_POST['a']) ? 1 : 0,
-                            'b' => isset($_POST['b']) ? 1 : 0,
-                            'c' => isset($_POST['c']) ? 1 : 0,
+                            'notation'    => max($_POST['notation']),
+                            'a'           => isset($_POST['a']) ? 1 : 0,
+                            'b'           => isset($_POST['b']) ? 1 : 0,
+                            'c'           => isset($_POST['c']) ? 1 : 0,
                             'description' => $_POST['description']
                         ];
                         if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
@@ -456,11 +460,11 @@ switch(true) {
                         $data = [
                             'name'                => forms_manip::nameFormat($_POST['nom']),
                             'firstname'           => forms_manip::nameFormat($_POST['prenom']),
-                            'email'               => !empty($_POST['email']) ? forms_manip::numberFormat($_POST['email']) : null,
-                            'phone'               => !empty($_POST['telephone']) ? forms_manip::numberFormat($_POST['telephone']) : null,
-                            'address'             => $_POST['adresse'],
-                            'city'                => forms_manip::nameFormat($_POST['ville']),
-                            'post_code'           => $_POST['code-postal'],
+                            'email'               => empty($_POST['email']) ? null : $_POST['email'],
+                            'phone'               => empty($_POST['telephone']) ? null : forms_manip::numberFormat($_POST['telephone']),
+                            'address'             => empty($_POST['adresse']) ? null : $_POST['adresse'],
+                            'city'                => empty(forms_manip::nameFormat($_POST['ville'])) ? null : forms_manip::nameFormat($_POST['ville']),
+                            'post_code'           => empty($_POST['code-postal']) ? null : $_POST['code-postal'],
                             'qualifications'      => array_map(
                                                         function($qualification, $date) { return ['qualification' => $qualification, 'date' => $date]; }, 
                                                         isset($_POST["diplome"]) ? $_POST["diplome"] : [], 
@@ -498,14 +502,14 @@ switch(true) {
                             throw new Exception("Le champs horaire doit être rempli !");
                             
                         $meeting = [
-                            'employee' => $_POST['recruteur'],
-                            'establishment' => $_POST['etablissement'],
-                            'date' => Moment::getTimestampFromDate($_POST['date'], $_POST['time']),
-                            'description' => $_POST['description'], 
+                            'employee'      => (int) $_POST['recruteur'],
+                            'establishment' => (int) $_POST['etablissement'],
+                            'date'          => Moment::getTimestampFromDate($_POST['date'], $_POST['time']),
+                            'description'   => $_POST['description'],
                         ];
 
-                        if(Moment::currentMoment()->isTallerThan(Moment::fromDate($_POST['date'], $_POST['time'])->getTimestamp()))
-                            throw new Exception("La date du rendez-vous est antérieure à aujourd'hui.");
+                        // if(Moment::currentMoment()->isTallerThan(Moment::fromDate($_POST['date'], $_POST['time'])->getTimestamp()))
+                        //     throw new Exception("La date du rendez-vous est antérieure à aujourd'hui.");
 
                         $candidates->updateMeetings($_GET['key_meeting'], $_GET['key_candidate'], $meeting);
 
@@ -559,10 +563,10 @@ switch(true) {
                 'msg' => $e
             ]);
         }
-        exit;    
+        break;    
 
     case (isset($_GET['preferences'])):
-        $preferences = new PreferencesController();
+        $preferences = new PreferencesController(); 
         if(is_numeric($_GET['preferences'])) {
             if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
                 throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
@@ -599,10 +603,10 @@ switch(true) {
                                 throw new Exception('Le champs rôle doit être rempli !');
 
                             $user = [
-                                'name' => $_POST['nom'],
+                                'name'      => $_POST['nom'],
                                 'firstname' => $_POST['prenom'],
-                                'email' => $_POST['email'],
-                                'role' => $_POST['role']
+                                'email'     => $_POST['email'],
+                                'role'      => $_POST['role']
                             ];
 
                         } catch(Exception $e) {
@@ -752,6 +756,9 @@ switch(true) {
                     break;  
 
                 case 'input-services': 
+                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
+                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
                     $preferences->displaySaisieService();
                     break;
 
@@ -845,6 +852,22 @@ switch(true) {
                 case 'inscript-qualifications':
                     if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+
+                    try {
+                        if(empty($_POST['titled']))
+                            throw new Exception("Le champs intitulé doit être rempli. ");
+
+                        $preferences->createQualifications(
+                            $_POST['titled'], 
+                            empty($_POST['medical_staff']) ? null : $_POST['medical_staff'],
+                            empty($_POST['abreviation']) ? null : $_POST['abreviation']
+                        );
+                    } catch(Exception $e) {
+                        forms_manip::error_alert([
+                            'title' => "Erreur lors de l'inscription du nouveau poste", 
+                            'msg' => $e
+                        ]);
+                    }
                     break; 
 
                 case 'inscript-poles':
@@ -906,11 +929,12 @@ switch(true) {
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
                     
                     try {
-                        $service = $_POST['service'];
-                        $etablissement = $_POST['etablissement'];
-                    
-                        if(empty($service) || empty($etablissement))
-                            throw new Exception("Les champs service est établissements doivent être remplis !");
+                        if(empty($_POST['titled']))
+                            throw new Exception("Le champs intitulé doit être rempli.");
+                        elseif(empty($_POST['establishments']))
+                            throw new Exception("Il est impossible d'enregistrer un service sans établissement...");
+                        
+                        $preferences->createServices($_POST['titled'], $_POST['establishments'], isset($_POST['description']) ? $_POST['description'] : null);
 
                     } catch (Exception $e) {
                         forms_manip::error_alert([
@@ -918,8 +942,6 @@ switch(true) {
                             'msg' => $e
                         ]);
                     }
-
-                    $preferences->createService($service, $etablissement);
                     break;
 
 
@@ -949,7 +971,7 @@ switch(true) {
                 'msg' => $e
             ]);
         }
-        exit;
+        break;
 
     default: (new HomeController())->displayHome();
 }

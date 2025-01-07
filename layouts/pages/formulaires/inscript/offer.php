@@ -66,28 +66,27 @@
         </section>
     </div>
 </form>
-
 <script type="module">
     import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
     import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
 
-    new AutoComplete(document.getElementById('poste'), <?= json_encode(array_map(function($c) { return $c['titled']; }, $jobs)); ?>);
-    new AutoComplete(document.getElementById('service'), <?= json_encode(array_map(function($c) {  return $c['titled'];  }, $services)); ?>);
-    new AutoComplete(document.getElementById('etablissement'), <?= json_encode(array_map(function($c) {  return $c['titled'];  }, $establishments)); ?>);
-    new AutoComplete(document.getElementById('type_contrat'), <?= json_encode(array_map(function($c) { return $c['titled']; }, $types_of_contracts)); ?>);
-
-    formManipulation.SetMinEndDate('date_debut', 'date_fin');
+    new AutoComplete(document.getElementById('poste'), AutoComplete.arrayToSuggestions(<?= json_encode($jobs) ?>));
+    new AutoComplete(document.getElementById('service'), AutoComplete.arrayToSuggestions(<?= json_encode($services) ?>));
+    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($establishments) ?>));
+    new AutoComplete(document.getElementById('type_contrat'), AutoComplete.arrayToSuggestions(<?= json_encode($types_of_contracts) ?>));
 
     const inputTypeContrat = document.getElementById('type_contrat');
-    const inputDateFin = document.getElementById('date_fin').parentElement;
-    const checkContratType = () => {
-        if (inputTypeContrat.value.trim().toUpperCase() === 'CDI') 
-            inputDateFin.style.display = 'none';
-        else 
-            inputDateFin.style.display = 'flex';  
+    const inputDateFin = document.getElementById('date_fin');
+    const checkContratType = (input) => {
+        if (inputTypeContrat.value.trim().toUpperCase() === 'CDI') {
+            inputDateFin.value = '';
+            inputDateFin.parentElement.style.display = 'none';
+        } else inputDateFin.parentElement.style.display = 'flex';  
     };
 
     inputTypeContrat.addEventListener('input', checkContratType);
     inputTypeContrat.addEventListener('AutoCompleteSelect', checkContratType);
     checkContratType();
+
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

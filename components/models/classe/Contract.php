@@ -131,11 +131,12 @@ class Contract {
      */
     public static function makeContract($infos=[]): Contract {
         if(empty($infos) || !isset($infos['candidate']) || !isset($infos['job']) || !isset($infos['service']) || !isset($infos['establishment']) || !isset($infos['type']) || !isset($infos['start_date']))
-            throw new InvalideContractExceptions('Donnnées éronnées. Champs manquants.');
+            throw new InvalideContractExceptions('Données manquantes.');
 
         $contract = new Contract($infos['candidate'], $infos['job'], $infos['service'], $infos['establishment'], $infos['type'], $infos['start_date']);
         if(count($infos) === 6) 
-            return $contract;            
+            return $contract;           
+
         foreach($infos as $key => $value) {
             switch($key) {
                 case 'key': 

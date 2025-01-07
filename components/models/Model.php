@@ -13,9 +13,7 @@ abstract class Model {
     /**
      * Class' constructor
      */
-    public function __construct() {
-        $this->makeConnection();
-    }
+    public function __construct() { $this->makeConnection(); }
 
     /**
      * Protected method connecting the application to the database
@@ -50,10 +48,10 @@ abstract class Model {
      * 
      * @param Int $user_key The user identification key in the database
      * @param String $action The action title
-     * @param String optionnal $description The action description 
+     * @param String|Null optionnal $description The action description 
      * @return Void
      */
-    protected function writeLogs(&$user_key, $action, $description=null) {
+    protected function writeLogs(int $user_key, string $action, ?string $description = null) {
         try {
             $this->inscriptActions(
                 $user_key, 
@@ -73,42 +71,22 @@ abstract class Model {
 // * METHODES DE REQUETES A LA BASE DE DONNEES * //
 
     /**
-     * Private method checking the request parameters
-     * 
-     * @param String $request The SQL request
-     * @param Array<String> $params The request data Array
-     * @return Boolean TRUE if the request executed successfully, FALSE otherwise
-     */
-    private function test_data_request(&$request, &$params=[]): Bool {
-        if(empty($request) || !is_string($request)) 
-            throw new Exception("La requête doit être passée en paramètre !");
-        elseif(!is_Array($params))
-            throw new Exception("Les données de la requête doivent être passsée en paramètre !");
-
-        return true;
-    }
-    /**
      * Private method executing a GET request to the database
      *
      * @param String $request The SQL request
      * @param Array<String> $params The request data parameters
      * @param Boolean $unique TRUE if the waiting result is one unique item, FALSE otherwise
      * @param Boolean $present TRUE if if the waiting result can't be null, FALSE otherwise
-     * @return Array|null
+     * @return Array|Null
      */
-    protected function get_request($request, $params = [], $unique=false, $present=false): ?Array {
-        if(empty($unique) || !is_bool($unique) || empty($present) || !is_bool($present))  
+    protected function get_request(string $request, ?array $params = [], bool $unique = false, bool $present = false): ?Array { 
+        if(empty($unique) || empty($present))  
             $present = false;
-    
-        if($this->test_data_request($request, $params)) try {
+
+        try {
             $query = $this->getConnection()->prepare($request);
             $query->execute($params);
-    
-            if($unique) 
-                $result = $query->fetch(PDO::FETCH_ASSOC);
-            else 
-                $result = $query->fetchAll(PDO::FETCH_ASSOC);
-    
+            $result = $unique ? $query->fetch(PDO::FETCH_ASSOC) : $query->fetchAll(PDO::FETCH_ASSOC);
             if(empty($result)) {
                 if($present) 
                     throw new Exception("Requête: " . $request ."\nAucun résultat correspondant");
@@ -134,17 +112,12 @@ abstract class Model {
     /**
      * Private method executing a POST request to the database
      *
-     * @param String  $request The SQL request
+     * @param String $request The SQL request
      * @param Array<String>  $params The request data Array
-     * @return Bool
+     * @return Void
      */
-    protected function post_request(&$request, $params=[]): Bool {
-        $res = true;
-    
-        if(!$this->test_data_request($request, $params)) 
-            $res = false;
-    
-        else try {
+    protected function post_request(string $request, array $params) {
+        try {
             $query = $this->getConnection()->prepare($request);
             $query->execute($params);
 
@@ -153,10 +126,29 @@ abstract class Model {
                 'title' => 'Erreur lors de la requête à la base de données',
                 'msg' => $e
             ]);
-        } 
-    
-        return $res;
+        }
     }
+    /**
+     * Private method executing a POST request to the database
+     *
+     * @param String $request The SQL request
+     * @param Array<String>  $params The request data Array
+     * @return Int The primary key og the new element
+     */
+    // protected function post_request(string $request, array $params): Int {
+    //     try {
+    //         $query = $this->getConnection()->prepare($request);
+    //         $query->execute($params);
+    //         $lastId = $this->getConnection()->lastInsertId();
+    //         return $lastId;
+    // 
+    //     } catch(PDOException $e){
+    //         forms_manip::error_alert([
+    //             'title' => 'Erreur lors de la requête à la base de données',
+    //             'msg' => $e
+    //         ]);
+    //     }
+    // }
 
 
 // * GET * //
@@ -166,79 +158,79 @@ abstract class Model {
      *
      * @return Array
      */
-    public function getAutoCompUsers(): Array {
-        $request = "SELECT CONCAT(Name, ' ', Firstname) as name FROM Users ORDER BY name";
-        return $this->get_request($request, [], false, true);
+    public function getUsersForAutoComplete(): Array {
+        $request = "SELECT Id as id, CONCAT(Name, ' ', Firstname) as text FROM Users ORDER BY name";
+        return $this->get_request($request, null, false, true);
     }
     /**
      * Public method returning the establishments list to autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getEstablishments() {
-        $request = "SELECT titled FROM Establishments ORDER BY titled";
-        return $this->get_request($request, [], false, true);
+    public function getEstablishmentsForAutoComplete(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM Establishments ORDER BY titled";
+        return $this->get_request($request, null, false, true);
     }
     /**
      * Public method returning the services list to the autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getServices() {
-        $request = "SELECT titled FROM Services ORDER BY titled";
-        return $this->get_request($request, [], false, true);
+    public function getServicesForAutoComplete(): Array {
+        $request = "SELECT Id AS id, titled AS text FROM Services ORDER BY titled";
+        return $this->get_request($request, null, false, true);
     }
     /**
      * Public method returning the sources list to the autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getSources() {
-        $request = "SELECT titled FROM Sources ORDER BY titled";
-        return $this->get_request($request, [], false, true);
+    public function getSourcesForAutoComplete(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM Sources ORDER BY titled";
+        return $this->get_request($request, null, false, true);
     }
     /**
      * Public method returning the types of contracts list to the autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getTypesOfContracts() {
-        $request = "SELECT titled FROM Types_of_contracts ORDER BY titled";
-        return $this->get_request($request, [], false, true);
+    public function getTypesOfContractsForAutoComplete(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM Types_of_contracts ORDER BY titled";
+        return $this->get_request($request, null, false, true);
     }
     /**
      * Public method returning the job lost to the autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getJobs() {
-        $request = "SELECT titled FROM jobs ORDER BY titled";
-        return $this->get_request($request, [], false, true);
+    public function getJobsForAutoComplete(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM jobs ORDER BY titled";
+        return $this->get_request($request, null, false, true);
     }
     /**
      * Public method returning the establishments list to autocomplete items
      *
      * @return Void
      */
-    public function getQualifications() {
-        $request = "SELECT Titled AS text FROM Qualifications";
-        return $this->get_request($request, [], false, true);
+    public function getQualificationsForAutoComplete() {
+        $request = "SELECT Id AS id, Titled AS text FROM Qualifications";
+        return $this->get_request($request, null, false, true);
     }
     /**
      * Public method returning the assistants list to autocomplete items
      *
-     * @return Void
+     * @return Array
      */
-    public function getHelps() {
-        $request = "SELECT Id AS id, Titled AS text FROM Helps";
-        return $this->get_request($request, [], false, true);
+    public function getHelpsForAutoComplete(): Array {
+        $request = "SELECT Id as id, Titled AS text FROM Helps";
+        return $this->get_request($request, null, false, true);
     }
     /**
      * Public method returning the candidate who have a job in the foundation list to autocomplete items
      *
-     * @return Void
+     * @return Array|NULL
      */
-    public function getEmployee() {
+    public function getEmployeeForAutoComplete(): ?Array {
         $request = "SELECT 
         c.Id AS id,
         CONCAT(c.Name, ' ', c.Firstname) AS text
@@ -249,26 +241,22 @@ abstract class Model {
         WHERE con.SignatureDate IS NOT NULL
         AND (con.EndDate IS NULL OR con.EndDate > CURDATE())
         
+        GROUP BY text
         ORDER BY text";
 
-        return $this->get_request($request, []);
+        return $this->get_request($request);
     }
     /**
      * Public method returning the role liste without the owner
      *
-     * @return Void
+     * @return Array
      */
-    public function getRoles() {
-        $request = "SELECT 
-        Id AS id,
-        Titled AS titled
-
-        FROM Roles";
-
+    public function getRolesForAutoComplete(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM Roles";
         return $this->get_request($request);
     }
 
-    
+
 // * SEARCH * //
 
     /**
@@ -277,13 +265,11 @@ abstract class Model {
      * @param Int|String $pole The hub primary key or intitule
      * @return Array
      */
-    protected function searchPoles($pole): Array {
+    protected function searchPoles(int|string $pole): Array {
         if(is_numeric($pole))
             $request = "SELECT * FROM Poles WHERE Id = :pole";
         elseif(is_string($pole))
             $request = "SELECT * FROM Poles WHERE Titled = :pole";  
-        else 
-            throw new Exception("paramètre invalide");
 
         $params = ['pole' => $pole];
 
@@ -295,13 +281,13 @@ abstract class Model {
      * @param Int|String $establishment The establishment primary key or intitule 
      * @return Array
      */
-    public function searchEstablishments($establishment): Array {
+    public function searchEstablishments(int|string $establishment): Array {
         if(is_numeric($establishment)) 
             $request = "SELECT * FROM Establishments WHERE Id = :establishment";
         elseif(is_string($establishment)) 
             $request = "SELECT * FROM Establishments WHERE Titled = :establishment";
-        else 
-            throw new Exception("Type invalide. La clé primaire (int) ou son intitulé (string) sont nécessaires pour rechercher un établissment !");
+        // else 
+        //     throw new Exception("Type invalide. La clé primaire (int) ou son intitulé (string) sont nécessaires pour rechercher un établissment !");
 
         $params = ['establishment' => $establishment];
 
@@ -313,13 +299,11 @@ abstract class Model {
      * @param Int|String $service The service primary key or intitule
      * @return Array
      */
-    public function searchServices($service): Array {
+    public function searchServices(int|string $service): Array {
         if(is_numeric($service))
             $request = "SELECT * FROM Services WHERE Id = :service";
         elseif(is_string($service))
             $request =  "SELECT * FROM Services WHERE Titled = :service";
-        else 
-            throw new Exception("La saisie du type de contrat est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
 
         $params = ['service' => $service];
 
@@ -332,10 +316,10 @@ abstract class Model {
      * @param Int $key_establishment The establishment's primary key
      * @return Array|NULL
      */
-    protected function searchBelongTo($key_service, $key_establishment): ?Array {
+    protected function searchBelongTo(int $key_service, int $key_establishment): ?Array {
         $request = "SELECT * FROM Belong_to WHERE Key_Services = :key_service AND Key_Establishments = :key_establishment";
         $params = [
-            'key_service' => $key_service,
+            'key_service'       => $key_service,
             'key_establishment' => $key_establishment
         ];
 
@@ -347,21 +331,13 @@ abstract class Model {
      * @param Int|String $user The user's primary key or identifier
      * @return Array
      */ 
-    public function searchUsers($user): Array {
-        if($user == null)
-            throw new Exception("Le nom ou l'identifiant de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
-
+    public function searchUsers(int|string $user): Array {
         $params = ['user' => $user];
-        if(is_numeric($user)) {
+        if(is_numeric($user)) 
             $request = "SELECT * FROM Users WHERE Id = :user";
-            return $this->get_request($request, $params, true, true);
-
-        } elseif(is_string($user)) {
+        elseif(is_string($user)) 
             $request = "SELECT * FROM Users WHERE Identifier = :user";
-            return $this->get_request($request, $params, true, true);
-
-        } else 
-            throw new Exception("Le type n'a pas pu être reconnu. Le nom (string) ou l'identifiant (int) de l'utilisateur sont nécessaires pour le rechercher dans la base de données !");
+        return $this->get_request($request, $params, true, true);
     }
     /**
      * Protected method searching one role in the database
@@ -369,18 +345,14 @@ abstract class Model {
      * @param Int|String $role The role primary key or intitule
      * @return Array
      */
-    protected function searchRole($role): Array {
+    protected function searchRole(int|string $role): Array {
         if(is_numeric($role)) 
             $request = "SELECT * FROM roles WHERE Id = :role";
         elseif(is_string($role)) 
             $request = "SELECT * FROM roles WHERE Titled = :role";
-        else 
-            throw new Exception("La saisie du rôle est mal typée. Le rôle doit être un identifiant (entier positif) ou une chaine de caractères !");
-
+        
         $params = ["role" => $role];
-        $result = $this->get_request($request, $params, true, true);
-
-        return $result;
+        return $this->get_request($request, $params, true, true);
     }
     /**
      * Protected method searching one action type in the database
@@ -388,18 +360,13 @@ abstract class Model {
      * @param Int|String $action The type primary key or intitule
      * @return Array
      */
-    protected function serachTypesOfActions($action): Array {
-        if($action == null) 
-            throw new Exception("Données éronnées. La clé action ou son intitulé sont nécessaires pour rechercher une action !");
-        elseif(is_numeric($action)) 
+    protected function serachTypesOfActions(int|string $action): Array {
+        if(is_numeric($action)) 
             $request = "SELECT * FROM Types_of_actions WHERE Id = :action";
         elseif(is_string($action))
-            $request = "SELECT * FROM Types_of_actions WHERE Titled = :action";
-        else 
-            throw new Exception('Type invalide. La clé action (int) ou son intitulé (string) sont nécessaires pour rechercher une action !');   
+            $request = "SELECT * FROM Types_of_actions WHERE Titled = :action";   
 
         $params = [ "action" => $action ];
-
         return $this->get_request($request, $params, true, true);
     }
 
@@ -409,12 +376,9 @@ abstract class Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array
      */
-    public function searchCandidates($key_candidate): Array {
-        if(empty($key_candidate) || !is_numeric($key_candidate))
-            throw new Exception("Impossible de rechercher un candidat sans sa clé primaire !");
-
-        $request = "SELECT * FROM Candidates WHERE Id = :candidate";
-        $params = ['candidate' => $key_candidate];
+    public function searchCandidates(int $key_candidate): Array {
+        $request = "SELECT * FROM Candidates WHERE Id = :key_candidate";
+        $params = ['key_candidate' => $key_candidate];
 
         return $this->get_request($request, $params, true, true);
     }
@@ -424,7 +388,7 @@ abstract class Model {
      * @param Int $cle The application primary key
      * @return Array
      */
-    public function searchCandidatesFromApplications($key_application): Array {
+    public function searchCandidatesFromApplications(int $key_application): Array {
         $request = "SELECT c.Id, c.Name, c.Firstname, c.Gender, c.Email, c.Phone, c.Address, c.City, c.PostCode,  c.Availability, c.MedicalVisit,  c.Rating, c.Description, c.Is_delete, c.A,  c.B,  c.C
         FROM Applications 
         INNER JOIN Candidates AS c ON Applications.Key_Candidates = c.Id
@@ -439,7 +403,7 @@ abstract class Model {
      * @param Int $key_contract The contract's primary key
      * @return Array
      */
-    public function searchCandidatesFromContracts($key_contract): Array {
+    public function searchCandidatesFromContracts(int $key_contract): Array {
         $request = "SELECT * 
         FROM Contracts 
         INNER JOIN Candidates ON Contracts.Key_Candidates = Candidates.Id
@@ -455,7 +419,7 @@ abstract class Model {
      * @param Int|String $diplome The degree primary key or intitule
      * @return Array
      */
-    protected function searchQualifications($qualification): Array {
+    protected function searchQualifications(int|string $qualification): Array {
         if(is_numeric($qualification)) {
             $request = "SELECT * FROM qualifications WHERE id = :qualification";
             $params = ["qualification" => $qualification];
@@ -467,9 +431,7 @@ abstract class Model {
             $params = ["qualification" => $qualification];
 
             $result = $this->get_request($request, $params, true);
-
-        } else 
-            throw new Exception("La saisie du diplome est mal typée. Il doit être un identifiant (entier positif) ou un echaine de caractères !");      
+        }
 
         return $result;
     }
@@ -479,7 +441,7 @@ abstract class Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array|NULL
      */
-    protected function searchGetQualificationsFromCandidates($key_candidate): ?Array {
+    protected function searchGetQualificationsFromCandidates(int $key_candidate): ?Array {
         $request= "SELECT * FROM Get_qualifications WHERE key_Candidates = :key_candidate";
         $params = ['key_candidate' => $key_candidate];
 
@@ -491,16 +453,13 @@ abstract class Model {
      * @param Int|String $job The job primary key or intitule
      * @return Array
      */
-    public function searchJobs($job): Array {
+    public function searchJobs(int|string $job): Array {
         if(is_numeric($job)) 
             $request = "SELECT * FROM Jobs WHERE Id = :job";    
         elseif(is_string($job)) 
             $request = "SELECT * FROM Jobs WHERE Titled = :job";
-        else 
-            throw new Exception("Erreur lors de la recherche de poste. La saisie du poste est mal typée. Il doit être un identifiant (entier positif) ou une chaine de caractères !");
         
         $params = ["job" => $job];
-
         return $this->get_request($request, $params, true, true);
     }
 
@@ -510,16 +469,13 @@ abstract class Model {
      * @param Int|String $source The source primary key or intitule
      * @return Array
      */
-    public function searchSources($source): Array {
+    public function searchSources(int|string $source): Array {
         if(is_numeric($source)) 
             $request = "SELECT * FROM sources WHERE Id = :source";
         elseif(is_string($source)) 
             $request = "SELECT * FROM sources WHERE Titled = :source";
-        else 
-            throw new Exception("La saisie de la source est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
         
         $params = ["source" => $source];
-
         return $this->get_request($request, $params, true, true);
     }
     /**
@@ -528,7 +484,7 @@ abstract class Model {
      * @param Int $key_meeting The meeting's primary key
      * @return Array The array containing the meeting's data
      */
-    public function searchMeetings($key_meeting): Array {
+    public function searchMeetings(int $key_meeting): Array {
         $request = "SELECT * FROM Meetings WHERE Id = :key_meeting";
         $params = ['key_meeting' => $key_meeting];
 
@@ -540,7 +496,7 @@ abstract class Model {
      * @param Int|String $aide The assistance primary key or intitule
      * @return Array
      */
-    protected function searchHelps($key_helps): Array {
+    protected function searchHelps(int|string $key_helps): Array {
         if(is_numeric($key_helps)) {
             $request = "SELECT * FROM Helps WHERE Id = :id";
             $params = ["id" => $key_helps];
@@ -552,9 +508,7 @@ abstract class Model {
             $params = ["titled" => $key_helps];
 
             $result = $this->get_request($request, $params, true);
-
-        } else 
-            new Exception("La saisie de l'aide est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");        
+        } 
 
         return $result;
     }
@@ -564,7 +518,7 @@ abstract class Model {
      * @param Int $key_candidate The candidate's primary key
      * @return Array|NULL
      */
-    protected function searchHaveTheRightToFromCandidate($key_candidate): ?Array {
+    protected function searchHaveTheRightToFromCandidate(int $key_candidate): ?Array {
         $request = "SELECT * FROM Have_the_right_to WHERE Key_Candidates = :key_candidate";
         $params = ['key_candidate' => $key_candidate];
 
@@ -576,7 +530,7 @@ abstract class Model {
      * @param Int $application The application primary key
      * @return Array
      */
-    public function searchApplications($key_application): Array {
+    public function searchApplications(int $key_application): Array {
         $request = "SELECT * FROM Applications WHERE Id = :key_application";
         $params = ['key_application' => $key_application];
 
@@ -588,7 +542,7 @@ abstract class Model {
      * @param Int|String $contract The types of contracts primary key or intitule
      * @return Array The array of Type of contract information
      */
-    public function searchTypesOfContracts($contract): Array {
+    public function searchTypesOfContracts(int|string $contract): Array {
         if(is_numeric($contract)) {
             $request = "SELECT * FROM Types_of_contracts WHERE Id = :id";
             $params = ['id' => $contract];
@@ -596,12 +550,9 @@ abstract class Model {
         } elseif(is_string($contract)) {
             $request =  "SELECT * FROM Types_of_contracts WHERE titled = :titled";
             $params = ['titled' => $contract];
-
-        } else 
-            throw new Exception("La saisie du type de contrat est mal typée. Elle doit être un identifiant (entier positif) ou un echaine de caractères !");
+        }
         
         $result = $this->get_request($request, $params, true, true);
-
         return $result;
     }
     /**
@@ -610,7 +561,7 @@ abstract class Model {
      * @param Int $key_contract The contract's primary key
      * @return Array
      */
-    protected function searchContracts(&$key_contract): Array {
+    protected function searchContracts(int $key_contract): Array {
         $request  = "SELECT * FROM Contracts WHERE Id = :key_contract";
         $params = ['key_contract' => $key_contract];
 
@@ -625,12 +576,15 @@ abstract class Model {
      * protected method registering one user in the database
      *
      * @param Array $user The user's data Array
-     * @return Void
+     * @return Int The primary key of the new service
      */
-    protected function inscriptUsers($user=[]) {
+    protected function inscriptUsers(array $user): Int {
         $request = "INSERT INTO Users (Identifier, Name, Firstname, Email, Password, Key_Establishments, Key_Roles)
                     VALUES (:identifier, :name, :firstname, :email, :password, :key_establishments, :key_roles)";
+
         $this->post_request($request, $user);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one action in the database
@@ -639,9 +593,9 @@ abstract class Model {
      * @param Int $key_action The action primary key
      * @param String $description The action description
      * @throws Exception If the action's informtions is invalid or no complet
-     * @return Void
+     * @return Int The primary key og the new Action
      */
-    protected function inscriptActions(&$key_user, &$key_action, $description=null) {
+    protected function inscriptActions(int $key_user, int $key_action, string $description = null): Int {
         if(!empty($description)) {
             $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, Description) VALUES (:user_id, :type_id, :description)";
             $params = [
@@ -659,14 +613,16 @@ abstract class Model {
         }
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one candidate in the database
      *
      * @param Candidate $candidate The candidate's data 
-     * @return Int
+     * @return Int The primary key of the new Candidate
      */
-    protected function inscriptCandidates(&$candidate): Int {
+    protected function inscriptCandidates(Candidate $candidate): Int {
         $request = "INSERT INTO Candidates (Name, Firstname, Gender, Phone, Email, Address, City, PostCode, Availability";
         $values_request = " VALUES (:name, :firstname, :gender, :phone, :email, :address, :city, :post_code, :availability";
 
@@ -680,20 +636,17 @@ abstract class Model {
 
         $this->post_request($request, $candidate->exportToSQL());
         $lastId = $this->getConnection()->lastInsertId();
-
         return $lastId;
     }
     /**
      * Protected method registering one Get_qualfications in the database
-     *
-     * TODO : Tester cette méthode
      * 
      * @param Int $key_candidate The candidate's primary key
      * @param Int $key_qualification The degree primary key
-     * @param Int $year The year of obtaining
-     * @return Void
+     * @param String $date The year of obtaining
+     * @return Int The primary key of the new GetQualifications
      */
-    protected function inscriptGetQualifications($key_candidate, $key_qualification, $date) {
+    protected function inscriptGetQualifications(int $key_candidate, int $key_qualification, string $date): Int {
         $request = "INSERT INTO Get_qualifications (Key_Candidates, Key_Qualifications, Date) VALUES (:key_candidate, :key_qualification, :date)";
         $params = [
             "key_candidate"     => $key_candidate,
@@ -702,18 +655,18 @@ abstract class Model {
         ];
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one Have_the_right_to in the database
-     *
-     * TODO : Tester cette méthode
      * 
      * @param Int $key_candidate The candidate's primary key
      * @param Int $key_helps The assistance primary key
      * @param Int $key_employee The recommander's primary key
-     * @return Void
+     * @return Int The primary key of the new HaveTheRightTo
      */
-    protected function inscriptHaveTheRightTo($key_candidate, $key_helps, $key_employee=null) {
+    protected function inscriptHaveTheRightTo(int $key_candidate, int $key_helps, int $key_employee = null): Int {
         $request = "INSERT INTO Have_the_right_to (Key_Candidates, Key_Helps";
         $values_request = " VALUES (:key_candidate, :key_helps";
         $params = [
@@ -731,6 +684,8 @@ abstract class Model {
         unset($values_request);
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one meeting in the database 
@@ -738,19 +693,21 @@ abstract class Model {
      * @param Int $key_user The user's primary key (recruiter) 
      * @param Int $key_candidate The candidate's primary key
      * @param Int $key_establishment The establishment primary key
-     * @param Int $moment The meeting's moment timestamp
-     * @return Void
+     * @param String $moment The meeting's moment 
+     * @return Int The primary key of the new Meeting
      */
-    protected function inscriptMeetings($key_user, $key_candidate, $key_establishment, $moment) {
+    protected function inscriptMeetings(int $key_user, int $key_candidate, int $key_establishment, string $moment): Int {
         $request = "INSERT INTO Meetings (Date, Key_Users, Key_Candidates, Key_Establishments) VALUES (:moment, :key_user, :key_candidate, :key_establishment)";
         $params = [
-            "moment"            => date('Y-m-d H:i:s', $moment),
+            "moment"            => $moment,
             "key_user"          => $key_user,
             "key_candidate"     => $key_candidate,
             "key_establishment" => $key_establishment
         ];
     
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected methood registering a new contract
@@ -760,16 +717,16 @@ abstract class Model {
      * @param Int $key_service The service's primary key
      * @param Int $key_establishment The establishment's primary key
      * @param Int $key_type_of_contract The type of contracts primary key
-     * @param Int $start_date The start date timestamp
-     * @param Int $end_date The end date timestamp
-     * @param Int $signature_date The signature date timestamp
-     * @param Int $salary The candidate's salary
-     * @param Int $hourly_rate The number of hours to be completed in a working week
-     * @param Bool $night_work If the candidate has to work on nights
-     * @param Bool $wk_work If the candidate has to work on week-ends
-     * @return Void
+     * @param String $start_date The start date 
+     * @param String|Null $end_date The end date 
+     * @param String|Null $signature_date The signature date 
+     * @param Int|Null $salary The candidate's salary
+     * @param Int|Null $hourly_rate The number of hours to be completed in a working week
+     * @param Bool|Null $night_work If the candidate has to work on nights
+     * @param Bool|Null $wk_work If the candidate has to work on week-ends
+     * @return Int The primary key of the new Contract
      */
-    protected function inscriptContracts($key_candidate, $key_job, $key_service, $key_establishment, $key_type_of_contract, $start_date, $end_date = null, $signature_date = null, $salary = null, $hourly_rate = null, $night_work = null, $wk_work = null) {
+    protected function inscriptContracts(int $key_candidate, int $key_job, int $key_service, int $key_establishment, int $key_type_of_contract, string $start_date, ?string $end_date = null, ?string $signature_date = null, ?int $salary = null, ?int $hourly_rate = null, ?bool $night_work = false, ?bool $wk_work = false): Int {
         $request = "INSERT INTO Contracts (Key_Candidates, Key_Jobs, Key_Services, Key_Establishments, Key_Types_of_contracts, StartDate";
         $request_values = " VALUES (:key_candidate, :key_job, :key_service, :key_establishment, :key_type_of_contract, :start_date";
         $params = [
@@ -814,8 +771,9 @@ abstract class Model {
 
         $request .= ')' . $request_values . ')';
         unset($request_values);
-
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
 
     /**
@@ -823,9 +781,9 @@ abstract class Model {
      *
      * @param String $titled The job intitule
      * @param String $titledFeminin The job description
-     * @return Void
+     * @return Int The primary key of the new Job
      */
-    protected function inscriptJobs(&$titled, &$titledFeminin) {
+    protected function inscriptJobs(string $titled, string $titledFeminin): Int {
         $request = "INSERT INTO Jobs (Titled, TitledFeminin) VALUES (:titled, :titledFeminin)";
         $params = [
             "titled"        => $titled,
@@ -833,52 +791,78 @@ abstract class Model {
         ];
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one service in the database
      *
      * @param String $service The service intitule
-     * @param String $cle_etablissement The service description
-     * @return Void
+     * @param String|Null $description The description of the new service
+     * @return Int The primary key of the new service
      */
-    protected function inscriptService(&$service, $cle_etablissement) {
-        // On initialise la requête 
-        $request = "INSERT INTO Services (Intitule_Services, Cle_Etablissements) VALUES (:service, :etablissement)";
+    protected function inscriptServices(string $service, ?string $description): Int {
+        $request = "INSERT INTO Services (Titled, Description) VALUES (:service, :description)";
         $params = [
             'service'       => $service,
-            'etablissement' => $cle_etablissement
+            'description'   => $description
         ];
 
-        // On lance
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one establishment
      *
-     * @param Array<String> $data The establishment data Array 
-     * @return Void
+     * @param String $titled The establishment title
+     * @param String $titled The establishment address
+     * @param String $titled The establishment city
+     * @param Int $titled The establishment postcode
+     * @param Int $titled The primary key of the hub containing the establishment 
+     * @return Int The primary key of the new Establishment
      */
-    protected function inscriptEstablishments(&$data=[]) {
+    protected function inscriptEstablishments(string $titled, string $address, string $city, int $postcode, int $key_poles): Int {
         $request = "INSERT INTO Establishments (Titled, Address, City, PostCode, Key_Poles) 
                     VALUES (:titled, :address, :city, :postcode, :key_poles)";
         $params = [
-            'titled'    => $data['titled'],
-            'address'   => $data['address'],
-            'city'      => $data['city'],
-            'postcode'  => $data['postcode'],
-            'key_poles' => $data['key_poles']
+            'titled'    => $titled,
+            'address'   => $address,
+            'city'      => $city,
+            'postcode'  => $postcode,
+            'key_poles' => $key_poles
         ];
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
+    }
+    /**
+     * Undocumented function
+     *
+     * @param Int $key_service The primary key of the service
+     * @param Int $key_establishment The primary key of the establishment
+     * @return Int The primary key of the new BelongTo
+     */
+    protected function inscriptBelongTo(int $key_service, int $key_establishment): Int {
+        $request = "INSERT INTO Belong_to (Key_Establishments, Key_Services) VALUES (:key_establishment, :key_service)";
+        $params = [
+            'key_service'       => $key_service,
+            'key_establishment' => $key_establishment
+        ];
+
+        $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
      * Protected method registering one hub in the database
      *
      * @param String $titled The hub titled
      * @param String $description The hub description
-     * @return Void
+     * @return Int The primary key of the new Pole
      */
-    protected function inscriptPoles(&$titled, &$description) {
+    protected function inscriptPoles(string $titled, string $description): Int {
         $request = "INSERT INTO Poles (Titled, Description) VALUES (:titled, :desc)";
         $params = [
             'titled' => $titled,
@@ -886,19 +870,25 @@ abstract class Model {
         ];
 
         $this->post_request($request, $params);
+        $lastId = $this->getConnection()->lastInsertId();
+        return $lastId;
     }
     /**
-     * Protected method registering one degree in the database
+     * Public method registering a new qualification
      *
-     * @param String $diplome The degree intitule
+     * @param String $titled The titled of the new qualification
+     * @param Boolean $medical_staff Boolean showing if the new qualification is for medical jobs or not
+     * @param String|Null $abbreviation The abbreviation of the titled
      * @return Void
      */
-    protected function inscriptDiplome($diplome) {
-        // On initialise la requête
-        $request = "INSERT INTO Diplomes (Intitule_Diplomes) VALUES (:intitule)";
-        $params = ["intitule" => $diplome];
+    protected function inscriptQualifications(string $titled, bool $medical_staff = false, ?string $abbreviation) {
+        $request = "INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES (:titled, :medical_staff, :abbreviation)";
+        $params = [
+            "titled"        => $titled,
+            "medical_staff" => $medical_staff ? 1 : 0,
+            "abbreviation"  => $abbreviation
+        ];
 
-        // On lance la requête
         $this->post_request($request, $params);
     }
 
@@ -911,8 +901,7 @@ abstract class Model {
      * @param String $password The new user's password
      * @return Void
      */
-    public function updatePassword(&$password) {
-        // On initialise la requête
+    public function updatePassword(string $password) {
         $request = "UPDATE Users
         SET Password = :password, PasswordTemp = false
         WHERE Id = :key";
@@ -920,27 +909,29 @@ abstract class Model {
             'key'      => $_SESSION['user_key'],
             'password' => password_hash($password, PASSWORD_DEFAULT)
         ];
-        
-        // On lance la requête
+
         $this->post_request($request, $params);
     }
     /**
      * Public method updating one user's data
      *
      * @param Int $key_users The user's primary key
-     * @param Array<String> $users The user's data Array
+     * @param String $name The user's name
+     * @param String $firstname The user's firstname
+     * @param String $email The user's email
+     * @param Int $key_roles The kprimary key of the user's role
      * @return Void
      */
-    public function updateUsers($key_users, $users=[]) {
+    public function updateUsers(int $key_users, string $name, string $firstname, string $email, int $key_roles) {
         $request = "UPDATE Users
         SET Name = :name, Firstname = :firstname, Email = :email, Key_Roles = :role
         WHERE Id = :cle";
         $params = [
-            'name'    => $users['name'],
-            'firstname' => $users['firstname'],
-            'email'  => $users['email'],
-            'role'   => $users['role'],
-            'cle'    => $key_users
+            'name'      => $name,
+            'firstname' => $firstname,
+            'email'     => $email,
+            'role'      => $key_roles,
+            'cle'       => $key_users
         ];
 
         return $this->get_request($request, $params);
@@ -949,17 +940,21 @@ abstract class Model {
      * public method updating one candidate's evaluation
      *
      * @param Int $cle_candidat The candidate's primary key
-     * @param Array $notation The candidate's data Array
+     * @param Int $rating the candidate's rating 
+     * @param String|Null $description the candidate's description 
+     * @param Int optionnal $a The first important criteria to the recruitement (1 -> true ; 0 -> false) 
+     * @param Int optionnal $b The first important criteria to the recruitement (1 -> true ; 0 -> false)  
+     * @param Int optionnal $c The first important criteria to the recruitement (1 -> true ; 0 -> false)  
      * @return Void
      */
-    public function updateRatings($key_candidate, &$rating=[]) {
+    public function updateRatings(int $key_candidate, int $rating, string|null $description = null, int $a = 0, int $b = 0, int $c = 0) {
         $request = "UPDATE Candidates SET Rating = :rating, Description = :description, A = :a, B = :b, C = :c WHERE Id = :key_candidate";
         $params = [
-            'rating'        => $rating['notation'],
-            'description'   => $rating['description'],
-            'a'             => $rating['a'],
-            'b'             => $rating['b'],
-            'c'             => $rating['c'],
+            'rating'        => $rating,
+            'description'   => $description,
+            'a'             => $a,
+            'b'             => $b,
+            'c'             => $c,
             'key_candidate' => $key_candidate
         ];
 
@@ -978,7 +973,7 @@ abstract class Model {
      * @param Int $post_code The candidate's post code
      * @return Void
      */
-    public function updateCandidates($key_candidate, $name, $firstname, $email, $phone, $address, $city, $post_code) {
+    public function updateCandidates(int $key_candidate, string $name, string $firstname, ?string $email = null, ?string $phone = null, ?string $address = null, ?string $city = null, ?int $post_code = null) {
         $request = "UPDATE Candidates 
         SET Name = :name, Firstname = :firstname, Email = :email, Phone = :phone, Address = :address, City = :city, PostCode = :post_code
         Where Id = :key_candidate";
@@ -989,7 +984,7 @@ abstract class Model {
             'phone'         => $phone,
             'address'       => $address,
             'city'          => $city,
-            'post_code'   => $post_code,
+            'post_code'     => $post_code,
             'key_candidate' => $key_candidate
         ];
 
@@ -999,14 +994,14 @@ abstract class Model {
      * Public method updating one candidate's meeting
      *
      * @param Int $key_meeting The meeting's primary key
-     * @param Int $key_user
-     * @param Int $key_candidate
-     * @param Int $key_establishment
-     * @param Int $moment
-     * @param Int $description
+     * @param Int $key_user The user's primary key
+     * @param Int $key_candidate The candidate's primary key
+     * @param Int $key_establishment The establishment's primary key
+     * @param String $moment The moment when the meetind is
+     * @param String $description The meeting's description
      * @return Void
      */
-    public function updateMeetings($key_meeting, $key_user, $key_candidate, $key_establishment, $moment, $description) {
+    public function updateMeetings(int $key_meeting, int $key_user, int $key_candidate, int $key_establishment, string $moment, string $description) {
         $request = "UPDATE Meetings
         SET Key_Users = :key_user, Key_Candidates = :key_candidate, Key_Establishments = :key_establishment, Date = :moment, Description = :description
         WHERE Id = :key_meeting";
@@ -1031,9 +1026,8 @@ abstract class Model {
      * @param Int $key_meeting The meeting's primary key
      * @return Void
      */
-    protected function deleteMeetings($key_meeting) {
-        $request = "DELETE FROM Meetings
-        WHERE Id = :key_meeting";
+    protected function deleteMeetings(int $key_meeting) {
+        $request = "DELETE FROM Meetings WHERE Id = :key_meeting";
         $params = ['key_meeting' => $key_meeting];
 
         $this->post_request($request, $params);
@@ -1045,7 +1039,7 @@ abstract class Model {
      * @param Int $key_help The help's primary key
      * @return Void
      */
-    protected function deleteHaveTheRightTo($key_candidate, $key_help) {
+    protected function deleteHaveTheRightTo(int $key_candidate, int $key_help) {
         $request = "DELETE FROM Have_the_right_to WHERE Key_Candidates = :key_candidate AND Key_Helps = :key_help";
         $params = [
             'key_candidate' => $key_candidate,
@@ -1061,7 +1055,7 @@ abstract class Model {
      * @param Int $key_qualifications The qualification's primary key
      * @return void
      */
-    protected function deleteGetQualifications($key_candidate, $key_qualifications) {
+    protected function deleteGetQualifications(int $key_candidate, int $key_qualifications) {
         $request = "DELETE FROM Get_qualifications WHERE Key_Candidates = :key_candidate AND Key_Qualifications = :key_qualifications";
         $params = [
             'key_candidate'      => $key_candidate,
@@ -1077,9 +1071,9 @@ abstract class Model {
      *
      * @param Int $key_services The service's primary key
      * @param Int $key_establishments The establishment's primary key
-     * @return Bool
+     * @return Bool TRUE if it is in ; FALSE if it is not
      */
-    public function verifyServices($key_services, $key_establishments): Bool {
+    public function verifyServices(int $key_services, int $key_establishments): Bool {
         return !empty($this->searchBelongTo($key_services, $key_establishments));
     }
 }

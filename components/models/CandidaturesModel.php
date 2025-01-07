@@ -39,24 +39,6 @@ class CandidaturesModel extends Model {
             ORDER BY app.Id DESC"
         );
     }
-    
-    /**
-     * Protected method searching one employee (candidate in contract) from a concatenation of his first and last name
-     *
-     * ! UNUSED !
-     * 
-     * @param String $candidate_concat The concatenation
-     * @return Array The employee's data
-     */ 
-    protected function searchCandidatByConcat($candidate_concat): Array {
-        // $request = "SELECT * FROM Candidates WHERE CONCAT(name, ' ', firstname) = :candidate_concat"; $params = ['candidate_concat' => $candidate_concat];
-        return $this->get_request(
-            "SELECT * FROM Candidates WHERE CONCAT(name, ' ', firstname) = :candidate_concat", 
-            ['candidate_concat' => $candidate_concat], 
-            true, 
-            true
-        );
-    }
 
     /**
      * Public method that checks if input data is honest before saving it to the database
@@ -68,7 +50,7 @@ class CandidaturesModel extends Model {
      * @param String $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
      * @return Void
      */
-    public function verifyCandidate(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) { 
+    public function verifyCandidate(array &$candidate, array|null $qualifications = null, array|null $helps = null, string|null $medical_visit = null, string|null $coopteur = null) { 
         try {
             $candidate = new Candidate(
                 $candidate['name'], 
@@ -118,19 +100,14 @@ class CandidaturesModel extends Model {
      * @param String $coopteur The employee's name who advises the new candidate 
      * @return Void
      */
-    public function createCandidate(&$candidate, $qualifications=[], $helps=[], $coopteur=null) {
+    public function createCandidate(Candidate &$candidate, array|null $qualifications = null, array|null $helps = null, string|null $coopteur = null) {
         $candidate->setKey($this->inscriptCandidates($candidate));
-
         if(!empty($qualifications)) 
             foreach($qualifications as $item) 
-                $this->inscriptGetQualifications($candidate->getKey(), $this->searchQualifications($item['qualification'])['Id'], $item['date']);
-
-        if(!empty($helps)) {
-            foreach($helps as $item) {
+                $this->inscriptGetQualifications($candidate->getKey(), $item['qualification'], $item['date']);
+        if(!empty($helps)) 
+            foreach($helps as $item) 
                 $this->inscriptHaveTheRightTo($candidate->getKey(), $item, $item == $this->searchHelps(COOPTATION)['Id'] ? $coopteur : null);   
-            }
-        }
-                
         $this->writeLogs(
             $_SESSION['user_key'], 
             "Nouveau candidat", 
@@ -147,7 +124,7 @@ class CandidaturesModel extends Model {
      * @param Array $application The array containing the application's data
      * @return Void
      */
-    public function inscriptApplications(&$candidate, $application=[]) {
+    public function inscriptApplications(Candidate &$candidate, array $application) {
         try {
             $request = "INSERT INTO Applications (key_candidates, key_jobs, key_sources";
             $values_request = "VALUES (:candidate, :job, :source";

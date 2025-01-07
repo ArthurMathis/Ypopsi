@@ -10,7 +10,7 @@
         <p>Rôle</p>
         <select if="role" name="role">
             <?php foreach($role as $r): ?>
-                <option value="<?= $r['id']; ?>" <?php if($user['role'] == $r['id']) echo 'selected'; ?>><?= $r['titled']; ?></option>
+                <option value="<?= $r['id']; ?>" <?php if($user['role'] == $r['id']) echo 'selected'; ?>><?= $r['text']; ?></option>
             <?php endforeach ?>    
         </select>
     </section>

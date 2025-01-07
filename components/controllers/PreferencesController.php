@@ -8,6 +8,14 @@ require_once('Controller.php');
  */
 class PreferencesController extends Controller {
     /**
+     * Protected and constante attribute containing the url for preferences pages
+     * 
+     * @var string
+     */
+    protected const URL = 'index.php?preferences=';
+
+
+    /**
      * Class' constructor
      */
     public function __construct() {
@@ -22,7 +30,7 @@ class PreferencesController extends Controller {
      * @param Int $key_user The user's primary key
      * @return View HTML Page
      */
-    public function display($key_user) { return $this->View->displayProfile($this->Model->getProfile($key_user)); }
+    public function display(int $key_user) { return $this->View->displayProfile($this->Model->getProfile($key_user)); }
     
     //// List ////
     /**
@@ -30,23 +38,13 @@ class PreferencesController extends Controller {
      *
      * @return View - HTML Page
      */
-    public function displayUsers() {
-        return $this->View->displayUsersContent(
-            $this->Model->getUsers(),
-            'index.php?preferences='
-        );
-    }
+    public function displayUsers() { return $this->View->displayUsersContent($this->Model->getUsers(), self::URL); }
     /**
      * Public method returning the list of new users HTML Page
      *
      * @return View HTML Page
      */
-    public function displayNewUsers() {
-        return $this->View->displayNewUsersContent(
-            $this->Model->getNewUsers(),
-            'index.php?preferences='
-        );
-    }
+    public function displayNewUsers() { return $this->View->displayNewUsersContent($this->Model->getNewUsers(), self::URL); }
     /**
      * Public method returning the logs history HTML Page
      *
@@ -98,8 +96,8 @@ class PreferencesController extends Controller {
      */
     public function displayInputUsers() {
         return $this->View->displayInputUsers(
-            $this->Model->getRoles(),
-            $this->Model->getEstablishments()
+            $this->Model->getRolesForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete()
         );
     }
     /**
@@ -107,13 +105,19 @@ class PreferencesController extends Controller {
      *
      * @return View HTML Page
      */
-    public function displayInputJobs() { return $this->View->getInputJobs(); }
+    public function displayInputJobs() { return $this->View->displayInputJobs(); }
     /**
      * Public method displaying the qualifications HTML input form
      *
      * @return View HTML Page
      */
-    public function displayInputQualifications() { return $this->View->getInputJobs(); }
+    public function displayInputQualifications() { return $this->View->displayInputQualifications(); }
+    /**
+     * Public method dislaying the service HTML input form
+     *
+     * @return View HTML Page
+     */
+    public function displaySaisieService() { return $this->View->displayInputServices($this->Model->getEstablishmentsForAutoComplete()); }
     /**
      * Public method dislaying the establishment HTML input form
      *
@@ -140,10 +144,10 @@ class PreferencesController extends Controller {
      * @param Int $user_key The suer's primary key
      * @return View HTML Page
      */
-    public function displayEditUsers($user_key) {
+    public function displayEditUsers(int $user_key) {
         return $this->View->displayEditUsers(
             $this->Model->getEditProfile($user_key),
-            $this->Model->getRoles()
+            $this->Model->getRolesForAutoComplete()
         );
     }
 
@@ -154,11 +158,11 @@ class PreferencesController extends Controller {
      * @param Array $data
      * @return Void
      */
-    public function createUsers(&$data=[]) {
+    public function createUsers(array &$data) {
         $this->Model->createUsers($data);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouvel utilisateur enregistré !",
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouvel utilisateur enregistré !",
             'direction' => 'index.php?preferences=list-new-users'
         ]);
     }
@@ -168,12 +172,44 @@ class PreferencesController extends Controller {
      * @param Array<String> $data The array containing the new jobs data
      * @return Void
      */
-    public function createJobs(&$data=[]) {
+    public function createJobs(array &$data) {
         $this->Model->createJobs($data);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau poste enregistré !",
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau poste enregistré !",
             'direction' => 'index.php?preferences=list-jobs'
+        ]);
+    }
+    /**
+     * Public method creating a new qualification
+     *
+     * @param String $titled The titled of the new qualification
+     * @param Boolean $medical_staff Boolean showing if the new qualification is for medical jobs or not
+     * @param String|Null $abbreviation The abbreviation of the titled
+     * @return Void
+     */
+    public function createQualifications(string $titled, bool $medical_staff = false, ?string $abbreviation = null) {
+        $this->Model->createQualifications($titled, $medical_staff, $abbreviation);
+        alert_manipulation::alert([
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau diplome enregistré !",
+            'direction' => 'index.php?preferences=list-jobs'
+        ]);
+    }
+    /**
+     * Public method creatng a  new service
+     *
+     * @param String $service The titled of the new service
+     * @param Array<Int> $establishments The array containing th primary key of the establishments containing the new service
+     * @param String|Null $description The description of the new service
+     * @return Void
+     */
+    public function createServices(string $service, array $establishments, ?string $description) {
+        $this->Model->createServices($service, $establishments, $description);
+        alert_manipulation::alert([
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau service enregistré !",
+            'direction' => 'index.php?preferences=list-services'
         ]);
     }
     /**
@@ -182,11 +218,11 @@ class PreferencesController extends Controller {
      * @param Array $data
      * @return Void
      */
-    public function createEstablishments(&$data=[]) {
+    public function createEstablishments(array &$data) {
         $this->Model->createEstablishments($data);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau établissement enregistré !",
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau établissement enregistré !",
             'direction' => 'index.php?preferences=list-establishments'
         ]);
     }
@@ -197,11 +233,11 @@ class PreferencesController extends Controller {
      * @param String $description The poles' description
      * @return Void
      */
-    public function createPoles(&$titled, &$description) {
+    public function createPoles(string &$titled, string &$description) {
         $this->Model->createPoles($titled, $description);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau pôle enregistré !",
+            'title'     => 'Opération réussie',
+            'msg'       => "Nouveau pôle enregistré !",
             'direction' => 'index.php?preferences=list-poles'
         ]);
     } 
@@ -214,62 +250,50 @@ class PreferencesController extends Controller {
      * @param Array $user The user's data
      * @return Void
      */
-    public function updateUsers($key_users, &$user=[]) {
-        $this->Model->updateUsers($key_users, $user);
+    public function updateUsers(int $key_users, array &$user) {
+        $this->Model->updateUsers($key_users, $user['name'], $user['firstname'], $user['email'], $user['role']);
         $this->Model->updateUsersLogs($key_users);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "L'utilisateur a bien été modifié !",
+            'title'     => 'Opération réussie',
+            'msg'       => "L'utilisateur a bien été modifié !",
             'direction' => 'index.php?preferences=' . $key_users
         ]);
     }
-    /// Méthode publique mettant à jour le mot de passe de l'utilisateur actuel
-    public function updatePassword(&$password, &$new_password) {
+    /**
+     * Public method updating the current user's password
+     *
+     * @param String $password The previous password
+     * @param String $new_password The new password
+     * @return Void
+     */
+    public function updatePassword(string &$password, string &$new_password) {
         if($this->Model->verify_password($password)) {
             $this->Model->updatePassword($new_password);
             $this->Model->updatePasswordLogs();
             alert_manipulation::alert([
-                'title' => 'Opération réussie',
-                'msg' => "Votre mot de passe a bien été modifié !",
+                'title'     => 'Opération réussie',
+                'msg'       => "Votre mot de passe a bien été modifié !",
                 'direction' => 'index.php'
             ]);
 
-        } else 
-            forms_manip::error_alert("Erreur lors de la mise à jour du mot de passe", "L'ancien mot de passe ne correspond pas !");
+        } else forms_manip::error_alert(['msg' => "Erreur lors de la mise à jour du mot de passe, L'ancien mot de passe ne correspond pas !"]);
     }
 
     // * RESET * // 
-    /// Méthode publique réinitialisant le mot de passe d'un utilisateur
-    public function resetPassword($password, $cle_utilisateur) {
-        // On réinitialise le mot de passe
-        $this->Model->resetPassword($password, $cle_utilisateur);
-        // On incrit les logs
-        $this->Model->resetPasswordLogs($cle_utilisateur);
-        // On redirige la page
+    /**
+     *Public method for resetting a user's password
+     *
+     * @param String $password
+     * @param Int $key_users
+     * @return Void
+     */
+    public function resetPassword(string $password, int $key_users) {
+        $this->Model->resetPassword($password, $key_users);
+        $this->Model->resetPasswordLogs($key_users);
         alert_manipulation::alert([
-            'title' => 'Opération réussie',
-                'msg' => "Le mot de passe a bien été réinitialisé !",
-                'direction' => 'index.php?preferences=' . $cle_utilisateur
-        ]);
-    }
-
-    // ! OTHERS ! //
-
-    /// Méthode publique retournant le formulaire de saisie d'un nouveau service
-    // Todo : remake
-    public function displaySaisieService() {
-        return $this->View->getSaisieService(
-            $this->Model->getAutoCompletEtablissements()
-        );
-    }
-    /// Méthode publique générant un nouveau service
-    public function createService(&$service, &$etablissement) {
-        // On génère le nouveau poste
-        $this->Model->createService($service, $etablissement);
-        alert_manipulation::alert([
-            'title' => 'Opération réussie',
-            'msg' => "Nouveau service enregistré !",
-            'direction' => 'index.php?preferences=list-services'
+            'title'     => 'Opération réussie',
+            'msg'       => "Le mot de passe a bien été réinitialisé !",
+            'direction' => 'index.php?preferences=' . $key_users
         ]);
     }
 }

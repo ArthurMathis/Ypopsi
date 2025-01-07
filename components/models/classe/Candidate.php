@@ -111,7 +111,7 @@ class Candidate {
     /**
      * Public method returning the candidate's key
      * 
-     * @return Integer 
+     * @return Int 
      */
     public function getKey(): ?Int { return $this->key; }
     /**

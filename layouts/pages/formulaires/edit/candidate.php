@@ -1,33 +1,33 @@
 <form method="post" action="index.php?candidates=update-candidates&key_candidate=<?= $item['candidate']['Id']?>">
     <div class="form-container">
-        <h3>Nouveau candidat</h3>
+        <h3><?= "Informations de " . strtoupper($item['candidate']['Name']) . " " . $item['candidate']['Firstname'] ?></h3>
         <section>
             <div class="input-container">
                 <p>Nom *</p>
-                <input type="text" id="nom" name="nom" placeholder="Dupond" value="<?= $item['candidate']['Name']?>">
+                <input type="text" id="nom" name="nom" placeholder="Dupond" value="<?= $item['candidate']['Name'] ?>" required>
             </div>
             <div class="input-container">
                 <p>Prénom *</p>
-                <input type="text" id="prenom" name="prenom" placeholder="Prénom" value="<?= $item['candidate']['Firstname']?>">
+                <input type="text" id="prenom" name="prenom" placeholder="Prénom" value="<?= $item['candidate']['Firstname'] ?>" required>
             </div>
             <div class="input-container">
                 <p>Email</p>
-                <input type="email" id="email" name="email" placeholder="Adresse email" value="<?= $item['candidate']['Email']?>">
+                <input type="email" id="email" name="email" placeholder="Adresse email" value="<?= $item['candidate']['Email'] ?>">
             </div>
             <div class="input-container">
                 <p>Numéro de téléphone</p>
-                <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone" value="<?= $item['candidate']['Phone']?>">
+                <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone" value="<?= $item['candidate']['Phone'] ?>">
             </div>
         </section>
         <section>
             <div class="input-container">
                 <p>Adresse</p>
-                <input type="text" id="adresse" name="adresse" placeholder="1er Grand Rue" value="<?= $item['candidate']['Address']?>">
+                <input type="text" id="adresse" name="adresse" placeholder="1er Grand Rue" value="<?= $item['candidate']['Address'] ?>">
             </div>
             <div class="double-items">
                 <div class="input-container">
                     <p>Commune</p>
-                    <input type="text" id="ville" name="ville" placeholder="Colmar" value="<?= $item['candidate']['City']?>">
+                    <input type="text" id="ville" name="ville" placeholder="Colmar" value="<?= $item['candidate']['City'] ?>">
                 </div>
                 <div class="input-container">
                     <p>Code postal</p>
@@ -81,18 +81,22 @@
     </div> 
 </form>
 <script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs"; 
+
     document.addEventListener('elementCreated', function(e) {
         if(e.detail.element.parentNode === document.getElementById('aide-section')) {
             const aideSection = document.getElementById('aide-section');
             const inputAide = aideSection.querySelectorAll('select');
             
+            // TODO : Corriger 3 -> solution durable 
             const obj = new formManipulation.cooptInput(inputAide[inputAide.length - 1], 'coopteur', 3, <?= json_encode($employee); ?>);
             obj.input.addEventListener('change', (e) => obj.react());
         }
     });
 
-    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs"; 
+    new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', AutoComplete.arrayToSuggestions(<?= json_encode($qualifications) ?>), 'Licence', <?= count($qualifications); ?>, null); 
+    new formManipulation.implementInputList('aide', 'aide-section', AutoComplete.arrayToSuggestions(<?= json_encode($helps) ?>), <?= count($helps); ?>);
 
-    const diplome = new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode($qualifications); ?>, 'Intitulé', <?= count($qualifications); ?>, ); 
-    const aide = new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode($helps); ?>, <?= count($helps); ?>);
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

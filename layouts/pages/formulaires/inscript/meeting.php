@@ -3,7 +3,7 @@
     <section>
         <p>Entretien</p>
         <div class="autocomplete">
-            <input type="text" id="recruteur" name="recruteur" placeholder="Recruteur" autocomplete="off" value="<?= $_SESSION['user_identifier']; ?>">
+            <input type="text" id="recruteur" name="recruteur" placeholder="Recruteur" autocomplete="off" value="<?= $_SESSION['user_name'] . " " . $_SESSION['user_firstname']; ?>">
             <article></article>
         </div>
         <div class="autocomplete">
@@ -24,10 +24,12 @@
     <button type="submit" value="new_user">Enregistrer</button>
 </form>
 
-<script>
-    const recruteur = <?php echo json_encode(array_map(function($c) { return $c['name']; }, $users)); ?>;
-    const etablissement = <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $establisments)); ?>;
+<script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs"; 
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+    
+    new AutoComplete(document.getElementById('recruteur'), AutoComplete.arrayToSuggestions(<?= json_encode($users) ?>));                                                                                                                                                                                                                                                  
+    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($establisments) ?>));
 
-    new AutoComplete(document.getElementById('recruteur'), recruteur);
-    new AutoComplete(document.getElementById('etablissement'), etablissement);
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

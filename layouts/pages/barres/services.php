@@ -1,10 +1,8 @@
 <nav class="options_barre">
     <article>
-        <!--
         <?php if($_SESSION['user_role'] == OWNER || $_SESSION['user_role'] == ADMIN): ?>
             <a class="action_button reverse_color" href="index.php?preferences=input-services">Nouveau service</a>
         <?php endif?>
-        -->
     </article>
     <article>
         <p class="action_button" id="rechercher-button">Rechercher</p>
@@ -36,7 +34,6 @@
     </main>
 </div>
 <script type='module'>
-    // * IMPORTS * //
     import { List } from "./layouts/assets/scripts/modules/List.mjs"; 
     import { listManipulation } from "./layouts/assets/scripts/modules/ListManipulation.mjs";
 
@@ -51,9 +48,7 @@
         // * MANIPULATION DE LA LISTE * //
         const rechercher = document.getElementById('rechercher-button');
         const appliquer_recherche = document.getElementById('valider-recherche');
-
         const reinit_recherche = document.getElementById('reinint-recherche');
-
         const rechercher_menu = document.getElementById('rechercher-menu');
 
         //// Tri par entête ////
@@ -128,18 +123,13 @@
                 listManipulation.deleteLines(candidatures);
                 listManipulation.resetLines(candidatures_selection);
                 listManipulation.displayCountItems(document.querySelector('.liste_items .entete h3'), candidatures_selection !== null ? candidatures_selection.length : 0);
-            
-                filtrerIsVisible = !filtrerIsVisible;
-                rechercherIsVisible = !rechercherIsVisible;  
             }
             listManipulation.hideMenu(rechercher_menu);
         }
         appliquer_recherche.addEventListener('click', filter);
 
         //// Réinitialisation des filtres ////
-        function reinitFields() {
-            listManipulation.clearFields(champs_infos);
-        }
+        function reinitFields() { listManipulation.clearFields(champs_infos); }
         reinit_recherche.addEventListener('click', reinitFields);
     });
 </script>

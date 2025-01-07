@@ -1,21 +1,22 @@
+<?php $editable = time() <= strtotime($item['date'] . ' ' . $item['heure']); ?>
 <form class="big-form" method="post" action="index.php?candidates=update-meetings&key_meeting=<?= $meeting['key_meeting']; ?>&key_candidate=<?= $meeting['key_candidate']; ?>">
     <div class="form-container">
     <h3>Saissisez les informations du rendez-vous</h3>
         <section>
             <p>Entretien</p>
             <div class="autocomplete">
-                <input type="text" id="recruteur" name="recruteur" placeholder="Recruteur" autocomplete="off" value="<?= $meeting['Recruteur']; ?>">
+                <input type="text" id="recruteur" name="recruteur" placeholder="Recruteur" autocomplete="off" value="<?= $meeting['Recruteur']; ?>" <?php if(!$editable) echo "readonly"; ?>>
                 <article></article>
             </div>
             <div class="autocomplete">
-                <input type="text" id="etablissement" name="etablissement" placeholder="Etablissement" autocomplete="off" value="<?= $meeting['Etablissement']; ?>">
+                <input type="text" id="etablissement" name="etablissement" placeholder="Etablissement" autocomplete="off" value="<?= $meeting['Etablissement']; ?>"  <?php if(!$editable) echo "readonly"; ?>>
                 <article></article>
             </div>
         </section>
-        <section class="double-items">
+        <section class="double-items" <?php if(!$editable): ?> style="display: none" <?php endif ?>>
             <div class="input-container">
                 <label for="date">Date</label>
-                <input type="date" name="date" id="date" value="<?= $meeting['Date']; ?>" min="<?= Moment::currentMoment()->getDate(); ?>">
+                <input type="date" name="date" id="date" value="<?= $meeting['Date']; ?>" <?php if($editable): ?> min="<?= Moment::currentMoment()->getDate(); ?>" <?php endif ?>>
             </div>
             <div class="input-container">
                 <label for="time">Horaire</label>
@@ -31,11 +32,12 @@
         </section>
     </div>  
 </form>
+<script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
 
-<script>
-    const recruteur = <?php echo json_encode(array_map(function($c) { return $c['name']; }, $users)); ?>;
-    const etablissement = <?php echo json_encode(array_map(function($c) { return $c['titled']; }, $establisments)); ?>;
+    new AutoComplete(document.getElementById('recruteur'), AutoComplete.arrayToSuggestions(<?= json_encode($users) ?>));
+    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($establisments) ?>));
 
-    new AutoComplete(document.getElementById('recruteur'), recruteur);
-    new AutoComplete(document.getElementById('etablissement'), etablissement);
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

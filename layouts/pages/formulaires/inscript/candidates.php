@@ -58,7 +58,7 @@
         </section>
         <section id='visite-section' class="imp-section">
             <p>Visite médicale</p>
-            <input id="viste_medicale" name="viste_medicale" type="date" min="<?= date('Y-m-d'); ?>">
+            <input id="visite_medicale" name="visite_medicale" type="date" min="<?= date('Y-m-d'); ?>">
         </section>
         <section class="buttons_actions">
             <button type="submit" class="submit_button" value="new_user">Inscrire</button>
@@ -67,18 +67,21 @@
 </form>
 
 <script type="module">
+    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs";
+    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+
     document.addEventListener('elementCreated', function(e) {
         if(e.detail.element.parentNode === document.getElementById('aide-section')) {
             const aideSection = document.getElementById('aide-section');
             const inputAide = aideSection.querySelectorAll('select');
             
-            const obj = new formManipulation.cooptInput(inputAide[inputAide.length - 1], 'coopteur', 3, <?= json_encode($employer); ?>);
+            const obj = new formManipulation.cooptInput(inputAide[inputAide.length - 1], 'coopteur', 3, <?= json_encode($employer); ?>); // 3 -> Id 
             obj.input.addEventListener('change', (e) => obj.react());
         }
     });
 
-    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+    new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', AutoComplete.arrayToSuggestions(<?= json_encode($diplome) ?>), 'Licence', <?= count($diplome); ?>, null); 
+    new formManipulation.implementInputList('aide', 'aide-section', AutoComplete.arrayToSuggestions(<?= json_encode($aide) ?>), <?= count($aide); ?>);
 
-    const diplome = new formManipulation.implementInputAutoCompleteDate('diplome', 'diplome-section', <?= json_encode($diplome); ?>, 'Licence', <?= count($diplome); ?>, null); 
-    const aide = new formManipulation.implementInputList('aide', 'aide-section', <?= json_encode($aide); ?>, <?= count($aide); ?>);
+    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

@@ -29,9 +29,9 @@ class CandidaturesController extends Controller {
     public function displayInputCandidate() {
         return $this->View->displayInputCandidatesContent(
             'Ypopsi - Nouveau candidat', 
-            $this->Model->getQualifications(),
-            $this->Model->getHelps(),
-            $this->Model->getEmployee()
+            $this->Model->getQualificationsForAutoComplete(),
+            $this->Model->getHelpsForAutoComplete(),
+            $this->Model->getEmployeeForAutoComplete()
         );
     }
     /**
@@ -42,11 +42,11 @@ class CandidaturesController extends Controller {
     public function displayInputApplications() {
         return $this->View->displayInputApplicationsContent(
             "Ypopsi - Recherche d'un candidat", 
-            $this->Model->getJobs(),
-            $this->Model->getServices(),
-            $this->Model->getEstablishments(),
-            $this->Model->getTypesOfContracts(),
-            $this->Model->getSources()
+            $this->Model->getJobsForAutoComplete(),
+            $this->Model->getServicesForAutoComplete(),
+            $this->Model->getEstablishmentsForAutoComplete(),
+            $this->Model->getTypesOfContractsForAutoComplete(),
+            $this->Model->getSourcesForAutoComplete()
         );
     }
 
@@ -54,39 +54,39 @@ class CandidaturesController extends Controller {
      * Public method checking the new candidate's data, before redirecting the user to the application form
      *
      * @param Array $candidate The new candidate's data array
-     * @param Array $qualifications The new candidate's qualifications array
-     * @param Array $helps The new candidate's helps array
-     * @param Date $medical_visit The expiration date of the new candidate's medical examination
-     * @param String $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
+     * @param Array|Null $qualifications The new candidate's qualifications array
+     * @param Array|Null $helps The new candidate's helps array
+     * @param String|Null $medical_visit The expiration date of the new candidate's medical examination
+     * @param String|Null $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
      * @return Void
      */
-    public function checkCandidate(&$candidate=[], $qualifications=[], $helps=[], $medical_visit, $coopteur) {
+    public function checkCandidate(array &$candidate, array|null $qualifications = null, array|null $helps = null, string|null $medical_visit = null, string|null $coopteur = null) {
         $this->Model->verifyCandidate($candidate, $qualifications, $helps, $medical_visit, $coopteur);
         header('Location: index.php?applications=input-applications');
     }
-    public function findCandidat($name, $firstname, $email=null, $phone=null) {
-        $search = $this->Model->searchCandidat($name, $firstname, $email, $phone);
-        try {
-            $candidate = new Candidate(
-                $search['name'],
-                $search['firstname'],
-                $search['gender'],
-                $search['email'],
-                $search['phone'],
-                $search['address'],
-                $search['city'],
-                $search['postcode']
-            );
-            $candidate->setKey($search['id']);
-            
-        } catch(InvalideCandidateExceptions $e) {
-            forms_manip::error_alert($e->getMessage());
-        }
-
-        $_SESSION['candidat'] = $candidate;
-
-        header('Location: index.php?applications=input-offers');
-    }
+    // public function findCandidat(string $name, $firstname, $email=null, $phone=null) {
+    //     $search = $this->Model->searchCandidat($name, $firstname, $email, $phone);
+    //     try {
+    //         $candidate = new Candidate(
+    //             $search['name'],
+    //             $search['firstname'],
+    //             $search['gender'],
+    //             $search['email'],
+    //             $search['phone'],
+    //             $search['address'],
+    //             $search['city'],
+    //             $search['postcode']
+    //         );
+    //         $candidate->setKey($search['id']);
+    //         
+    //     } catch(InvalideCandidateExceptions $e) {
+    //         forms_manip::error_alert($e->getMessage());
+    //     }
+    // 
+    //     $_SESSION['candidat'] = $candidate;
+    // 
+    //     header('Location: index.php?applications=input-offers');
+    // }
     /**
      * Public method generating and registering a new application
      *
@@ -97,12 +97,12 @@ class CandidaturesController extends Controller {
      * @param String $coopteur The employee's name who advises the new candidate 
      * @return Void
      */
-    public function createApplications($candidate, $application=[], $qualifications=[], $helps=[], $coopteur) {
+    public function createApplications(Candidate $candidate, array $application, array|null $qualifications = null, array|null $helps = null, string|null $coopteur = null) {
         $candidate->setAvailability($application['availability']); 
         try {
-            if(!$this->Model->verifyServices($this->Model->searchServices($application['service'])['Id'], $this->Model->searchEstablishments($application['establishment'])['Id'])) 
-                throw new Exception("Ce service n'existe pas dans l'établissement sélectionné...");
-
+            if ($application['service'] && $application['establishment'] && !$this->Model->verifyServices($application['service'], $application['establishment']))
+                throw new Exception("Le service " . $this->Model->searchServices($application['service'])['Titled'] . " n'existe pas dans l'établissement " . $this->Model->searchEstablishmets($application['establishment'])['Titled'] . "...");
+            
             if ($candidate->getKey() === null) 
                 $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);
             $this->Model->inscriptApplications($candidate, $application);
