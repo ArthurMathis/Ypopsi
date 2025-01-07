@@ -44,14 +44,14 @@ abstract class Model {
      */
     protected function getConnection() { return $this->connection; }
     /**
-     * Protected method recording application logs
+     * Public method recording application logs
      * 
      * @param Int $user_key The user identification key in the database
      * @param String $action The action title
      * @param String|Null optionnal $description The action description 
      * @return Void
      */
-    protected function writeLogs(int $user_key, string $action, ?string $description = null) {
+    public function writeLogs(int $user_key, string $action, ?string $description = null) {
         try {
             $this->inscriptActions(
                 $user_key, 

@@ -140,7 +140,7 @@ class CandidatsView extends View {
         $this->generateCommonHeader('Ypopsi - Modification de ' . forms_manip::majusculeFormat($item['candidate']['Name']) . ' ' . $item['candidate']['Firstname'], [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
 
-        include EDIT_FORM.DS.'candidate.php';
+        include EDIT_FORM.DS.'candidates.php';
 
         $this->generateCommonFooter();
     }

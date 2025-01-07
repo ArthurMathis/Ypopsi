@@ -50,7 +50,7 @@ class CandidaturesModel extends Model {
      * @param String $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
      * @return Void
      */
-    public function verifyCandidate(array &$candidate, array|null $qualifications = null, array|null $helps = null, string|null $medical_visit = null, string|null $coopteur = null) { 
+    public function verifyCandidate(array &$candidate, ?array $qualifications = null, ?array $helps = null, ?string $medical_visit = null, ?string $coopteur = null) { 
         try {
             $candidate = new Candidate(
                 $candidate['name'], 
@@ -81,9 +81,6 @@ class CandidaturesModel extends Model {
         
         if(!empty($medical_visit))
             $candidate->setMedicalVisit($medical_visit);
-    
-        // if($coopteur)
-        //     $coopteur = $this->searchCandidatByConcat($coopteur);
 
         $_SESSION['candidate']      = $candidate;
         $_SESSION['qualifications'] = $qualifications;
@@ -97,10 +94,10 @@ class CandidaturesModel extends Model {
      * @param Candidate $candidate The object containing the candidate's informations
      * @param Array $qualifications The array containing the candidate's qualifications
      * @param Array $helps The array containing the candidate's helps
-     * @param String $coopteur The employee's name who advises the new candidate 
+     * @param Int $coopteur The employee's primary key who advises the new candidate 
      * @return Void
      */
-    public function createCandidate(Candidate &$candidate, array|null $qualifications = null, array|null $helps = null, string|null $coopteur = null) {
+    public function createCandidate(Candidate &$candidate, ?array $qualifications = null, ?array $helps = null, ?int $coopteur = null) {
         $candidate->setKey($this->inscriptCandidates($candidate));
         if(!empty($qualifications)) 
             foreach($qualifications as $item) 
@@ -108,68 +105,53 @@ class CandidaturesModel extends Model {
         if(!empty($helps)) 
             foreach($helps as $item) 
                 $this->inscriptHaveTheRightTo($candidate->getKey(), $item, $item == $this->searchHelps(COOPTATION)['Id'] ? $coopteur : null);   
-        $this->writeLogs(
-            $_SESSION['user_key'], 
-            "Nouveau candidat", 
-            "Inscription du candidat " . strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname())
-        );
     }
 
     /**
      * Public method registering one application and the logs
-     * 
-     * TODO : Recherche d'un besoin ==> $this->searchNeed($application['needs'])['Id];
-     * 
-     * @param Candidate $candidate The object containing the candidate's data
-     * @param Array $application The array containing the application's data
+     *
+     * @param Int $key_candidates
+     * @param Int $key_sources
+     * @param Int $key_jobs
+     * @param Int|Null $key_types_of_contracts
+     * @param Int|Null $key_services
+     * @param Int|Null $key_establishemnts
+     * @param Int|Null $key_needs
+     * @throws Exception|PDOException If the request is not integred
      * @return Void
      */
-    public function inscriptApplications(Candidate &$candidate, array $application) {
-        try {
-            $request = "INSERT INTO Applications (key_candidates, key_jobs, key_sources";
-            $values_request = "VALUES (:candidate, :job, :source";
-            $params = [ 
-                "candidate" => $candidate->getKey(), 
-                "job" => $this->searchJobs($application["job"])['Id'], 
-                "source" => $this->searchSources($application["source"])['Id']
-            ];
+    public function inscriptApplications(int $key_candidates, int $key_sources, int $key_jobs, ?int $key_types_of_contracts = null, ?int $key_services = null, ?int $key_establishemnts = null, ?int $key_needs = null) {
+        $request = "INSERT INTO Applications (key_candidates, key_jobs, key_sources";
+        $values_request = "VALUES (:candidate, :job, :source";
+        $params = [ 
+            "candidate" => $key_candidates,
+            "job"       => $key_jobs,
+            "source"    => $key_sources
+        ];
 
-            if(isset($application['type of contract'])) {
-                $request .= ', key_types_of_contracts';
-                $values_request .= ', :contract';
-                $params['contract'] = $this->searchTypesOfContracts($application['type of contract'])['Id'];
-            }
-            if(isset($application['needs'])) {
-                $request .= ", key_needs";
-                $values_request .= ", :needs";
-                $params["needs"] = $application['needs']; // TODO : Recherche du besoin à réaliser !! // 
-            }
-            if(isset($application['establishment'])) {
-                $request .= ", key_establishments";
-                $values_request .= ", :establishment";
-                $params["establishment"] = $this->searchEstablishments($application['establishment'])['Id'];
-            }
-            if(isset($application['service'])) {
-                $request .= ", key_services";
-                $values_request .= ", :service";
-                $params["service"] = $this->searchServices($application['service'])['Id'];
-            }
-            $request .= ")" . $values_request . ")";
-            unset($values_request);
-        
-            $this->post_request($request, $params);
-
-        } catch (Exception $e) {
-            forms_manip::error_alert([
-                'title' => "Erreur lors de l'inscription de la candidature",
-                'msg' => $e
-            ]);
+        if($key_types_of_contracts) {
+            $request .= ', key_types_of_contracts';
+            $values_request .= ', :contract';
+            $params['contract'] = $key_types_of_contracts;
         }
+        if($key_needs) {
+            $request .= ", key_needs";
+            $values_request .= ", :needs";
+            $params["needs"] = $key_needs; 
+        }
+        if($key_establishemnts) {
+            $request .= ", key_establishments";
+            $values_request .= ", :establishment";
+            $params["establishment"] = $key_establishemnts;
+        }
+        if($key_services) {
+            $request .= ", key_services";
+            $values_request .= ", :service";
+            $params["service"] = $key_services;
+        }
+        $request .= ")" . $values_request . ")";
+        unset($values_request);
 
-        $this->writeLogs(
-            $_SESSION['user_key'], 
-            "Nouvelle candidature", 
-            "Nouvelle candidature de " . strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname()) . " au poste de " . $application["job"]
-        );
+        $this->post_request($request, $params);
     }
 }

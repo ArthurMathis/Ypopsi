@@ -97,8 +97,7 @@ switch(true) {
                     if($_SESSION['user_role'] == INVITE)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
 
-                    try {
-                        // TODO : intégrer ces vérifications directement dans le javascript
+                    try { // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST["nom"]))
                             throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
                         elseif(empty($_POST["prenom"]))
@@ -111,7 +110,7 @@ switch(true) {
                         $candidate = [
                             'name'          => forms_manip::nameFormat($_POST["nom"]), 
                             'firstname'     => forms_manip::nameFormat($_POST["prenom"]), 
-                            'gender'        => $_POST['genre'],
+                            'gender'        => (int) $_POST['genre'],
                             'email'         => $_POST["email"], 
                             'phone'         => !empty($_POST["telephone"]) ? forms_manip::numberFormat($_POST["telephone"]) : null, 
                             'address'       => !empty($_POST["adresse"]) ? $_POST["adresse"] : null,
@@ -122,11 +121,11 @@ switch(true) {
                         if(isset($_POST['diplomeDate'])) foreach ($_POST["diplomeDate"] as $date)
                             if (empty($date)) throw new Exception("Chaque diplôme doit avoir une date d'obtention !");
                         $qualifications = array_map(
-                            function($qualification, $date) { return ['qualification' => (int)$qualification, 'date' => $date]; }, 
+                            function($qualification, $date) { return ['qualification' => (int) $qualification, 'date' => $date]; }, 
                             isset($_POST["diplome"]) ? $_POST["diplome"] : [], 
                             isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : []
                         );
-                        $helps         = isset($_POST["aide"]) ? array_map(function($elmt) { return (int)$elmt; }, $_POST["aide"]) : null;
+                        $helps         = isset($_POST["aide"]) ? array_map(function($elmt) { return (int) $elmt; }, $_POST["aide"]) : null;
                         $coopteur      = isset($_POST["coopteur"]) ? $_POST['coopteur'] : null;
                         $medical_visit = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
 
@@ -144,8 +143,7 @@ switch(true) {
                     if($_SESSION['user_role'] == INVITE)
                         throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application...");
 
-                    try {
-                        // TODO : intégrer ces vérifications directement dans le javascript
+                    try { // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST["poste"])) 
                             throw new Exception("Le champs poste est nécessaire pour cette action.");
                         elseif(empty($_POST["disponibilite"])) 
@@ -155,14 +153,12 @@ switch(true) {
 
                         $applications->createApplications(
                             $_SESSION['candidate'],
-                            [
-                                'job'              => (int) $_POST["poste"],
-                                'service'          => !empty($_POST["service"]) ? (int) $_POST["service"] : null,
-                                'establishment'    => !empty($_POST["etablissement"]) ?  (int) $_POST["etablissement"] : null,
-                                'type of contract' => !empty($_POST["type_de_contrat"]) ?  (int) $_POST["type_de_contrat"] : null,
-                                'availability'     => $_POST["disponibilite"],
-                                'source'           => $_POST["source"]
-                            ],
+                            (int) $_POST["source"],
+                            $_POST["disponibilite"],
+                            (int) $_POST["poste"],
+                            empty($_POST["service"]) ? null : (int) $_POST["service"],
+                            empty($_POST["etablissement"]) ? null : (int) $_POST["etablissement"],
+                            empty($_POST["type_de_contrat"]) ? null : (int) $_POST["type_de_contrat"],
                             isset($_SESSION['qualifications']) && !empty($_SESSION['qualifications']) ? $_SESSION['qualifications'] : null,
                             isset($_SESSION['helps']) && !empty($_SESSION['helps']) ? $_SESSION['helps'] : null,
                             isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null
@@ -305,12 +301,6 @@ switch(true) {
                             throw new Exception("Le champs type de contrat doit être rempli !");
                         elseif(empty($_POST['date_debut']))
                             throw new Exception('Le champs date de début doit être rempli !');
-
-                        // TODO : intégrer ces vérifications directement dans le javascript
-                        // if($_POST['type_contrat'] == 'CDI' && !empty($_POST['date_fin'])) 
-                        //     throw new Exception("La date de fin ne peut pas être remplie pour un CDI !");
-                        // elseif($_POST['type_contrat'] != 'CDI' &&empty($_POST['date_fin'])) 
-                        //         throw new Exception("La date de fin doit être remplie !");
 
                         $data = [
                             'poste'           => (int) $_POST['poste'],
@@ -507,9 +497,6 @@ switch(true) {
                             'date'          => Moment::getTimestampFromDate($_POST['date'], $_POST['time']),
                             'description'   => $_POST['description'],
                         ];
-
-                        // if(Moment::currentMoment()->isTallerThan(Moment::fromDate($_POST['date'], $_POST['time'])->getTimestamp()))
-                        //     throw new Exception("La date du rendez-vous est antérieure à aujourd'hui.");
 
                         $candidates->updateMeetings($_GET['key_meeting'], $_GET['key_candidate'], $meeting);
 
