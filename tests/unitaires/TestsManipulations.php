@@ -27,7 +27,7 @@ class TestsManipulation {
 
     // * WRITTE * //
     /**
-     * public static method writting in the page a sucess test message
+     * public static method writting in the page a SUCCESS test message
      *
      * @return Void
      */
@@ -51,13 +51,13 @@ class TestsManipulation {
 
     // * STATIC METHOD * //
     /**
-     * Public static method returning the sucess status
+     * Public static method returning the SUCCESS status
      *
      * @return Bool
      */
-    public static function SUCESS(): bool { return true; }
+    public static function SUCCESS(): bool { return true; }
     /**
-     * Public static method returning the sucess status
+     * Public static method returning the SUCCESS status
      *
      * @return Bool
      */

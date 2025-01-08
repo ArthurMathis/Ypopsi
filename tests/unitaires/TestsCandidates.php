@@ -1,6 +1,6 @@
 <?php
 
-include '../../define.php';
+include '../../define.php'; test_process();
 include 'TestsManipulations.php';
 include '../../'.CLASSE.DS.'Candidate.php';
 
@@ -204,7 +204,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate('1', FIRSTNAME, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -224,7 +224,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(1, FIRSTNAME, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -245,7 +245,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, '1', EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -265,7 +265,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, 1, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -286,7 +286,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, NAME, PHONE, ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -306,7 +306,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, 1, PHONE, ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -326,7 +326,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, '1', PHONE, ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -347,7 +347,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, 123654789, ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -367,7 +367,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, '0.2', ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -387,7 +387,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, '0.22.23.21', ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -407,7 +407,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, '0.22.23.21.24.26.32', ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -427,7 +427,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, '022.2321.24', ADDRESS, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -448,7 +448,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, "12354", CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -468,7 +468,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, 1, CITY, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -489,7 +489,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, "12354", POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -509,7 +509,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, 1, POSTCODE);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -530,7 +530,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, "bonjour");
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -550,7 +550,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, 12);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -570,7 +570,7 @@ class TestsCandidates extends TestsManipulation {
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, 123456789111213141516171819);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -607,7 +607,7 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function setAvailabilityTrue() {
-        $res = $this->SUCESS();
+        $res = $this->SUCCESS();
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
             $c->setAvailability(AVAILABILITY); 
@@ -626,7 +626,7 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function setMedicalVisitTrue() {
-        $res = $this->SUCESS();
+        $res = $this->SUCCESS();
         try {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
             $c->setMedicalVisit(MEDICAL_VISITE);
@@ -652,7 +652,7 @@ class TestsCandidates extends TestsManipulation {
             $c->setKey('-1');
             
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -674,7 +674,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
             $c->setAvailability(-1);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -695,7 +695,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
             $c->setAvailability('12:03:36');
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -716,7 +716,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
             $c->setAvailability('Bonjour');
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -738,7 +738,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
             $c->setMedicalVisit(-1);
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -759,7 +759,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
             $c->setMedicalVisit('12:03:36');
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -780,7 +780,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
             $c->setMedicalVisit('Bonjour');
         } catch(Exception $e) {
-            $res = $this->SUCESS();
+            $res = $this->SUCCESS();
         }
         
         if($res) 
@@ -1014,11 +1014,10 @@ class TestsCandidates extends TestsManipulation {
             $c->setMedicalVisit(MEDICAL_VISITE);
             $c->setAvailability(AVAILABILITY);
             $c = $c->exportToSQL_Key();
-
-
-        } catch(Exception $e) {
-            $res == true;
-        }
+            
+        } catch(InvalideCandidateExceptions|Exception $e) {
+            $res = $this->SUCCESS();
+        } 
         
         if($res)
             $this->successTest();

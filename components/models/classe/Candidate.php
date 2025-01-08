@@ -366,12 +366,13 @@ class Candidate {
     /**
      * Public method returning the candidate's data in an array
      * 
-     * @return Array
+     * @throws InvalideCandidateExceptions If the candidate has not primary key
+     * @return Array|Null
      */
     public function exportToSQL_Key(): array {
-        if(!$this->getKey()) 
+        if($this->getKey() === null) 
             throw new InvalideCandidateExceptions("La clé du candidat doit être implémentée avant une exporttation SQL !");
-
+        
         return [
             "id" => $this->getKey(),
             "name" => $this->getName(),
