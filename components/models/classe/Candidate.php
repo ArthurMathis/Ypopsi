@@ -6,7 +6,7 @@ define('NAME_REGEX', '/[\d]|[^\p{L}\p{M}\s\']/u');
 define('PHONE_REGEX', '/^(\d{2}\.){4}\d{2}$/');
 
 /**
- *  Class representing one candidate's Exception
+ * Class representing one candidate's Exception
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class InvalideCandidateExceptions extends Exception {
@@ -84,31 +84,31 @@ class Candidate {
      * Private attibute containing the candidate last medical visit date
      * 
      * @var String His last medical visit date
-     */
+     */ 
     private $medical_visit = null;
 
     /**
-     * Class' construtor
+     * Class' construtor 
      * 
      * @param String $name The candidate's name
      * @param String $firstname The candidate's firstname
      * @param Bool $gender The boolean containing the candidate's gender (True - man ; False - woman)
-     * @param String $email The candidate's email address
-     * @param String $phone The candidate's phone number
-     * @param String $address The candidate's address
-     * @param String $city The city where the candidate lives
-     * @param String $post_code The city's post code
+     * @param String/Null $email The candidate's email address
+     * @param String/Null $phone The candidate's phone number
+     * @param String/Null $address The candidate's address
+     * @param String/Null $city The city where the candidate lives
+     * @param String/Null $post_code The city's post code
      */
     public function __construct(string $name, string $firstname, bool $gender, ?string $email = null, ?string $phone = null, ?string $address = null, ?string $city = null, ?string $post_code = null) {
         $this->setName($name);
         $this->setFirstname($firstname);
         $this->setGender($gender);
 
-        if(!empty($email)) $this->setEmail($email);
-        if(!empty($phone)) $this->setPhone($phone);
-        if(!empty($address)) $this->setAddress($address);
-        if(!empty($city)) $this->setCity($city);
-        if(!empty($post_code)) $this->setPostCode($post_code);
+        if(is_string($email)) $this->setEmail($email);
+        if(is_string($phone)) $this->setPhone($phone);
+        if(is_string($address)) $this->setAddress($address);
+        if(is_string($city)) $this->setCity($city);
+        if(is_string($post_code)) $this->setPostCode($post_code);
     } 
 
 
@@ -314,7 +314,7 @@ class Candidate {
      * @throws InvalideCandidateExceptions If the expiration date of the medical visit is not integred
      * @return Void
      */
-    public function setMedicalVisit($visite) {
+    public function setMedicalVisit(string $visite) {
         if(!Moment::isDate($visite))
             throw new InvalideCandidateExceptions("La visite médicale d'un candidat doit être une date !");
         else 
@@ -348,7 +348,8 @@ class Candidate {
         return $array;
     }
     /**
-     *  Public method returning the candidate's data in an array
+     * Public method returning the candidate's data in an array
+     * 
      * @return Array
      */
     public function exportToSQL_update(): array {
@@ -363,11 +364,12 @@ class Candidate {
         ];
     }
     /**
-     *  Public method returning the candidate's data in an array
+     * Public method returning the candidate's data in an array
+     * 
      * @return Array
      */
     public function exportToSQL_Key(): array {
-        if($this->getKey() == null) 
+        if(!$this->getKey()) 
             throw new InvalideCandidateExceptions("La clé du candidat doit être implémentée avant une exporttation SQL !");
 
         return [

@@ -1,6 +1,6 @@
 <?php
 
-require_once('define.php'); // test_process();
+require_once('define.php'); test_process();
 require_once(COMPONENTS.DS.'AlertManipulation.php');
 require_once(COMPONENTS.DS.'FormsManip.php');
 require_once(CONTROLLERS.DS.'LoginController.php');
