@@ -12,7 +12,7 @@ class View {
      * @param Array<String>|Null $cssFiles The array containing the css files to include at the page
      * @return void
      */
-    public function generateCommonHeader(string|null $name = null, array|null $cssFiles = null) { include COMMON.DS.'header.php'; }
+    public function generateCommonHeader(?string $name = null, ?array $cssFiles = null) { include COMMON.DS.'header.php'; }
     /**
      * Public method generating the HTML footer tag of the page
      *
@@ -26,12 +26,12 @@ class View {
      * @param String|Null $currentPage The current tab
      * @return Void
      */
-    public function generateMenu(bool $form = false, string|null $currentPage = null) { include BARRES.DS.'navbarre.php'; }
+    public function generateMenu(bool $form = false, ?string $currentPage = null) { include BARRES.DS.'navbarre.php'; }
 
     /**
      * Public method generating a list.php from an data array
      *
-     * @param String|Null $title The list title
+     * @param String $title The list title
      * @param Array|Null $items The data array
      * @param Int|Null $nb_items_max The maximum number of elements
      * @param String|Null $id The HTML id of the list
@@ -39,10 +39,9 @@ class View {
      * @param String|Null $direction If the items in the list are clickable, shows the redirect url
      * @return Void
      */
-    public function getListItems(string|null $title = null, array|null $items = null, int|null $nb_items_max = null, string|null $id = null, string|null $class = null, string|null $direction = null) {
-        if($nb_items_max === null)
+    public function getListItems(string $title, ?array $items = null, ?int $nb_items_max = null, ?string $id = null, ?string $class = null, ?string $direction = null) {
+        if(!$nb_items_max)
             $nb_items_max = empty($items) ? 0 : count($items);
-
         include MY_ITEMS.DS.'list.php';
     }
     /**
@@ -57,7 +56,7 @@ class View {
      * @param String|Null $link_consult The url towards which redirect the user to consult the complet list 
      * @return Void
      */
-    public function getBubble(string $title, array|null $items = null, int|null $nb_items_max = null, string|null $link_add = null, string|null $link_consult = null) { include(MY_ITEMS.DS.'bubble.php'); }
+    public function getBubble(string $title, ?array $items = null, ?int $nb_items_max = null, ?string $link_add = null, ?string $link_consult = null) { include(MY_ITEMS.DS.'bubble.php'); }
     /**
      * Public method generating a dashborad from an data array
      *

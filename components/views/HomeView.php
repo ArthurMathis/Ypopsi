@@ -25,6 +25,9 @@ class HomeView extends View {
         echo "</aside>";
         echo "</content>";
 
+        $scripts = ['home-controller.mjs'];
+        include(COMMON.DS.'import-scripts.php');
+
         $this->generateCommonFooter();
     }
 }

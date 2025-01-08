@@ -80,23 +80,17 @@ switch(true) {
                     break; 
 
                 case 'input-candidates': 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $applications->displayInputCandidate();
                     break;
 
                 case 'input-applications' : 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $applications->displayInputApplications();
                     break;
 
                 case 'inscript-candidates' : 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     try { // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST["nom"]))
                             throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
@@ -209,9 +203,7 @@ switch(true) {
                     break;
 
                 case 'input-meetings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
                         $candidates->displayInputMeetings($_GET['key_candidate']);
                     else 
@@ -219,9 +211,7 @@ switch(true) {
                     break;
 
                 case 'input-applications': 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
                         $candidates->displayInputApplications($_GET['key_candidate']);
                     else 
@@ -229,9 +219,7 @@ switch(true) {
                     break;
 
                 case 'input-offers' :
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(is_numeric($_GET['key_candidate'])) {
                         $application = empty($_GET['key_application']) ? null : $_GET['key_application'];
                         $need = empty($_GET['key_need']) ? null : $_GET['key_need'];
@@ -242,9 +230,7 @@ switch(true) {
                     break;
 
                 case 'input-contracts':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
                         $candidates->displayInputContracts($_GET['key_candidate']);
                     else 
@@ -252,9 +238,7 @@ switch(true) {
                     break;   
 
                 case 'inscript-meetings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(!isset($_GET['key_candidate']) || !is_numeric($_GET['key_candidate']))
                         throw new Exception("La clé candidat est introuvale !");
 
@@ -286,9 +270,7 @@ switch(true) {
                     break;     
                 
                 case 'inscript-offers':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-                    
+                    isUserOrMore();                    
                     try {
                         // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST['poste']))
@@ -339,9 +321,7 @@ switch(true) {
                     break; 
                     
                 case 'inscript-contracts':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(!isset($_GET['key_candidate']) || !is_numeric($_GET['key_candidate']))
                         throw new Exception("La clé candidat est inrouvale !"); 
                     
@@ -390,16 +370,12 @@ switch(true) {
                     break;  
                     
                 case 'edit-meetings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-                    else 
-                        $candidates->displayEditMeetings($_GET['key_meeting']); 
+                    isUserOrMore();                     
+                    $candidates->displayEditMeetings($_GET['key_meeting']); 
                     break;  
 
                 case 'edit-ratings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
                         $candidates->displayEditRatings($_GET['key_candidate']);
                     else 
@@ -407,9 +383,7 @@ switch(true) {
                     break;  
 
                 case 'edit-candidates':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(isset($_GET['key_candidate']))
                         $candidates->displayEditCandidates($_GET['key_candidate']);
                     else 
@@ -417,9 +391,7 @@ switch(true) {
                     break;  
 
                 case 'update-ratings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     try {
                         $rating = [
                             'notation'    => max($_POST['notation']),
@@ -443,9 +415,7 @@ switch(true) {
                     break;  
                     
                 case 'update-candidates':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     try {
                         $data = [
                             'name'                => forms_manip::nameFormat($_POST['nom']),
@@ -478,9 +448,7 @@ switch(true) {
                     break;  
 
                 case 'update-meetings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     try {
                         if(empty($_POST['recruteur']))
                             throw new Exception("Le champs recruteur doit être rempli !");
@@ -509,16 +477,12 @@ switch(true) {
                     break;
                     
                 case 'delete-meetings': 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-                    else
-                        $candidates->deleteMeetings($_GET['key_meeting'], $_GET['key_candidate']);
+                    isUserOrMore();                   
+                    $candidates->deleteMeetings($_GET['key_meeting'], $_GET['key_candidate']);
                     break;  
                     
                 case 'dismiss-applications':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(!isset($_GET['key_applications']) || !is_numeric($_GET['key_applications']))
                         throw new Exception("Clé de candidature est introuvable !");
                     else
@@ -526,15 +490,12 @@ switch(true) {
                     break;  
 
                 case 'reject-offers':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                    isUserOrMore();                    
                     $candidates->rejectOffers($_GET['key_offer']);
                     break;    
                     
                 case 'resignations':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(!isset($_GET['key_contract']) || !is_numeric($_GET['key_contract']))
                         throw new Exception("La clé de contrat est introuvable !");
                     else
@@ -555,10 +516,8 @@ switch(true) {
     case (isset($_GET['preferences'])):
         $preferences = new PreferencesController(); 
         if(is_numeric($_GET['preferences'])) {
-            if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-            
-            if($_GET['preferences'] == $_SESSION['user_key']) 
+            isAdminOrMore();
+            if($_GET['preferences'] === $_SESSION['user_key']) 
                 header('Location: index.php?preferences=home');
             else 
                 $preferences->display($_GET['preferences']);
@@ -673,37 +632,27 @@ switch(true) {
                     break;
 
                 case 'list-jobs':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $preferences->displayJobs();
                     break;
 
                 case 'list-qualifications': 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $preferences->displayQualifications();
                     break;
 
                 case 'list-poles':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $preferences->displayPoles();
                     break;
 
                 case 'list-establishments':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $preferences->displayEstablishments();
                     break;
 
                 case 'list-services':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $preferences->displayServices();
                     break;
 

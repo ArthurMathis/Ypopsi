@@ -60,7 +60,7 @@ class CandidaturesController extends Controller {
      * @param String|Null $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
      * @return Void
      */
-    public function checkCandidate(array $candidate, ?array $qualifications = null, array|null $helps = null, string|null $medical_visit = null, string|null $coopteur = null) {
+    public function checkCandidate(array $candidate, ?array $qualifications = null, ?array $helps = null, ?string $medical_visit = null, ?string $coopteur = null) {
         $this->Model->verifyCandidate($candidate, $qualifications, $helps, $medical_visit, $coopteur);
         header('Location: index.php?applications=input-applications');
     }

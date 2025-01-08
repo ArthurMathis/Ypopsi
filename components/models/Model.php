@@ -881,7 +881,7 @@ abstract class Model {
      * @param String|Null $abbreviation The abbreviation of the titled
      * @return Void
      */
-    protected function inscriptQualifications(string $titled, bool $medical_staff = false, ?string $abbreviation) {
+    protected function inscriptQualifications(string $titled, bool $medical_staff = false, ?string $abbreviation = null) {
         $request = "INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES (:titled, :medical_staff, :abbreviation)";
         $params = [
             "titled"        => $titled,

@@ -2,6 +2,8 @@
 
 require_once('View.php');
 
+define('LINK', 'index.php?candidates=');
+
 /**
  * Class representing the candidates' views
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
@@ -40,10 +42,10 @@ class CandidatsView extends View {
         $buttons = ['Tableau de bord', 'Contrats', 'Propositions', 'Candidatures', 'Rendez-vous'] ;
         include(BARRES.DS.'candidate_profile.php');
         $this->getDashboard($item);
-        $this->getContractsBoard($item['contracts'], $item['candidate']['Id']);
-        $this->getOffersBoard($item['contracts'], $item['candidate']['Id']);
-        $this->getApplicationsBoard($item['applications'], $item['candidate']['Id']);
-        $this->getMeetingsBoard($item['meeting'], $item['candidate']['Id']);
+        $this->getContractsBoard($item['candidate']['Id'], $item['contracts']);
+        $this->getOffersBoard($item['candidate']['Id'], $item['contracts']);
+        $this->getApplicationsBoard($item['candidate']['Id'], $item['applications']);
+        $this->getMeetingsBoard($item['candidate']['Id'], $item['meeting']);
         echo "</main>";
         echo "</content>";
 
@@ -63,7 +65,7 @@ class CandidatsView extends View {
      * @param Array|Null $offer The array containing the offer's data (if it is existing)
      * @return View The HTML Page
      */
-    public function displayInputOffers(string $title, int $key_candidate, array $jobs, array $services, array $establishments, array $types_of_contracts, array|null $offer = null) {
+    public function displayInputOffers(string $title, int $key_candidate, array $jobs, array $services, array $establishments, array $types_of_contracts, ?array $offer = null) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
         
@@ -173,11 +175,11 @@ class CandidatsView extends View {
     /**
      * Protected method generating the candidate's contracts tab
      *
-     * @param Array|Null $contracts The array containing the candidate's contract (if he has)
      * @param Int $key_candidate The candidate's primary key
+     * @param Array|Null $contracts The array containing the candidate's contract (if he has)
      * @return View The HTML Page
      */
-    protected function getContractsBoard(array|null &$contracts, int $key_candidate) {  
+    protected function getContractsBoard(int $key_candidate, ?array &$contracts = null) {  
         echo '<section class="onglet">';
         $compt = 0; 
         $size = empty($contracts) ? 0 :count($contracts);
@@ -190,7 +192,7 @@ class CandidatsView extends View {
 
         if($compt === 0)
             echo "<h2>Aucun contrat enregistré</h2>";
-        $link = 'index.php?candidates=input-contracts&key_candidate=' . $key_candidate;
+        $link = LINK . 'input-contracts&key_candidate=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }
@@ -201,7 +203,7 @@ class CandidatsView extends View {
      * @param Int $key_candidate The candidate's primary key
      * @return View The HTML Page
      */
-    protected function getOffersBoard(array|null &$offers, int $key_candidate) {
+    protected function getOffersBoard(int $key_candidate, ?array &$offers = null) {
         echo '<section class="onglet">';
         if(!empty($offers)) 
             foreach($offers as $obj) 
@@ -209,7 +211,7 @@ class CandidatsView extends View {
         else 
             echo "<h2>Aucune proposition enregistrée </h2>"; 
         
-        $link = 'index.php?candidates=input-offers&key_candidate=' . $key_candidate;
+        $link = LINK . 'input-offers&key_candidate=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }
@@ -220,13 +222,13 @@ class CandidatsView extends View {
      * @param Int $key_candidate The candidate's primary key
      * @return View The HTML Page
      */
-    protected function getApplicationsBoard(array|null &$applications, int $key_candidate) {
+    protected function getApplicationsBoard(int $key_candidate, ?array &$applications = null) {
         echo '<section class="onglet">';
         if(!empty($applications)) foreach($applications as $obj)
             $this->getApplicationsBubble($obj, $key_candidate);
         else echo "<h2>Aucune candidature enregistrée </h2>";
         
-        $link = 'index.php?candidates=input-applications&key_candidate=' . $key_candidate;
+        $link = LINK . 'input-applications&key_candidate=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php');  
         echo "</section>";
     }
@@ -237,7 +239,7 @@ class CandidatsView extends View {
      * @param Int $key_candidate The candidate's primary key
      * @return View The HTML Page
      */
-    protected function getMeetingsBoard(array|null &$meetings, int $key_candidate) {
+    protected function getMeetingsBoard(int $key_candidate, ?array &$meetings = null) {
         echo '<section class="onglet">';
         if(!empty($meetings)) 
             foreach($meetings as $obj)
@@ -245,7 +247,7 @@ class CandidatsView extends View {
         else 
             echo "<h2>Aucun rendez-vous enregistré </h2>"; 
         
-        $link = 'index.php?candidates=input-meetings&key_candidate=' . $key_candidate;
+        $link = LINK . 'input-meetings&key_candidate=' . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
         echo "</section>";
     }
