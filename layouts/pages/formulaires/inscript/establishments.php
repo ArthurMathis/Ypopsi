@@ -5,8 +5,8 @@
         <input type="text" id="intitule" name="intitule" placeholder="Intitulé">
         <select id="pole" name="pole">
             <?php foreach($poles as $c): ?>
-                <option value="<?= $c['Intitule']; ?>">
-                    <?= $c['Intitule']; ?>
+                <option value="<?= $c['id']; ?>">
+                    <?= $c['text']; ?>
                 </option>
             <?php endforeach ?>    
             <option value="null">Non rattaché</option>

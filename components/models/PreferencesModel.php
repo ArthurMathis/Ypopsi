@@ -310,15 +310,16 @@ class PreferencesModel extends Model {
     /**
      * Public method creating a new jobs
      *
-     * @param Array<String> $data The array containing the new jobs data
+     * @param String $titled The titled of job
+     * @param String $titled_feminin The fiminin titled of job
      * @return Void
      */
-    public function createJobs(Array &$data) {
-        $this->inscriptJobs($data['titled'], $data['titled feminin']);
+    public function createJobs(string $titled, string $titled_feminin) {
+        $this->inscriptJobs($titled, $titled_feminin);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouveau poste",
-            "Ajout du poste " . $data['titled'] . " à la base de données"
+            "Ajout du poste " . $titled . " à la base de données"
         );
     }
     /**
@@ -360,22 +361,19 @@ class PreferencesModel extends Model {
     /**
      * Public method creating a new establishments
      *
-     * @param Array $data
+     * @param String $titled The titled of new establishment 
+     * @param String $address The address of new establishment 
+     * @param String $city The city of new establishment 
+     * @param String $post_code The post code of new establishment 
+     * @param Int/Null $key_poles The primary key of the hub which contains the new establishment 
      * @return Void
      */
-    public function createEstablishments(array &$data) {
-        $data['key_poles'] = $this->searchPoles($data['key_poles'])['Id']; // Todo : utiliser la nouvelle version de l'AutoComplete pour éviter la recherche et renvoyer directement la clé primaire
-        $this->inscriptEstablishments(
-            $_POST['intitule'],
-            $_POST['adresse'],
-            $_POST['ville'],
-            $_POST['code-postal'],
-            $_POST['pole']
-        );
+    public function createEstablishments(string $titled, string $address, string $city, string $post_code, ?int $key_poles = null) {
+        $this->inscriptEstablishments($titled, $address, $city, $post_code, $key_poles ? $key_poles : null);
         $this->writeLogs(
             $_SESSION['user_key'],
             "Nouvel établissement",
-            "Ajout de l'établissement " . $data['titled']
+            "Ajout de l'établissement " . $titled
         );
     }
     /**

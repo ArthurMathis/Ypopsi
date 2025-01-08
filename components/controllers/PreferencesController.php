@@ -123,7 +123,7 @@ class PreferencesController extends Controller {
      *
      * @return View HTML Page
      */
-    public function displayInputEstablishments() { return $this->View->displayInputEstablishments($this->Model->getPoles()); }
+    public function displayInputEstablishments() { return $this->View->displayInputEstablishments($this->Model->getPolesForAutoComplete()); }
     /**
      * Public method displaying the hubs HTML input form
      *
@@ -215,11 +215,15 @@ class PreferencesController extends Controller {
     /**
      * Public method creating a new establishment
      *
-     * @param Array $data
+     * @param String $titled The titled of new establishment 
+     * @param String $address The address of new establishment 
+     * @param String $city The city of new establishment 
+     * @param String $post_code The post code of new establishment 
+     * @param Int/Null $key_poles The primary key of the hub which contains the new establishment 
      * @return Void
      */
-    public function createEstablishments(array &$data) {
-        $this->Model->createEstablishments($data);
+    public function createEstablishments(string $titled, string $address, string $city, string $post_code, ?int $key_poles = null) {
+        $this->Model->createEstablishments($titled, $address, $city, $post_code, $key_poles);
         alert_manipulation::alert([
             'title'     => 'Opération réussie',
             'msg'       => "Nouveau établissement enregistré !",
@@ -246,12 +250,15 @@ class PreferencesController extends Controller {
     /**
      * Undocumented function
      *
-     * @param Int $key_users The user's primary key
-     * @param Array $user The user's data
+     *  @param Int $key_users The user's primary key
+     * @param String $name The user's name
+     * @param String $firstname The user's firstname
+     * @param String $email The user's email
+     * @param Int $key_roles The kprimary key of the user's role
      * @return Void
      */
-    public function updateUsers(int $key_users, array &$user) {
-        $this->Model->updateUsers($key_users, $user['name'], $user['firstname'], $user['email'], $user['role']);
+    public function updateUsers(int $key_users, string $name, string $firstname, string $email, int $key_roles) {
+        $this->Model->updateUsers($key_users, $name, $firstname, $email, $key_roles);
         $this->Model->updateUsersLogs($key_users);
         alert_manipulation::alert([
             'title'     => 'Opération réussie',
