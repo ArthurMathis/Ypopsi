@@ -60,58 +60,45 @@ class CandidaturesController extends Controller {
      * @param String|Null $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
      * @return Void
      */
-    public function checkCandidate(array &$candidate, array|null $qualifications = null, array|null $helps = null, string|null $medical_visit = null, string|null $coopteur = null) {
+    public function checkCandidate(array $candidate, ?array $qualifications = null, ?array $helps = null, ?string $medical_visit = null, ?string $coopteur = null) {
         $this->Model->verifyCandidate($candidate, $qualifications, $helps, $medical_visit, $coopteur);
         header('Location: index.php?applications=input-applications');
     }
-    // public function findCandidat(string $name, $firstname, $email=null, $phone=null) {
-    //     $search = $this->Model->searchCandidat($name, $firstname, $email, $phone);
-    //     try {
-    //         $candidate = new Candidate(
-    //             $search['name'],
-    //             $search['firstname'],
-    //             $search['gender'],
-    //             $search['email'],
-    //             $search['phone'],
-    //             $search['address'],
-    //             $search['city'],
-    //             $search['postcode']
-    //         );
-    //         $candidate->setKey($search['id']);
-    //         
-    //     } catch(InvalideCandidateExceptions $e) {
-    //         forms_manip::error_alert($e->getMessage());
-    //     }
-    // 
-    //     $_SESSION['candidat'] = $candidate;
-    // 
-    //     header('Location: index.php?applications=input-offers');
-    // }
     /**
      * Public method generating and registering a new application
      *
      * @param Candidate $candidate The object containing the candidate's data
-     * @param Array $application The array containing the application's data
-     * @param Array $qualifications The array containing the candidate's qualifications
-     * @param Array $helps The new candidate's helps array
-     * @param String $coopteur The employee's name who advises the new candidate 
+     * @param Int $key_sources The primary key of the source of the application
+     * @param String $availability The date from which the candidate is available
+     * @param Int $key_jobs The primary key of the job of the application
+     * @param Int|Null $key_services The primary key of the service of the application
+     * @param Int|Null $key_establishments The primary key of the establishment of the application
+     * @param Int|Null $key_type_of_contract The primary key of the type of contract of the application
+     * @param Array|Null $qualifications The array containing the candidate's list of qualifications
+     * @param Array|Null $helps The array containing the candidate's list of helps
+     * @param String|Null $coopteur The 
+     * @param Array|Null $key_needs
+     * @throws Exception|PDOException If the request is not integred
      * @return Void
      */
-    public function createApplications(Candidate $candidate, array $application, array|null $qualifications = null, array|null $helps = null, string|null $coopteur = null) {
-        $candidate->setAvailability($application['availability']); 
-        try {
-            if ($application['service'] && $application['establishment'] && !$this->Model->verifyServices($application['service'], $application['establishment']))
-                throw new Exception("Le service " . $this->Model->searchServices($application['service'])['Titled'] . " n'existe pas dans l'établissement " . $this->Model->searchEstablishmets($application['establishment'])['Titled'] . "...");
-            
-            if ($candidate->getKey() === null) 
-                $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur);
-            $this->Model->inscriptApplications($candidate, $application);
-    
-        } catch (Exception $e) {
-            forms_manip::error_alert([
-                'title' => "Erreur lors de l'inscription de la candidature",
-                'msg' => $e
-            ]);
+    public function createApplications(Candidate $candidate, int $key_sources, string $availability, int $key_jobs, ?int $key_services = null, ?int $key_establishments = null, ?int $key_type_of_contract = null, ?array $qualifications = null, ?array $helps = null, ?int $coopteur = null, ?array $key_needs = null) { 
+        $candidate->setAvailability($availability);
+        if($key_services && $key_establishments && !$this->Model->verifyServices($key_services, $key_establishments))
+            throw new Exception("Le service " . $this->Model->searchServices($key_services)['Titled'] . " n'existe pas dans l'établissement " . $this->Model->searchEstablishmets($key_establishments)['Titled'] . "...");
+        if(!$candidate->getKey()) {
+            $this->Model->createCandidate($candidate, $qualifications, $helps, $coopteur); 
+            $this->Model->writeLogs(
+                $_SESSION['user_key'], 
+                "Nouveau candidat", 
+                "Inscription du candidat " . strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname())
+            );
         }
+        
+        $this->Model->inscriptApplications($candidate->getKey(), $key_sources, $key_jobs, $key_type_of_contract, $key_services, $key_establishments, $key_needs);
+        $this->Model->writeLogs(
+            $_SESSION['user_key'], 
+            "Nouvelle candidature", 
+            "Nouvelle candidature de " . strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname()) . " au poste de " . $this->Model->searchJobs($key_jobs)['Titled']
+        );
     }
 }

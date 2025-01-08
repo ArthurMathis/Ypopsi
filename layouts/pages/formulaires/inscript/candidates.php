@@ -13,8 +13,8 @@
             <div class="input-container">
                 <p>Civilité *</p>
                 <select id="genre" name="genre">
-                    <option value="Homme">Homme</option>
-                    <option value="Femme">Femme</option>
+                    <option value="1" selected>Homme</option>
+                    <option value="0">Femme</option>
                 </select>    
             </div>
         </section>

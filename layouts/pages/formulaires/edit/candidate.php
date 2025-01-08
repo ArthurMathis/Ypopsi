@@ -11,7 +11,16 @@
                 <input type="text" id="prenom" name="prenom" placeholder="Prénom" value="<?= $item['candidate']['Firstname'] ?>" required>
             </div>
             <div class="input-container">
-                <p>Email</p>
+                <p>Civilité *</p>
+                <select id="genre" name="genre">
+                    <option value="1" selected>Homme</option>
+                    <option value="0">Femme</option>
+                </select>    
+            </div>
+        </section>
+        <section>
+            <div class="input-container">
+                <p>Adresse email</p>
                 <input type="email" id="email" name="email" placeholder="Adresse email" value="<?= $item['candidate']['Email'] ?>">
             </div>
             <div class="input-container">

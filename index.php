@@ -8,15 +8,12 @@ require_once(CONTROLLERS.DS.'HomeController.php');
 require_once(CONTROLLERS.DS.'CandidaturesController.php');
 require_once(CONTROLLERS.DS.'CandidatsController.php');
 require_once(CONTROLLERS.DS.'PreferencesController.php');
-
-// Starting the session
 session_start();
 env_start();
 
 // Testing the identification
 if (!isset($_GET['login']) && (!isset($_SESSION['user_key']) || empty($_SESSION['user_key']))) {
-    (new LoginController())->displayLogin();
-    exit;
+    header('index.php?login=get_connexion');
 
 } elseif(isset($_SESSION['first_log_in']) && $_SESSION['first_log_in'] === true) {
     unset($_SESSION['first_log_in']);
@@ -43,10 +40,7 @@ switch(true) {
                     elseif(empty($_POST["motdepasse"])) 
                         throw new Exception("Le champs mot de passe doit être rempli !"); 
 
-                    $identifiant = $_POST["identifiant"];
-                    $motdepasse = $_POST["motdepasse"];
-
-                    $login->checkIdentification($identifiant, $motdepasse);
+                    $login->checkIdentification($_POST["identifiant"], $_POST["motdepasse"]);
 
                 } catch(Exception $e){
                     forms_manip::error_alert([
@@ -64,9 +58,7 @@ switch(true) {
                 $login->displayLogin(); 
                 break;   
 
-            default : 
-                $login->displayLogin();
-                break;
+            default : $login->displayLogin(); 
         }
         break;
         
@@ -80,25 +72,18 @@ switch(true) {
                     break; 
 
                 case 'input-candidates': 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $applications->displayInputCandidate();
                     break;
 
                 case 'input-applications' : 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $applications->displayInputApplications();
                     break;
 
                 case 'inscript-candidates' : 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                    try {
-                        // TODO : intégrer ces vérifications directement dans le javascript
+                    isUserOrMore();
+                    try { // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST["nom"]))
                             throw new Exception("Le champs nom doit être rempli par une chaine de caractères !");
                         elseif(empty($_POST["prenom"]))
@@ -111,7 +96,7 @@ switch(true) {
                         $candidate = [
                             'name'          => forms_manip::nameFormat($_POST["nom"]), 
                             'firstname'     => forms_manip::nameFormat($_POST["prenom"]), 
-                            'gender'        => $_POST['genre'],
+                            'gender'        => (int) $_POST['genre'],
                             'email'         => $_POST["email"], 
                             'phone'         => !empty($_POST["telephone"]) ? forms_manip::numberFormat($_POST["telephone"]) : null, 
                             'address'       => !empty($_POST["adresse"]) ? $_POST["adresse"] : null,
@@ -122,11 +107,11 @@ switch(true) {
                         if(isset($_POST['diplomeDate'])) foreach ($_POST["diplomeDate"] as $date)
                             if (empty($date)) throw new Exception("Chaque diplôme doit avoir une date d'obtention !");
                         $qualifications = array_map(
-                            function($qualification, $date) { return ['qualification' => (int)$qualification, 'date' => $date]; }, 
+                            function($qualification, $date) { return ['qualification' => (int) $qualification, 'date' => $date]; }, 
                             isset($_POST["diplome"]) ? $_POST["diplome"] : [], 
                             isset($_POST["diplomeDate"]) ? $_POST["diplomeDate"] : []
                         );
-                        $helps         = isset($_POST["aide"]) ? array_map(function($elmt) { return (int)$elmt; }, $_POST["aide"]) : null;
+                        $helps         = isset($_POST["aide"]) ? array_map(function($elmt) { return (int) $elmt; }, $_POST["aide"]) : null;
                         $coopteur      = isset($_POST["coopteur"]) ? $_POST['coopteur'] : null;
                         $medical_visit = isset($_POST["visite_medicale"]) ? $_POST["visite_medicale"] : null;
 
@@ -141,56 +126,42 @@ switch(true) {
                     break;
 
                 case 'inscript-applications' :
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application...");
+                    isUserOrMore();
+                    if(empty($_POST["poste"])) 
+                        throw new Exception("Le champs poste est nécessaire pour cette action.");
+                    elseif(empty($_POST["disponibilite"])) 
+                        throw new Exception("Le champs disponibilité est nécessaire pour cette action.");
+                    elseif(empty($_POST["source"])) 
+                        throw new Exception("Le champs source est nécessaire pour cette action.");
+                    // TODO : intégrer ces vérifications directement dans le javascript
+        
+                    $applications->createApplications(
+                        $_SESSION['candidate'],
+                        (int) $_POST["source"],
+                        $_POST["disponibilite"],
+                        (int) $_POST["poste"],
+                        empty($_POST["service"]) ? null : (int) $_POST["service"],
+                        empty($_POST["etablissement"]) ? null : (int) $_POST["etablissement"],
+                        empty($_POST["type_de_contrat"]) ? null : (int) $_POST["type_de_contrat"],
+                        isset($_SESSION['qualifications']) && !empty($_SESSION['qualifications']) ? $_SESSION['qualifications'] : null,
+                        isset($_SESSION['helps']) && !empty($_SESSION['helps']) ? $_SESSION['helps'] : null,
+                        isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null
+                    );
 
-                    try {
-                        // TODO : intégrer ces vérifications directement dans le javascript
-                        if(empty($_POST["poste"])) 
-                            throw new Exception("Le champs poste est nécessaire pour cette action.");
-                        elseif(empty($_POST["disponibilite"])) 
-                            throw new Exception("Le champs disponibilité est nécessaire pour cette action.");
-                        elseif(empty($_POST["source"])) 
-                            throw new Exception("Le champs source est nécessaire pour cette action.");
-
-                        $applications->createApplications(
-                            $_SESSION['candidate'],
-                            [
-                                'job'              => (int) $_POST["poste"],
-                                'service'          => !empty($_POST["service"]) ? (int) $_POST["service"] : null,
-                                'establishment'    => !empty($_POST["etablissement"]) ?  (int) $_POST["etablissement"] : null,
-                                'type of contract' => !empty($_POST["type_de_contrat"]) ?  (int) $_POST["type_de_contrat"] : null,
-                                'availability'     => $_POST["disponibilite"],
-                                'source'           => $_POST["source"]
-                            ],
-                            isset($_SESSION['qualifications']) && !empty($_SESSION['qualifications']) ? $_SESSION['qualifications'] : null,
-                            isset($_SESSION['helps']) && !empty($_SESSION['helps']) ? $_SESSION['helps'] : null,
-                            isset($_SESSION['coopteur']) && !empty($_SESSION['coopteur']) ? $_SESSION['coopteur'] : null
-                        );
-
-                        $candidate = $_SESSION['candidate'];
-                        unset($_SESSION['candidate']);
-                        unset($_SESSION['qualifications']);
-                        unset($_SESSION['helps']);
-                        unset($_SESSION['coopteur']);
-                        
-                        alert_manipulation::alert([
-                            'title' => 'Candidat inscript !',
-                            'msg' => strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname()) . " a bien été inscrit(e).",
-                            'direction' => "index.php?candidates=" . $candidate->getKey()
-                        ]);
-            
-                    } catch(Exception $e) {
-                        forms_manip::error_alert([
-                            'title' => "Erreur lors de l'inscription de la candidature",
-                            'msg' => $e
-                        ]);
-                    }
+                    $candidate = $_SESSION['candidate'];
+                    unset($_SESSION['candidate']);
+                    unset($_SESSION['qualifications']);
+                    unset($_SESSION['helps']);
+                    unset($_SESSION['coopteur']);
+                    
+                    alert_manipulation::alert([
+                        'title' => 'Candidat inscript !',
+                        'msg' => strtoupper($candidate->getName()) . " " . forms_manip::nameFormat($candidate->getFirstname()) . " a bien été inscrit(e).",
+                        'direction' => "index.php?candidates=" . $candidate->getKey()
+                    ]);
                     break;
             
-                default : 
-                    $applications->dispayCandidatures();
-                    break;
+                default : $applications->dispayCandidatures();
             }
 
         } catch(Exception $e) {
@@ -213,9 +184,7 @@ switch(true) {
                     break;
 
                 case 'input-meetings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
                         $candidates->displayInputMeetings($_GET['key_candidate']);
                     else 
@@ -223,9 +192,7 @@ switch(true) {
                     break;
 
                 case 'input-applications': 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
                         $candidates->displayInputApplications($_GET['key_candidate']);
                     else 
@@ -233,9 +200,7 @@ switch(true) {
                     break;
 
                 case 'input-offers' :
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(is_numeric($_GET['key_candidate'])) {
                         $application = empty($_GET['key_application']) ? null : $_GET['key_application'];
                         $need = empty($_GET['key_need']) ? null : $_GET['key_need'];
@@ -246,9 +211,7 @@ switch(true) {
                     break;
 
                 case 'input-contracts':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
                         $candidates->displayInputContracts($_GET['key_candidate']);
                     else 
@@ -256,9 +219,7 @@ switch(true) {
                     break;   
 
                 case 'inscript-meetings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(!isset($_GET['key_candidate']) || !is_numeric($_GET['key_candidate']))
                         throw new Exception("La clé candidat est introuvale !");
 
@@ -290,9 +251,7 @@ switch(true) {
                     break;     
                 
                 case 'inscript-offers':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-                    
+                    isUserOrMore();                    
                     try {
                         // TODO : intégrer ces vérifications directement dans le javascript
                         if(empty($_POST['poste']))
@@ -305,12 +264,6 @@ switch(true) {
                             throw new Exception("Le champs type de contrat doit être rempli !");
                         elseif(empty($_POST['date_debut']))
                             throw new Exception('Le champs date de début doit être rempli !');
-
-                        // TODO : intégrer ces vérifications directement dans le javascript
-                        // if($_POST['type_contrat'] == 'CDI' && !empty($_POST['date_fin'])) 
-                        //     throw new Exception("La date de fin ne peut pas être remplie pour un CDI !");
-                        // elseif($_POST['type_contrat'] != 'CDI' &&empty($_POST['date_fin'])) 
-                        //         throw new Exception("La date de fin doit être remplie !");
 
                         $data = [
                             'poste'           => (int) $_POST['poste'],
@@ -349,9 +302,7 @@ switch(true) {
                     break; 
                     
                 case 'inscript-contracts':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(!isset($_GET['key_candidate']) || !is_numeric($_GET['key_candidate']))
                         throw new Exception("La clé candidat est inrouvale !"); 
                     
@@ -400,16 +351,12 @@ switch(true) {
                     break;  
                     
                 case 'edit-meetings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-                    else 
-                        $candidates->displayEditMeetings($_GET['key_meeting']); 
+                    isUserOrMore();                     
+                    $candidates->displayEditMeetings($_GET['key_meeting']); 
                     break;  
 
                 case 'edit-ratings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(isset($_GET['key_candidate']) && is_numeric($_GET['key_candidate']))
                         $candidates->displayEditRatings($_GET['key_candidate']);
                     else 
@@ -417,9 +364,7 @@ switch(true) {
                     break;  
 
                 case 'edit-candidates':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(isset($_GET['key_candidate']))
                         $candidates->displayEditCandidates($_GET['key_candidate']);
                     else 
@@ -427,9 +372,7 @@ switch(true) {
                     break;  
 
                 case 'update-ratings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     try {
                         $rating = [
                             'notation'    => max($_POST['notation']),
@@ -453,9 +396,7 @@ switch(true) {
                     break;  
                     
                 case 'update-candidates':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     try {
                         $data = [
                             'name'                => forms_manip::nameFormat($_POST['nom']),
@@ -488,9 +429,7 @@ switch(true) {
                     break;  
 
                 case 'update-meetings':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     try {
                         if(empty($_POST['recruteur']))
                             throw new Exception("Le champs recruteur doit être rempli !");
@@ -508,9 +447,6 @@ switch(true) {
                             'description'   => $_POST['description'],
                         ];
 
-                        // if(Moment::currentMoment()->isTallerThan(Moment::fromDate($_POST['date'], $_POST['time'])->getTimestamp()))
-                        //     throw new Exception("La date du rendez-vous est antérieure à aujourd'hui.");
-
                         $candidates->updateMeetings($_GET['key_meeting'], $_GET['key_candidate'], $meeting);
 
                     } catch(Exception $e) {
@@ -522,16 +458,12 @@ switch(true) {
                     break;
                     
                 case 'delete-meetings': 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-                    else
-                        $candidates->deleteMeetings($_GET['key_meeting'], $_GET['key_candidate']);
+                    isUserOrMore();                   
+                    $candidates->deleteMeetings($_GET['key_meeting'], $_GET['key_candidate']);
                     break;  
                     
                 case 'dismiss-applications':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(!isset($_GET['key_applications']) || !is_numeric($_GET['key_applications']))
                         throw new Exception("Clé de candidature est introuvable !");
                     else
@@ -539,23 +471,19 @@ switch(true) {
                     break;  
 
                 case 'reject-offers':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                    isUserOrMore();                    
                     $candidates->rejectOffers($_GET['key_offer']);
                     break;    
                     
                 case 'resignations':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     if(!isset($_GET['key_contract']) || !is_numeric($_GET['key_contract']))
                         throw new Exception("La clé de contrat est introuvable !");
                     else
                         $candidates->resignContracts($_GET['key_contract']);
                     break; 
 
-                default: 
-                    throw new Exception("L'action n'a pas pu être identifiée !");
+                default: throw new Exception("L'action n'a pas pu être identifiée !");
             } 
 
         } catch(Exception $e) {
@@ -568,10 +496,8 @@ switch(true) {
     case (isset($_GET['preferences'])):
         $preferences = new PreferencesController(); 
         if(is_numeric($_GET['preferences'])) {
-            if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-            
-            if($_GET['preferences'] == $_SESSION['user_key']) 
+            isAdminOrMore();
+            if($_GET['preferences'] === $_SESSION['user_key']) 
                 header('Location: index.php?preferences=home');
             else 
                 $preferences->display($_GET['preferences']);
@@ -591,34 +517,19 @@ switch(true) {
                     break;
 
                 case 'update-users':
-                    if(isset($_GET['user_key']) && !empty($_GET['user_key']) && is_numeric($_GET['user_key'])) {
-                        try {
-                            if(empty( $_POST['nom'])) 
-                                throw new Exception('Le champs nom doit être rempli !');
-                            elseif(empty( $_POST['prenom'])) 
-                                throw new Exception('Le champs prénom doit être rempli !');
-                            elseif(empty( $_POST['email'])) 
-                                throw new Exception('Le champs email doit être rempli !');
-                            elseif(empty( $_POST['role'])) 
-                                throw new Exception('Le champs rôle doit être rempli !');
-
-                            $user = [
-                                'name'      => $_POST['nom'],
-                                'firstname' => $_POST['prenom'],
-                                'email'     => $_POST['email'],
-                                'role'      => $_POST['role']
-                            ];
-
-                        } catch(Exception $e) {
-                            forms_manip::error_alert([
-                                'msg' => $e
-                            ]);
-                        }
-                        
-                        $preferences->updateUsers($_GET['user_key'], $user);
-
-                    } else 
+                    if(!is_numeric($_GET['user_key'])) 
                         throw new Exception ('La clé utilisateur est nécessaire pour la mise-à-jour !');
+                    
+                    if(empty( $_POST['nom'])) 
+                        throw new Exception('Le champs nom doit être rempli !');
+                    elseif(empty( $_POST['prenom'])) 
+                        throw new Exception('Le champs prénom doit être rempli !');
+                    elseif(empty( $_POST['email'])) 
+                        throw new Exception('Le champs email doit être rempli !');
+                    elseif(empty( $_POST['role'])) 
+                        throw new Exception('Le champs rôle doit être rempli !');
+                    
+                    $preferences->updateUsers($_GET['user_key'], $_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['role']);
                     break;    
 
                 case 'edit-password':
@@ -626,345 +537,213 @@ switch(true) {
                     break; 
 
                 case 'update-password':
-                    try {
-                        if(empty($_POST['password']) || empty($_POST['new-password']) || empty($_POST['confirmation']))
-                            throw new Exception('Tous les champs doivent être rempli pour mettre le mot de passe à jour !');
-                        elseif($_POST['new-password'] != $_POST['confirmation'])
-                            throw new Exception('Le nouveau mot de passe et sa confirmation doivent être identiques !');
-        
-                    } catch(Exception $e) {
-                        forms_manip::error_alert([
-                            'title' => "Erreur lors de la mise-à-jour du mot de passe", 
-                            'msg' => $e
-                        ]);
-                    }
+                    if(empty($_POST['password']) || empty($_POST['new-password']) || empty($_POST['confirmation']))
+                        throw new Exception('Tous les champs doivent être rempli pour mettre le mot de passe à jour !');
+                    elseif($_POST['new-password'] != $_POST['confirmation'])
+                        throw new Exception('Le nouveau mot de passe et sa confirmation doivent être identiques !');
 
                     $preferences->updatePassword($_POST['password'], $_POST['new-password']);
                     break; 
                     
                 case 'display-reset-password':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                    if(isset($_GET['user_key']) && !empty($_GET['user_key']) && is_numeric($_GET['user_key'])) {
-                        $_SESSION['password'] = PasswordGenerator::random_password();
-                        alert_manipulation::alert([
-                            'title' => "Information importante",
-                            'msg' => "Le mot de passe va être réinitialisé. Le nouveau mot de passe est : <br><b> ". $_SESSION['password'] . "</b><br>Ce mot de passe ne pourra plus être consulté. Mémorisez-le avant de valider ou revenez en arrière.",
-                            'direction' => 'index.php?preferences=reset-password&user_key=' . $_GET['user_key'],
-                            'confirm' => true
-                        ]);
-
-                    } else 
+                    isAdminOrMore();
+                    if(!is_numeric($_GET['user_key'])) 
                         throw new Exception ('La clé utilisateur est nécessaire pour la réinitialisation du mot de passe !');
+
+                    $_SESSION['password'] = PasswordGenerator::random_password();
+                    alert_manipulation::alert([
+                        'title' => "Information importante",
+                        'msg' => "Le mot de passe va être réinitialisé. Le nouveau mot de passe est : <br><b> ". $_SESSION['password'] . "</b><br>Ce mot de passe ne pourra plus être consulté. Mémorisez-le avant de valider ou revenez en arrière.",
+                        'direction' => 'index.php?preferences=reset-password&user_key=' . $_GET['user_key'],
+                        'confirm' => true
+                    ]);
                     break;
 
                 case 'reset-password':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                    if(isset($_GET['user_key']) && !empty($_GET['user_key']) && is_numeric($_GET['user_key'])) {
-                        $preferences->resetPassword($_SESSION['password'], $_GET['user_key']);
-                        unset($_SESSION['password']);
-
-                    } else 
+                    isAdminOrMore();
+                    if(!is_numeric($_GET['user_key'])) 
                         throw new Exception ('La clé utilisateur est nécessaire pour la réinitialisation du mot de passe !');
+
+                    $preferences->resetPassword($_SESSION['password'], $_GET['user_key']);
+                    unset($_SESSION['password']);
                     break;
 
                 case 'list-users':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isAdminOrMore();
                     $preferences->displayUsers();
                     break;
 
                 case 'list-new-users':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isAdminOrMore();
                     $preferences->displayNewUsers();
                     break;
 
                 case 'list-jobs':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $preferences->displayJobs();
                     break;
 
                 case 'list-qualifications': 
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $preferences->displayQualifications();
                     break;
 
                 case 'list-poles':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $preferences->displayPoles();
                     break;
 
                 case 'list-establishments':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $preferences->displayEstablishments();
                     break;
 
                 case 'list-services':
-                    if($_SESSION['user_role'] == INVITE)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isUserOrMore();
                     $preferences->displayServices();
                     break;
 
                 case 'input-users':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isAdminOrMore();
                     $preferences->displayInputUsers();
                     break; 
 
                 case 'input-jobs':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isModOrMore();
                     $preferences->displayInputJobs();
                     break;  
 
                 case 'input-qualifications':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isModOrMore();
                     $preferences->displayInputQualifications();
                     break;   
 
                 case 'input-poles':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isModOrMore();
                     $preferences->displayInputPoles();
                     break;
 
                 case 'input-establishments':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isModOrMore();
                     $preferences->displayInputEstablishments();
                     break;  
 
                 case 'input-services': 
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isModOrMore();
                     $preferences->displaySaisieService();
                     break;
 
                 case 'get-inscript-users':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                    isAdminOrMore();
+                    if(empty($_POST['identifiant']))
+                        throw new Exception("Le champs identifiant doit être rempli.");
+                    elseif(empty($_POST['nom']))
+                        throw new Exception("Le champs nom doit être rempli.");
+                    elseif(empty($_POST['prenom']))
+                        throw new Exception("Le champs prenom doit être rempli.");
+                    elseif(empty($_POST['email']))
+                        throw new Exception("Le champs email doit être rempli.");
+                    elseif(empty($_POST['etablissement']))
+                        throw new Exception("Le champs étabissement doit être rempli.");
+                    elseif(empty($_POST['role']))
+                        throw new Exception("Le champs role doit être rempli.");
 
-                    try {
-                        if(empty($_POST['identifiant']))
-                            throw new Exception("Le champs identifiant doit être rempli.");
-                        elseif(empty($_POST['nom']))
-                            throw new Exception("Le champs nom doit être rempli.");
-                        elseif(empty($_POST['prenom']))
-                            throw new Exception("Le champs prenom doit être rempli.");
-                        elseif(empty($_POST['email']))
-                            throw new Exception("Le champs email doit être rempli.");
-                        elseif(empty($_POST['etablissement']))
-                            throw new Exception("Le champs étabissement doit être rempli.");
-                        elseif(empty($_POST['role']))
-                            throw new Exception("Le champs role doit être rempli.");
-
-                        $data = [
-                            'identifier' => $_POST['identifiant'],
-                            'name' => forms_manip::nameFormat($_POST['nom']  ),
-                            'firstname' => forms_manip::nameFormat($_POST['prenom']),
-                            'email' => $_POST['email'],
-                            'establishment' => $_POST['etablissement'],
-                            'role' => $_POST['role']
-                        ];
-
-                    } catch(Exception $e) {
-                        forms_manip::error_alert([
-                            'title' => "Erreur lors de l'incription du nouvel utilisateur", 
-                            'msg' => $e
-                        ]);
-                    }
-
-                    $data['password'] = PasswordGenerator::random_password();
-                    $_SESSION['new user data'] = $data;
+                    $_SESSION['new user data'] = [
+                        'identifier'    => $_POST['identifiant'],
+                        'name'          => forms_manip::nameFormat($_POST['nom']),
+                        'firstname'     => forms_manip::nameFormat($_POST['prenom']),
+                        'email'         => $_POST['email'],
+                        'establishment' => $_POST['etablissement'],
+                        'role'          => $_POST['role'], 
+                        'password'      => PasswordGenerator::random_password()
+                    ];
                     alert_manipulation::alert([
                         'title' => "Information importante",
-                        'msg' => "Le nouvel utilisateur va être créé avec le mot de passe suivant : <br><b> ". $data['password'] . "</b><br>Ce mot de passe ne pourra plus être consulté. Mémorisez-le avant de valider la création du compte ou revenez en arrière.",
+                        'msg' => "Le nouvel utilisateur va être créé avec le mot de passe suivant : <br><b> ". $_SESSION['new user data']['password'] . "</b><br>Ce mot de passe ne pourra plus être consulté. Mémorisez-le avant de valider la création du compte ou revenez en arrière.",
                         'direction' => 'index.php?preferences=inscript-users',
                         'confirm' => true
                     ]);
                     break;  
                 
                 case 'inscript-users':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                    isAdminOrMore();
+                    if(empty($_SESSION['new user data'])) 
+                        throw new Exception('Erreur lors de la récupération des informations du candidat, des informations sont manquantes.');
 
-                    try {
-                        if(isset($_SESSION['new user data']) && !empty($_SESSION['new user data'])) {
-                            $preferences->createUsers($_SESSION['new user data']);
-                            unset($_SESSION['new user data']);
-                        } else 
-                            throw new Exception('Erreur lors de la récupération des informations du candidat, des informations sont manquantes.');
-                        
-                    } catch(Exception $e) {
-                        forms_manip::error_alert([
-                            'title' => "Erreur lors de l'incription du nouvel utilisateur", 
-                            'msg' => $e,
-                            'direction' => "index.php?preferences=input-users"
-                        ]);
-                    } 
+                    $preferences->createUsers($_SESSION['new user data']);
+                    unset($_SESSION['new user data']);
                     break;
 
                 case 'inscript-jobs':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                    try {
-                        if(empty($_POST['titled']) || empty($_POST['titled-feminin']))
+                    isModOrMore();
+                    if(empty($_POST['titled']) || empty($_POST['titled-feminin']))
                             throw new Exception("Tous les champs doivent être remplis !");
 
-                        $data = [
-                            'titled' => $_POST['titled'],
-                            'titled feminin' => $_POST['titled-feminin']
-                        ];
-                        
-                        $preferences->createJobs($data);
-
-                    } catch(Exception $e) {
-                        forms_manip::error_alert([
-                            'title' => "Erreur lors de l'inscription du nouveau poste", 
-                            'msg' => $e
-                        ]);
-                    }
+                    $preferences->createJobs($_POST['titled'], $_POST['titled-feminin']);
                     break;
 
                 case 'inscript-qualifications':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                    isModOrMore();
+                    if(empty($_POST['titled']))
+                        throw new Exception("Le champs intitulé doit être rempli. ");
 
-                    try {
-                        if(empty($_POST['titled']))
-                            throw new Exception("Le champs intitulé doit être rempli. ");
-
-                        $preferences->createQualifications(
-                            $_POST['titled'], 
-                            empty($_POST['medical_staff']) ? null : $_POST['medical_staff'],
-                            empty($_POST['abreviation']) ? null : $_POST['abreviation']
-                        );
-                    } catch(Exception $e) {
-                        forms_manip::error_alert([
-                            'title' => "Erreur lors de l'inscription du nouveau poste", 
-                            'msg' => $e
-                        ]);
-                    }
+                    $preferences->createQualifications(
+                        $_POST['titled'], 
+                        empty($_POST['medical_staff']) ? null : $_POST['medical_staff'],
+                        empty($_POST['abreviation']) ? null : $_POST['abreviation']
+                    );
                     break; 
 
                 case 'inscript-poles':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
-                    try {
-                        if(empty($_POST['intitule']))
-                            throw new Exception("Le champs intitulé doit être rempli !");
-                        elseif(empty($_POST['description']))
-                            throw new Exception("Le champs description doit être rempli !");
-                        
-                        $preferences->createPoles($_POST['intitule'], $_POST['description']);
-
-                    } catch(Exception $e) {
-                        forms_manip::error_alert([
-                            'title' => "Erreur lors de l'inscription du pôle",
-                            'msg' => $e
-                        ]);
-                    }
+                    isModOrMore();
+                    if(empty($_POST['intitule']))
+                        throw new Exception("Le champs intitulé doit être rempli !");
+                    elseif(empty($_POST['description']))
+                        throw new Exception("Le champs description doit être rempli !");
+                    
+                    $preferences->createPoles($_POST['intitule'], $_POST['description']);
                     break;
 
                 case 'inscript-establishments':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                    isModOrMore();
+                    if(empty($_POST['intitule']))
+                        throw new Exception('Le champs intitulé doit être rempli !');
+                    elseif(empty($_POST['adresse']))
+                        throw new Exception('Le champs adresse doit être rempli !');
+                    elseif(empty($_POST['ville']))
+                        throw new Exception('Le champs ville doit être rempli !');
+                    elseif(empty($_POST['code-postal']))
+                        throw new Exception('Le champs code postal doit être rempli !');
+                    elseif(empty($_POST['pole']))
+                        throw new Exception('Le champs pôle doit être rempli !');
 
-                    try {
-                        if(empty($_POST['intitule']))
-                            throw new Exception('Le champs intitulé doit être rempli !');
-                        elseif(empty($_POST['adresse']))
-                            throw new Exception('Le champs adresse doit être rempli !');
-                        elseif(empty($_POST['ville']))
-                            throw new Exception('Le champs ville doit être rempli !');
-                        elseif(empty($_POST['code-postal']))
-                            throw new Exception('Le champs code postal doit être rempli !');
-                        elseif(empty($_POST['pole']))
-                            throw new Exception('Le champs pôle doit être rempli !');
-
-                        $data = [
-                            'titled'    => $_POST['intitule'],
-                            'address'   => $_POST['adresse'],
-                            'city'      => $_POST['ville'],
-                            'postcode'  => $_POST['code-postal'],
-                            'key_poles' => $_POST['pole']
-                        ];
-
-                    } catch (Exception $e) {
-                        forms_manip::error_alert([
-                            'title' => "Erreur lors de l'inscription de l'établissement",
-                            'msg' => $e
-                        ]);
-                    }
-
-                    $preferences->createEstablishments($data);
+                    $preferences->createEstablishments($_POST['intitule'], $_POST['adresse'], $_POST['ville'], $_POST['code-postal'], $_POST['pole']);
                     break;
 
                 case 'inscript-services':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
+                    isModOrMore();                    
+                    if(empty($_POST['titled']))
+                        throw new Exception("Le champs intitulé doit être rempli.");
+                    elseif(empty($_POST['establishments']))
+                        throw new Exception("Il est impossible d'enregistrer un service sans établissement...");
                     
-                    try {
-                        if(empty($_POST['titled']))
-                            throw new Exception("Le champs intitulé doit être rempli.");
-                        elseif(empty($_POST['establishments']))
-                            throw new Exception("Il est impossible d'enregistrer un service sans établissement...");
-                        
-                        $preferences->createServices($_POST['titled'], $_POST['establishments'], isset($_POST['description']) ? $_POST['description'] : null);
-
-                    } catch (Exception $e) {
-                        forms_manip::error_alert([
-                            'title' => "Erreur lors de l'inscription du nouveau service",
-                            'msg' => $e
-                        ]);
-                    }
+                    $preferences->createServices($_POST['titled'], $_POST['establishments'], isset($_POST['description']) ? $_POST['description'] : null);
                     break;
 
-
                 case 'logs-history':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isAdminOrMore();
                     $preferences->displayLogsHistory();
                     break;  
 
                 case 'actions-history':
-                    if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN)
-                        throw new Exception("Accès refusé. Votre rôle est insufissant pour accéder à cette partie de l'application... ");
-
+                    isAdminOrMore();
                     $preferences->displayActionsHistory();
                     break;  
 
-                // todo : On affiche les listes des autres données de la base de données (types de contrats, aides au recrutement, sources)    
                 case 'autres':
                     break;    
 
-                default: 
-                    throw new Exception("L'action n'a pas pu être identifiée !");
+                default: throw new Exception("L'action n'a pas pu être identifiée !");
             }
         } catch(Exception $e) {
             forms_manip::error_alert([

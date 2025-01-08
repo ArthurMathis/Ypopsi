@@ -12,15 +12,15 @@ class CandidaturesView extends View {
      *
      * @param String $title The HTML page's title
      * @param Array $items The array containing the list of applications
-     * @param Int $nb_items_max
+     * @param Int/Null $nb_items_max
      * @return View HTML Page
      */
-    public function getContent(string $title, array $items, int $nb_items_max = null) {
+    public function getContent(string $title, array $items, ?int $nb_items_max = null) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'applications.css']);
         $this->generateMenu(false, APPLICATIONS);
 
         include BARRES.DS.'applications.php';
-        $this->getListItems($title, $items, $nb_items_max, 'main-liste');
+        $this->getListItems($title, $items, $nb_items_max ? $nb_items_max : null, 'main-liste');
 
         $this->generateCommonFooter();
     }

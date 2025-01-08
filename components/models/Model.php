@@ -44,14 +44,14 @@ abstract class Model {
      */
     protected function getConnection() { return $this->connection; }
     /**
-     * Protected method recording application logs
+     * Public method recording application logs
      * 
      * @param Int $user_key The user identification key in the database
      * @param String $action The action title
      * @param String|Null optionnal $description The action description 
      * @return Void
      */
-    protected function writeLogs(int $user_key, string $action, ?string $description = null) {
+    public function writeLogs(int $user_key, string $action, ?string $description = null) {
         try {
             $this->inscriptActions(
                 $user_key, 
@@ -161,6 +161,10 @@ abstract class Model {
     public function getUsersForAutoComplete(): Array {
         $request = "SELECT Id as id, CONCAT(Name, ' ', Firstname) as text FROM Users ORDER BY name";
         return $this->get_request($request, null, false, true);
+    }
+    public function getPolesForAutoComplete(): Array {
+        $request = "SELECT Id AS id, Titled AS text FROM Poles";
+        return $this->get_request($request);
     }
     /**
      * Public method returning the establishments list to autocomplete items
@@ -819,10 +823,10 @@ abstract class Model {
      * @param String $titled The establishment address
      * @param String $titled The establishment city
      * @param Int $titled The establishment postcode
-     * @param Int $titled The primary key of the hub containing the establishment 
+     * @param Int/Null $titled The primary key of the hub containing the establishment 
      * @return Int The primary key of the new Establishment
      */
-    protected function inscriptEstablishments(string $titled, string $address, string $city, int $postcode, int $key_poles): Int {
+    protected function inscriptEstablishments(string $titled, string $address, string $city, int $postcode, ?int $key_poles = null): Int {
         $request = "INSERT INTO Establishments (Titled, Address, City, PostCode, Key_Poles) 
                     VALUES (:titled, :address, :city, :postcode, :key_poles)";
         $params = [
@@ -881,7 +885,7 @@ abstract class Model {
      * @param String|Null $abbreviation The abbreviation of the titled
      * @return Void
      */
-    protected function inscriptQualifications(string $titled, bool $medical_staff = false, ?string $abbreviation) {
+    protected function inscriptQualifications(string $titled, bool $medical_staff = false, ?string $abbreviation = null) {
         $request = "INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES (:titled, :medical_staff, :abbreviation)";
         $params = [
             "titled"        => $titled,
