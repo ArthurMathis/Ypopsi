@@ -1,7 +1,8 @@
 <?php
 
-include '../define.php';
-include '../'.CLASSE.DS.'Contract.php';
+include '../../define.php';
+include 'TestsManipulations.php';
+include '../../'.CLASSE.DS.'Contract.php';
 
 define('KEY', 1);
 define('CANDIDATE', 1);
@@ -18,1212 +19,1242 @@ define('SALARY', 1350);
 define('NIGHT_WORK', TRUE);
 define('WEEK_END_WORK', TRUE);
 
-function testConstructorTrue() {
-    $res = true;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = false;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorTrue</p>';
-}
-function testConstructorFalse1() {
-    $res = false;
-    try {
-        $c = new Contract(-1, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse1</p>';
-}
-function testConstructorFalse2() {
-    $res = false;
-    try {
-        $c = new Contract('Bonjour', JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse2</p>';
-}
-function testConstructorFalse3() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, -1, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse3</p>';
-}
-function testConstructorFalse4() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, 'Bonjour', SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse4</p>';
-}
-function testConstructorFalse5() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, -1, ESTABLISHMENT, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse5</p>';
-}
-function testConstructorFalse6() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, 'Bonjour', ESTABLISHMENT, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse6</p>';
-}
-function testConstructorFalse7() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, -1, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse7</p>';
-}
-function testConstructorFalse8() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, 'Bonjour', TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse8</p>';
-}
-function testConstructorFalse9() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, -1, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse9</p>';
-}
-function testConstructorFalse10() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, 'Bonjour', START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse10</p>';
-}
-function testConstructorFalse11() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, 1);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse11</p>';
-}
-function testConstructorFalse12() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, 'Bonjour');
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse12</p>';
-}
-function testConstructorFalse13() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, '24-08-05');
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse13</p>';
-}
-function testConstructorFalse14() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, '2024-8-5');
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse14</p>';
-}
-function testConstructorFalse15() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, '2024-28-02');
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse15</p>';
-}
-function testConstructorFalse16() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, '2024-08-52');
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse16</p>';
-}
-function testConstructorFalse17() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, '08-52');
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorFalse17</p>';
-}
-function testConstructorNull1() {
-    $res = false;
-    try {
-        $c = new Contract(NULL, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorNull1</p>';
-}
-function testConstructorNull2() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, NULL, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorNull2</p>';
-}
-function testConstructorNull3() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, NULL, ESTABLISHMENT, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorNull3</p>';
-}
-function testConstructorNull4() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, NULL, TYPE, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorNull4</p>';
-}
-function testConstructorNull5() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, NULL, START_DATE);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorNull5</p>';
-}
-function testConstructorNull6() {
-    $res = false;
-    try {
-        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, NULL);
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res) 
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testConstructorNull6</p>';
-}
+/**
+ * Class testing the Candidate class
+ * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
+ */
+class TestsContracts extends TestsManipulation {
+    /**
+     * Public function running unit tests
+     *
+     * @return Void
+     */
+    public function run() {
+        $this->writteH1("Tests de la classe Contract.php");
+        $this->writteH2("Tests de constructeurs");
+        $this->writteH3("Tests classiques");
+        $this->testConstructorTrue();
+        $this->writteSuccess();
 
-function testGetKey() {
-    $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    $c->setKey(KEY);
-    if($c->getKey() === KEY)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testGetName</p>';
-}
-function testGetCandidate() {
-    $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    if($c->getCandidate() === CANDIDATE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testGetName</p>';
-}
-function testGetService() {
-    $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    if($c->getService() === SERVICE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testGetName</p>';
-}
-function testGetEstablishment() {
-    $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    if($c->getEstablishment() === ESTABLISHMENT)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testGetName</p>';
-}
-function testGetType() {
-    $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    if($c->getType() === TYPE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testGetName</p>';
-}
-function testGetStartDate() {
-    $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-    if($c->getStartDate() === START_DATE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testGetName</p>';
-}
+        $this->writteH3("Tests de détection des erreurs - False");
+        $this->testConstructorFalse1();
+        $this->testConstructorFalse2();
+        $this->testConstructorFalse3();
+        $this->testConstructorFalse4();
+        $this->testConstructorFalse5();
+        $this->testConstructorFalse6();
+        $this->testConstructorFalse7();
+        $this->testConstructorFalse8();
+        $this->testConstructorFalse9();
+        $this->testConstructorFalse10();
+        $this->testConstructorFalse11();
+        $this->testConstructorFalse12();
+        $this->testConstructorFalse13();
+        $this->testConstructorFalse14();
+        $this->testConstructorFalse15();
+        $this->testConstructorFalse16();
+        $this->testConstructorFalse17();
+        $this->writteSuccess();
 
-function testSetKeyTrue() {
-    $res = true;
-    try {
+        $this->writteH3("Tests de détection des erreurs - Null");
+        $this->testConstructorNull1();
+        $this->testConstructorNull2();
+        $this->testConstructorNull3();
+        $this->testConstructorNull4();
+        $this->testConstructorNull5();
+        $this->testConstructorNull6();
+        $this->writteSuccess();
+    
+        $this->writteH2("Tests de getters");
+        $this->testGetKey();
+        $this->testGetCandidate();
+        $this->testGetService();
+        $this->testGetEstablishment();
+        $this->testGetType();
+        $this->testGetStartDate();
+        $this->writteSuccess();
+    
+        $this->writteH2("Tests de setters");
+        $this->writteH3("Tests classique");
+        $this->testSetKeyTrue();
+        $this->writteSuccess();
+
+        $this->writteH3("Tests de détection des erreurs - False");
+        $this->testSetKeyFalse1();
+        $this->testSetKeyFalse2();
+        $this->writteSuccess();
+
+        $this->writteH3("Tests de détection des erreurs - Null");
+        $this->testSetKeyNull();
+        $this->writteSuccess();
+    
+        $this->writteH2("Tests de makeContract");
+        $this->writteH3("Tests classique");
+        $this->testMakeContractWithoutTrue();
+        $this->testMakeContractWithTrue1();
+        $this->testMakeContractWithTrue2();
+        $this->testMakeContractWithTrue3();
+        $this->testMakeContractWithTrue4();
+        $this->testMakeContractWithTrue5();
+        $this->testMakeContractWithTrue6();
+        $this->testMakeContractWithTrue7();
+        $this->testMakeContractWithTrue8();
+        $this->writteSuccess();
+
+        $this->writteH3("Tests de détection des erreurs - False");
+        $this->testMakeContractWithoutFalse1();
+        $this->testMakeContractWithoutFalse2();
+        $this->testMakeContractWithoutFalse3();
+        $this->testMakeContractWithoutFalse4();
+        $this->testMakeContractWithoutFalse5();
+        $this->testMakeContractWithoutFalse6();
+        $this->testMakeContractWithoutFalse7();
+        $this->testMakeContractWithoutFalse8();
+        $this->testMakeContractWithoutFalse9();
+        $this->testMakeContractWithoutFalse10();
+        $this->testMakeContractWithoutFalse11();
+        $this->testMakeContractWithoutFalse12();
+        $this->testMakeContractWithoutFalse13();
+        $this->testMakeContractWithoutFalse14();
+        $this->testMakeContractWithoutFalse15();
+        $this->testMakeContractWithoutFalse16();
+        $this->testMakeContractWithoutFalse17();
+        $this->testMakeContractWithoutFalse18();
+        $this->writteSuccess();
+
+        $this->writteH3("Tests de détection des erreurs - Null");
+        $this->testMakeContractWithoutNull1();
+        $this->testMakeContractWithoutNull2();
+        $this->testMakeContractWithoutNull3();
+        $this->testMakeContractWithoutNull4();
+        $this->testMakeContractWithoutNull5();
+        $this->testMakeContractWithoutNull6();
+        $this->writteSuccess();
+    }
+
+    // * CONSTRUCTOR * //
+    /**
+     * Fonction publique testant le bon fonctionnement du constructeur
+     * 
+     * Goal : Success
+     *
+     * @return Void
+     */
+    function testConstructorTrue() {
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+        } catch(Exception) {
+            $this->writteFailure('constructorTrue'); 
+        }
+
+        $this->successTest();
+    }
+    function testConstructorFalse1() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(-1, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse2() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract('Bonjour', JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse3() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, -1, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse4() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, 'Bonjour', SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse5() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, -1, ESTABLISHMENT, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse6() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, 'Bonjour', ESTABLISHMENT, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse7() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, -1, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse8() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, 'Bonjour', TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse9() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, -1, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse10() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, 'Bonjour', START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse11() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, 1);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse12() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, 'Bonjour');
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse13() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, '24-08-05');
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse14() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, '2024-8-5');
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse15() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, '2024-28-02');
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse16() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, '2024-08-52');
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorFalse17() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, '08-52');
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorNull1() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(NULL, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorNull2() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, NULL, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorNull3() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, NULL, ESTABLISHMENT, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorNull4() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, NULL, TYPE, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorNull5() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, NULL, START_DATE);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testConstructorNull6() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, NULL);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res) 
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    
+    function testGetKey() {
         $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
         $c->setKey(KEY);
-    } catch(Exception) {
-        $res = false;
+        if($c->getKey() === KEY)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
-
-    if($res && $c->getKey() === KEY)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testSetKeyTrue</p>';
-}
-function testSetKeyFalse1() {
-    $res = false;
-    try {
+    function testGetCandidate() {
         $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-        $c->setKey('Bonjour');
-    } catch(Exception) {
-        $res = true;
+        if($c->getCandidate() === CANDIDATE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
-
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testSetKeyFalse1</p>';
-}
-function testSetKeyFalse2() {
-    $res = false;
-    try {
+    function testGetService() {
         $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-        $c->setKey(-12);
-    } catch(Exception) {
-        $res = true;
+        if($c->getService() === SERVICE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
-
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testSetKeyFalse2</p>';
-}
-function testSetKeyNull() {
-    $res = false;
-    try {
+    function testGetEstablishment() {
         $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
-        $c->setKey(NULL);
-    } catch(Exception) {
-        $res = true;
+        if($c->getEstablishment() === ESTABLISHMENT)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
-
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testSetKeyNull</p>';
-}
-
-function testMakeContractWithoutTrue() {
-    $res = true;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = false;
+    function testGetType() {
+        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+        if($c->getType() === TYPE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testGetStartDate() {
+        $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+        if($c->getStartDate() === START_DATE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
     
-    if($res && $c->getCandidate() === CANDIDATE && $c->getJob() === JOB && $c->getService() === SERVICE && $c->getEstablishment() === ESTABLISHMENT && $c->getType() === TYPE && $c->getStartDate() === START_DATE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutTrue</p>';
-}
-function testMakeContractWithoutFalse1() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => '-1',
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
+    function testSetKeyTrue() {
+        $res = $this->SUCCESS();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+            $c->setKey(KEY);
+        } catch(Exception) {
+            $res = $this->FAILURE();
+        }
+    
+        if($res && $c->getKey() === KEY)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testSetKeyFalse1() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+            $c->setKey('Bonjour');
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+    
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testSetKeyFalse2() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+            $c->setKey(-12);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+    
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testSetKeyNull() {
+        $res = $this->FAILURE();
+        try {
+            $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
+            $c->setKey(NULL);
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+    
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
     
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse1</p>';
-}
-function testMakeContractWithoutFalse2() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => -1,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
+    function testMakeContractWithoutTrue() {
+        $res = $this->SUCCESS();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->FAILURE();
+        }
+        
+        if($res && $c->getCandidate() === CANDIDATE && $c->getJob() === JOB && $c->getService() === SERVICE && $c->getEstablishment() === ESTABLISHMENT && $c->getType() === TYPE && $c->getStartDate() === START_DATE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse1() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => '-1',
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse2() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => -1,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse3() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => 'Bonjour',
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse4() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => '-1', 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse5() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => -1, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse6() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => 'Bonjour', 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse7() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => '-1',
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse8() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => -1,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse9() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => 'Bonjour',
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse10() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => '-1',
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse11() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => -1,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse12() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => 'Bonjour',
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse13() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => '-1', 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse14() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => -1, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse15() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => 'Bonjour', 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse16() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => 252654
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse17() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => 'Bonjour'
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutFalse18() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start date' => '24-25-25'
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutNull1() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => NULL,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutNull2() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => NULL, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutNull3() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => NULL,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutNull4() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => NULL,
+                'type' => TYPE,
+                'start_date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutNull5() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => NULL,
+                'start_date' => START_DATE
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
+    }
+    function testMakeContractWithoutNull6() {
+        $res = $this->FAILURE();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => NULL
+            ]);
+    
+        } catch(Exception) {
+            $res = $this->SUCCESS();
+        }
+        
+        if($res)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
     
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse2</p>';
-}
-function testMakeContractWithoutFalse3() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => 'Bonjour',
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
+    function testMakeContractWithTrue1() {
+        $res = $this->SUCCESS();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE,
+                'end_date' => END_DATE
+            ]);
     
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse3</p>';
-}
-function testMakeContractWithoutFalse4() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => '-1', 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
+        } catch(Exception $e) {
+            echo '<h2>Erreur -> ' . $e->getMessage() . '</h2>';
+            $res = $this->FAILURE();
+        }
+        
+        if($res && $c->getEndDate() === END_DATE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
+    function testMakeContractWithTrue2() {
+        $res = $this->SUCCESS();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE,
+                'end_date' => END_DATE
+            ]);
     
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse4</p>';
-}
-function testMakeContractWithoutFalse5() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => -1, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
+        } catch(Exception) {
+            $res = $this->FAILURE();
+        }
+        
+        if($res && $c->getEndDate() === END_DATE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
+    function testMakeContractWithTrue3() {
+        $res = $this->SUCCESS();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE,
+                'resignation_date' => RESIGNATION_DATE
+            ]);
     
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse5</p>';
-}
-function testMakeContractWithoutFalse6() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => 'Bonjour', 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
+        } catch(Exception $e) {
+            $res = $this->FAILURE();
+        }
+        
+        if($res && $c->getResignationDate() === RESIGNATION_DATE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
+    function testMakeContractWithTrue4() {
+        $res = $this->SUCCESS();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE,
+                'signature' => SIGNATURE
+            ]);
     
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse6</p>';
-}
-function testMakeContractWithoutFalse7() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => '-1',
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
+        } catch(Exception) {
+            $res = $this->FAILURE();
+        }
+        
+        if($res && $c->getSignature() === SIGNATURE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
+    function testMakeContractWithTrue5() {
+        $res = $this->SUCCESS();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE,
+                'signature' => SIGNATURE
+            ]);
     
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse7</p>';
-}
-function testMakeContractWithoutFalse8() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => -1,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
+        } catch(Exception) {
+            $res = $this->FAILURE();
+        }
+        
+        if($res && $c->getSignature() === SIGNATURE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
+    function testMakeContractWithTrue6() {
+        $res = $this->SUCCESS();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE,
+                'salary' => SALARY
+            ]);
     
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse8</p>';
-}
-function testMakeContractWithoutFalse9() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => 'Bonjour',
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
+        } catch(Exception) {
+            $res = $this->FAILURE();
+        }
+        
+        if($res && $c->getSalary() === SALARY)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
+    function testMakeContractWithTrue7() {
+        $res = $this->SUCCESS();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE,
+                'end_date' => END_DATE,
+                'resignation_date' => RESIGNATION_DATE
+            ]);
     
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse9</p>';
-}
-function testMakeContractWithoutFalse10() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => '-1',
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
+        } catch(Exception) {
+            $res = $this->FAILURE();
+        }
+        
+        if($res && $c->getEndDate() === END_DATE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
+    function testMakeContractWithTrue8() {
+        $res = $this->SUCCESS();
+        try {
+            $c = Contract::makeContract([
+                'candidate' => CANDIDATE,
+                'job' => JOB, 
+                'service' => SERVICE,
+                'establishment' => ESTABLISHMENT,
+                'type' => TYPE,
+                'start_date' => START_DATE,
+                'end_date' => END_DATE,
+                'signature' => SIGNATURE
+            ]);
     
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse10</p>';
-}
-function testMakeContractWithoutFalse11() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => -1,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
+        } catch(Exception) {
+            $res = $this->FAILURE();
+        }
+        
+        if($res && $c->getEndDate() === END_DATE)
+            $this->successTest();
+        else 
+            $this->writteFailure('constructorTrue'); 
     }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse11</p>';
-}
-function testMakeContractWithoutFalse12() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => 'Bonjour',
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse12</p>';
-}
-function testMakeContractWithoutFalse13() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => '-1', 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse13</p>';
-}
-function testMakeContractWithoutFalse14() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => -1, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse14</p>';
-}
-function testMakeContractWithoutFalse15() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => 'Bonjour', 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse15</p>';
-}
-function testMakeContractWithoutFalse16() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => 252654
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse16</p>';
-}
-function testMakeContractWithoutFalse17() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => 'Bonjour'
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse17</p>';
-}
-function testMakeContractWithoutFalse18() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start date' => '24-25-25'
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutFalse18</p>';
-}
-function testMakeContractWithoutNull1() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => NULL,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutNull1</p>';
-}
-function testMakeContractWithoutNull2() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => NULL, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutNull2</p>';
-}
-function testMakeContractWithoutNull3() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => NULL,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutNull3</p>';
-}
-function testMakeContractWithoutNull4() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => NULL,
-            'type' => TYPE,
-            'start_date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutNull4</p>';
-}
-function testMakeContractWithoutNull5() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => NULL,
-            'start_date' => START_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutNull5</p>';
-}
-function testMakeContractWithoutNull6() {
-    $res = false;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => NULL
-        ]);
-
-    } catch(Exception) {
-        $res = true;
-    }
-    
-    if($res)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithoutNull6</p>';
 }
 
-function testMakeContractWithTrue1() {
-    $res = true;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE,
-            'end_date' => END_DATE
-        ]);
-
-    } catch(Exception $e) {
-        echo '<h2>Erreur -> ' . $e->getMessage() . '</h2>';
-        $res = false;
-    }
-    
-    if($res && $c->getEndDate() === END_DATE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithTrue1</p>';
-}
-function testMakeContractWithTrue2() {
-    $res = true;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE,
-            'end_date' => END_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = false;
-    }
-    
-    if($res && $c->getEndDate() === END_DATE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithTrue2</p>';
-}
-function testMakeContractWithTrue3() {
-    $res = true;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE,
-            'resignation_date' => RESIGNATION_DATE
-        ]);
-
-    } catch(Exception $e) {
-        $res = false;
-    }
-    
-    if($res && $c->getResignationDate() === RESIGNATION_DATE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithTrue3</p>';
-}
-function testMakeContractWithTrue4() {
-    $res = true;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE,
-            'signature' => SIGNATURE
-        ]);
-
-    } catch(Exception) {
-        $res = false;
-    }
-    
-    if($res && $c->getSignature() === SIGNATURE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithTrue4</p>';
-}
-function testMakeContractWithTrue5() {
-    $res = true;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE,
-            'signature' => SIGNATURE
-        ]);
-
-    } catch(Exception) {
-        $res = false;
-    }
-    
-    if($res && $c->getSignature() === SIGNATURE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithTrue5</p>';
-}
-function testMakeContractWithTrue6() {
-    $res = true;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE,
-            'salary' => SALARY
-        ]);
-
-    } catch(Exception) {
-        $res = false;
-    }
-    
-    if($res && $c->getSalary() === SALARY)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithTrue6</p>';
-}
-function testMakeContractWithTrue7() {
-    $res = true;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE,
-            'end_date' => END_DATE,
-            'resignation_date' => RESIGNATION_DATE
-        ]);
-
-    } catch(Exception) {
-        $res = false;
-    }
-    
-    if($res && $c->getEndDate() === END_DATE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithTrue7</p>';
-}
-function testMakeContractWithTrue8() {
-    $res = true;
-    try {
-        $c = Contract::makeContract([
-            'candidate' => CANDIDATE,
-            'job' => JOB, 
-            'service' => SERVICE,
-            'establishment' => ESTABLISHMENT,
-            'type' => TYPE,
-            'start_date' => START_DATE,
-            'end_date' => END_DATE,
-            'signature' => SIGNATURE
-        ]);
-
-    } catch(Exception) {
-        $res = false;
-    }
-    
-    if($res && $c->getEndDate() === END_DATE)
-        echo '<p>Test validé</p>';
-    else 
-        echo '<p><b>Erreur :</b> testMakeContractWithTrue8</p>';
-}
-
-function test() {
-    echo "<h1>Test de la classe Contract.php</h1>";
-    echo "<h2>Test de constructeurs</h2>";
-    echo "<h3>Test classique</h3>";
-    testConstructorTrue();
-    echo "<h3>Test de détection des erreurs - False</h3>";
-    testConstructorFalse1();
-    testConstructorFalse2();
-    testConstructorFalse3();
-    testConstructorFalse4();
-    testConstructorFalse5();
-    testConstructorFalse6();
-    testConstructorFalse7();
-    testConstructorFalse8();
-    testConstructorFalse9();
-    testConstructorFalse10();
-    testConstructorFalse11();
-    testConstructorFalse12();
-    testConstructorFalse13();
-    testConstructorFalse14();
-    testConstructorFalse15();
-    testConstructorFalse16();
-    testConstructorFalse17();
-    echo "<h3>Test de détection des erreurs - Null</h3>";
-    testConstructorNull1();
-    testConstructorNull2();
-    testConstructorNull3();
-    testConstructorNull4();
-    testConstructorNull5();
-    testConstructorNull6();
-
-    echo "<h2>Test de getters</h2>";
-    testGetKey();
-    testGetCandidate();
-    testGetService();
-    testGetEstablishment();
-    testGetType();
-    testGetStartDate();
-
-    echo "<h2>Test de setters</h2>";
-    echo "<h3>Test classique</h3>";
-    testSetKeyTrue();
-    echo "<h3>Test de détection des erreurs - False</h3>";
-    testSetKeyFalse1();
-    testSetKeyFalse2();
-    echo "<h3>Test de détection des erreurs - Null</h3>";
-    testSetKeyNull();
-
-
-    echo "<h2>Test de makeContract</h2>";
-    echo "<h3>Test classique</h3>";
-    testMakeContractWithoutTrue();
-    testMakeContractWithTrue1();
-    testMakeContractWithTrue2();
-    testMakeContractWithTrue3();
-    testMakeContractWithTrue4();
-    testMakeContractWithTrue5();
-    testMakeContractWithTrue6();
-    testMakeContractWithTrue7();
-    testMakeContractWithTrue8();
-    echo "<h3>Test de détection des erreurs - False</h3>";
-    testMakeContractWithoutFalse1();
-    testMakeContractWithoutFalse2();
-    testMakeContractWithoutFalse3();
-    testMakeContractWithoutFalse4();
-    testMakeContractWithoutFalse5();
-    testMakeContractWithoutFalse6();
-    testMakeContractWithoutFalse7();
-    testMakeContractWithoutFalse8();
-    testMakeContractWithoutFalse9();
-    testMakeContractWithoutFalse10();
-    testMakeContractWithoutFalse11();
-    testMakeContractWithoutFalse12();
-    testMakeContractWithoutFalse13();
-    testMakeContractWithoutFalse14();
-    testMakeContractWithoutFalse15();
-    testMakeContractWithoutFalse16();
-    testMakeContractWithoutFalse17();
-    testMakeContractWithoutFalse18();
-    echo "<h3>Test de détection des erreurs - Null</h3>";
-    testMakeContractWithoutNull1();
-    testMakeContractWithoutNull2();
-    testMakeContractWithoutNull3();
-    testMakeContractWithoutNull4();
-    testMakeContractWithoutNull5();
-    testMakeContractWithoutNull6();
-}
-
-test();
+(new TestsContracts())->run();

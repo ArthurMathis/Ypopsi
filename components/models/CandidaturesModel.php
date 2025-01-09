@@ -44,10 +44,10 @@ class CandidaturesModel extends Model {
      * Public method that checks if input data is honest before saving it to the database
      *
      * @param Array $candidate The array containing the candidate's data
-     * @param Array $qualifications The array containing the candidate's qualifications
-     * @param Array $helps The array containing the candidate's helps
-     * @param Date $medical_visit The expiration date of the new candidate's medical examination
-     * @param String $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
+     * @param Array|Null $qualifications The array containing the candidate's qualifications
+     * @param Array|Null $helps The array containing the candidate's helps
+     * @param String|Null $medical_visit The expiration date of the new candidate's medical examination
+     * @param String|Null $coopteur A string containing a concatenation of the first and last name of the employee advising the new candidate
      * @return Void
      */
     public function verifyCandidate(array &$candidate, ?array $qualifications = null, ?array $helps = null, ?string $medical_visit = null, ?string $coopteur = null) { 

@@ -1,7 +1,7 @@
 <?php
 
-include '../../define.php';
-include 'TestsManipulations.php';
+require_once('../../define.php');
+require_once('TestsManipulations.php');
 include '../../'.CLASSE.DS.'Moment.php';
 
 define('TIMESTAMP', 1065348000);
@@ -562,5 +562,3 @@ class TestsMoments extends TestsManipulation {
             $this->writteFailure("fromDateFalse9");
     }
 }
-
-(new TestsMoments())->run();

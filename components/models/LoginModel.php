@@ -58,7 +58,7 @@ class LoginModel extends Model {
      * 
      * @param String $identifier The user's id (ex: name.f)
      * @param String $password The user's password
-     * @return Utilisateurs|NULL The user, if the informations are corrects and null,  if they aren't
+     * @return Utilisateurs|Null The user, if the informations are corrects and null,  if they aren't
      */
     private function verifyUser(string $identifier, string $password): ?User{
         $request = "SELECT * FROM Users WHERE Identifier = :identifier";

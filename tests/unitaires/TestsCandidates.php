@@ -1,20 +1,20 @@
 <?php
 
-include '../../define.php';
-include 'TestsManipulations.php';
+require_once('../../define.php');
+require_once('TestsManipulations.php');
 include '../../'.CLASSE.DS.'Candidate.php';
 
-define('KEY', (int) 1);
-define('NAME', 'Dupond');
-define('FIRSTNAME', 'Jean');
-define('GENDER', true);
-define('EMAIL', 'jean.dupond@diaconat-mulhouse.fr');
-define('PHONE', '06.38.85.55.57');
-define('ADDRESS', '22 rue de la praire');
-define('CITY', 'PrairieVille');
-define('POSTCODE', '68100');
-define('AVAILABILITY', '2024-12-25');
-define('MEDICAL_VISITE', '2024-09-09');
+define('CANDIDATES_KEY', (int) 1);
+define('CANDIDATES_NAME', 'Dupond');
+define('CANDIDATES_FIRSTNAME', 'Jean');
+define('CANDIDATES_GENDER', true);
+define('CANDIDATES_EMAIL', 'jean.dupond@diaconat-mulhouse.fr');
+define('CANDIDATES_PHONE', '06.38.85.55.57');
+define('CANDIDATES_ADDRESS', '22 rue de la praire');
+define('CANDIDATES_CITY', 'PrairieVille');
+define('CANDIDATES_POSTCODE', '68100');
+define('CANDIDATES_AVAILABILITY', '2024-12-25');
+define('CANDIDATES_MEDICAL_VISITE', '2024-09-09');
 
 /**
  * Class testing the Candidate class
@@ -113,7 +113,7 @@ class TestsCandidates extends TestsManipulation {
      */
     public function constructorTrue() {
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
 
         } catch(Exception $e) { 
             $this->writteFailure('constructorTrue'); 
@@ -132,7 +132,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorPhoneNull() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, NULL, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, NULL, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
 
         } catch(Exception $e) { 
             $this->writteFailure('constructorPhoneNull'); 
@@ -149,7 +149,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorAddressNull() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, NULL, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, NULL, CANDIDATES_CITY, CANDIDATES_POSTCODE);
 
         } catch(Exception $e) { 
             $this->writteFailure('constructorAddressNull'); 
@@ -166,7 +166,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorCityNull() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, NULL, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, NULL, CANDIDATES_POSTCODE);
 
         } catch(Exception $e) { 
             $this->writteFailure('constructorCityNull'); 
@@ -183,7 +183,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorPostcodeNull() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, NULL);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, NULL);
 
         } catch(Exception $e) { 
             $this->writteFailure('constructorPostcodeNull'); 
@@ -202,7 +202,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorNameFalse1() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate('1', FIRSTNAME, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate('1', CANDIDATES_FIRSTNAME, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -222,7 +222,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorNameFalse2() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(1, FIRSTNAME, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(1, CANDIDATES_FIRSTNAME, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -243,7 +243,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorFirstnameFalse1() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, '1', EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, '1', CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -263,7 +263,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorFirstnameFalse2() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, 1, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, 1, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -284,7 +284,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorEmailFalse1() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, NAME, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_NAME, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -304,7 +304,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorEmailFalse2() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, 1, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, 1, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -324,7 +324,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorEmailFalse3() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, '1', PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, '1', CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -345,7 +345,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorPhoneFalse1() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, 123654789, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, 123654789, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -365,7 +365,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorPhoneFalse2() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, '0.2', ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, '0.2', CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -385,7 +385,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorPhoneFalse3() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, '0.22.23.21', ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, '0.22.23.21', CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -405,7 +405,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorPhoneFalse4() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, '0.22.23.21.24.26.32', ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, '0.22.23.21.24.26.32', CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -425,7 +425,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorPhoneFalse5() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, '022.2321.24', ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, '022.2321.24', CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -446,7 +446,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorAddressFalse1() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, "12354", CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, "12354", CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -466,7 +466,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorAddressFalse2() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, 1, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, 1, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -487,7 +487,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorCityFalse1() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, "12354", POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, "12354", CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -507,7 +507,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorCityFalse2() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, 1, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, 1, CANDIDATES_POSTCODE);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -528,7 +528,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorPostcodeFalse1() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, "bonjour");
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, "bonjour");
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -548,7 +548,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorPostcodeFalse2() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, 12);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, 12);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -568,7 +568,7 @@ class TestsCandidates extends TestsManipulation {
     public function constructorPostcodeFalse3() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, 123456789111213141516171819);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, 123456789111213141516171819);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
         }
@@ -590,8 +590,8 @@ class TestsCandidates extends TestsManipulation {
      */
     public function setKeyTrue() {
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-            $c->setKey(KEY);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+            $c->setKey(CANDIDATES_KEY);
 
         } catch(Exception $e) {
             $this->writteFailure("setKeyTrue1");
@@ -609,8 +609,8 @@ class TestsCandidates extends TestsManipulation {
     public function setAvailabilityTrue() {
         $res = $this->SUCCESS();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-            $c->setAvailability(AVAILABILITY); 
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+            $c->setAvailability(CANDIDATES_AVAILABILITY); 
 
         } catch(Exception $e) {
             $this->writteFailure("setAvailabilityTrue1");
@@ -628,8 +628,8 @@ class TestsCandidates extends TestsManipulation {
     public function setMedicalVisitTrue() {
         $res = $this->SUCCESS();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-            $c->setMedicalVisit(MEDICAL_VISITE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+            $c->setMedicalVisit(CANDIDATES_MEDICAL_VISITE);
 
         } catch(Exception $e) {
             $this->writteFailure("setMedicalVisitTrue");
@@ -648,7 +648,7 @@ class TestsCandidates extends TestsManipulation {
     public function setKeyFalse() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
             $c->setKey('-1');
             
         } catch(Exception $e) {
@@ -671,7 +671,7 @@ class TestsCandidates extends TestsManipulation {
     public function setAvailabilityFalse1() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
             $c->setAvailability(-1);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -692,7 +692,7 @@ class TestsCandidates extends TestsManipulation {
     public function setAvailabilityFalse2() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
             $c->setAvailability('12:03:36');
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -713,7 +713,7 @@ class TestsCandidates extends TestsManipulation {
     public function setAvailabilityFalse3() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
             $c->setAvailability('Bonjour');
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -735,7 +735,7 @@ class TestsCandidates extends TestsManipulation {
     public function setMedicalVisitFalse1() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
             $c->setMedicalVisit(-1);
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -756,7 +756,7 @@ class TestsCandidates extends TestsManipulation {
     public function setMedicalVisitFalse2() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
             $c->setMedicalVisit('12:03:36');
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -777,7 +777,7 @@ class TestsCandidates extends TestsManipulation {
     public function setMedicalVisitFalse3() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
             $c->setMedicalVisit('Bonjour');
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -799,9 +799,9 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function getKey() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        $c->setKey(KEY);
-        if(KEY === $c->getKey())
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        $c->setKey(CANDIDATES_KEY);
+        if(CANDIDATES_KEY === $c->getKey())
             $this->successTest();
         else 
             $this->writteFailure("getKey");
@@ -814,8 +814,8 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function getName() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        if(NAME === $c->getName())
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        if(CANDIDATES_NAME === $c->getName())
             $this->successTest();
         else 
             $this->writteFailure("getName");
@@ -828,8 +828,8 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function getFirstname() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        if(FIRSTNAME === $c->getFirstname())
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        if(CANDIDATES_FIRSTNAME === $c->getFirstname())
             $this->successTest();
         else 
             $this->writteFailure("getFirstname");
@@ -842,8 +842,8 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function getEmail() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        if(EMAIL === $c->getEmail())
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        if(CANDIDATES_EMAIL === $c->getEmail())
             $this->successTest();
         else 
             $this->writteFailure("getEmail");
@@ -856,8 +856,8 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function getPhone() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        if(PHONE === $c->getPhone())
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        if(CANDIDATES_PHONE === $c->getPhone())
             $this->successTest();
         else 
             $this->writteFailure("getPhone");
@@ -870,8 +870,8 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function getAddress() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        if(ADDRESS === $c->getAddress())
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        if(CANDIDATES_ADDRESS === $c->getAddress())
             $this->successTest();
         else 
             $this->writteFailure("getAddress");   
@@ -884,8 +884,8 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function getCity() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        if(CITY === $c->getCity())
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        if(CANDIDATES_CITY === $c->getCity())
             $this->successTest();
         else 
             $this->writteFailure("getCity");
@@ -898,8 +898,8 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function getPostcode() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        if(POSTCODE === $c->getPostcode())
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        if(CANDIDATES_POSTCODE === $c->getPostcode())
             $this->successTest();
         else 
             $this->writteFailure("getPostcode");
@@ -912,9 +912,9 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function getAvailability() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        $c->setAvailability(AVAILABILITY);
-        if(AVAILABILITY === $c->getAvailability())
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        $c->setAvailability(CANDIDATES_AVAILABILITY);
+        if(CANDIDATES_AVAILABILITY === $c->getAvailability())
             $this->successTest();
         else 
             $this->writteFailure("getAvailability");
@@ -927,9 +927,9 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function getMedicalVisit() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        $c->setMedicalVisit(MEDICAL_VISITE);
-        if(MEDICAL_VISITE === $c->getMedicalVisit())
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        $c->setMedicalVisit(CANDIDATES_MEDICAL_VISITE);
+        if(CANDIDATES_MEDICAL_VISITE === $c->getMedicalVisit())
             $this->successTest();
         else 
             $this->writteFailure("getMedicalVisit");
@@ -944,12 +944,12 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function exportToSQLTrue() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        $c->setMedicalVisit(MEDICAL_VISITE);
-        $c->setAvailability(AVAILABILITY);
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        $c->setMedicalVisit(CANDIDATES_MEDICAL_VISITE);
+        $c->setAvailability(CANDIDATES_AVAILABILITY);
         $c = $c->exportToSQL();
 
-        if(count($c) === 10 && $c["name"] ===  NAME && $c["firstname"] === FIRSTNAME && $c["email"] === EMAIL && $c["phone"] === PHONE && $c["address"] === ADDRESS && $c["city"] === CITY && $c["post_code"] === POSTCODE && $c["availability"] === AVAILABILITY && $c["medical_visit"] === MEDICAL_VISITE)
+        if(count($c) === 10 && $c["name"] ===  CANDIDATES_NAME && $c["firstname"] === CANDIDATES_FIRSTNAME && $c["email"] === CANDIDATES_EMAIL && $c["phone"] === CANDIDATES_PHONE && $c["address"] === CANDIDATES_ADDRESS && $c["city"] === CANDIDATES_CITY && $c["post_code"] === CANDIDATES_POSTCODE && $c["availability"] === CANDIDATES_AVAILABILITY && $c["medical_visit"] === CANDIDATES_MEDICAL_VISITE)
             $this->successTest();
         else 
             $this->writteFailure("exportToSQLTrue");
@@ -962,11 +962,11 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function exportToSQLTrue_WithoutVisit() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        $c->setAvailability(AVAILABILITY);
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        $c->setAvailability(CANDIDATES_AVAILABILITY);
         $c = $c->exportToSQL();
 
-        if(count($c) === 9 && $c["name"] === NAME && $c["firstname"] === FIRSTNAME && $c["email"] === EMAIL && $c["phone"] === PHONE && $c["address"] === ADDRESS && $c["city"] === CITY && $c["post_code"] === POSTCODE && $c["availability"] === AVAILABILITY)
+        if(count($c) === 9 && $c["name"] === CANDIDATES_NAME && $c["firstname"] === CANDIDATES_FIRSTNAME && $c["email"] === CANDIDATES_EMAIL && $c["phone"] === CANDIDATES_PHONE && $c["address"] === CANDIDATES_ADDRESS && $c["city"] === CANDIDATES_CITY && $c["post_code"] === CANDIDATES_POSTCODE && $c["availability"] === CANDIDATES_AVAILABILITY)
             $this->successTest();
         else 
             $this->writteFailure("exportToSQLTrue_WithoutVisit");
@@ -980,9 +980,9 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function exportToSQL_update() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
         $c = $c->exportToSQL_update();
-        if(count($c) === 7 && $c["name"] === NAME && $c["firstname"] === FIRSTNAME && $c["email"] === EMAIL && $c["phone"] === PHONE && $c["address"] === ADDRESS && $c["city"] === CITY && $c["post_code"] === POSTCODE)
+        if(count($c) === 7 && $c["name"] === CANDIDATES_NAME && $c["firstname"] === CANDIDATES_FIRSTNAME && $c["email"] === CANDIDATES_EMAIL && $c["phone"] === CANDIDATES_PHONE && $c["address"] === CANDIDATES_ADDRESS && $c["city"] === CANDIDATES_CITY && $c["post_code"] === CANDIDATES_POSTCODE)
             $this->successTest();
         else 
             $this->writteFailure("exportToSQL_update");
@@ -995,12 +995,12 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function exportToSQL_Key() {
-        $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-        $c->setMedicalVisit(MEDICAL_VISITE);
-        $c->setAvailability(AVAILABILITY);
-        $c->setKey(KEY);
+        $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+        $c->setMedicalVisit(CANDIDATES_MEDICAL_VISITE);
+        $c->setAvailability(CANDIDATES_AVAILABILITY);
+        $c->setKey(CANDIDATES_KEY);
         $c = $c->exportToSQL_Key();
-        if(count($c) === 10 && $c["id"] === KEY && $c["name"] ===  NAME && $c["firstname"] === FIRSTNAME && $c["email"] === EMAIL && $c["phone"] === PHONE && $c["address"] === ADDRESS && $c["city"] === CITY && $c["post_code"] === POSTCODE && $c["availability"] === AVAILABILITY && $c["medical_visit"] === MEDICAL_VISITE)
+        if(count($c) === 10 && $c["id"] === CANDIDATES_KEY && $c["name"] ===  CANDIDATES_NAME && $c["firstname"] === CANDIDATES_FIRSTNAME && $c["email"] === CANDIDATES_EMAIL && $c["phone"] === CANDIDATES_PHONE && $c["address"] === CANDIDATES_ADDRESS && $c["city"] === CANDIDATES_CITY && $c["post_code"] === CANDIDATES_POSTCODE && $c["availability"] === CANDIDATES_AVAILABILITY && $c["medical_visit"] === CANDIDATES_MEDICAL_VISITE)
             $this->successTest();
         else 
             $this->writteFailure("exportToSQL_Key");
@@ -1010,9 +1010,9 @@ class TestsCandidates extends TestsManipulation {
     public function exportToSQL_KeyFalse() {
         $res = $this->FAILURE();
         try {
-            $c = new Candidate(NAME, FIRSTNAME, GENDER, EMAIL, PHONE, ADDRESS, CITY, POSTCODE);
-            $c->setMedicalVisit(MEDICAL_VISITE);
-            $c->setAvailability(AVAILABILITY);
+            $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
+            $c->setMedicalVisit(CANDIDATES_MEDICAL_VISITE);
+            $c->setAvailability(CANDIDATES_AVAILABILITY);
             $c = $c->exportToSQL_Key();
             
         } catch(InvalideCandidateExceptions|Exception $e) {
@@ -1025,5 +1025,3 @@ class TestsCandidates extends TestsManipulation {
             $this->writteFailure("exportToSQL_KeyFalse");
     }
 }
-
-(new TestsCandidates())->run();

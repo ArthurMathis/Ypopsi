@@ -1,19 +1,19 @@
 <?php
 
-include '../../define.php';
-include 'TestsManipulations.php';
+require_once('../../define.php');
+require_once('TestsManipulations.php');
 include '../../'.CLASSE.DS.'User.php';
 
-define('KEY', 1);
-define('IDENTIFIER', 'mathis.a');
-define('NAME', 'Mathis');
-define('FIRSTNAME', 'Arthur');
-define('EMAIL', 'arthur.mathis@diaconat-mulhouse.fr');
-define('PASSWORD', 'Arthur123');
-define('ESTABLISHMENT', 1);
-define('ROLE', 1);
-define('ARRAY_WITH_KEY', ['key' => KEY, 'identifier' => IDENTIFIER, 'name' => NAME, 'firstname' => FIRSTNAME, 'email' => EMAIL, 'password' => PASSWORD, 'establishment' => ESTABLISHMENT, 'role' => ROLE]);
-define('ARRAY_WITHOUT_KEY', ['identifier' => IDENTIFIER, 'name' => NAME, 'firstname' => FIRSTNAME, 'email' => EMAIL, 'password' => PASSWORD, 'establishment' => ESTABLISHMENT, 'role' => ROLE]);
+define('USER_KEY', 1);
+define('USER_IDENTIFIER', 'mathis.a');
+define('USER_NAME', 'Mathis');
+define('USER_FIRSTNAME', 'Arthur');
+define('USER_EMAIL', 'arthur.mathis@diaconat-mulhouse.fr');
+define('USER_PASSWORD', 'Arthur123');
+define('USER_ESTABLISHMENT', 1);
+define('USER_ROLE', 1);
+define('USER_ARRAY_WITH_KEY', ['key' => USER_KEY, 'identifier' => USER_IDENTIFIER, 'name' => USER_NAME, 'firstname' => USER_FIRSTNAME, 'email' => USER_EMAIL, 'password' => USER_PASSWORD, 'establishment' => USER_ESTABLISHMENT, 'role' => USER_ROLE]);
+define('USER_ARRAY_WITHOUT_KEY', ['identifier' => USER_IDENTIFIER, 'name' => USER_NAME, 'firstname' => USER_FIRSTNAME, 'email' => USER_EMAIL, 'password' => USER_PASSWORD, 'establishment' => USER_ESTABLISHMENT, 'role' => USER_ROLE]);
 
 /**
  * Class testing the User class
@@ -73,7 +73,7 @@ class TestsUsers extends TestsManipulation {
      */
     public function constructorTrue() {
         try {
-            $u = new User(IDENTIFIER, NAME, FIRSTNAME, EMAIL, PASSWORD, ESTABLISHMENT, ROLE);
+            $u = new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE);
 
         } catch(Exception $e) { 
             $this->writteFailure('constructorTrue'); 
@@ -92,7 +92,7 @@ class TestsUsers extends TestsManipulation {
     public function constructorIdentifierFalse() {
         $res = $this->FAILURE();
         try {
-            $u = new User('1', NAME, FIRSTNAME, EMAIL, PASSWORD, ESTABLISHMENT, ROLE);
+            $u = new User('1', USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE);
 
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -113,7 +113,7 @@ class TestsUsers extends TestsManipulation {
     public function constructorNameFalse() {
         $res = $this->FAILURE();
         try {
-            $u = new User(IDENTIFIER, '1', FIRSTNAME, EMAIL, PASSWORD, ESTABLISHMENT, ROLE);
+            $u = new User(USER_IDENTIFIER, '1', USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE);
 
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -134,7 +134,7 @@ class TestsUsers extends TestsManipulation {
     public function constructorFirstnameFalse() {
         $res = $this->FAILURE();
         try {
-            $u = new User(IDENTIFIER, NAME, '1', EMAIL, PASSWORD, ESTABLISHMENT, ROLE);
+            $u = new User(USER_IDENTIFIER, USER_NAME, '1', USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE);
 
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -155,7 +155,7 @@ class TestsUsers extends TestsManipulation {
     public function constructorEmailFalse() {
         $res = $this->FAILURE();
         try {
-            $u = new User(IDENTIFIER, NAME, FIRSTNAME, NAME, PASSWORD, ESTABLISHMENT, ROLE);
+            $u = new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_NAME, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE);
 
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -176,7 +176,7 @@ class TestsUsers extends TestsManipulation {
     public function constructorPasswordFalse() {
         $res = $this->FAILURE();
         try {
-            $u = new User(IDENTIFIER, NAME, FIRSTNAME, EMAIL, 123, ESTABLISHMENT, ROLE);
+            $u = new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, 123, USER_ESTABLISHMENT, USER_ROLE);
 
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -197,7 +197,7 @@ class TestsUsers extends TestsManipulation {
     public function constructorEstablishmentFalse() {
         $res = $this->FAILURE();
         try {
-            $u = new User(IDENTIFIER, NAME, FIRSTNAME, NAME, PASSWORD, -1, ROLE);
+            $u = new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_NAME, USER_PASSWORD, -1, USER_ROLE);
 
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -218,7 +218,7 @@ class TestsUsers extends TestsManipulation {
     public function constructorRoleFalse() {
         $res = $this->FAILURE();
         try {
-            $u = new User(IDENTIFIER, NAME, FIRSTNAME, NAME, PASSWORD, ESTABLISHMENT, -1);
+            $u = new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_NAME, USER_PASSWORD, USER_ESTABLISHMENT, -1);
 
         } catch(Exception $e) {
             $res = $this->SUCCESS();
@@ -239,7 +239,7 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function getIdentifier() {
-        if((new User(IDENTIFIER, NAME, FIRSTNAME, EMAIL, PASSWORD, ESTABLISHMENT, ROLE))->getIdentifier() === IDENTIFIER)
+        if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getIdentifier() === USER_IDENTIFIER)
             $this->successTest();
         else 
             $this->writteFailure("getIdentifier");
@@ -252,7 +252,7 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function getName() {
-        if((new User(IDENTIFIER, NAME, FIRSTNAME, EMAIL, PASSWORD, ESTABLISHMENT, ROLE))->getName() === NAME)
+        if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getName() === USER_NAME)
             $this->successTest();
         else 
             $this->writteFailure("getName");
@@ -265,7 +265,7 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function getFirstname() {
-        if((new User(IDENTIFIER, NAME, FIRSTNAME, EMAIL, PASSWORD, ESTABLISHMENT, ROLE))->getFirstname() === FIRSTNAME)
+        if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getFirstname() === USER_FIRSTNAME)
             $this->successTest();
         else 
             $this->writteFailure("getFirstname");
@@ -278,7 +278,7 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function getEmail() {
-        if((new User(IDENTIFIER, NAME, FIRSTNAME, EMAIL, PASSWORD, ESTABLISHMENT, ROLE))->getEmail() === EMAIL)
+        if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getEmail() === USER_EMAIL)
             $this->successTest();
         else 
             $this->writteFailure("getEmail");
@@ -291,7 +291,7 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function getPassword() {
-        if((new User(IDENTIFIER, NAME, FIRSTNAME, EMAIL, PASSWORD, ESTABLISHMENT, ROLE))->getPassword() === PASSWORD)
+        if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getPassword() === USER_PASSWORD)
             $this->successTest();
         else 
             $this->writteFailure("getPassword");
@@ -304,7 +304,7 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function getEstablishment() {
-        if((new User(IDENTIFIER, NAME, FIRSTNAME, EMAIL, PASSWORD, ESTABLISHMENT, ROLE))->getEstablishment() === ESTABLISHMENT)
+        if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getEstablishment() === USER_ESTABLISHMENT)
             $this->successTest();
         else 
             $this->writteFailure("getEstablishment");
@@ -317,7 +317,7 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function getRole() {
-        if((new User(IDENTIFIER, NAME, FIRSTNAME, EMAIL, PASSWORD, ESTABLISHMENT, ROLE))->getRole() === ROLE)
+        if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getRole() === USER_ROLE)
             $this->successTest();
         else 
             $this->writteFailure("getRole");
@@ -333,8 +333,8 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function makeUserWithoutKey() {
-        $u = User::makeUser(ARRAY_WITHOUT_KEY);
-        if($u->getIdentifier() === IDENTIFIER && $u->getName() === NAME && $u->getFirstname() === FIRSTNAME && $u->getEmail() === EMAIL &&$u->getPassword() === PASSWORD && $u->getEstablishment() === ESTABLISHMENT && $u->getRole() === ROLE && $u->getKey() === NULL)
+        $u = User::makeUser(USER_ARRAY_WITHOUT_KEY);
+        if($u->getIdentifier() === USER_IDENTIFIER && $u->getName() === USER_NAME && $u->getFirstname() === USER_FIRSTNAME && $u->getEmail() === USER_EMAIL &&$u->getPassword() === USER_PASSWORD && $u->getEstablishment() === USER_ESTABLISHMENT && $u->getRole() === USER_ROLE && $u->getKey() === NULL)
             $this->successTest();
         else 
             $this->writteFailure("makeUserWithoutKey");
@@ -347,8 +347,8 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function makeUserWithKey() {
-        $u = User::makeUser(ARRAY_WITH_KEY);
-        if($u->getIdentifier() === IDENTIFIER && $u->getName() === NAME && $u->getFirstname() === FIRSTNAME && $u->getEmail() === EMAIL &&$u->getPassword() === PASSWORD && $u->getEstablishment() === ESTABLISHMENT && $u->getRole() === ROLE && $u->getKey() === KEY)
+        $u = User::makeUser(USER_ARRAY_WITH_KEY);
+        if($u->getIdentifier() === USER_IDENTIFIER && $u->getName() === USER_NAME && $u->getFirstname() === USER_FIRSTNAME && $u->getEmail() === USER_EMAIL &&$u->getPassword() === USER_PASSWORD && $u->getEstablishment() === USER_ESTABLISHMENT && $u->getRole() === USER_ROLE && $u->getKey() === USER_KEY)
             $this->successTest();
         else 
             $this->writteFailure("makeUserWithKey");
@@ -363,8 +363,8 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function exportToArrayWithoutKey() {
-        $array = User::makeUser(ARRAY_WITHOUT_KEY)->exportToArray();
-        if($array === ['identifier' => IDENTIFIER, 'email' => EMAIL, 'password' => PASSWORD, 'role' => ROLE, 'key' => NULL]) 
+        $array = User::makeUser(USER_ARRAY_WITHOUT_KEY)->exportToArray();
+        if($array === ['identifier' => USER_IDENTIFIER, 'email' => USER_EMAIL, 'password' => USER_PASSWORD, 'role' => USER_ROLE, 'key' => NULL]) 
             $this->successTest();
         else 
             $this->writteFailure("exportToArrayWithoutKey");
@@ -377,8 +377,8 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function exportToArrayWithKey() {
-        $array = User::makeUser(ARRAY_WITH_KEY)->exportToArray();
-        if($array === ['identifier' => IDENTIFIER, 'email' => EMAIL, 'password' => PASSWORD, 'role' => ROLE, 'key' => KEY]) 
+        $array = User::makeUser(USER_ARRAY_WITH_KEY)->exportToArray();
+        if($array === ['identifier' => USER_IDENTIFIER, 'email' => USER_EMAIL, 'password' => USER_PASSWORD, 'role' => USER_ROLE, 'key' => USER_KEY]) 
             $this->successTest();
         else 
             $this->writteFailure("exportToArrayWithKey");
@@ -391,12 +391,10 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function exportToSQL() {
-        $array = User::makeUser(ARRAY_WITHOUT_KEY)->exportToSQL();
-        if($array['identifier'] === IDENTIFIER && $array['name'] === NAME && $array['firstname'] === FIRSTNAME && $array['email'] === EMAIL && password_verify(PASSWORD, $array['password']) && ESTABLISHMENT === $array['key_establishments'] && ROLE === $array['key_roles'])
+        $array = User::makeUser(USER_ARRAY_WITHOUT_KEY)->exportToSQL();
+        if($array['identifier'] === USER_IDENTIFIER && $array['name'] === USER_NAME && $array['firstname'] === USER_FIRSTNAME && $array['email'] === USER_EMAIL && password_verify(USER_PASSWORD, $array['password']) && USER_ESTABLISHMENT === $array['key_establishments'] && USER_ROLE === $array['key_roles'])
             $this->successTest();
         else 
             $this->writteFailure("exportToSQL");
     }
 }
-
-(new TestsUsers())->run();

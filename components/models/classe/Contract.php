@@ -2,6 +2,8 @@
 
 require_once('Moment.php');
 
+// ! UNUSED ! //
+
 /**
  *  Class representing one contract's Exception
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
@@ -106,15 +108,15 @@ class Contract {
     /**
      * Class' constructor
      * 
-     * @param Int|String $candidate The candidate's key
-     * @param Int|String $job The job's key
-     * @param Int|String $service The service's key
-     * @param Int|String $establishment The establishment's key
-     * @param Int|String $type The type's key
+     * @param Int $candidate The candidate's key
+     * @param Int $job The job's key
+     * @param Int $service The service's key
+     * @param Int $establishment The establishment's key
+     * @param Int $type The type's key
      * @param String $start_date The moment when begins the contract
      * @throws InvalideContractExceptions If data is invalid
      */
-    public function __construct($candidate, $job, $service, $establishment, $type, $start_date) {
+    public function __construct(int $candidate, int $job, int $service, int $establishment, int $type, string $start_date) {
         $this->setCandidate($candidate);
         $this->setJob($job);
         $this->setService($service);
@@ -123,61 +125,7 @@ class Contract {
         $this->setStartDate($start_date);
     }
 
-    /**
-     *  Public static method creating a contract from an data array
-     * @param array $infos The array which contains the contracts' data
-     * @throws InvalideContractExceptions If the array is no completed or if teh data are invalid
-     * @return Contract The contract made from the array
-     */
-    public static function makeContract($infos=[]): Contract {
-        if(empty($infos) || !isset($infos['candidate']) || !isset($infos['job']) || !isset($infos['service']) || !isset($infos['establishment']) || !isset($infos['type']) || !isset($infos['start_date']))
-            throw new InvalideContractExceptions('Données manquantes.');
-
-        $contract = new Contract($infos['candidate'], $infos['job'], $infos['service'], $infos['establishment'], $infos['type'], $infos['start_date']);
-        if(count($infos) === 6) 
-            return $contract;           
-
-        foreach($infos as $key => $value) {
-            switch($key) {
-                case 'key': 
-                    $contract->setKey($value);
-                    break;
-
-                case 'end_date':
-                    $contract->setEndDate($value);
-                    break;
-
-                case 'salary':
-                    $contract->setSalary($value);
-                    break;    
-
-                case 'resignation_date':
-                    $contract->setResignationDate($value);
-                    break;
-
-                case 'signature': 
-                    $contract->setSignature($value);
-                    break;    
-
-                case 'night_work':
-                    $contract->setNightWork();
-                    break; 
-
-                case 'week_end_work':
-                    $contract->setWeekEndWork();
-                    break; 
-
-                case 'hourly_rate':
-                    $contract->setHourlyRate($value);
-                    break; 
-
-                default: break;    
-            } 
-        }
-
-        return $contract;
-    }
-
+    // * GET * //
     /**
      *  Public method returning the contract's key
      * @return Int|NULL
@@ -249,6 +197,7 @@ class Contract {
      */
     public function getWeekEndWork(): bool { return $this->wk_work; }
 
+    // * SET * //
     /**
      * Public method setting the contract's key
      * 
@@ -433,6 +382,63 @@ class Contract {
      * @return Void
      */
     private function setWeekEndWork() { $this->wk_work = true; }
+
+    // * STATIC * //
+    /**
+     * Public static method creating a contract from an data array
+     * 
+     * @param array $infos The array which contains the contracts' data
+     * @throws InvalideContractExceptions If the array is no completed or if teh data are invalid
+     * @return Contract The contract made from the array
+     */
+    public static function makeContract(array $infos): Contract {
+        if(empty($infos) || !isset($infos['candidate']) || !isset($infos['job']) || !isset($infos['service']) || !isset($infos['establishment']) || !isset($infos['type']) || !isset($infos['start_date']))
+            throw new InvalideContractExceptions('Données manquantes.');
+
+        $contract = new Contract($infos['candidate'], $infos['job'], $infos['service'], $infos['establishment'], $infos['type'], $infos['start_date']);
+        if(count($infos) === 6) 
+            return $contract;           
+
+        foreach($infos as $key => $value) {
+            switch($key) {
+                case 'key': 
+                    $contract->setKey($value);
+                    break;
+
+                case 'end_date':
+                    $contract->setEndDate($value);
+                    break;
+
+                case 'salary':
+                    $contract->setSalary($value);
+                    break;    
+
+                case 'resignation_date':
+                    $contract->setResignationDate($value);
+                    break;
+
+                case 'signature': 
+                    $contract->setSignature($value);
+                    break;    
+
+                case 'night_work':
+                    $contract->setNightWork();
+                    break; 
+
+                case 'week_end_work':
+                    $contract->setWeekEndWork();
+                    break; 
+
+                case 'hourly_rate':
+                    $contract->setHourlyRate($value);
+                    break; 
+
+                default: break;    
+            } 
+        }
+
+        return $contract;
+    }
     
     // ! Unused ! //
     /**
