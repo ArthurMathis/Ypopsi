@@ -26,13 +26,13 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function run() {
-        $this->writteH1("Test de la classe User.php");
+        $this->writteH1("Tests de la classe User.php");
         $this->writteH2("Tests de constructeurs");
-        $this->writteH3("<h3>Test classique</h3>");
+        $this->writteH3("Tests classique");
         $this->constructorTrue();
 
         $this->writteSuccess();
-        $this->writteH3("<h3>Test de détection des erreurs - False</h3>");
+        $this->writteH3("Tests de détection des erreurs - False");
         $this->constructorIdentifierFalse();
         $this->constructorNameFalse();
         $this->constructorFirstnameFalse();
