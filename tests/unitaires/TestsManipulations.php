@@ -34,7 +34,7 @@ class TestsManipulation {
     protected function writteSuccess() { 
         if($this->successed_tests === 0) 
             return;
-        echo '<p style="display: flex; align-items: center; gap: 5px;"><img style="height: 16px"src="assets\success.png" alt="">' . $this->successed_tests . ' test(s) validé(s) !</p>'; 
+        echo '<p style="display: flex; align-items: center; gap: 5px;"><img style="height: 20px"src="assets\success.png" alt="">' . $this->successed_tests . ' test(s) validé(s) !</p>'; 
         $this->resetSuccess();
     }
     /**
@@ -45,7 +45,7 @@ class TestsManipulation {
      */
     public function writteFailure(string $test_name) { 
         $this->writteSuccess();
-        echo '<p style="display: flex; align-items: center; gap: 5px;"><img style="height: 16px"src="assets\failure.png" alt="">' . 'Erreur ! Test échoué : <b>' . $test_name . '</b>'; 
+        echo '<p style="display: flex; align-items: center; gap: 5px;"><img style="height: 20px"src="assets\failure.png" alt="">' . 'Erreur ! Test échoué : <b>' . $test_name . '</b>'; 
         exit; 
     }
 

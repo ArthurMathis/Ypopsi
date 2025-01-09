@@ -1,6 +1,6 @@
 <?php
 
-include '../../define.php'; test_process();
+include '../../define.php';
 include 'TestsManipulations.php';
 include '../../'.CLASSE.DS.'Candidate.php';
 
