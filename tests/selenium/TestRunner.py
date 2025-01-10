@@ -21,21 +21,44 @@ class TestRunner:
         - APP_ID : L'identifiant de connexion pour les tests
         - APP_PASSWORD : Le mot de passe de la session de test
     """
-    BLUE = '\033[94m'
-    RED = '\033[91m'
+    ## COLOR ##
+    BLUE  = '\033[94m'
+    RED   = '\033[91m'
     GREEN = '\033[92m'
     RESET = '\033[0m'
 
     SLEEP_TIME = 0.5
 
-    APP_URL = "http://localhost/ypopsi"
-    APP_ID = "test.py"
+    ## App DATA ##
+    APP_URL      = "http://localhost/ypopsi"
+    APP_ID       = "test.py"
     APP_PASSWORD = "test123"
 
-    APP_HOME_PAGE_LINK = "/index.php"
-    APP_CONNEXION_FORM_LINK =  APP_HOME_PAGE_LINK + "?login=get_connexion"
+    ## APP URL ##
+    APP_HOME_PAGE_LINK         = "/index.php"
+    APP_CONNEXION_FORM_LINK    = APP_HOME_PAGE_LINK + "?login=get_connexion"
     APP_APPLICATIONS_PAGE_LINK = APP_HOME_PAGE_LINK + "?applications=home"
-    APP_PREFERENCES_PAGE_LINK = APP_HOME_PAGE_LINK + "?preferences=home"
+    APP_PREFERENCES_PAGE_LINK  = APP_HOME_PAGE_LINK + "?preferences=home"
+
+    ## CANDIDATES ##
+    APP_CANDIDATES_NAME_1     = "Dupond"
+    APP_CANDIDATES_FISTNAME_1 = "Jean"
+    APP_CANDIDATES_EMAIL_1    = "jean.dupond@diaconat-mulhouse.fr"
+    APP_CANDIDATES_PHONE_1    = "06.33.44.55.78"
+
+    APP_CANDIDATES_NAME_2     = "Margueritte"
+    APP_CANDIDATES_FISTNAME_2 = "Catherine"
+    APP_CANDIDATES_EMAIL_2    = "catherine.margueritte@diaconat-mulhouse.fr"
+    APP_CANDIDATES_PHONE_2    = "07.78.21.55.43"
+
+    ## WRONG DATA ##
+    APP_CANDIDATES_WRONG_NAME_1  = 1
+    APP_CANDIDATES_WRONG_NAME_1  = "3doire"
+    APP_CANDIDATES_WRONG_EMAIL_1 = "Gregoire"
+    APP_CANDIDATES_WRONG_EMAIL_2 = "gregoire.mastuvu@jetevois"
+    APP_CANDIDATES_WRONG_EMAIL_3 = "gregoire.mastuvu.fr"
+    APP_CANDIDATES_WRONG_PHONE_1 = "06.13.32"
+    APP_CANDIDATES_WRONG_PHONE_2 = "06.13.32.45.78.68.25.42"
 
     # * CONSTRUCTOR * #
     def __init__(self, test_name):

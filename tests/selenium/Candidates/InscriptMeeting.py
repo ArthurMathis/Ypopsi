@@ -34,7 +34,9 @@ class InscriptMeeting(TestRunner):
             
             self.goToApplicationsPage(driver)
             time.sleep(self.SLEEP_TIME)
-            
+
+            # TODO : Ajouter une classe TestCandidates.py contenant les méthodes de navigation dans la page candidat
+            # TODO : Ajouter un meeting            
             
             self.writteSuccess()
             
@@ -45,7 +47,7 @@ class InscriptMeeting(TestRunner):
         finally:
             if driver:
                 driver.quit()
-
+    
 if __name__ == "__main__":
     test = InscriptMeeting()
     test.run()
