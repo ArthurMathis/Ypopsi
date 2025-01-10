@@ -7,6 +7,10 @@
   src: url('../typo/Roboto/Roboto-Italic.ttf');
 }
 @font-face {
+  font-family: 'Roboto LightItalic';
+  src: url('../typo/Roboto/Roboto-LightItalic.ttf');
+}
+@font-face {
   font-family: "Roboto Bold";
   src: url("../typo/Roboto/Roboto-Bold.ttf");
 }
@@ -365,6 +369,11 @@ form .checkbox-item label {
 }
 .autocomplete-items > div:is(:hover, :focus, .active) {
   color: var(--black);
+}
+
+.versionning {
+  color: var(--white);
+  font-family: 'Roboto LightItalic';
 }
 
 /******** Animations ********/

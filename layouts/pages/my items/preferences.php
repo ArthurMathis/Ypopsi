@@ -39,4 +39,5 @@
         </content>
     </article>
     <?php endif ?>
+    <footer class="versionning">version <?= getenv('APP_VERSION'); ?></footer>
 </aside>

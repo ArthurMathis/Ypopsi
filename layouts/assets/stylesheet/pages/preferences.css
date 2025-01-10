@@ -16,6 +16,13 @@ body > content {
     padding-bottom: var(--very-big-radius);
 }
 
+/******** Footer - Versionning ********/
+.versionning {
+    width: 100%;
+    margin-top: auto;
+    text-align: right;
+}
+
 /******** Barre de préférences ********/
 body > content > aside {
     display: flex;

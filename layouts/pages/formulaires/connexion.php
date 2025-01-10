@@ -27,6 +27,7 @@
         </button>
     </div>
 </form>
+<footer class="versionning">version <?= getenv('APP_VERSION'); ?></footer>
 <script>
     document.getElementById('action-button').addEventListener('click', function() {
         document.querySelector('section').classList.add('hided');

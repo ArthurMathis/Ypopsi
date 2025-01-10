@@ -16,10 +16,43 @@ class TestRunner:
         - BLUE : Code couleur pour les messages d'information
         - RED : Code couleur pour les messages d'échec
         - GREEN : Code couleur pour les messages de succès
+
         - SLEEP_TIME : Le temps de pause (en secondes) entre les actions
+
         - APP_URL : L'adresse de l'application Ypopsi
         - APP_ID : L'identifiant de connexion pour les tests
         - APP_PASSWORD : Le mot de passe de la session de test
+
+        - APP_HOME_PAGE_LINK : Le lien vers la page d'accueil
+        - APP_CONNEXION_FORM_LINK : Le lien vers le formulaire de connexion
+        - APP_APPLICATIONS_PAGE_LINK : Le lien vers le menu de candidatures
+        - APP_PREFERENCES_PAGE_LINK : Le lien vers le menu de préférences
+
+        - APP_CANDIDATES_NAME_1 : Le nom du candidat de test numéro 1
+        - APP_CANDIDATES_FISTNAME_1 : Le prénom du candidat de test numéro 1
+        - APP_CANDIDATES_EMAIL_1 : L'email du candidat de test numéro 1
+        - APP_CANDIDATES_PHONE_1 : Le téléphone du candidat de test numéro 1
+
+        - APP_CANDIDATES_NAME_2 : Le nom du candidat de test numéro 2
+        - APP_CANDIDATES_FISTNAME_2 : Le prénom du candidat de test numéro 2
+        - APP_CANDIDATES_EMAIL_2 : L'email du candidat de test numéro 2
+        - APP_CANDIDATES_PHONE_2 : Le téléphone du candidat de test numéro 2
+
+        - APP_CANDIDATES_ADDRESS : L'adresse de test
+        - APP_CANDIDATES_CITY : La ville de test
+        - APP_CANDIDATES_POSTCODE : Le code postal de test
+
+        - APP_CANIDIDATES_QUALIFICATIONS : La liste de qualifications de test et leur date d'obtention 
+        - APP_CANIDATES_HELPS_1 : La liste des aides de test numéro 1
+        - APP_CANIDATES_HELPS_2 : La liste des aides de test numéro 2
+        - APP_CANDIDATES_COOPTEUR : Le coopteur de test (le candidat numéro 1)
+
+        - APP_APPLICATIONS_FILTER_MENU_BUTTON_ID : L'identifiant du bouton du menu de filtres
+        - APP_APPLICATIONS_SEARCH_MENU_BUTTON_ID : L'identifiant du bouton du menu de recherches
+        - APP_APPLICATIONS_FILTER_VALID_BUTTON_ID : L'identifiant du bouton appliquant les filtres à la sélection 
+        - APP_APPLICATIONS_SEARCH_VALID_BUTTON_ID : L'identifiant du bouton appliquant la recherche à la sélection
+        - APP_APPLICATIONS_FILTER_RESET_BUTTON_ID : L'identifiant du bouton réinitialisant les filtres de la sélection 
+        - APP_APPLICATIONS_SEARCH_RESET_BUTTON_ID : L'identifiant du bouton réinitialisant la recherche de la sélection 
     """
     ## COLOR ##
     BLUE  = '\033[94m'
@@ -51,6 +84,25 @@ class TestRunner:
     APP_CANDIDATES_EMAIL_2    = "catherine.margueritte@diaconat-mulhouse.fr"
     APP_CANDIDATES_PHONE_2    = "07.78.21.55.43"
 
+    APP_CANDIDATES_ADDRESS  = "1 rue de la Prairie"
+    APP_CANDIDATES_CITY     = "Prairie-Land"
+    APP_CANDIDATES_POSTCODE = "78451"
+
+    APP_CANIDIDATES_QUALIFICATIONS = [
+        {
+            "titled": "Baccalauréat général",
+            "date"  : "07/09/1992"
+        },
+        {
+            "titled": "Licence Pro",
+            "date"  : "04/09/1995"
+        }
+    ]  
+
+    APP_CANIDATES_HELPS_1   = ["Bouse d'étude"]
+    APP_CANIDATES_HELPS_2   = ["Bouse d'étude", "Prime de cooptation"]
+    APP_CANDIDATES_COOPTEUR = APP_CANDIDATES_NAME_1 + APP_CANDIDATES_FISTNAME_1
+
     ## WRONG DATA ##
     APP_CANDIDATES_WRONG_NAME_1  = 1
     APP_CANDIDATES_WRONG_NAME_1  = "3doire"
@@ -59,6 +111,26 @@ class TestRunner:
     APP_CANDIDATES_WRONG_EMAIL_3 = "gregoire.mastuvu.fr"
     APP_CANDIDATES_WRONG_PHONE_1 = "06.13.32"
     APP_CANDIDATES_WRONG_PHONE_2 = "06.13.32.45.78.68.25.42"
+
+    APP_CANDIDATES_WRONG_CITY_1     = 1
+    APP_CANDIDATES_WRONG_CITY_2     = "1"
+    APP_CANDIDATES_WRONG_CITY_3     = "bonj@ur"
+    APP_CANDIDATES_WRONG_CITY_4     = "_Prairie-Land"
+    APP_CANDIDATES_WRONG_POSTCODE_1 = -1
+    APP_CANDIDATES_WRONG_POSTCODE_2 = "123456789"
+    APP_CANDIDATES_WRONG_POSTCODE_3 = "Salut à tous !"
+
+    ## MENU BUTTON ##
+    APP_APPLICATIONS_FILTER_MENU_BUTTON_ID = "filtrer-bouton"
+    APP_APPLICATIONS_SEARCH_MENU_BUTTON_ID = "rechercher-bouton"
+
+    ## VALID BUTTON ##
+    APP_APPLICATIONS_FILTER_VALID_BUTTON_ID = "valider-filtre"
+    APP_APPLICATIONS_SEARCH_VALID_BUTTON_ID = "valider-recherche"
+
+    ## RESET BUTTON ##
+    APP_APPLICATIONS_FILTER_RESET_BUTTON_ID = "reinint-filtre"
+    APP_APPLICATIONS_SEARCH_RESET_BUTTON_ID = "reinint-recherche"
 
     # * CONSTRUCTOR * #
     def __init__(self, test_name):
@@ -265,3 +337,18 @@ class TestRunner:
         
         if applications_link:
             applications_link.click()
+
+    def clickOnSearch(self, driver):
+        """
+        Méthode ouvrant la panneaux de filtres
+        """
+        element = driver.find_element(By.ID, self.APP_APPLICATIONS_FILTER_MENU_BUTTON_ID)
+        if(element):
+            element.click()
+    def clickOnSearch(self, driver):
+        """
+        Méthode ouvrant la panneaux de recherches
+        """
+        element = driver.find_element(By.ID, self.APP_APPLICATIONS_SEARCH_MENU_BUTTON_ID)
+        if(element):
+            element.click()

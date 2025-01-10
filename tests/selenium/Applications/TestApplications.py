@@ -9,35 +9,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TestRunner import TestRunner
 
 class TestApplications(TestRunner):
-    ## CANDIDATES DATA ##
-    APP_CANDIDATES_ADDRESS  = "1 rue de la Prairie"
-    APP_CANDIDATES_CITY     = "Prairie-Land"
-    APP_CANDIDATES_POSTCODE = "78451"
-
-    APP_CANIDIDATES_QUALIFICATIONS = [
-        {
-            "titled": "Baccalauréat général",
-            "date"  : "07/09/1992"
-        },
-        {
-            "titled": "Licence Pro",
-            "date"  : "04/09/1995"
-        }
-    ]  
-
-    APP_CANIDATES_HELPS_1 = ["Bouse d'étude"]  
-    APP_CANIDATES_HELPS_2 = ["Bouse d'étude", "Prime de cooptation"]
-    APP_CANDIDATES_COOPTEUR =  TestRunner.APP_CANDIDATES_NAME_1 + TestRunner.APP_CANDIDATES_FISTNAME_1
-
-    ## WRONG DATA ##
-    APP_CANDIDATES_WRONG_CITY_1 = 1
-    APP_CANDIDATES_WRONG_CITY_2 = "1"
-    APP_CANDIDATES_WRONG_CITY_3 = "bonj@ur"
-    APP_CANDIDATES_WRONG_CITY_4 = "_Prairie-Land"
-    APP_CANDIDATES_WRONG_POSTCODE_1 = -1
-    APP_CANDIDATES_WRONG_POSTCODE_2 = "123456789"
-    APP_CANDIDATES_WRONG_POSTCODE_3 = "Salut à tous !"
-
     def start(self):
         """
         Méthode préparant l'application pour le test
@@ -48,3 +19,26 @@ class TestApplications(TestRunner):
         """
         self.connect()
         self.goToApplicationsPage()
+
+    # * NAVIGATION * #
+    def clickOnListOfApplications(self, driver):
+        """
+        Navigue vers la section Applications en trouvant le bon lien dans la navbar
+        """
+        element = self.find_element_by_css(driver, ".option_barre article a.action_button.reverse_color")
+        if element:
+            element.click()
+    def clickOnListOfCandidates(self, driver):
+        """
+        Navigue vers la section Applications en trouvant le bon lien dans la navbar
+        """
+        element = self.find_element_by_css(driver, ".option_barre article a.action_button")        
+        if element:
+            element.click()
+    def clickOnCandidatesInput(self, driver):
+        """
+        Navigue vers la section Applications en trouvant le bon lien dans la navbar
+        """
+        element = self.find_element_by_css(driver, ".option_barre article a.action_button:not(.reverse_color)")
+        if element:
+            element.click()

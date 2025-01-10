@@ -10,7 +10,7 @@ class LoginView extends View {
     /**
      * Public method returning the login form
      *
-     * @return void
+     * @return Void
      */
     public function getContent() {
         $this->generateCommonHeader(
