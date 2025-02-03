@@ -1,0 +1,44 @@
+body {
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+content {
+  display: flex;
+  width: 100%;
+  height: calc(100dvh - (var(--navbarre-size) + var(--gap)));
+}
+content > .liste_items {
+  width: 65%;
+  height: 100%;
+
+  padding-top: var(--very-big-radius);
+}
+content > .liste_items .entete {
+  padding-left: var(--very-big-radius);
+  padding-right: var(--very-big-radius);
+}
+content > .liste_items .table-wrapper {
+  height: calc(100dvh - (var(--navbarre-size) + var(--gap)));
+
+  padding-left: var(--very-big-radius);
+  padding-right: var(--very-big-radius);
+
+  overflow-y: auto;
+}
+
+aside {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 2);
+
+  width: 35%;
+  min-width: 600px;
+
+  padding-top: var(--very-big-radius);
+  padding-right: var(--very-big-radius);
+
+  overflow-y: scroll;
+}
+

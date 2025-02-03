@@ -1,0 +1,11 @@
+# Active le module de réécriture d'URL d'Apache
+RewriteEngine On
+
+# Ne réécrit pas l'URL si elle correspond à un fichier existant
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Ne réécrit pas l'URL si elle correspond à un dossier existant
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirige toutes les autres requêtes vers index.php pour que je puisse gérer mes routes avec mon routeur
+RewriteRule ^ index.php [QSA,L]

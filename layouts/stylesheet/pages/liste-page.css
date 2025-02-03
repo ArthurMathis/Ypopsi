@@ -1,0 +1,143 @@
+.options_barre {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    padding: var(--very-big-radius) var(--very-big-radius) 0 var(--very-big-radius);
+}
+.options_barre article {
+    display: flex;
+    gap: var(--radius);
+
+    width: fit-content;
+    height: fit-content;
+}
+.options_barre article p {
+    font-weight: 600;
+}
+.options_barre article a {
+    text-wrap: nowrap;
+}
+
+.candidatures-menu {
+    position: fixed;
+    top: calc(var(--navbarre-size) + var(--very-big-radius) + var(--very-big-radius) + 45px);
+
+    display: none;
+    flex-direction: column;
+    justify-content: start;
+    align-items: top;
+    gap: var(--radius);
+
+    width: 100%;
+    height: fit-content;
+    z-index: 2;
+
+    padding: var(--very-big-radius);
+    background-color: var(--white);
+    overflow-y: hidden;
+    box-shadow: 0 15px 5px 5px rgba(0, 0, 0, 0.05);
+}
+.candidatures-menu.active {
+    display: flex;
+}
+.candidatures-menu main {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    height: fit-content;
+}
+.candidatures-menu content {
+    display: flex;
+    justify-content: left;
+    gap: 20px;
+
+    width: fit-content;
+    height: fit-content;
+}
+.candidatures-menu section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-radius);
+    width: 320px;
+}
+.candidatures-menu section > p {
+    font-family: "Roboto Bold";
+}
+.candidatures-menu section > input {
+    width: 100%;
+    height: fit-content;
+
+    padding: var(--big-radius) var(--radius);
+
+    border: none;
+    border-radius: var(--radius);
+    background-color: var(--light-grey);
+
+    box-shadow: none;
+    outline: none;
+
+    will-change: box-shadow;
+    transition: box-shadow 150ms ease;
+}
+.candidatures-menu section > input:is(:hover, :focus) {
+    box-shadow: 0 0 0 5px rgba(44, 49, 49, 0.1);
+}
+.candidatures-menu section > input::placeholder {
+    color: var(--grey);
+}
+.candidatures-menu .small-section {
+    width: 160px;
+}
+.candidatures-menu section .container-statut {
+    display: flex;
+    gap: 6px;
+}
+.candidatures-menu section .container-statut.margin {
+    margin-bottom: calc(var(--margin) * 2 / 3);
+}
+
+.candidatures-menu aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--radius);
+
+    width: fit-content;
+}
+.candidatures-menu .reinint_button {
+    padding: 0;
+
+    color: var(--black);
+    border: none;
+    background-color: transparent;
+}
+.candidatures-menu .reinint_button:is(:hover, :focus) {
+    box-shadow: none;
+}
+.candidatures-menu .reinint_button p {
+    color: var(--black);
+}
+
+.liste_items {
+    width: 100%;
+    height: calc(100dvh - (var(--navbarre-size) + var(--radius) + 2 * var(--very-big-radius) + 41px));
+    padding-top: var(--very-big-radius);
+}
+.liste_items .table-wrapper, .liste_items .entete {
+    padding: 0 var(--very-big-radius);
+}
+.liste_items .table-wrapper {
+    overflow-y: auto;
+    height: 100%;
+}
+.liste_items .table-wrapper table th {
+    position: relative;
+    padding-left: var(--small-radius);
+}
+.liste_items .table-wrapper table th:first-of-type{
+    padding-left: var(--very-big-radius);
+}

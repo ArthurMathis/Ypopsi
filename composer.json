@@ -1,0 +1,18 @@
+{
+    "name": "arthurmathis/ypopsi",
+    "description": "Application web développée en php pour la Fondation de la Maison du Diaconat de Mulhouse destinée à la gestion des recrutements",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Arthur MATHIS",
+            "email": "mathis.arthur68@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
