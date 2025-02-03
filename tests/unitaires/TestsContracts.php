@@ -30,13 +30,13 @@ class TestsContracts extends TestsManipulation {
      * @return Void
      */
     public function run() {
-        $this->writteH1("Tests de la classe Contract.php");
-        $this->writteH2("Tests de constructeurs");
-        $this->writteH3("Tests classiques");
+        $this->writeH1("Tests de la classe Contract.php");
+        $this->writeH2("Tests de constructeurs");
+        $this->writeH3("Tests classiques");
         $this->testConstructorTrue();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH3("Tests de détection des erreurs - False");
+        $this->writeH3("Tests de détection des erreurs - False");
         $this->testConstructorFalse1();
         $this->testConstructorFalse2();
         $this->testConstructorFalse3();
@@ -54,42 +54,42 @@ class TestsContracts extends TestsManipulation {
         $this->testConstructorFalse15();
         $this->testConstructorFalse16();
         $this->testConstructorFalse17();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH3("Tests de détection des erreurs - Null");
+        $this->writeH3("Tests de détection des erreurs - Null");
         $this->testConstructorNull1();
         $this->testConstructorNull2();
         $this->testConstructorNull3();
         $this->testConstructorNull4();
         $this->testConstructorNull5();
         $this->testConstructorNull6();
-        $this->writteSuccess();
+        $this->writeSuccess();
     
-        $this->writteH2("Tests de getters");
+        $this->writeH2("Tests de getters");
         $this->testGetKey();
         $this->testGetCandidate();
         $this->testGetService();
         $this->testGetEstablishment();
         $this->testGetType();
         $this->testGetStartDate();
-        $this->writteSuccess();
+        $this->writeSuccess();
     
-        $this->writteH2("Tests de setters");
-        $this->writteH3("Tests classique");
+        $this->writeH2("Tests de setters");
+        $this->writeH3("Tests classique");
         $this->testSetKeyTrue();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH3("Tests de détection des erreurs - False");
+        $this->writeH3("Tests de détection des erreurs - False");
         $this->testSetKeyFalse1();
         $this->testSetKeyFalse2();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH3("Tests de détection des erreurs - Null");
+        $this->writeH3("Tests de détection des erreurs - Null");
         $this->testSetKeyNull();
-        $this->writteSuccess();
+        $this->writeSuccess();
     
-        $this->writteH2("Tests de makeContract");
-        $this->writteH3("Tests classique");
+        $this->writeH2("Tests de makeContract");
+        $this->writeH3("Tests classique");
         $this->testMakeContractWithoutTrue();
         $this->testMakeContractWithTrue1();
         $this->testMakeContractWithTrue2();
@@ -99,9 +99,9 @@ class TestsContracts extends TestsManipulation {
         $this->testMakeContractWithTrue6();
         $this->testMakeContractWithTrue7();
         $this->testMakeContractWithTrue8();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH3("Tests de détection des erreurs - False");
+        $this->writeH3("Tests de détection des erreurs - False");
         $this->testMakeContractWithoutFalse1();
         $this->testMakeContractWithoutFalse2();
         $this->testMakeContractWithoutFalse3();
@@ -120,16 +120,16 @@ class TestsContracts extends TestsManipulation {
         $this->testMakeContractWithoutFalse16();
         $this->testMakeContractWithoutFalse17();
         $this->testMakeContractWithoutFalse18();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH3("Tests de détection des erreurs - Null");
+        $this->writeH3("Tests de détection des erreurs - Null");
         $this->testMakeContractWithoutNull1();
         $this->testMakeContractWithoutNull2();
         $this->testMakeContractWithoutNull3();
         $this->testMakeContractWithoutNull4();
         $this->testMakeContractWithoutNull5();
         $this->testMakeContractWithoutNull6();
-        $this->writteSuccess();
+        $this->writeSuccess();
     }
 
     // * CONSTRUCTOR * //
@@ -144,7 +144,7 @@ class TestsContracts extends TestsManipulation {
         try {
             $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
         } catch(Exception) {
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
         }
 
         $this->successTest();
@@ -160,7 +160,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse2() {
         $res = $this->FAILURE();
@@ -173,7 +173,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse3() {
         $res = $this->FAILURE();
@@ -186,7 +186,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse4() {
         $res = $this->FAILURE();
@@ -199,7 +199,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse5() {
         $res = $this->FAILURE();
@@ -212,7 +212,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse6() {
         $res = $this->FAILURE();
@@ -225,7 +225,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse7() {
         $res = $this->FAILURE();
@@ -238,7 +238,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse8() {
         $res = $this->FAILURE();
@@ -251,7 +251,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse9() {
         $res = $this->FAILURE();
@@ -264,7 +264,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse10() {
         $res = $this->FAILURE();
@@ -277,7 +277,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse11() {
         $res = $this->FAILURE();
@@ -290,7 +290,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse12() {
         $res = $this->FAILURE();
@@ -303,7 +303,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse13() {
         $res = $this->FAILURE();
@@ -316,7 +316,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse14() {
         $res = $this->FAILURE();
@@ -329,7 +329,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse15() {
         $res = $this->FAILURE();
@@ -342,7 +342,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse16() {
         $res = $this->FAILURE();
@@ -355,7 +355,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorFalse17() {
         $res = $this->FAILURE();
@@ -368,7 +368,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorNull1() {
         $res = $this->FAILURE();
@@ -381,7 +381,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorNull2() {
         $res = $this->FAILURE();
@@ -394,7 +394,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorNull3() {
         $res = $this->FAILURE();
@@ -407,7 +407,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorNull4() {
         $res = $this->FAILURE();
@@ -420,7 +420,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorNull5() {
         $res = $this->FAILURE();
@@ -433,7 +433,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testConstructorNull6() {
         $res = $this->FAILURE();
@@ -446,7 +446,7 @@ class TestsContracts extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     
     function testGetKey() {
@@ -455,42 +455,42 @@ class TestsContracts extends TestsManipulation {
         if($c->getKey() === KEY)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testGetCandidate() {
         $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
         if($c->getCandidate() === CANDIDATE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testGetService() {
         $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
         if($c->getService() === SERVICE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testGetEstablishment() {
         $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
         if($c->getEstablishment() === ESTABLISHMENT)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testGetType() {
         $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
         if($c->getType() === TYPE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testGetStartDate() {
         $c = new Contract(CANDIDATE, JOB, SERVICE, ESTABLISHMENT, TYPE, START_DATE);
         if($c->getStartDate() === START_DATE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     
     function testSetKeyTrue() {
@@ -505,7 +505,7 @@ class TestsContracts extends TestsManipulation {
         if($res && $c->getKey() === KEY)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testSetKeyFalse1() {
         $res = $this->FAILURE();
@@ -519,7 +519,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testSetKeyFalse2() {
         $res = $this->FAILURE();
@@ -533,7 +533,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testSetKeyNull() {
         $res = $this->FAILURE();
@@ -547,7 +547,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     
     function testMakeContractWithoutTrue() {
@@ -569,7 +569,7 @@ class TestsContracts extends TestsManipulation {
         if($res && $c->getCandidate() === CANDIDATE && $c->getJob() === JOB && $c->getService() === SERVICE && $c->getEstablishment() === ESTABLISHMENT && $c->getType() === TYPE && $c->getStartDate() === START_DATE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse1() {
         $res = $this->FAILURE();
@@ -590,7 +590,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse2() {
         $res = $this->FAILURE();
@@ -611,7 +611,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse3() {
         $res = $this->FAILURE();
@@ -632,7 +632,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse4() {
         $res = $this->FAILURE();
@@ -653,7 +653,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse5() {
         $res = $this->FAILURE();
@@ -674,7 +674,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse6() {
         $res = $this->FAILURE();
@@ -695,7 +695,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse7() {
         $res = $this->FAILURE();
@@ -716,7 +716,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse8() {
         $res = $this->FAILURE();
@@ -737,7 +737,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse9() {
         $res = $this->FAILURE();
@@ -758,7 +758,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse10() {
         $res = $this->FAILURE();
@@ -779,7 +779,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse11() {
         $res = $this->FAILURE();
@@ -800,7 +800,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse12() {
         $res = $this->FAILURE();
@@ -821,7 +821,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse13() {
         $res = $this->FAILURE();
@@ -842,7 +842,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse14() {
         $res = $this->FAILURE();
@@ -863,7 +863,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse15() {
         $res = $this->FAILURE();
@@ -884,7 +884,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse16() {
         $res = $this->FAILURE();
@@ -905,7 +905,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse17() {
         $res = $this->FAILURE();
@@ -926,7 +926,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutFalse18() {
         $res = $this->FAILURE();
@@ -947,7 +947,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutNull1() {
         $res = $this->FAILURE();
@@ -968,7 +968,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutNull2() {
         $res = $this->FAILURE();
@@ -989,7 +989,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutNull3() {
         $res = $this->FAILURE();
@@ -1010,7 +1010,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutNull4() {
         $res = $this->FAILURE();
@@ -1031,7 +1031,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutNull5() {
         $res = $this->FAILURE();
@@ -1052,7 +1052,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithoutNull6() {
         $res = $this->FAILURE();
@@ -1073,7 +1073,7 @@ class TestsContracts extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     
     function testMakeContractWithTrue1() {
@@ -1097,7 +1097,7 @@ class TestsContracts extends TestsManipulation {
         if($res && $c->getEndDate() === END_DATE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithTrue2() {
         $res = $this->SUCCESS();
@@ -1119,7 +1119,7 @@ class TestsContracts extends TestsManipulation {
         if($res && $c->getEndDate() === END_DATE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithTrue3() {
         $res = $this->SUCCESS();
@@ -1141,7 +1141,7 @@ class TestsContracts extends TestsManipulation {
         if($res && $c->getResignationDate() === RESIGNATION_DATE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithTrue4() {
         $res = $this->SUCCESS();
@@ -1163,7 +1163,7 @@ class TestsContracts extends TestsManipulation {
         if($res && $c->getSignature() === SIGNATURE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithTrue5() {
         $res = $this->SUCCESS();
@@ -1185,7 +1185,7 @@ class TestsContracts extends TestsManipulation {
         if($res && $c->getSignature() === SIGNATURE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithTrue6() {
         $res = $this->SUCCESS();
@@ -1207,7 +1207,7 @@ class TestsContracts extends TestsManipulation {
         if($res && $c->getSalary() === SALARY)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithTrue7() {
         $res = $this->SUCCESS();
@@ -1230,7 +1230,7 @@ class TestsContracts extends TestsManipulation {
         if($res && $c->getEndDate() === END_DATE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
     function testMakeContractWithTrue8() {
         $res = $this->SUCCESS();
@@ -1253,7 +1253,7 @@ class TestsContracts extends TestsManipulation {
         if($res && $c->getEndDate() === END_DATE)
             $this->successTest();
         else 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
     }
 }
 

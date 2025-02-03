@@ -27,17 +27,17 @@ class TestsCandidates extends TestsManipulation {
      * @return Void
      */
     public function run() {
-        $this->writteH1("Tests de la classe Candidate.php");
-        $this->writteH2("Tests de constructeurs");
-        $this->writteH3("Tests classiques");
+        $this->writeH1("Tests de la classe Candidate.php");
+        $this->writeH2("Tests de constructeurs");
+        $this->writeH3("Tests classiques");
         $this->constructorTrue();
         $this->constructorPhoneNull();
         $this->constructorAddressNull();
         $this->constructorCityNull();
         $this->constructorPostcodeNull();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH3("Tests de détections des erreurs - False");
+        $this->writeH3("Tests de détections des erreurs - False");
         $this->constructorNameFalse1();
         $this->constructorNameFalse2();
         $this->constructorFirstnameFalse1();
@@ -57,16 +57,16 @@ class TestsCandidates extends TestsManipulation {
         $this->constructorPostCodeFalse1();
         $this->constructorPostCodeFalse2();
         $this->constructorPostCodeFalse3();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH2("Tests de setters");
-        $this->writteH3("Tests classiques");
+        $this->writeH2("Tests de setters");
+        $this->writeH3("Tests classiques");
         $this->setKeyTrue();
         $this->setAvailabilityTrue();
         $this->setMedicalVisitTrue();
-        $this->writteSuccess();
+        $this->writeSuccess();
         
-        $this->writteH3("Tests de détections des erreurs - False");
+        $this->writeH3("Tests de détections des erreurs - False");
         $this->setKeyFalse();
         $this->setAvailabilityFalse1();
         $this->setAvailabilityFalse2();
@@ -74,9 +74,9 @@ class TestsCandidates extends TestsManipulation {
         $this->setMedicalVisitFalse1();
         $this->setMedicalVisitFalse2();
         $this->setMedicalVisitFalse3();
-        $this->writteSuccess();
+        $this->writeSuccess();
         
-        $this->writteH2("Tests de getters");
+        $this->writeH2("Tests de getters");
         $this->getKey();
         $this->getName();
         $this->getFirstname();
@@ -87,19 +87,19 @@ class TestsCandidates extends TestsManipulation {
         $this->getPostcode();
         $this->getAvailability();
         $this->getMedicalVisit();
-        $this->writteSuccess();
+        $this->writeSuccess();
         
-        $this->writteH2("Tests d'exports");
-        $this->writteH3("Tests classiques");
+        $this->writeH2("Tests d'exports");
+        $this->writeH3("Tests classiques");
         $this->exportToSQLTrue();
         $this->exportToSQLTrue_WithoutVisit();
         $this->exportToSQL_update();
         $this->exportToSQL_Key();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH3("Tests de détections des erreurs - False");
+        $this->writeH3("Tests de détections des erreurs - False");
         $this->exportToSQL_KeyFalse();
-        $this->writteSuccess();
+        $this->writeSuccess();
     }
 
 
@@ -116,7 +116,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
 
         } catch(Exception $e) { 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
         }
         $this->successTest();
     }
@@ -135,7 +135,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, NULL, CANDIDATES_ADDRESS, CANDIDATES_CITY, CANDIDATES_POSTCODE);
 
         } catch(Exception $e) { 
-            $this->writteFailure('constructorPhoneNull'); 
+            $this->writeFailure('constructorPhoneNull'); 
         }
         $this->successTest();
     }
@@ -152,7 +152,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, NULL, CANDIDATES_CITY, CANDIDATES_POSTCODE);
 
         } catch(Exception $e) { 
-            $this->writteFailure('constructorAddressNull'); 
+            $this->writeFailure('constructorAddressNull'); 
         }
         $this->successTest();
     }
@@ -169,7 +169,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, NULL, CANDIDATES_POSTCODE);
 
         } catch(Exception $e) { 
-            $this->writteFailure('constructorCityNull'); 
+            $this->writeFailure('constructorCityNull'); 
         }
         $this->successTest();
     }
@@ -186,7 +186,7 @@ class TestsCandidates extends TestsManipulation {
             $c = new Candidate(CANDIDATES_NAME, CANDIDATES_FIRSTNAME, CANDIDATES_GENDER, CANDIDATES_EMAIL, CANDIDATES_PHONE, CANDIDATES_ADDRESS, CANDIDATES_CITY, NULL);
 
         } catch(Exception $e) { 
-            $this->writteFailure('constructorPostcodeNull'); 
+            $this->writeFailure('constructorPostcodeNull'); 
         }
         $this->successTest();
     }
@@ -210,7 +210,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorNameFalse1");
+            $this->writeFailure("constructorNameFalse1");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un entier comme nom
@@ -230,7 +230,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorNameFalse2");
+            $this->writeFailure("constructorNameFalse2");
     }
 
     /**
@@ -251,7 +251,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorFirstnameFalse1");
+            $this->writeFailure("constructorFirstnameFalse1");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un entier comme prénom
@@ -271,7 +271,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorFirstnameFalse2");
+            $this->writeFailure("constructorFirstnameFalse2");
     }
 
     /**
@@ -292,7 +292,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorEmailFalse1");
+            $this->writeFailure("constructorEmailFalse1");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un entier comme email
@@ -312,7 +312,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorEmailFalse2");
+            $this->writeFailure("constructorEmailFalse2");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un email contenant un entier (uniquement)
@@ -332,7 +332,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorEmailFalse3");
+            $this->writeFailure("constructorEmailFalse3");
     }
 
     /**
@@ -353,7 +353,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorNameFalse1");
+            $this->writeFailure("constructorNameFalse1");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un numéro de téléphone trop court
@@ -373,7 +373,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorPhoneFalse2");
+            $this->writeFailure("constructorPhoneFalse2");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un numéro de téléphone trop court (encore)
@@ -393,7 +393,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorPhoneFalse3");
+            $this->writeFailure("constructorPhoneFalse3");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un numéro de téléphone trop long
@@ -413,7 +413,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorPhoneFalse4");
+            $this->writeFailure("constructorPhoneFalse4");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un numéro de téléphone mal séparé
@@ -433,7 +433,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorPhoneFalse5");
+            $this->writeFailure("constructorPhoneFalse5");
     }
 
     /**
@@ -454,7 +454,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorAddressFalse1");
+            $this->writeFailure("constructorAddressFalse1");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un entier comme adresse
@@ -474,7 +474,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorAddressFalse2");
+            $this->writeFailure("constructorAddressFalse2");
     }
 
     /**
@@ -495,7 +495,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorCityFalse1");
+            $this->writeFailure("constructorCityFalse1");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un entier comme ville
@@ -515,7 +515,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorCityFalse2");
+            $this->writeFailure("constructorCityFalse2");
     }
 
     /**
@@ -536,7 +536,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorPostcodeFalse1");
+            $this->writeFailure("constructorPostcodeFalse1");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un entier comme code postal
@@ -556,7 +556,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorPostcodeFalse2");
+            $this->writeFailure("constructorPostcodeFalse2");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un code postal trop long
@@ -576,7 +576,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorPostcodeFalse2");
+            $this->writeFailure("constructorPostcodeFalse2");
     }
 
     // * SET * //
@@ -594,7 +594,7 @@ class TestsCandidates extends TestsManipulation {
             $c->setKey(CANDIDATES_KEY);
 
         } catch(Exception $e) {
-            $this->writteFailure("setKeyTrue1");
+            $this->writeFailure("setKeyTrue1");
         }
         $this->successTest();  
     }
@@ -613,7 +613,7 @@ class TestsCandidates extends TestsManipulation {
             $c->setAvailability(CANDIDATES_AVAILABILITY); 
 
         } catch(Exception $e) {
-            $this->writteFailure("setAvailabilityTrue1");
+            $this->writeFailure("setAvailabilityTrue1");
         }
         $this->successTest();  
     }
@@ -632,7 +632,7 @@ class TestsCandidates extends TestsManipulation {
             $c->setMedicalVisit(CANDIDATES_MEDICAL_VISITE);
 
         } catch(Exception $e) {
-            $this->writteFailure("setMedicalVisitTrue");
+            $this->writeFailure("setMedicalVisitTrue");
         }
         $this->successTest();
     }
@@ -658,7 +658,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("setKeyFalse1");
+            $this->writeFailure("setKeyFalse1");
     }
 
     /**
@@ -680,7 +680,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("setAvailabilityFalse1");
+            $this->writeFailure("setAvailabilityFalse1");
     }
     /**
      * Fonction publique testant la gestion des erreurs lors de l'ajout d'une heure comme disponibilté
@@ -701,7 +701,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("setAvailabilityFalse2");
+            $this->writeFailure("setAvailabilityFalse2");
     }
     /**
      * Fonction publique testant la gestion des erreurs lors de l'ajout d'un mot comme disponibilité
@@ -722,7 +722,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("setAvailabilityFalse3");
+            $this->writeFailure("setAvailabilityFalse3");
     }
 
     /**
@@ -744,7 +744,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("setMedicalVisitFalse1");
+            $this->writeFailure("setMedicalVisitFalse1");
     }
     /**
      * Fonction publique testant la gestion des erreurs lors de l'ajout d'une heure comme visite médicale
@@ -765,7 +765,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("setMedicalVisitFalse2");
+            $this->writeFailure("setMedicalVisitFalse2");
     }
     /**
      * Fonction publique testant la gestion des erreurs lors de l'ajout d'un mot comme disponibilité 
@@ -786,7 +786,7 @@ class TestsCandidates extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("setMedicalVisitFalse3");
+            $this->writeFailure("setMedicalVisitFalse3");
     }
 
 
@@ -804,7 +804,7 @@ class TestsCandidates extends TestsManipulation {
         if(CANDIDATES_KEY === $c->getKey())
             $this->successTest();
         else 
-            $this->writteFailure("getKey");
+            $this->writeFailure("getKey");
     }
     /**
      * Fonction publique testant si le getName retourne bien le nom
@@ -818,7 +818,7 @@ class TestsCandidates extends TestsManipulation {
         if(CANDIDATES_NAME === $c->getName())
             $this->successTest();
         else 
-            $this->writteFailure("getName");
+            $this->writeFailure("getName");
     }
     /**
      * Fonction publique testant si le getFirstname retourne bien le prénom
@@ -832,7 +832,7 @@ class TestsCandidates extends TestsManipulation {
         if(CANDIDATES_FIRSTNAME === $c->getFirstname())
             $this->successTest();
         else 
-            $this->writteFailure("getFirstname");
+            $this->writeFailure("getFirstname");
     }
     /**
      * Fonction publique testant si le getEmail retourne bien l'email
@@ -846,7 +846,7 @@ class TestsCandidates extends TestsManipulation {
         if(CANDIDATES_EMAIL === $c->getEmail())
             $this->successTest();
         else 
-            $this->writteFailure("getEmail");
+            $this->writeFailure("getEmail");
     }
     /**
      * Fonction publique testant si le getPhone retourne bien le nuùméro de téléphone
@@ -860,7 +860,7 @@ class TestsCandidates extends TestsManipulation {
         if(CANDIDATES_PHONE === $c->getPhone())
             $this->successTest();
         else 
-            $this->writteFailure("getPhone");
+            $this->writeFailure("getPhone");
     }
     /**
      * Fonction publique testant si le getAddress retourne bien l'adresse
@@ -874,7 +874,7 @@ class TestsCandidates extends TestsManipulation {
         if(CANDIDATES_ADDRESS === $c->getAddress())
             $this->successTest();
         else 
-            $this->writteFailure("getAddress");   
+            $this->writeFailure("getAddress");   
     }
     /**
      * Fonction publique testant si le getCity retourne bien la ville
@@ -888,7 +888,7 @@ class TestsCandidates extends TestsManipulation {
         if(CANDIDATES_CITY === $c->getCity())
             $this->successTest();
         else 
-            $this->writteFailure("getCity");
+            $this->writeFailure("getCity");
     }
     /**
      * Fonction publique testant si le getPostcode retourne bien le codepostal
@@ -902,7 +902,7 @@ class TestsCandidates extends TestsManipulation {
         if(CANDIDATES_POSTCODE === $c->getPostcode())
             $this->successTest();
         else 
-            $this->writteFailure("getPostcode");
+            $this->writeFailure("getPostcode");
     }
     /**
      * Fonction publique testant si le getAvailabilité retourne bien la disponibilité
@@ -917,7 +917,7 @@ class TestsCandidates extends TestsManipulation {
         if(CANDIDATES_AVAILABILITY === $c->getAvailability())
             $this->successTest();
         else 
-            $this->writteFailure("getAvailability");
+            $this->writeFailure("getAvailability");
     }
     /**
      * Fonction publique testant si le getMedicalVisit retourne bien la visite médicale
@@ -932,7 +932,7 @@ class TestsCandidates extends TestsManipulation {
         if(CANDIDATES_MEDICAL_VISITE === $c->getMedicalVisit())
             $this->successTest();
         else 
-            $this->writteFailure("getMedicalVisit");
+            $this->writeFailure("getMedicalVisit");
     }
 
     // * EXPORT * //
@@ -952,7 +952,7 @@ class TestsCandidates extends TestsManipulation {
         if(count($c) === 10 && $c["name"] ===  CANDIDATES_NAME && $c["firstname"] === CANDIDATES_FIRSTNAME && $c["email"] === CANDIDATES_EMAIL && $c["phone"] === CANDIDATES_PHONE && $c["address"] === CANDIDATES_ADDRESS && $c["city"] === CANDIDATES_CITY && $c["post_code"] === CANDIDATES_POSTCODE && $c["availability"] === CANDIDATES_AVAILABILITY && $c["medical_visit"] === CANDIDATES_MEDICAL_VISITE)
             $this->successTest();
         else 
-            $this->writteFailure("exportToSQLTrue");
+            $this->writeFailure("exportToSQLTrue");
     }
     /**
      * Fonction publique testant si l'export des données sans visite médical est juste
@@ -969,7 +969,7 @@ class TestsCandidates extends TestsManipulation {
         if(count($c) === 9 && $c["name"] === CANDIDATES_NAME && $c["firstname"] === CANDIDATES_FIRSTNAME && $c["email"] === CANDIDATES_EMAIL && $c["phone"] === CANDIDATES_PHONE && $c["address"] === CANDIDATES_ADDRESS && $c["city"] === CANDIDATES_CITY && $c["post_code"] === CANDIDATES_POSTCODE && $c["availability"] === CANDIDATES_AVAILABILITY)
             $this->successTest();
         else 
-            $this->writteFailure("exportToSQLTrue_WithoutVisit");
+            $this->writeFailure("exportToSQLTrue_WithoutVisit");
     }
 
     /**
@@ -985,7 +985,7 @@ class TestsCandidates extends TestsManipulation {
         if(count($c) === 7 && $c["name"] === CANDIDATES_NAME && $c["firstname"] === CANDIDATES_FIRSTNAME && $c["email"] === CANDIDATES_EMAIL && $c["phone"] === CANDIDATES_PHONE && $c["address"] === CANDIDATES_ADDRESS && $c["city"] === CANDIDATES_CITY && $c["post_code"] === CANDIDATES_POSTCODE)
             $this->successTest();
         else 
-            $this->writteFailure("exportToSQL_update");
+            $this->writeFailure("exportToSQL_update");
     }
     /**
      * Fonction publique testant si l'export des données sans visite médical est juste
@@ -1003,7 +1003,7 @@ class TestsCandidates extends TestsManipulation {
         if(count($c) === 10 && $c["id"] === CANDIDATES_KEY && $c["name"] ===  CANDIDATES_NAME && $c["firstname"] === CANDIDATES_FIRSTNAME && $c["email"] === CANDIDATES_EMAIL && $c["phone"] === CANDIDATES_PHONE && $c["address"] === CANDIDATES_ADDRESS && $c["city"] === CANDIDATES_CITY && $c["post_code"] === CANDIDATES_POSTCODE && $c["availability"] === CANDIDATES_AVAILABILITY && $c["medical_visit"] === CANDIDATES_MEDICAL_VISITE)
             $this->successTest();
         else 
-            $this->writteFailure("exportToSQL_Key");
+            $this->writeFailure("exportToSQL_Key");
     }
 
     //// FALSE ////
@@ -1022,6 +1022,6 @@ class TestsCandidates extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure("exportToSQL_KeyFalse");
+            $this->writeFailure("exportToSQL_KeyFalse");
     }
 }

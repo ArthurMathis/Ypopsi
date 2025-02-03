@@ -25,7 +25,7 @@ class TestDisconnect(TestRunner):
         """
         Exécute le test d'inscription à un entretien
         """
-        self.writteName()
+        self.writeName()
         driver = None
         
         try:
@@ -38,10 +38,10 @@ class TestDisconnect(TestRunner):
             if applications_link:
                 applications_link.click()
             
-            self.writteSuccess()
+            self.writeSuccess()
             
         except Exception as e:
-            self.writteFailure()
+            self.writeFailure()
             print(f"Erreur : {str(e)}")
             
         finally:

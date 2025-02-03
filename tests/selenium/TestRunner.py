@@ -60,7 +60,8 @@ class TestRunner:
     GREEN = '\033[92m'
     RESET = '\033[0m'
 
-    SLEEP_TIME = 0.5
+    SLEEP_TIME  = 0.7
+    WAITED_TIME = 15
 
     ## App DATA ##
     APP_URL      = "http://localhost/ypopsi"
@@ -78,6 +79,7 @@ class TestRunner:
     APP_CANDIDATES_FISTNAME_1 = "Jean"
     APP_CANDIDATES_EMAIL_1    = "jean.dupond@diaconat-mulhouse.fr"
     APP_CANDIDATES_PHONE_1    = "06.33.44.55.78"
+    APP_CANDIDATES_GENDER_1   = 1
 
     APP_CANDIDATES_NAME_2     = "Margueritte"
     APP_CANDIDATES_FISTNAME_2 = "Catherine"
@@ -152,37 +154,70 @@ class TestRunner:
 
         action_button = driver.find_element(By.ID, "action-button") 
         action_button.click()
-        time.sleep(0.7)
+        time.sleep(self.SLEEP_TIME)
 
         identifier_input = driver.find_element(By.ID, "identifiant")
         identifier_input.send_keys(self.APP_ID)
         password_input = driver.find_element(By.ID, "motdepasse") 
         password_input.send_keys(self.APP_PASSWORD)
         password_input.send_keys(Keys.RETURN)
+        time.sleep(self.SLEEP_TIME)
 
         return driver
 
-    # * WRITTE * #
-    def writteName(self):
+    # * write * #
+    def writeName(self):
         """
         Méthode inscrivant le nom du test 
         """
         print(f"\n{self.BLUE}=== Exécution du test : {self._name} ==={self.RESET}")
-    def writteSuccess(self):
+    def writeSuccess(self):
         """
         Méthode publique notifiant la réussite d'un test
         """
         print(f"\n{self.GREEN} Test validé ! {self.RESET}")
-    def writteFailure(self):
+    def writeFailure(self):
         """
         Méthode publique notifiant la réussite d'un test
         """
         print(f"\n{self.RED} Test échoué !{self.RESET}")
         sys.exit()
+    def writeError(self, exception, force_exit = False):
+        """
+        Méthode publlique inscrivant une erreur et arrêtant si besoin l'algorithme
+
+        Args:
+            exception (Exception): L'exception à inscrire
+            force_exit (Boolean): Le booléen indiquant si le programme doit être arrêter
+        """
+        print(f"\n{self.RED} Erreur : {str(exception)}.{self.RESET}")
+        
+        if(force_exit):
+            self.writeFailure()
 
     # * FIND * #
     ## CSS ##
-    def find_elements_by_css(self, driver, css_selector, wait_time=10):
+    def find_element_by_id(self, driver, element_id, wait_time = WAITED_TIME):
+        """
+        Récupère un élément par son identifiant unique.
+        
+        Paramètres:
+            driver (webdriver): L'instance du navigateur
+            element_id (str): L'identifiant unique de l'élément
+            wait_time (int): Le temps d'attente maximum en secondes
+            
+        Returns:
+            WebElement: L'élément trouvé ou None
+        """
+        try:
+            element = WebDriverWait(driver, wait_time).until(
+                EC.presence_of_element_located((By.ID, element_id))
+            )
+            return element
+        except Exception as e:
+            print(f"{self.RED}Erreur lors de la recherche de l'élément d'identifiant '{element_id}': {str(e)}{self.RESET}")
+            return None  
+    def find_elements_by_css(self, driver, css_selector, wait_time = WAITED_TIME):
         """
         Récupère tous les éléments correspondant à un sélecteur CSS complexe.
         
@@ -198,11 +233,16 @@ class TestRunner:
             elements = WebDriverWait(driver, wait_time).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, css_selector))
             )
-            return elements
+            
+            if(elements):
+                return elements
+            else:
+                raise Exception("Aucun élément trouvé")
         except Exception as e:
-            print(f"{self.RED}Erreur lors de la recherche des éléments '{css_selector}': {str(e)}{self.RESET}")
-            return []
-    def find_element_by_css(self, driver, css_selector, wait_time=10):
+            self.writeError(e)
+            return None 
+            
+    def find_element_by_css(self, driver, css_selector, wait_time = WAITED_TIME):
         """
         Récupère le premier élément correspondant à un sélecteur CSS complexe.
         
@@ -221,10 +261,10 @@ class TestRunner:
             return element
         except Exception as e:
             print(f"{self.RED}Erreur lors de la recherche de l'élément '{css_selector}': {str(e)}{self.RESET}")
-            return None
-        
+            return None       
+
     ## CLASS ##
-    def find_elements_by_class(self, driver, class_name, wait_time=10):
+    def find_elements_by_class(self, driver, class_name, wait_time = WAITED_TIME):
         """
         Récupère tous les éléments ayant une classe spécifique.
         
@@ -244,7 +284,7 @@ class TestRunner:
         except Exception as e:
             print(f"{self.RED}Erreur lors de la recherche des éléments de classe '{class_name}': {str(e)}{self.RESET}")
             return []
-    def find_element_by_class(self, driver, class_name, wait_time=10):
+    def find_element_by_class(self, driver, class_name, wait_time = WAITED_TIME):
         """
         Récupère le premier élément ayant une classe spécifique.
         
@@ -286,6 +326,7 @@ class TestRunner:
         except Exception as e:
             print(f"{self.RED}Erreur lors de la recherche par texte '{text_content}': {str(e)}{self.RESET}")
             return None
+        
     def find_element_by_href(self, elements, href_content):
         """
         Trouve le premier élément dont l'attribut href contient la chaîne spécifiée.
@@ -315,19 +356,35 @@ class TestRunner:
         Navigue vers la section Applications en trouvant le bon lien dans la navbar
         """
         elements = self.find_elements_by_css(driver, ".navbarre .action-section a")
-        applications_link = self.find_element_by_href(elements, self.APP_HOME_PAGE_LINK)
         
-        if applications_link:
-            applications_link.click()
+        if(elements):
+            applications_link = self.find_element_by_href(elements, self.APP_HOME_PAGE_LINK)
+    
+            if applications_link:
+                applications_link.click()  
+            else:
+                raise Exception("erreur lors de la navigation vers la page d'accueil - bouton home introuvable")
+        else:
+            raise Exception("erreur lors de la navigation vers la page d'accueil - aucun bouton détecté")
+            
     def goToApplicationsPage(self, driver):
         """
         Navigue vers la section Applications en trouvant le bon lien dans la navbar
-        """
+        """ 
         elements = self.find_elements_by_css(driver, ".navbarre .action-section a")
-        applications_link = self.find_element_by_href(elements, self.APP_APPLICATIONS_PAGE_LINK)
-        
-        if applications_link:
-            applications_link.click()
+    
+        if(elements):
+            applications_link = self.find_element_by_href(elements, self.APP_APPLICATIONS_PAGE_LINK)
+            
+            if applications_link:
+                applications_link.click()
+                time.sleep(self.SLEEP_TIME)
+            else:
+                raise Exception("erreur lors de la navigation vers la page candidatures - bouton candidature introuvable")
+        else:
+            raise Exception("erreur lors de la navigation vers la page candidatures - aucun bouton détecté")
+            
+            
     def goToPreferencesPage(self, driver):
         """
         Navigue vers la section Applications en trouvant le bon lien dans la navbar
@@ -337,14 +394,15 @@ class TestRunner:
         
         if applications_link:
             applications_link.click()
-
+            
     def clickOnSearch(self, driver):
         """
         Méthode ouvrant la panneaux de filtres
         """
         element = driver.find_element(By.ID, self.APP_APPLICATIONS_FILTER_MENU_BUTTON_ID)
         if(element):
-            element.click()
+            element.click()   
+
     def clickOnSearch(self, driver):
         """
         Méthode ouvrant la panneaux de recherches
@@ -352,3 +410,18 @@ class TestRunner:
         element = driver.find_element(By.ID, self.APP_APPLICATIONS_SEARCH_MENU_BUTTON_ID)
         if(element):
             element.click()
+            
+    # * INPUT * #
+    def setInputValue(self, input, value):
+        """
+        Rempli un champ de formulaire avec une valeur donnée
+        """
+        if(input):
+            input.clear()
+            
+            if(value):
+                input.send_keys(value)
+            else:
+                raise Exception("Aucune valeur à saisir.")
+        else:
+            raise Exception("Aucun input fourni.")

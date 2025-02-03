@@ -2,9 +2,15 @@
 
 # Ignore the .vscode document
 .vscode
+
 # Ignore the .ideas document
 .ideas
+
 # Ignore the .DS_Store document
 .DS_Store
+
+# Ignore pycache files
+__pycache__/
+
 # Ignore the .env document
 # .env

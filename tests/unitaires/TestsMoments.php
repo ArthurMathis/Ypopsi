@@ -20,31 +20,31 @@ class TestsMoments extends TestsManipulation {
      * @return Void
      */
     public function run() {
-        $this->writteH1("Tests de la classe Moment.php");
-        $this->writteH2("Tests de constructeurs");
-        $this->writteH3("Tests classiques");
+        $this->writeH1("Tests de la classe Moment.php");
+        $this->writeH2("Tests de constructeurs");
+        $this->writeH3("Tests classiques");
         $this->constructorTrue();
-        $this->writteSuccess();
-        $this->writteH3("Tests de détection des erreurs - False");
+        $this->writeSuccess();
+        $this->writeH3("Tests de détection des erreurs - False");
         $this->constructorFalse();
-        $this->writteSuccess();
+        $this->writeSuccess();
     
-        $this->writteH2("Tests des getters");
+        $this->writeH2("Tests des getters");
         $this->getDate();
         $this->getHour();
         $this->getTimestamp();
         $this->currentMoment();
-        $this->writteSuccess();
+        $this->writeSuccess();
     
-        $this->writteH2("Méthodes statiques");
-        $this->writteH3("Tests classiques");
+        $this->writeH2("Méthodes statiques");
+        $this->writeH3("Tests classiques");
         $this->isDateTrue();
         $this->isHourTrue1();
         $this->isHourTrue2();
         $this->isTimestampTrue();
     
-        $this->writteSuccess();
-        $this->writteH3("Tests de détection des erreurs - False");
+        $this->writeSuccess();
+        $this->writeH3("Tests de détection des erreurs - False");
         $this->isDateFalse1();
         $this->isDateFalse2();
         $this->isDateFalse3();
@@ -58,26 +58,26 @@ class TestsMoments extends TestsManipulation {
         $this->isHourFalse5();
         $this->isHourFalse6();
         $this->isTimestampFalse();
-        $this->writteSuccess();
+        $this->writeSuccess();
     
-        $this->writteH2("Méthodes de comparaison");
-        $this->writteH3("Tests classiques");
+        $this->writeH2("Méthodes de comparaison");
+        $this->writeH3("Tests classiques");
         $this->isTallerThanTrue();
         $this->isEqualToTrue();
         $this->isTallerOrEqualToTrue();
-        $this->writteSuccess();
-        $this->writteH3("Tests de détection des erreurs - False");
+        $this->writeSuccess();
+        $this->writeH3("Tests de détection des erreurs - False");
         $this->isTallerThanFalse();
         $this->isEqualToFalse();
         $this->isTallerOrEqualToFalse();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH2("Tests de fromDate");
-        $this->writteH3("Tests classiques");
+        $this->writeH2("Tests de fromDate");
+        $this->writeH3("Tests classiques");
         $this->fromDateTrue1();
         $this->fromDateTrue2();
-        $this->writteSuccess();
-        $this->writteH3("Tests de détection des erreurs - False");
+        $this->writeSuccess();
+        $this->writeH3("Tests de détection des erreurs - False");
         $this->fromDateFalse1();
         $this->fromDateFalse2();
         $this->fromDateFalse3();
@@ -87,7 +87,7 @@ class TestsMoments extends TestsManipulation {
         $this->fromDateFalse7();
         $this->fromDateFalse8();
         $this->fromDateFalse9();
-        $this->writteSuccess();
+        $this->writeSuccess();
     }
 
     // * CONSTRUCTEUR * //
@@ -104,7 +104,7 @@ class TestsMoments extends TestsManipulation {
 
         } catch(Exception $e) {
             echo $e; exit;
-            $this->writteFailure("constructorTrue");
+            $this->writeFailure("constructorTrue");
         }
         $this->successTest();
     }
@@ -128,7 +128,7 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure("constructorFalse1");
+            $this->writeFailure("constructorFalse1");
     }
 
     // *  GET * //
@@ -144,7 +144,7 @@ class TestsMoments extends TestsManipulation {
         if($m->getDate() === DATE)
             $this->successTest();
         else 
-            $this->writteFailure("getDate");
+            $this->writeFailure("getDate");
 
     }
     /**
@@ -159,7 +159,7 @@ class TestsMoments extends TestsManipulation {
         if($m->getHour() === HOUR)
             $this->successTest();
         else 
-            $this->writteFailure("getHour");
+            $this->writeFailure("getHour");
     }
     /**
      * Fonction publique testant la fonction getTimestamp
@@ -173,7 +173,7 @@ class TestsMoments extends TestsManipulation {
         if($m->getTimestamp() === TIMESTAMP)
             $this->successTest();
         else 
-            $this->writteFailure("getTimestamp");
+            $this->writeFailure("getTimestamp");
     }
     /**
      * Fonction publique testant la fonction currentMoment
@@ -190,7 +190,7 @@ class TestsMoments extends TestsManipulation {
         if($time === $t)
             $this->successTest();
         else 
-            $this->writteFailure("currentMoment");
+            $this->writeFailure("currentMoment");
     }
 
     // * IS * //
@@ -206,7 +206,7 @@ class TestsMoments extends TestsManipulation {
         if(Moment::isDate(DATE))
             $this->successTest();
         else 
-            $this->writteFailure("isDateTrue");
+            $this->writeFailure("isDateTrue");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec une date incomplète
@@ -217,7 +217,7 @@ class TestsMoments extends TestsManipulation {
      */
     function isDateFalse1() {
         if(Moment::isDate('2024-08'))
-            $this->writteFailure("isDateFalse1");
+            $this->writeFailure("isDateFalse1");
         else 
             $this->successTest(); 
     }
@@ -230,7 +230,7 @@ class TestsMoments extends TestsManipulation {
      */
     function isDateFalse2() {
         if(Moment::isDate('20-24-08'))
-            $this->writteFailure("isDateFalse2");
+            $this->writeFailure("isDateFalse2");
         else 
             $this->successTest(); 
     }
@@ -243,7 +243,7 @@ class TestsMoments extends TestsManipulation {
      */
     function isDateFalse3() {
         if(Moment::isDate('2024-24-08'))
-            $this->writteFailure("isDateFalse3");
+            $this->writeFailure("isDateFalse3");
         else 
             $this->successTest(); 
     }
@@ -256,7 +256,7 @@ class TestsMoments extends TestsManipulation {
      */
     function isDateFalse4() {
         if(Moment::isDate('2024-02-30'))
-            $this->writteFailure("isDateFalse4");
+            $this->writeFailure("isDateFalse4");
         else 
             $this->successTest(); 
     }
@@ -269,7 +269,7 @@ class TestsMoments extends TestsManipulation {
      */
     function isDateFalse5() {
         if(Moment::isDate('2024-2-3'))
-            $this->writteFailure("isDateFalse5");
+            $this->writeFailure("isDateFalse5");
         else 
             $this->successTest(); 
     }
@@ -282,7 +282,7 @@ class TestsMoments extends TestsManipulation {
      */
     function isDateFalse6() {
         if(Moment::isDate('bonjour à tous'))
-            $this->writteFailure("isDateFalse6");
+            $this->writeFailure("isDateFalse6");
         else 
             $this->successTest(); 
     }
@@ -300,7 +300,7 @@ class TestsMoments extends TestsManipulation {
         if(Moment::isHour(HOUR))
             $this->successTest();
         else 
-            $this->writteFailure("isHourTrue1");
+            $this->writeFailure("isHourTrue1");
     }
     /**
      * Fonction publique testant si la méthode isHour foctionne correctement avec une heure abrégée
@@ -313,41 +313,41 @@ class TestsMoments extends TestsManipulation {
         if(Moment::isHour('12:30'))
             $this->successTest();
         else 
-            $this->writteFailure("isHourTrue2");
+            $this->writeFailure("isHourTrue2");
     }
     function isHourFalse1() {
         if(Moment::isHour(TIMESTAMP))
-            $this->writteFailure("isHourFalse1");
+            $this->writeFailure("isHourFalse1");
         else 
             $this->successTest(); 
     }
     function isHourFalse2() {
         if(Moment::isHour('Bonjour à tous'))
-            $this->writteFailure("isHourFalse2");
+            $this->writeFailure("isHourFalse2");
         else 
             $this->successTest(); 
     }
     function isHourFalse3() {
         if(Moment::isHour('26:12:12'))
-            $this->writteFailure("isHourFalse3");
+            $this->writeFailure("isHourFalse3");
         else 
             $this->successTest(); 
     }
     function isHourFalse4() {
         if(Moment::isHour('06:72:12'))
-            $this->writteFailure("isHourFalse4");
+            $this->writeFailure("isHourFalse4");
         else 
             $this->successTest(); 
     }
     function isHourFalse5() {
         if(Moment::isHour('06:2:2'))
-            $this->writteFailure("isHourFalse5");
+            $this->writeFailure("isHourFalse5");
         else 
             $this->successTest(); 
     }
     function isHourFalse6() {
         if(Moment::isHour(123456))
-            $this->writteFailure("isHourFalse6");
+            $this->writeFailure("isHourFalse6");
         else 
             $this->successTest(); 
     }
@@ -364,11 +364,11 @@ class TestsMoments extends TestsManipulation {
         if(Moment::isTimestamp(TIMESTAMP))
             $this->successTest();
         else
-            $this->writteFailure("isTimestampTrue");
+            $this->writeFailure("isTimestampTrue");
     }
     function isTimestampFalse() {
         if(Moment::isTimestamp(-1))
-            $this->writteFailure("isTimestampFalse");
+            $this->writeFailure("isTimestampFalse");
         else
             $this->successTest();
     }
@@ -379,12 +379,12 @@ class TestsMoments extends TestsManipulation {
         if($m->isTallerThan(TIMESTAMP))
             $this->successTest();
         else
-            $this->writteFailure("isTallerThanTrue");
+            $this->writeFailure("isTallerThanTrue");
     }
     function isTallerThanFalse() {
         $m = new Moment(TIMESTAMP);
         if($m->isTallerThan(TIMESTAMP_2))
-            $this->writteFailure("isTallerThanFalse");
+            $this->writeFailure("isTallerThanFalse");
         else
             $this->successTest();
     }
@@ -393,12 +393,12 @@ class TestsMoments extends TestsManipulation {
         if($m->isEqualTo(TIMESTAMP))
             $this->successTest();
         else
-        $this->writteFailure("isEqualToTrue");
+        $this->writeFailure("isEqualToTrue");
     }
     function isEqualToFalse() {
         $m = new Moment(TIMESTAMP);
         if($m->isEqualTo(TIMESTAMP_2))
-            $this->writteFailure("isEqualToFalse");
+            $this->writeFailure("isEqualToFalse");
         else
             $this->successTest();
     }
@@ -407,12 +407,12 @@ class TestsMoments extends TestsManipulation {
         if($m->isTallerOrEqualTo(TIMESTAMP))
             $this->successTest();
         else
-        $this->writteFailure("isTallerOrEqualToTrue");
+        $this->writeFailure("isTallerOrEqualToTrue");
     }
     function isTallerOrEqualToFalse() {
         $m = new Moment(TIMESTAMP);
         if($m->isTallerOrEqualTo(TIMESTAMP_2))
-            $this->writteFailure("isTallerOrEqualToFalse");
+            $this->writeFailure("isTallerOrEqualToFalse");
         else
             $this->successTest();
     }
@@ -429,7 +429,7 @@ class TestsMoments extends TestsManipulation {
         if($res) 
             $this->successTest();  
         else
-            $this->writteFailure("fromDateTrue1");
+            $this->writeFailure("fromDateTrue1");
     }
     function fromDateTrue2() {
         $res = $this->SUCCESS();
@@ -442,7 +442,7 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else
-            $this->writteFailure("fromDateTrue2");
+            $this->writeFailure("fromDateTrue2");
     }
     function fromDateFalse1() {
         $res = $this->FAILURE();
@@ -455,7 +455,7 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else
-            $this->writteFailure("fromDateFalse1");
+            $this->writeFailure("fromDateFalse1");
     }
     function fromDateFalse2() {
         $res = $this->FAILURE();
@@ -468,7 +468,7 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else
-            $this->writteFailure("fromDateFalse2");
+            $this->writeFailure("fromDateFalse2");
     }
     function fromDateFalse3() {
         $res = $this->FAILURE();
@@ -481,7 +481,7 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else
-            $this->writteFailure("fromDateFalse3");
+            $this->writeFailure("fromDateFalse3");
     }
     function fromDateFalse4() {
         $res = $this->FAILURE();
@@ -494,7 +494,7 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else
-            $this->writteFailure("fromDateFalse4");
+            $this->writeFailure("fromDateFalse4");
     }
     function fromDateFalse5() {
         $res = $this->FAILURE();
@@ -507,7 +507,7 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else
-            $this->writteFailure("fromDateFalse5");
+            $this->writeFailure("fromDateFalse5");
     }
     function fromDateFalse6() {
         $res = $this->FAILURE();
@@ -520,7 +520,7 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else
-            $this->writteFailure("fromDateFalse6");
+            $this->writeFailure("fromDateFalse6");
     }
     function fromDateFalse7() {
         $res = $this->FAILURE();
@@ -533,7 +533,7 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else
-            $this->writteFailure("fromDateFalse7");
+            $this->writeFailure("fromDateFalse7");
     }
     function fromDateFalse8() {
         $res = $this->FAILURE();
@@ -546,7 +546,7 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else
-            $this->writteFailure("fromDateFalse8");
+            $this->writeFailure("fromDateFalse8");
     }
     function fromDateFalse9() {
         $res = $this->FAILURE();
@@ -559,6 +559,6 @@ class TestsMoments extends TestsManipulation {
         if($res)
             $this->successTest();
         else
-            $this->writteFailure("fromDateFalse9");
+            $this->writeFailure("fromDateFalse9");
     }
 }

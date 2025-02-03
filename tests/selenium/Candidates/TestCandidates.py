@@ -14,7 +14,6 @@ class TestCandidates(TestApplications):
     Classe destinée aux tests des fonctionnalités de manipulations de candidats      
     """
     
-
     def start(self):
         """
         Méthode préparant l'application pour le test
@@ -27,7 +26,6 @@ class TestCandidates(TestApplications):
             Driver
         """
         driver = self.connect()
-        time.sleep(self.SLEEP_TIME)
 
         self.goToApplicationsPage()
         time.sleep(self.SLEEP_TIME)

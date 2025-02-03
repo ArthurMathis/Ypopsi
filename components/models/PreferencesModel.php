@@ -395,7 +395,7 @@ class PreferencesModel extends Model {
     /**
      * Public method checking if the input password is right
      *
-     * @param String $password The password written in input
+     * @param String $password The password writen in input
      * @return Void
      */
     public function verify_password(string &$password) {

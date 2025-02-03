@@ -26,22 +26,22 @@ class TestsUsers extends TestsManipulation {
      * @return Void
      */
     public function run() {
-        $this->writteH1("Tests de la classe User.php");
-        $this->writteH2("Tests de constructeurs");
-        $this->writteH3("Tests classique");
+        $this->writeH1("Tests de la classe User.php");
+        $this->writeH2("Tests de constructeurs");
+        $this->writeH3("Tests classique");
         $this->constructorTrue();
 
-        $this->writteSuccess();
-        $this->writteH3("Tests de détection des erreurs - False");
+        $this->writeSuccess();
+        $this->writeH3("Tests de détection des erreurs - False");
         $this->constructorIdentifierFalse();
         $this->constructorNameFalse();
         $this->constructorFirstnameFalse();
         $this->constructorEmailFalse();
         $this->constructorEstablishmentFalse();
         $this->constructorRoleFalse();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH2("Tests de getters");
+        $this->writeH2("Tests de getters");
         $this->getIdentifier();
         $this->getName();
         $this->getFirstname();
@@ -49,18 +49,18 @@ class TestsUsers extends TestsManipulation {
         $this->getPassword();
         $this->getEstablishment();
         $this->getRole();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH2("Méthodes statiques");
+        $this->writeH2("Méthodes statiques");
         $this->makeUserWithoutKey();
         $this->makeUserWithKey();
-        $this->writteSuccess();
+        $this->writeSuccess();
 
-        $this->writteH2("Méthodes d'exports");
+        $this->writeH2("Méthodes d'exports");
         $this->exportToArrayWithoutKey();
         $this->exportToArrayWithKey();
         $this->exportToSQL();
-        $this->writteSuccess();
+        $this->writeSuccess();
     }
 
     // * CONSTRUCTOR * //
@@ -76,7 +76,7 @@ class TestsUsers extends TestsManipulation {
             $u = new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE);
 
         } catch(Exception $e) { 
-            $this->writteFailure('constructorTrue'); 
+            $this->writeFailure('constructorTrue'); 
         }
         $this->successTest();
     }
@@ -101,7 +101,7 @@ class TestsUsers extends TestsManipulation {
         if($res) 
             $this->successTest();
         else 
-            $this->writteFailure("constructorIdentifierFalse");
+            $this->writeFailure("constructorIdentifierFalse");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un nom contenant un entier
@@ -122,7 +122,7 @@ class TestsUsers extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure("constructorNameFalse");
+            $this->writeFailure("constructorNameFalse");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un prénom contenant un entier
@@ -143,7 +143,7 @@ class TestsUsers extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure("constructorFirstnameFalse");
+            $this->writeFailure("constructorFirstnameFalse");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un email contenant un nom
@@ -164,7 +164,7 @@ class TestsUsers extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure("constructorEmailFalse");
+            $this->writeFailure("constructorEmailFalse");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un password sous forme d'un entier
@@ -185,7 +185,7 @@ class TestsUsers extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure("constructorPasswordFalse");
+            $this->writeFailure("constructorPasswordFalse");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un établissement négatif
@@ -206,7 +206,7 @@ class TestsUsers extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure("constructorEstablishmentFalse");
+            $this->writeFailure("constructorEstablishmentFalse");
     }
     /**
      * Fonction publique testant la gestion des erreurs avec un rôle négatif
@@ -227,7 +227,7 @@ class TestsUsers extends TestsManipulation {
         if($res)
             $this->successTest();
         else 
-            $this->writteFailure("constructorRoleFalse");
+            $this->writeFailure("constructorRoleFalse");
     }
 
     // * GET * //
@@ -242,7 +242,7 @@ class TestsUsers extends TestsManipulation {
         if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getIdentifier() === USER_IDENTIFIER)
             $this->successTest();
         else 
-            $this->writteFailure("getIdentifier");
+            $this->writeFailure("getIdentifier");
     }
     /**
      * Fonction publique testant la fonction getName
@@ -255,7 +255,7 @@ class TestsUsers extends TestsManipulation {
         if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getName() === USER_NAME)
             $this->successTest();
         else 
-            $this->writteFailure("getName");
+            $this->writeFailure("getName");
     }
     /**
      * Fonction publique testant la fonction getFirstname
@@ -268,7 +268,7 @@ class TestsUsers extends TestsManipulation {
         if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getFirstname() === USER_FIRSTNAME)
             $this->successTest();
         else 
-            $this->writteFailure("getFirstname");
+            $this->writeFailure("getFirstname");
     }
     /**
      * Fonction publique testant la fonction getEmail
@@ -281,7 +281,7 @@ class TestsUsers extends TestsManipulation {
         if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getEmail() === USER_EMAIL)
             $this->successTest();
         else 
-            $this->writteFailure("getEmail");
+            $this->writeFailure("getEmail");
     }
     /**
      * Fonction publique testant la fonction getPassword
@@ -294,7 +294,7 @@ class TestsUsers extends TestsManipulation {
         if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getPassword() === USER_PASSWORD)
             $this->successTest();
         else 
-            $this->writteFailure("getPassword");
+            $this->writeFailure("getPassword");
     }
     /**
      * Fonction publique testant la fonction getEstablishment
@@ -307,7 +307,7 @@ class TestsUsers extends TestsManipulation {
         if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getEstablishment() === USER_ESTABLISHMENT)
             $this->successTest();
         else 
-            $this->writteFailure("getEstablishment");
+            $this->writeFailure("getEstablishment");
     }
     /**
      * Fonction publique testant la fonction getRole
@@ -320,7 +320,7 @@ class TestsUsers extends TestsManipulation {
         if((new User(USER_IDENTIFIER, USER_NAME, USER_FIRSTNAME, USER_EMAIL, USER_PASSWORD, USER_ESTABLISHMENT, USER_ROLE))->getRole() === USER_ROLE)
             $this->successTest();
         else 
-            $this->writteFailure("getRole");
+            $this->writeFailure("getRole");
     }
 
     // * STATIC * //
@@ -337,7 +337,7 @@ class TestsUsers extends TestsManipulation {
         if($u->getIdentifier() === USER_IDENTIFIER && $u->getName() === USER_NAME && $u->getFirstname() === USER_FIRSTNAME && $u->getEmail() === USER_EMAIL &&$u->getPassword() === USER_PASSWORD && $u->getEstablishment() === USER_ESTABLISHMENT && $u->getRole() === USER_ROLE && $u->getKey() === NULL)
             $this->successTest();
         else 
-            $this->writteFailure("makeUserWithoutKey");
+            $this->writeFailure("makeUserWithoutKey");
     }
     /**
      * Fonction publique testant la génération d'un utilisateur depuis un tableau de données avec clé
@@ -351,7 +351,7 @@ class TestsUsers extends TestsManipulation {
         if($u->getIdentifier() === USER_IDENTIFIER && $u->getName() === USER_NAME && $u->getFirstname() === USER_FIRSTNAME && $u->getEmail() === USER_EMAIL &&$u->getPassword() === USER_PASSWORD && $u->getEstablishment() === USER_ESTABLISHMENT && $u->getRole() === USER_ROLE && $u->getKey() === USER_KEY)
             $this->successTest();
         else 
-            $this->writteFailure("makeUserWithKey");
+            $this->writeFailure("makeUserWithKey");
     }
 
     //// EXPORT ////
@@ -367,7 +367,7 @@ class TestsUsers extends TestsManipulation {
         if($array === ['identifier' => USER_IDENTIFIER, 'email' => USER_EMAIL, 'password' => USER_PASSWORD, 'role' => USER_ROLE, 'key' => NULL]) 
             $this->successTest();
         else 
-            $this->writteFailure("exportToArrayWithoutKey");
+            $this->writeFailure("exportToArrayWithoutKey");
     }
     /**
      * Fonction publique testant l'exportation d'un utilisateur avec clé
@@ -381,7 +381,7 @@ class TestsUsers extends TestsManipulation {
         if($array === ['identifier' => USER_IDENTIFIER, 'email' => USER_EMAIL, 'password' => USER_PASSWORD, 'role' => USER_ROLE, 'key' => USER_KEY]) 
             $this->successTest();
         else 
-            $this->writteFailure("exportToArrayWithKey");
+            $this->writeFailure("exportToArrayWithKey");
     }
     /**
      * Fonction publique testant l'exportation SQL d'un utilisateur avec clé
@@ -395,6 +395,6 @@ class TestsUsers extends TestsManipulation {
         if($array['identifier'] === USER_IDENTIFIER && $array['name'] === USER_NAME && $array['firstname'] === USER_FIRSTNAME && $array['email'] === USER_EMAIL && password_verify(USER_PASSWORD, $array['password']) && USER_ESTABLISHMENT === $array['key_establishments'] && USER_ROLE === $array['key_roles'])
             $this->successTest();
         else 
-            $this->writteFailure("exportToSQL");
+            $this->writeFailure("exportToSQL");
     }
 }

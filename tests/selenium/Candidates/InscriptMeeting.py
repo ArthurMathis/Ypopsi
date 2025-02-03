@@ -25,7 +25,7 @@ class InscriptMeeting(TestRunner):
         """
         Exécute le test d'inscription à un entretien
         """
-        self.writteName()
+        self.writeName()
         driver = None
         
         try:
@@ -38,10 +38,10 @@ class InscriptMeeting(TestRunner):
             # TODO : Ajouter une classe TestCandidates.py contenant les méthodes de navigation dans la page candidat
             # TODO : Ajouter un meeting            
             
-            self.writteSuccess()
+            self.writeSuccess()
             
         except Exception as e:
-            self.writteFailure()
+            self.writeFailure()
             print(f"Erreur : {str(e)}")
             
         finally:

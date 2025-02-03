@@ -25,13 +25,13 @@ class TestsManipulation {
      */
     protected function resetSuccess() { $this->successed_tests = 0; }
 
-    // * WRITTE * //
+    // * write * //
     /**
      * public static method writting in the page a SUCCESS test message
      *
      * @return Void
      */
-    protected function writteSuccess() { 
+    protected function writeSuccess() { 
         if($this->successed_tests === 0) 
             return;
         echo '<p style="display: flex; align-items: center; gap: 5px;"><img style="height: 20px"src="assets\success.png" alt="">' . $this->successed_tests . ' test(s) validé(s) !</p>'; 
@@ -43,8 +43,8 @@ class TestsManipulation {
      * @param String $test_name The name of test
      * @return Void
      */
-    public function writteFailure(string $test_name) { 
-        $this->writteSuccess();
+    public function writeFailure(string $test_name) { 
+        $this->writeSuccess();
         echo '<p style="display: flex; align-items: center; gap: 5px;"><img style="height: 20px"src="assets\failure.png" alt="">' . 'Erreur ! Test échoué : <b>' . $test_name . '</b>'; 
         exit; 
     }
@@ -63,28 +63,28 @@ class TestsManipulation {
      */
     public static function FAILURE(): bool { return false; }
 
-    //// WRITTE ////
+    //// write ////
     /**
      * public static method writting a message in a <h1> balise
      *
-     * @param String $msg The message to writte
+     * @param String $msg The message to write
      * @return Void
      */
-    public static function writteH1(string $msg) { echo "<h1>" . $msg . "</h1>"; }
+    public static function writeH1(string $msg) { echo "<h1>" . $msg . "</h1>"; }
     /**
      * public static method writting a message in a <h2> balise
      *
-     * @param String $msg The message to writte
+     * @param String $msg The message to write
      * @return Void
      * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
      */
-    public static function writteH2(string $msg) { echo "<h2>" . $msg . "</h2>"; }
+    public static function writeH2(string $msg) { echo "<h2>" . $msg . "</h2>"; }
     /**
      * public static method writting a message in a <h3> balise
      *
-     * @param String $msg The message to writte
+     * @param String $msg The message to write
      * @return Void
      * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
      */
-    public static function writteH3(string $msg) { echo "<h3>" . $msg . "</h3>"; }
+    public static function writeH3(string $msg) { echo "<h3>" . $msg . "</h3>"; }
 }

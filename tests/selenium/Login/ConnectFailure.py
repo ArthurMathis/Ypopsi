@@ -46,17 +46,17 @@ class TestConnectFailure(TestRunner):
         """
         Exécute le test d'inscription à un entretien
         """
-        self.writteName()
+        self.writeName()
         driver = None
         
         try:
             driver = self.connect()
             time.sleep(self.SLEEP_TIME)
             
-            self.writteFailure()
+            self.writeFailure()
             
         except Exception as e:
-            self.writteSuccess()
+            self.writeSuccess()
             
         finally:
             if driver:

@@ -4,12 +4,12 @@ import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from TestRunner import TestRunner
-from Candidates.TestCandidates import TestCandidates
+from TestApplications import TestApplications
 
-class InscriptCandidates(TestCandidates):
+class InscriptCandidates(TestApplications):
     """
     Classe de test pour l'inscription d'un candidat.
     Hérite de TestCandidates pour utiliser ses fonctionnalités.
@@ -25,21 +25,41 @@ class InscriptCandidates(TestCandidates):
         """
         Exécute le test d'inscription d'un candidat
         """
-        self.writteName()
-        driver = None
+        self.writeName()
+
+        print("On lance le programme")
         
-        try:
+        try:    
             driver = self.start()
-            self.clickOnCandidatesInput()
-            time.sleep(self.SLEEP_TIME)
+        
+            if driver is None:
+                raise Exception("Le driver n'a pas pu être initialisé.")
+
+            self.clickOnCandidatesInput(driver) 
             
-            # TODO: Ajouter les étapes pour l'inscription d'un candidat
             
-            self.writteSuccess()
+            i_name = self.find_element_by_id(driver, "nom")
+            self.setInputValue(i_name, self.APP_CANDIDATES_NAME_1)
+            
+            i_firstname = self.find_element_by_id(driver, "prenom")
+            self.setInputValue(i_firstname, self.APP_CANDIDATES_FISTNAME_1)
+            
+            # i_gender = Select(self.find_element_by_id(driver, "genre"))
+            # i_gender.select_by_value(self.APP_CANDIDATES_GENDER_1)
+            
+            i_email = self.find_element_by_id(driver, "email")
+            self.setInputValue(i_email, self.APP_CANDIDATES_EMAIL_1)
+            
+            i_phone = self.find_element_by_id(driver, "phone")
+            self.setInputValue(i_phone, self.APP_CANDIDATES_PHONE_1)
+            
+            
+            time.sleep(20)
+            
+            self.writeSuccess()
             
         except Exception as e:
-            self.writteFailure()
-            print(f"Erreur : {str(e)}")
+            self.writeError(e, True)
             
         finally:
             if driver:
