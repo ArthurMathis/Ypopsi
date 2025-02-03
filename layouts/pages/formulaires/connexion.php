@@ -5,7 +5,7 @@
     </div>
     <button id="action-button">
         <p>Accéder</p>
-        <img src="layouts/assets/img/logo/blue/arrow.svg" alt="">
+        <img src="<?= APP_PATH ?>/layouts/assets/img/logo/blue/arrow.svg" alt="">
     </button>
 </section>
 <form method="post" action="index.php?login=connexion">
@@ -23,7 +23,7 @@
     <div class="form-section">
         <button type="submit" value="new_user">
             <p>Se connecter</p>
-            <img src="layouts/assets/img/logo/blue/arrow.svg" alt="">
+            <img src="<?= APP_PATH ?>/layouts/assets/img/logo/blue/arrow.svg" alt="">
         </button>
     </div>
 </form>

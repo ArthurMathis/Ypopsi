@@ -27,7 +27,7 @@ class Router {
     /**
      * Class' constructor
      */
-    public function __construct() { $this->app_path = getenv('APP_PATH') ?? '/Ypopsi'; }
+    public function __construct() { $this->app_path = APP_PATH; }
 
 
     // * ROUTES * //
@@ -58,7 +58,7 @@ class Router {
         $path = strtok($path, '?');                                                 // Suppression des paramètres GET
         $path = '/' . ltrim($path, '/');                                            // Suppression des / en début de chaine
         $path = rtrim($path, '/');                                                  // Suppression des / en début de chaine
-        
+
         if ($path === '') {
             $path = '/';
         }

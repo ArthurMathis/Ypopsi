@@ -21,7 +21,7 @@ class HomeController extends Controller {
      *  Public function returning the home page 
      * @return Void
      */
-    public function displayHome() {
+    public function display() {
         $items = $this->Model->getNonTraiteeCandidatures();
         $dashboard = [
             [

@@ -1,18 +1,18 @@
 @font-face {
   font-family: "Roboto";
-  src: url("../typo/Roboto/Roboto-Regular.ttf");
+  src: url("../assets/typo/Roboto/Roboto-Regular.ttf");
 }
 @font-face {
   font-family: 'Roboto Italic';
-  src: url('../typo/Roboto/Roboto-Italic.ttf');
+  src: url('../assets/typo/Roboto/Roboto-Italic.ttf');
 }
 @font-face {
   font-family: "Roboto Bold";
-  src: url("../typo/Roboto/Roboto-Bold.ttf");
+  src: url("../assets/typo/Roboto/Roboto-Bold.ttf");
 }
 @font-face {
   font-family: "Pacifico";
-  src: url("../typo/Pacifico-Regular.ttf");
+  src: url("../assets/typo/Pacifico-Regular.ttf");
 }
 :root {
   --black: #2C3131;

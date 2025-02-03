@@ -1,5 +1,12 @@
 <?php 
 
+$app_path = getenv('APP_PATH');
+if(empty($app_path)) {
+    $app_path = "/Ypopsi";
+}
+
+define('APP_PATH', $app_path);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ENV * //
 function env_start() {
@@ -29,6 +36,9 @@ define('SCRIPTS', LAYOUTS.DS.'scripts/');
 
 define('FORMS_STYLES', STYLESHEETS.DS.'formulaires');
 define('PAGES_STYLES', STYLESHEETS.DS.'pages');
+
+define('IMG', ASSETS.DS.'img');
+define('LOGO', IMG.DS.'logo');
 
 define('BARRES', PAGES.DS.'barres');
 define('COMMON', PAGES.DS.'common');
