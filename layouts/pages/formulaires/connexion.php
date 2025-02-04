@@ -8,7 +8,7 @@
         <img src="<?= APP_PATH ?>/layouts/assets/img/logo/blue/arrow.svg" alt="">
     </button>
 </section>
-<form method="post" action="index.php?login=connexion">
+<form method="post" action="<?= APP_PATH ?>/login/set">
     <h3>Connexion à l'application</h3>
     <section>
         <div class="input-container">

@@ -14,5 +14,7 @@ session_start();
 $router = new Router();
 $router->addRoute('/', HomeController::class, "display");
 $router->addRoute('/login/get', LoginController::class, "display");
+$router->addRoute('/login/set', LoginController::class, "login");
+$router->addRoute('/logout', LoginController::class, "logout");
 
 $router->dispatch();

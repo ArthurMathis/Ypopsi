@@ -27,12 +27,10 @@ class LoginController extends Controller {
     /**
      * Public method connecting one user to the application
      *
-     * @param String $identifier THe user's id (ex: name.f)
-     * @param String $pasword The user's password
      * @return Void
      */
-    public function login(string $identifier, string $pasword) {
-        $this->Model->connectUser($identifier, $pasword);
+    public function login() {
+        $this->Model->connectUser($_POST['identifiant'], $_POST['motdepasse']);
         header("Location: " . APP_PATH);
     }
     /**

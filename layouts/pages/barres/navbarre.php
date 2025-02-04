@@ -61,7 +61,7 @@
             <a href="index.php?preferences=home" class="LignesHover <?php if($currentPage == PREFERENCES) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/preferences.svg" alt="paramètres">
             </a>
-            <a href="index.php?login=deconnexion" class="LignesHover">
+            <a href="<?= APP_PATH ?>/logout" class="LignesHover">
                 <img src="layouts/assets/img/logo/disconnect.svg" alt="déconnexion">
             </a>
         </section>
