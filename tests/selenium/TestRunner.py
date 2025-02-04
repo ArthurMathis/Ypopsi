@@ -173,6 +173,7 @@ class TestRunner:
     ## WRONG DATA ##
     APP_CANDIDATES_WRONG_NAME_1  = 1
     APP_CANDIDATES_WRONG_NAME_2  = "3doire"
+    APP_CANDIDATES_WRONG_NAME_3  = "Ed@ire"
     APP_CANDIDATES_WRONG_EMAIL_1 = "Gregoire"
     APP_CANDIDATES_WRONG_EMAIL_2 = "gregoire.mastuvu@jetevois"
     APP_CANDIDATES_WRONG_EMAIL_3 = "gregoire.mastuvu.fr"
