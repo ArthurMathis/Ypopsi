@@ -60,3 +60,62 @@ class TestApplications(TestRunner):
             
         except Exception as e:
             print(f"Erreur lors de la recherche des éléments '.action_button': {str(e)}")
+            
+    def setCandidateForm(self, driver, name, firstanme, email = None, phone = None, address = None, city = None, postcode = None):
+        i_name = self.find_element_by_id(driver, "nom")
+        self.setInputValue(i_name, name)
+        
+        i_firstname = self.find_element_by_id(driver, "prenom")
+        self.setInputValue(i_firstname, firstanme)
+        
+        if(email):
+            i_email = self.find_element_by_id(driver, "email")
+            self.setInputValue(i_email, email)
+        
+        if(phone):
+            i_phone = self.find_element_by_id(driver, "telephone")
+            self.setInputValue(i_phone, phone) 
+        
+        if(address):
+            i_address = self.find_element_by_id(driver, "adresse")
+            self.setInputValue(i_address, address)
+        
+        if(city):
+            i_city = self.find_element_by_id(driver, "ville")
+            self.setInputValue(i_city, city)
+        
+        if(postcode):
+            i_postcode = self.find_element_by_id(driver, "code-postal")
+            self.setInputValue(i_postcode, postcode)
+        
+        submit = self.find_element_by_css(driver, "button[type='submit']")
+        submit.click()
+        
+    def setApplicationForm(self, driver, job, service, establishment, contract_type, availability, source):
+        i_poste = self.find_element_by_id(driver, "poste")
+        self.setInputValue(i_poste, job)
+        
+        if(service):
+            i_service = self.find_element_by_id(driver, "service")
+            self.setInputValue(i_service, service)
+        
+        if(establishment):
+            i_establishment = self.find_element_by_id(driver, "etablissement")
+            self.setInputValue(i_establishment, establishment)
+            
+        if(contract_type):
+            i_ctype = self.find_element_by_id(driver, "type_de_contrat")
+            self.setInputValue(i_ctype, contract_type)
+        
+        i_availability = self.find_element_by_id(driver, "disponibilite")
+        self.setInputValue(i_availability, availability)
+        
+        i_source = self.find_element_by_id(driver, "source")
+        self.setInputValue(i_source, source)
+        
+        # Click pour fermer les autocomp
+        form = self.find_element_by_css(driver, "form")
+        form.click()
+        
+        second_submit = self.find_element_by_css(driver, "button[type='submit']")
+        second_submit.click()

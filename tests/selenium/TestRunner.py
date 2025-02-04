@@ -15,30 +15,55 @@ class TestRunner:
     Cette classe utilise Selenium WebDriver pour automatiser les tests d'interface utilisateur.
 
     Attributs:
+        Colors : 
         - BLUE : Code couleur pour les messages d'information
         - RED : Code couleur pour les messages d'échec
         - GREEN : Code couleur pour les messages de succès
-
+        - RESET : Code couleur des textes de base
+        
+        Sleeps :
         - SLEEP_TIME : Le temps de pause (en secondes) entre les actions
-
+        - LOADING_TIME : Le temps de pause (en secondes) nécessaire au chargement d'une nouvelle page
+        - WAITED_TIME : Le temps d'attente (en secondes) pour la détection d'u élément de la page 
+        
+        URL :
         - APP_URL : L'adresse de l'application Ypopsi
         - APP_ID : L'identifiant de connexion pour les tests
         - APP_PASSWORD : Le mot de passe de la session de test
-
+        
+        Links : 
         - APP_HOME_PAGE_LINK : Le lien vers la page d'accueil
         - APP_CONNEXION_FORM_LINK : Le lien vers le formulaire de connexion
         - APP_APPLICATIONS_PAGE_LINK : Le lien vers le menu de candidatures
         - APP_PREFERENCES_PAGE_LINK : Le lien vers le menu de préférences
-
+        
+        Candidates : 
         - APP_CANDIDATES_NAME_1 : Le nom du candidat de test numéro 1
         - APP_CANDIDATES_FISTNAME_1 : Le prénom du candidat de test numéro 1
         - APP_CANDIDATES_EMAIL_1 : L'email du candidat de test numéro 1
         - APP_CANDIDATES_PHONE_1 : Le téléphone du candidat de test numéro 1
+        - APP_CANDIDATES_GENDER_1 : Le genre du candidat numéro 1
+        
+        - APP_CANDIDATES_JOB_1 : L'emploi du candidat numéro 1
+        - APP_CANDIDATES_SERVICE_1 : Le service du candidat numéro 1
+        - APP_CANDIDATES_ESTABLISHMENT_1 : L'établissement du candidat numéro 1
+        - APP_CANDIDATES_CONTRACT_TYPE_1 : Le type de contrat du candidat numéro 1
+        - APP_CANDIDATES_SOURCE_1 : La source de la candidature du candidat numéro 1
+        - APP_CANDIDATES_AVAILABILITY_1 : La date de disponibilité du candidat numéro 1
+        
 
         - APP_CANDIDATES_NAME_2 : Le nom du candidat de test numéro 2
         - APP_CANDIDATES_FISTNAME_2 : Le prénom du candidat de test numéro 2
         - APP_CANDIDATES_EMAIL_2 : L'email du candidat de test numéro 2
         - APP_CANDIDATES_PHONE_2 : Le téléphone du candidat de test numéro 2
+        
+        - APP_CANDIDATES_JOB_2 : L'emploi du candidat numéro 2
+        - APP_CANDIDATES_SERVICE_2 : Le service du candidat numéro 2
+        - APP_CANDIDATES_ESTABLISHMENT_2 : L'établissement du candidat numéro 2
+        - APP_CANDIDATES_CONTRACT_TYPE_2 : Le type de contrat du candidat numéro 2
+        - APP_CANDIDATES_SOURCE_2 : La source de la candidature du candidat numéro 2
+        - APP_CANDIDATES_AVAILABILITY_2 : La date de disponibilité du candidat numéro 2
+        
 
         - APP_CANDIDATES_ADDRESS : L'adresse de test
         - APP_CANDIDATES_CITY : La ville de test
@@ -48,7 +73,26 @@ class TestRunner:
         - APP_CANIDATES_HELPS_1 : La liste des aides de test numéro 1
         - APP_CANIDATES_HELPS_2 : La liste des aides de test numéro 2
         - APP_CANDIDATES_COOPTEUR : Le coopteur de test (le candidat numéro 1)
+        
+        Wrong Candidate :
+        - APP_CANDIDATES_WRONG_NAME_1 : Nom invalide 
+        - APP_CANDIDATES_WRONG_NAME_2 : Nom invalide 
+        - APP_CANDIDATES_WRONG_EMAIL_1 : Email invalide
+        - APP_CANDIDATES_WRONG_EMAIL_2 : Email invalide
+        - APP_CANDIDATES_WRONG_EMAIL_3 : Email invalide
+        - APP_CANDIDATES_WRONG_PHONE_1 : Téléphone invalide
+        - APP_CANDIDATES_WRONG_PHONE_2 : Téléphone invalide
+        
+        - APP_CANDIDATES_WRONG_CITY_1 : Ville invalide
+        - APP_CANDIDATES_WRONG_CITY_2 : Ville invalide
+        - APP_CANDIDATES_WRONG_CITY_3 : Ville invalide
+        - APP_CANDIDATES_WRONG_CITY_4 : Ville invalide
+        - APP_CANDIDATES_WRONG_POSTCODE_1 : Code postal invalide
+        - APP_CANDIDATES_WRONG_POSTCODE_2 : Code postal invalide
+        - APP_CANDIDATES_WRONG_POSTCODE_3 : Code postal invalide
 
+
+        Buttons : 
         - APP_APPLICATIONS_FILTER_MENU_BUTTON_ID : L'identifiant du bouton du menu de filtres
         - APP_APPLICATIONS_SEARCH_MENU_BUTTON_ID : L'identifiant du bouton du menu de recherches
         - APP_APPLICATIONS_FILTER_VALID_BUTTON_ID : L'identifiant du bouton appliquant les filtres à la sélection 
@@ -78,16 +122,16 @@ class TestRunner:
     APP_PREFERENCES_PAGE_LINK  = APP_HOME_PAGE_LINK + "?preferences=home"
 
     ## CANDIDATES ##
-    APP_CANDIDATES_NAME_1     = "Dupond"
-    APP_CANDIDATES_FISTNAME_1 = "Jean"
-    APP_CANDIDATES_EMAIL_1    = "jean.dupond@diaconat-mulhouse.fr"
-    APP_CANDIDATES_PHONE_1    = "06.33.44.55.78"
-    APP_CANDIDATES_GENDER_1   = 1
+    APP_CANDIDATES_NAME_1      = "Dupond"
+    APP_CANDIDATES_FIRSTNAME_1 = "Jean"
+    APP_CANDIDATES_EMAIL_1     = "jean.dupond@diaconat-mulhouse.fr"
+    APP_CANDIDATES_PHONE_1     = "06.33.44.55.78"
+    APP_CANDIDATES_GENDER_1    = 1
 
-    APP_CANDIDATES_NAME_2     = "Margueritte"
-    APP_CANDIDATES_FISTNAME_2 = "Catherine"
-    APP_CANDIDATES_EMAIL_2    = "catherine.margueritte@diaconat-mulhouse.fr"
-    APP_CANDIDATES_PHONE_2    = "07.78.21.55.43"
+    APP_CANDIDATES_NAME_2      = "Margueritte"
+    APP_CANDIDATES_FIRSTNAME_2 = "Catherine"
+    APP_CANDIDATES_EMAIL_2     = "catherine.margueritte@diaconat-mulhouse.fr"
+    APP_CANDIDATES_PHONE_2     = "07.78.21.55.43"
 
     APP_CANDIDATES_ADDRESS  = "1 rue de la Prairie"
     APP_CANDIDATES_CITY     = "Prairie-Land"
@@ -106,7 +150,7 @@ class TestRunner:
 
     APP_CANIDATES_HELPS_1   = [ "Bouse d'étude" ]
     APP_CANIDATES_HELPS_2   = [ "Bouse d'étude", "Prime de cooptation" ]
-    APP_CANDIDATES_COOPTEUR = APP_CANDIDATES_NAME_1 + APP_CANDIDATES_FISTNAME_1
+    APP_CANDIDATES_COOPTEUR = APP_CANDIDATES_NAME_1 + APP_CANDIDATES_FIRSTNAME_1
     
     APP_CANDIDATES_JOB_1 = "AGENT ADMINISTRATIF"
     APP_CANDIDATES_JOB_2 = "AIDE-SOIGNANT"
@@ -128,7 +172,7 @@ class TestRunner:
 
     ## WRONG DATA ##
     APP_CANDIDATES_WRONG_NAME_1  = 1
-    APP_CANDIDATES_WRONG_NAME_1  = "3doire"
+    APP_CANDIDATES_WRONG_NAME_2  = "3doire"
     APP_CANDIDATES_WRONG_EMAIL_1 = "Gregoire"
     APP_CANDIDATES_WRONG_EMAIL_2 = "gregoire.mastuvu@jetevois"
     APP_CANDIDATES_WRONG_EMAIL_3 = "gregoire.mastuvu.fr"
@@ -170,18 +214,23 @@ class TestRunner:
         Établit une connexion à l'application Ypopsi avec les identifiants de test.
         """
         driver = webdriver.Chrome()
+        
         driver.get(self.APP_URL + self.APP_CONNEXION_FORM_LINK)
         time.sleep(self.SLEEP_TIME)
 
         action_button = driver.find_element(By.ID, "action-button") 
         action_button.click()
+        
         time.sleep(self.SLEEP_TIME)
 
         identifier_input = driver.find_element(By.ID, "identifiant")
         identifier_input.send_keys(self.APP_ID)
+        
         password_input = driver.find_element(By.ID, "motdepasse") 
         password_input.send_keys(self.APP_PASSWORD)
+        
         password_input.send_keys(Keys.RETURN)
+        
         time.sleep(self.SLEEP_TIME)
 
         return driver
@@ -192,17 +241,20 @@ class TestRunner:
         Méthode inscrivant le nom du test 
         """
         print(f"\n{self.BLUE}=== Exécution du test : {self._name} ==={self.RESET}")
+        
     def writeSuccess(self):
         """
         Méthode publique notifiant la réussite d'un test
         """
         print(f"\n{self.GREEN} Test validé ! {self.RESET}")
+        
     def writeFailure(self):
         """
         Méthode publique notifiant la réussite d'un test
         """
         print(f"\n{self.RED} Test échoué !{self.RESET}")
         sys.exit()
+        
     def writeError(self, exception, force_exit = False):
         """
         Méthode publlique inscrivant une erreur et arrêtant si besoin l'algorithme
@@ -234,10 +286,12 @@ class TestRunner:
             element = WebDriverWait(driver, wait_time).until(
                 EC.presence_of_element_located((By.ID, element_id))
             )
+            
             return element
         except Exception as e:
             print(f"{self.RED}Erreur lors de la recherche de l'élément d'identifiant '{element_id}': {str(e)}{self.RESET}")
             return None  
+        
     def find_elements_by_css(self, driver, css_selector, wait_time = WAITED_TIME):
         """
         Récupère tous les éléments correspondant à un sélecteur CSS complexe.
@@ -301,10 +355,12 @@ class TestRunner:
             elements = WebDriverWait(driver, wait_time).until(
                 EC.presence_of_all_elements_located((By.CLASS_NAME, class_name))
             )
+            
             return elements
         except Exception as e:
             print(f"{self.RED}Erreur lors de la recherche des éléments de classe '{class_name}': {str(e)}{self.RESET}")
             return []
+        
     def find_element_by_class(self, driver, class_name, wait_time = WAITED_TIME):
         """
         Récupère le premier élément ayant une classe spécifique.
@@ -342,7 +398,9 @@ class TestRunner:
             for element in elements:
                 if text_content in element.text:
                     return element
+                
             print(f"{self.RED}Aucun élément trouvé avec le texte '{text_content}'{self.RESET}")
+            
             return None
         except Exception as e:
             print(f"{self.RED}Erreur lors de la recherche par texte '{text_content}': {str(e)}{self.RESET}")
@@ -364,7 +422,9 @@ class TestRunner:
                 href = element.get_attribute('href')
                 if href and href_content in href:
                     return element
+                
             print(f"{self.RED}Aucun élément trouvé avec href contenant '{href_content}'{self.RESET}")
+            
             return None
         except Exception as e:
             print(f"{self.RED}Erreur lors de la recherche par href '{href_content}': {str(e)}{self.RESET}")
