@@ -5,7 +5,7 @@ namespace App\Models;
 use \PDO;
 use \PDOException;
 use \Exception;
-use App\Core\forms_manip;
+use App\Core\FormsManip;
 use App\Repository\Candidate;
 
 /**
@@ -68,7 +68,7 @@ abstract class Model {
             );
 
         } catch (Exception $e) {
-            forms_manip::error_alert([
+            FormsManip::error_alert([
                 'title' => "Erreur lors de l'enregistrement des logs",
                 'msg' => $e
             ]);
@@ -104,12 +104,12 @@ abstract class Model {
                 return $result;
     
         } catch(Exception $e){
-            forms_manip::error_alert([
+            FormsManip::error_alert([
                 'title' => 'Erreur lors de la requête à la base de données',
                 'msg' => $e
             ]);
         } catch(PDOException $e){
-            forms_manip::error_alert([
+            FormsManip::error_alert([
                 'title' => 'Erreur lors de la requête à la base de données',
                 'msg' => $e
             ]);
@@ -132,7 +132,7 @@ abstract class Model {
             return $lastId;
     
         } catch(PDOException $e){
-            forms_manip::error_alert([
+            FormsManip::error_alert([
                 'title' => 'Erreur lors de la requête à la base de données',
                 'msg' => $e
             ]);

@@ -1,7 +1,7 @@
 <div>
     <header>
-        <h2><?php echo strtoupper($items['user']['name']) . " " . forms_manip::nameFormat($items['user']['firstname']); ?></h2>
-        <p><?php echo forms_manip::nameFormat($items['user']['titled_role']);?></p>
+        <h2><?php echo strtoupper($items['user']['name']) . " " . FormsManip::nameFormat($items['user']['firstname']); ?></h2>
+        <p><?php echo FormsManip::nameFormat($items['user']['titled_role']);?></p>
     </header>
     <content>
     <div class="container">

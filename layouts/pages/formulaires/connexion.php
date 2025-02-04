@@ -8,6 +8,7 @@
         <img src="<?= APP_PATH ?>/layouts/assets/img/logo/blue/arrow.svg" alt="">
     </button>
 </section>
+
 <form method="post" action="<?= APP_PATH ?>/login/set">
     <h3>Connexion à l'application</h3>
     <section>
@@ -27,9 +28,11 @@
         </button>
     </div>
 </form>
+
 <script>
     document.getElementById('action-button').addEventListener('click', function() {
         document.querySelector('section').classList.add('hided');
+        
         setTimeout(function() {
             document.querySelector('form').classList.add('showed');
         }, 600);

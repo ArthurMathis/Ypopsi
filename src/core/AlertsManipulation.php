@@ -8,7 +8,7 @@ use \Exception;
  * Class manipulating notification
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
-class alert_manipulation {
+class AlertsManipulation {
     /**
      * Private static method deleting line break in a string
      *
@@ -28,7 +28,7 @@ class alert_manipulation {
     static public function alert(array $infos) {
         if($infos['msg'] instanceof Exception)
             $infos['msg'] = $infos['msg']->getMessage();
-        $infos['msg'] = alert_manipulation::removeNewLines($infos['msg']);
+        $infos['msg'] = AlertsManipulation::removeNewLines($infos['msg']);
 
         if(!isset($infos['title']))    
             $infos['title'] =  "Une erreur est survenue...";

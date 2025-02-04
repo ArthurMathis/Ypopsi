@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Model;
-use App\Core\forms_manip;
+use App\Core\FormsManip;
 use App\Repository\User;
 use App\Exceptions\UserExceptions;
 use App\Exceptions\LoginExceptions;
@@ -51,9 +51,9 @@ class LoginModel extends Model {
             session_destroy();
     
         } catch(LoginExceptions $e) {
-            forms_manip::error_alert([
+            FormsManip::error_alert([
                 'msg'       => $e,
-                'direction' => 'index.php'
+                'direction' => APP_PATH
             ]);
         }
     }
@@ -96,7 +96,7 @@ class LoginModel extends Model {
                     }
 
                 } catch(UserExceptions $e) {
-                    forms_manip::error_alert([
+                    FormsManip::error_alert([
                         'title' => "Erreur d'identification",
                         'msg'   => $e
                     ]);

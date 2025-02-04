@@ -3,13 +3,14 @@
 namespace App\Core;
 
 use \InvalidArgumentException;
+use App\Core\AlertsManipulation;
 
 
 /**
  * Class manipulating the data submitted by a form
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
-class forms_manip {
+class FormsManip {
     /**
      * Public static methoc generating one error notification
      *
@@ -22,7 +23,7 @@ class forms_manip {
         if(!isset($infos['button']))
             $infos['button'] =  true;
 
-        alert_manipulation::alert($infos);
+        AlertsManipulation::alert($infos);
     }
     
     /**
