@@ -80,7 +80,7 @@ CREATE TABLE Candidates (
   Name VARCHAR(64) NOT NULL,
   Firstname VARCHAR(64) NOT NULL,
   Gender BOOLEAN NOT NULL,
-  Email VARCHAR(64) UNIQUE,
+  Email VARCHAR(64),
   Phone VARCHAR(14),
   Address VARCHAR(256),
   City VARCHAR(64),

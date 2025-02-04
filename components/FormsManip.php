@@ -27,8 +27,6 @@ class forms_manip {
      * @return String The formated string
      */
     public static function nameFormat(string $str): String {
-        if(!is_string($str))
-            throw new Exception("Le formatage d'un nom doit se réaliser sur une chaine de caractères. ");
         return ucwords(strtolower(preg_replace('/[^A-Za-z0-9\- ]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $str))));
     }
 

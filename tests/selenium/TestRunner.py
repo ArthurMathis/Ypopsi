@@ -1,5 +1,7 @@
 import sys
 import time
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -60,8 +62,9 @@ class TestRunner:
     GREEN = '\033[92m'
     RESET = '\033[0m'
 
-    SLEEP_TIME  = 0.7
-    WAITED_TIME = 15
+    SLEEP_TIME   = 0.7
+    LOADING_TIME = 2
+    WAITED_TIME  = 15
 
     ## App DATA ##
     APP_URL      = "http://localhost/ypopsi"
@@ -101,9 +104,27 @@ class TestRunner:
         }
     ]  
 
-    APP_CANIDATES_HELPS_1   = ["Bouse d'étude"]
-    APP_CANIDATES_HELPS_2   = ["Bouse d'étude", "Prime de cooptation"]
+    APP_CANIDATES_HELPS_1   = [ "Bouse d'étude" ]
+    APP_CANIDATES_HELPS_2   = [ "Bouse d'étude", "Prime de cooptation" ]
     APP_CANDIDATES_COOPTEUR = APP_CANDIDATES_NAME_1 + APP_CANDIDATES_FISTNAME_1
+    
+    APP_CANDIDATES_JOB_1 = "AGENT ADMINISTRATIF"
+    APP_CANDIDATES_JOB_2 = "AIDE-SOIGNANT"
+    
+    APP_CANDIDATES_SERVICE_1 = "ACCUEIL INSCRIP ADMISSION"
+    APP_CANDIDATES_SERVICE_2 = "MEDECINE"
+    
+    APP_CANDIDATES_ESTABLISHMENT_1 = "Clinique du Diaconat Roosevelt"
+    APP_CANDIDATES_ESTABLISHMENT_2 = "Clinique du Diaconat Colmar"
+    
+    APP_CANDIDATES_CONTRACT_TYPE_1 = "CDI"
+    APP_CANDIDATES_CONTRACT_TYPE_2 = "CDD"
+    
+    APP_CANDIDATES_SOURCE_1 = "Téléphone"
+    APP_CANDIDATES_SOURCE_2 = "Appel Médical"
+    
+    APP_CANDIDATES_AVAILABILITY_1 = datetime.now().strftime("%d/%m/%Y")
+    APP_CANDIDATES_AVAILABILITY_2 = (datetime.now() + relativedelta(months=2)).strftime("%d/%m/%Y")
 
     ## WRONG DATA ##
     APP_CANDIDATES_WRONG_NAME_1  = 1
@@ -422,6 +443,6 @@ class TestRunner:
             if(value):
                 input.send_keys(value)
             else:
-                raise Exception("Aucune valeur à saisir.")
+                raise Exception("Aucune valeur à saisir")
         else:
-            raise Exception("Aucun input fourni.")
+            raise Exception("Aucun input fourni")

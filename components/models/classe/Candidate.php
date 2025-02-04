@@ -2,7 +2,7 @@
 
 require_once('Moment.php');
 
-define('NAME_REGEX', '/[\d]|[^\p{L}\p{M}\s\']/u');
+define('NAME_REGEX', '/[^a-zA-Z\s-]/u');
 define('PHONE_REGEX', '/^(\d{2}\.){4}\d{2}$/');
 
 /**
