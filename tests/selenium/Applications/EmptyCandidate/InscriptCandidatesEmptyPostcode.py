@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import Select
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TestApplications import TestApplications
 
-class InscriptCandidatesWrongName3(TestApplications):
+class InscriptCandidatesEmptyPostcode(TestApplications):
     """
     Classe de test pour l'inscription d'un candidat.
     Hérite de TestApplications pour utiliser ses fonctionnalités.
@@ -20,7 +20,7 @@ class InscriptCandidatesWrongName3(TestApplications):
         """
         Initialise le test avec un nom descriptif
         """
-        super().__init__("Test d'inscription d'un candidat - nom invalide 3")
+        super().__init__("Test d'inscription d'un candidat - code postal vide")
 
     def run(self):
         """
@@ -38,16 +38,15 @@ class InscriptCandidatesWrongName3(TestApplications):
             # * CANDIDATE * #
             self.setCandidateForm(
                 driver, 
-                self.APP_CANDIDATES_WRONG_NAME_3, 
+                self.APP_CANDIDATES_NAME_1, 
                 self.APP_CANDIDATES_FIRSTNAME_1,
                 self.APP_CANDIDATES_EMAIL_1, 
                 self.APP_CANDIDATES_PHONE_1, 
                 self.APP_CANDIDATES_ADDRESS, 
                 self.APP_CANDIDATES_CITY, 
-                self.APP_CANDIDATES_POSTCODE
+                None
             )
             
-            time.sleep(15)
             time.sleep(self.LOADING_TIME)
             
             inscript_url = "http://localhost/ypopsi/index.php?applications=input-applications"
@@ -66,5 +65,5 @@ class InscriptCandidatesWrongName3(TestApplications):
                 driver.quit()
 
 if __name__ == "__main__":
-    test = InscriptCandidatesWrongName3()
+    test = InscriptCandidatesEmptyPostcode()
     test.run()

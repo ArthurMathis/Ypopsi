@@ -5,11 +5,12 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from InscriptCandidates import InscriptCandidates
 
-from WrongCity.run_wrong_city_test import RunWrongCityTest
-from WrongFirstname.run_wrong_firstname_test import RunWrongFirstnameTest
-from WrongPostcode.run_wrong_postcode_test import RunWrongPostcodeTest
-from WrongEmail.run_wrong_email_test import RunWrongEmailTest
 from WrongName.run_wrong_name_test import RunWrongNameTest
+from WrongFirstname.run_wrong_firstname_test import RunWrongFirstnameTest
+from WrongEmail.run_wrong_email_test import RunWrongEmailTest
+from WrongPhone.run_wrong_phone_test import RunWrongPhoneTest
+from WrongCity.run_wrong_city_test import RunWrongCityTest
+from WrongPostcode.run_wrong_postcode_test import RunWrongPostcodeTest
 
 ROSE = '\033[38;2;255;192;203m'
 GREEN = '\033[92m'
@@ -21,13 +22,17 @@ def main():
     test = InscriptCandidates()
     test.run()
     
-    RunWrongCityTest()    
-    RunWrongFirstnameTest()
-    RunWrongPostcodeTest()
-    RunWrongEmailTest()
+    print(ROSE + "Mauvais candidat" + RESET)
     RunWrongNameTest()
+    RunWrongFirstnameTest()
+    RunWrongEmailTest()
+    RunWrongPhoneTest()
+    RunWrongCityTest()    
+    RunWrongPostcodeTest()
     
-    print(GREEN + "Procédure Validée" + RESET)
+    print(ROSE + "Candidat vide" + RESET)
+    
+    print(GREEN + "===== Bloc de tests Validé =====" + RESET)
 
 if __name__ == "__main__":
     main()
