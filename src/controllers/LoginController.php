@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Repository\UserRepository;
 
 /**
  * Class representing the login controller
@@ -12,11 +13,10 @@ class LoginController extends Controller {
     /**
      * Class constructor
      */
-    public function __construct() {
-        $this->loadModel('LoginModel');
-        $this->loadView('LoginView');
-    }
+    public function __construct() { $this->loadView('LoginView'); }
 
+
+    // * DISPLAY * //
     /**
      * Public method returning the login form
      *
@@ -24,13 +24,19 @@ class LoginController extends Controller {
      */
     function display() { return $this->View->getContent(); }
 
+
+    // * LOG * //
     /**
      * Public method connecting one user to the application
      *
      * @return Void
      */
     public function login() {
-        $this->Model->connectUser($_POST['identifiant'], $_POST['motdepasse']);
+        (new UserRepository())->connectUser(
+            $_POST['identifiant'], 
+            $_POST['motdepasse']
+        );
+
         header("Location: " . APP_PATH);
     }
     /**
@@ -39,7 +45,12 @@ class LoginController extends Controller {
      * @return Void
      */
     public function logout() {
-        $this->Model->deconnectUser();
+        if(isset($_SESSION['user']) && !empty($_SESSION['user']->getId())) {
+            // Todo : logs
+        } 
+
+        session_destroy();
+
         header("Location: " . APP_PATH . "/login/get");
     }
 }

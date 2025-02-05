@@ -13,7 +13,6 @@ class HomeController extends Controller {
      *  Class constructor
      */
     public function __construct() {
-        $this->loadModel('HomeModel');
         $this->loadView('HomeView');
     }
 
@@ -22,7 +21,7 @@ class HomeController extends Controller {
      * @return Void
      */
     public function display() {
-        $items = $this->Model->getNonTraiteeCandidatures();
+        $items = (new )->getNonTraiteeCandidatures();
         $dashboard = [
             [
                 'titre' => 'Propositions en Attente', 

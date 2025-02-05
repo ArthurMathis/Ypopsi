@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-define('MODELS_NAMESPACE', "App\\Models\\");
 define('VIEWS_NAMESPACE', "App\\Views\\");
 
 /**
@@ -11,23 +10,10 @@ define('VIEWS_NAMESPACE', "App\\Views\\");
  */
 abstract class Controller {
     /**
-     * Protected attributes containing the controller's model
-     */
-    protected $Model;
-    /**
      * Protected attributes containing the controller's view
      */
     protected $View;
-
-    /**
-     * Public method downloading the model into the controller
-     * 
-     * @param String $model The name of model file
-     */
-    public function loadModel(string $model) {
-        $model = MODELS_NAMESPACE.$model;
-        $this->Model = new $model();
-    }
+    
     /**
      * Public method downloading the view into the controller
      * 
