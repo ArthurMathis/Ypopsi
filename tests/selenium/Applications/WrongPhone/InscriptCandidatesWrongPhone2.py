@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import Select
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TestApplications import TestApplications
 
-class InscriptCandidatesWrongFirstname3(TestApplications):
+class InscriptCandidatesWrongPhone2(TestApplications):
     """
     Classe de test pour l'inscription d'un candidat.
     Hérite de TestApplications pour utiliser ses fonctionnalités.
@@ -20,7 +20,7 @@ class InscriptCandidatesWrongFirstname3(TestApplications):
         """
         Initialise le test avec un nom descriptif
         """
-        super().__init__("Test d'inscription d'un candidat - prénom invalide 3")
+        super().__init__("Test d'inscription d'un candidat - téléphone invalide 2")
 
     def run(self):
         """
@@ -39,35 +39,23 @@ class InscriptCandidatesWrongFirstname3(TestApplications):
             self.setCandidateForm(
                 driver, 
                 self.APP_CANDIDATES_NAME_1, 
-                self.APP_CANDIDATES_WRONG_NAME_3,
+                self.APP_CANDIDATES_FIRSTNAME_1,
                 self.APP_CANDIDATES_EMAIL_1, 
-                self.APP_CANDIDATES_PHONE_1, 
+                self.APP_CANDIDATES_WRONG_PHONE_2, 
                 self.APP_CANDIDATES_ADDRESS, 
                 self.APP_CANDIDATES_CITY, 
                 self.APP_CANDIDATES_POSTCODE
             )
             
-            # * APPLICATION * #   
-            self.setApplicationForm(
-                driver, 
-                self.APP_CANDIDATES_JOB_1, 
-                self.APP_CANDIDATES_SERVICE_1,
-                self.APP_CANDIDATES_ESTABLISHMENT_1, 
-                self.APP_CANDIDATES_CONTRACT_TYPE_1, 
-                self.APP_CANDIDATES_AVAILABILITY_1, 
-                self.APP_CANDIDATES_SOURCE_1
-            )    
-            
             time.sleep(self.LOADING_TIME)
             
-            # On vérifie l'URL
-            expected_url_pattern = r"http://localhost/ypopsi/index.php\?candidates=\d+"
+            inscript_url = "http://localhost/ypopsi/index.php?applications=input-applications"
             current_url = driver.current_url
-
-            if re.match(expected_url_pattern, current_url):
-                self.writeError(e, True)
+            
+            if inscript_url == current_url:
+                self.writeError(Exception("Url incorrect"), True)
             else:
-                raise Exception(f"L'URL est incorrecte : {current_url}")
+                raise Exception()
             
         except Exception as e:
             self.writeSuccess()
@@ -77,5 +65,5 @@ class InscriptCandidatesWrongFirstname3(TestApplications):
                 driver.quit()
 
 if __name__ == "__main__":
-    test = InscriptCandidatesWrongFirstname3()
+    test = InscriptCandidatesWrongPhone2()
     test.run()

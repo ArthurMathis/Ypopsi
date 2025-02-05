@@ -10,12 +10,12 @@ class HomeView extends View {
     /**
      * Public function returning the home page 
      * 
-     * @param Array $items The array containing the applications data 
+     * @param Array/Null $items The array containing the applications data 
      * @param Array $dashboard The array containing the dashboard data 
      * @return Void
      */
-    public function displayHomePage(array $items, array $dashboard) {
-        $this->generateCommonHeader('Ypopsi - Welcome', [PAGES_STYLES.DS.'index.css']);
+    public function displayHomePage(?array $items, array $dashboard) {
+        $this->generateCommonHeader('Ypopsi - Welcome', [ PAGES_STYLES.DS.'index.css' ]);
         $this->generateMenu(false, HOME);
 
         echo "<content>";

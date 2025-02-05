@@ -11,11 +11,11 @@ class CandidaturesView extends View {
      * Public method returning the application's HTML page 
      *
      * @param String $title The HTML page's title
-     * @param Array $items The array containing the list of applications
+     * @param Array/Null $items The array containing the list of applications
      * @param Int/Null $nb_items_max
      * @return View HTML Page
      */
-    public function getContent(string $title, array $items, ?int $nb_items_max = null) {
+    public function getContent(string $title, ?array $items, ?int $nb_items_max = null) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'applications.css']);
         $this->generateMenu(false, APPLICATIONS);
 

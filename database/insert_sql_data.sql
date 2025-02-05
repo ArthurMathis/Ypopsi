@@ -907,3 +907,6 @@ INSERT INTO Users (Identifier, Name, Firstname, Email, Password, Key_Roles, Key_
 	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$yzrbeGm3vrj.dxvhA4bBeeHcCTAoBlAWcu4JgP8fEcprH.ktSce/6', 1, 1, 0),
     ('test.py', 'Test', 'Python', 'python.test@diaconat-mulhouse.fr', '$2y$10$GtAGXml1IVvuaNdfeBkSpO0ND9/qgRgrr.oojXEwe0XF.vX/sUdFO', 2, 1, 1)
 ; 
+
+INSERT INTO `contracts` (`StartDate`, `EndDate`, `PropositionDate`, `SignatureDate`, `ResignationDate`, `IsRefused`, `Salary`, `HourlyRate`, `NightWork`, `WeekEndWork`, `Key_Candidates`, `Key_Jobs`, `Key_Services`, `Key_Establishments`, `Key_Types_of_contracts`) 
+VALUES ('2024-09-09', '2026-09-08', '2024-09-02', '2024-09-09', NULL, 0, NULL, 35, 0, 0, 48, 114, 87, 1, 4);=
