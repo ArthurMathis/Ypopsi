@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import Select
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TestApplications import TestApplications
 
-class InscriptCandidates(TestApplications):
+class InscriptCandidatesWithoutEmail(TestApplications):
     """
     Classe de test pour l'inscription d'un candidat.
     Hérite de TestApplications pour utiliser ses fonctionnalités.
@@ -20,7 +20,7 @@ class InscriptCandidates(TestApplications):
         """
         Initialise le test avec un nom descriptif
         """
-        super().__init__("Test d'inscription d'un candidat")
+        super().__init__("Test d'inscription d'un candidat - sans email")
 
     def run(self):
         """
@@ -40,7 +40,7 @@ class InscriptCandidates(TestApplications):
                 driver, 
                 self.APP_CANDIDATES_NAME_1, 
                 self.APP_CANDIDATES_FIRSTNAME_1,
-                self.APP_CANDIDATES_EMAIL_1, 
+                None, 
                 self.APP_CANDIDATES_PHONE_1, 
                 self.APP_CANDIDATES_ADDRESS, 
                 self.APP_CANDIDATES_CITY, 
@@ -67,7 +67,7 @@ class InscriptCandidates(TestApplications):
             if re.match(expected_url_pattern, current_url):
                 self.writeSuccess()
             else:
-                raise Exception(f"L'URL est incorrecte : {current_url}")
+                raise Exception(f"L'URL est incorrect : {current_url}")
             
         except Exception as e:
             self.writeError(e, True)
@@ -77,5 +77,5 @@ class InscriptCandidates(TestApplications):
                 driver.quit()
 
 if __name__ == "__main__":
-    test = InscriptCandidates()
+    test = InscriptCandidatesWithoutEmail()
     test.run()
