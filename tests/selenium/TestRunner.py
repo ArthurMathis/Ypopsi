@@ -187,6 +187,13 @@ class TestRunner:
     APP_CANDIDATES_WRONG_POSTCODE_1 = -1
     APP_CANDIDATES_WRONG_POSTCODE_2 = "123456789"
     APP_CANDIDATES_WRONG_POSTCODE_3 = "Salut à tous !"
+    
+    APP_CANIDIDATES_WRONG_QUALIFICATION_1 = { "titled": "Salut bg", "date"  : "07/09/1992" }
+    APP_CANIDIDATES_WRONG_QUALIFICATION_2 = { "titled": "2", "date"  : "04/09/1995" }
+    APP_CANIDIDATES_WRONG_QUALIFICATION_3 = { "titled": "Baccalauréat général", "date"  : "09/1992" }
+    APP_CANIDIDATES_WRONG_QUALIFICATION_4 = { "titled": "Baccalauréat général", "date"  : "02/05/09/1992" }
+    APP_CANIDIDATES_WRONG_QUALIFICATION_5 = { "titled": "Baccalauréat général", "date"  : "205/09/1992" }
+    APP_CANIDIDATES_WRONG_QUALIFICATION_6 = { "titled": "Baccalauréat général", "date"  : "30/02/1992" }
 
     ## MENU BUTTON ##
     APP_APPLICATIONS_FILTER_MENU_BUTTON_ID = "filtrer-bouton"
