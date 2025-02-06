@@ -6,6 +6,7 @@ use App\Controllers\Controller;
 use App\Repository\UserRepository;
 use App\Models\Action;
 use App\Repository\ActionRepository;
+use App\Repository\RoleRepository;
 
 /**
  * Class representing the login controller
@@ -38,6 +39,10 @@ class LoginController extends Controller {
             $_POST['identifiant'], 
             $_POST['motdepasse']
         );
+
+        $role_repo = new RoleRepository();
+        $role = $role_repo->searchById($_SESSION['user']->getRole());
+        $_SESSION['user_titled_role'] = $role->getTitled();
 
         $act_repo = new ActionRepository();                                         // Building the action
         $type = $act_repo->searchType("Connexion")['Id'];

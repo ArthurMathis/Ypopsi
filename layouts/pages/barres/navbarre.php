@@ -3,7 +3,7 @@
         <article>
             <img src="layouts/assets/img/white-logo.svg" alt="">
             <div>
-                <p><?= $_SESSION['user_identifier']; ?></p>
+                <p><?= $_SESSION['user']->getIdentifier(); ?></p>
                 <p><?= $_SESSION['user_titled_role']; ?></p>
             </div>
         </article>
@@ -37,7 +37,7 @@
         <article>
             <img src="layouts/assets/img/main-logo.svg" alt="">
             <div>
-                <p><?= $_SESSION['user_identifier']; ?></p>
+                <p><?= $_SESSION['user']->getIdentifier(); ?></p>
                 <p><?= $_SESSION['user_titled_role']; ?></p>
             </div>
         </article>
