@@ -24,7 +24,7 @@ class User {
      * @throws UserExceptions If any attribut is invalid
      */
     public function __construct(
-        protected int $id, 
+        protected ?int $id, 
         protected string $identifier, 
         protected string $name, 
         protected string $firstname, 
@@ -86,7 +86,7 @@ class User {
      * 
      * @return int
      */
-    public function getId(): int { return $this->id; }
+    public function getId(): ?int { return $this->id; }
     /**
      * Public methog returning the user's identifier
      * 
@@ -158,8 +158,8 @@ class User {
             $data['Email'], 
             $data['Password'], 
             $data['PasswordTemp'], 
-            $data['Key_Role'],
-            $data['Key_Establishment']
+            $data['Key_Roles'],
+            $data['Key_Establishments']
         );
     }
 

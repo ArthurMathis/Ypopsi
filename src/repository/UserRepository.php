@@ -29,25 +29,19 @@ class UserRepository extends Repository {
         $params = [ ":identifier" => $identifier ];
         $users = $this->get_request($request, $params, false, true);
 
+        $users = array_map(function($user_data) {
+            return User::fromArray($user_data);
+        }, $users);
+        
         $i = 0;
         $find = false;
         $size = $users != null ? count($users) : 0;    
 
         while($i < $size && !$find) {
-            if($users[$i]["Identifier"] == $identifier && password_verify($password, $users[$i]["Password"])) {
+            if($users[$i]->getIdentifier() == $identifier && password_verify($password, $users[$i]->getPassword())) {
                 $find = true;
 
-                $_SESSION['user'] = new User(
-                    $users[$i]['Id'],
-                    $users[$i]['Identifier'], 
-                    $users[$i]['Name'],
-                    $users[$i]['Firstname'],
-                    $users[$i]['Email'], 
-                    $password, 
-                    $users[$i]['PasswordTemp'],
-                    $users[$i]['Key_Roles'],
-                    $users[$i]['Key_Establishments']
-                );
+                $_SESSION['user'] = $users[$i];
 
                 break;
             } 
