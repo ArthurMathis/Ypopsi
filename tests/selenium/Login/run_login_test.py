@@ -2,11 +2,18 @@ import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from Connect import TestConnect
 from Disconnect import TestDisconnect
 from ConnectFailure import TestConnectFailure
 
-def main():
+ROSE = '\033[38;2;255;192;203m'
+GREEN = '\033[92m'
+RESET = '\033[0m'
+
+def RunLoginTest():
+    print(ROSE + "===== Procédure de test du login =====" + RESET)
+    
     test = TestConnect()
     test.run()
 
@@ -15,6 +22,8 @@ def main():
 
     test = TestDisconnect()
     test.run()
+    
+    print(GREEN + "===== Bloc de tests Validé =====" + RESET)
 
 if __name__ == "__main__":
-    main()
+    RunLoginTest()
