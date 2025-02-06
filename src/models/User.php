@@ -137,13 +137,13 @@ class User {
     public function getEstablishment(): int { return $this->establishment_key; }
 
     
-    // * STATIC * //
+    // * CONVERT * //
     /**
      * Public static method creating and retuning a new user from the data array
      * 
      * @param Array $data The data array
-     * @throws UserExceptions If the data array is invalid
-     * @return User
+     * @throws UserExceptions If any piece of information is invalid
+     * @return User The user
      */
     static public function fromArray(array $data): ?User {
         if(empty($data)) {
@@ -170,15 +170,15 @@ class User {
      */
     public function toArray(): array {
         return [
-            'id'            => $this->getId(),
-            'identifier'    => $this->getIdentifier(),
-            'name'          => $this->getName(),
-            'firstname'     => $this->getFirstname(),
-            'email'         => $this->getEmail(),
-            'password'      => $this->getPassword(),
-            'password_temp' => $this->getPasswordTemp(),
-            'role'          => $this->getRole(),
-            'key'           => $this->getEstablishment()
+            'id'             => $this->getId(),
+            'identifier'     => $this->getIdentifier(),
+            'name'           => $this->getName(),
+            'firstname'      => $this->getFirstname(),
+            'email'          => $this->getEmail(),
+            'password'       => $this->getPassword(),
+            'password_temp'  => $this->getPasswordTemp(),
+            'role'           => $this->getRole(),
+            'establishement' => $this->getEstablishment()
         ];
     }
 }

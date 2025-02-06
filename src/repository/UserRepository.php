@@ -7,6 +7,16 @@ use App\Models\User;
 use App\Exceptions\LoginExceptions;
 
 class UserRepository extends Repository {
+    // * GET * //
+    
+
+    // * INSERT * //
+
+
+    // * UPDATE * //
+
+
+    // * OTHER * // 
     /**
      * Public method connecting the user to the application 
      * 
@@ -18,8 +28,6 @@ class UserRepository extends Repository {
         $request = "SELECT * FROM Users WHERE Identifier = :identifier";
         $params = [ ":identifier" => $identifier ];
         $users = $this->get_request($request, $params, false, true);
-
-        var_dump($users);
 
         $i = 0;
         $find = false;

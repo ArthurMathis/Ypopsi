@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\Controller;
 use App\Repository\UserRepository;
+use App\Models\Action;
+use App\Repository\ActionRepository;
 
 /**
  * Class representing the login controller
@@ -32,10 +34,17 @@ class LoginController extends Controller {
      * @return Void
      */
     public function login() {
-        (new UserRepository())->connectUser(
+        (new UserRepository())->connectUser(                                        // Connecting the user
             $_POST['identifiant'], 
             $_POST['motdepasse']
         );
+
+        $act_repo = new ActionRepository();                                         // Building the action
+        $type = $act_repo->searchType("Connexion")['Id'];
+
+        $act = Action::createAction($_SESSION['user']->getId(), $type);
+
+        $act_repo->writeLogs($act);                                                 // Writing the logs                
 
         header("Location: " . APP_PATH);
     }
