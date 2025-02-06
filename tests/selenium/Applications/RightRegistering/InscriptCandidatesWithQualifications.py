@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import Select
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TestApplications import TestApplications
 
-class InscriptCandidatesFull(TestApplications):
+class InscriptCandidatesWithQualifications(TestApplications):
     """
     Classe de test pour l'inscription d'un candidat.
     Hérite de TestApplications pour utiliser ses fonctionnalités.
@@ -20,7 +20,7 @@ class InscriptCandidatesFull(TestApplications):
         """
         Initialise le test avec un nom descriptif
         """
-        super().__init__("Test d'inscription d'un candidat - champs remplis")
+        super().__init__("Test d'inscription d'un candidat - avec qualifications")
 
     def run(self):
         """
@@ -36,6 +36,8 @@ class InscriptCandidatesFull(TestApplications):
             self.clickOnCandidatesInput(driver) 
             
             # * CANDIDATE * #
+            self.setQualifications(driver, self.APP_CANIDIDATES_QUALIFICATIONS)
+            
             self.setCandidateForm(
                 driver, 
                 self.APP_CANDIDATES_NAME_1, 
@@ -77,5 +79,5 @@ class InscriptCandidatesFull(TestApplications):
                 driver.quit()
 
 if __name__ == "__main__":
-    test = InscriptCandidatesFull()
+    test = InscriptCandidatesWithQualifications()
     test.run()

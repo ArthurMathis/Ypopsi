@@ -9,6 +9,10 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TestRunner import TestRunner
 
 class TestApplications(TestRunner):
+    QUALIFICATIONS_SECTION_ID = "diplome-section"
+    QUALIFICATIONS_INPUT_STR_ID = "diplome-"
+    QUALIFICATIONS_INPUT_DATE_ID = "diplomeDate-"
+    
     def start(self):
         """
         Méthode préparant l'application pour le test
@@ -60,7 +64,8 @@ class TestApplications(TestRunner):
             
         except Exception as e:
             print(f"Erreur lors de la recherche des éléments '.action_button': {str(e)}")
-            
+        
+    # * FORM * #
     def setCandidateForm(self, driver, name, firstanme, email = None, phone = None, address = None, city = None, postcode = None):
         i_name = self.find_element_by_id(driver, "nom")
         self.setInputValue(i_name, name)
@@ -119,3 +124,27 @@ class TestApplications(TestRunner):
         
         second_submit = self.find_element_by_css(driver, "button[type='submit']")
         second_submit.click()
+        
+    def setQualifications(self, driver, qualifications: list):
+        section = self.find_element_by_id(driver, self.QUALIFICATIONS_SECTION_ID)
+        button = self.find_element_by_class(section, "form_button")
+        
+        for index, obj in enumerate(qualifications):
+            button.click()
+            
+            time.sleep(self.SLEEP_TIME)
+            
+            valid_btn = self.find_element_by_class(driver, "swal2-confirm")
+            valid_btn.click()
+            
+            time.sleep(self.SLEEP_TIME)
+            
+            str_id = self.QUALIFICATIONS_INPUT_STR_ID + str(index + 1)
+            str_input = self.find_element_by_id(section, str_id)
+            
+            self.setInputValue(str_input, obj['titled'])
+            
+            date_id = self.QUALIFICATIONS_INPUT_DATE_ID + str(index + 1)
+            date_input = self.find_element_by_id(driver, date_id)
+            
+            self.setInputValue(date_input, obj['date'])

@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from InscriptCandidatesFull import InscriptCandidatesFull
+from InscriptCandidates import InscriptCandidates
 from InscriptCandidatesWithoutAddress import InscriptCandidatesWithoutAddress
 from InscriptCandidatesWithoutAddressEmailPhone import InscriptCandidatesWithoutAddressEmailPhone
 from InscriptCandidatesWithoutEmail import InscriptCandidatesWithoutEmail
@@ -13,6 +13,8 @@ from InscriptCandidatesWithoutPhone import InscriptCandidatesWithoutPhone
 from InscriptCandidatesWithoutService import InscriptCandidatesWithoutService
 from InscriptCandidatesWithoutServiceTypeContract import InscriptCandidatesWithoutServiceTypeContract
 from InscriptCandidatesWithoutTypeContract import InscriptCandidatesWithoutTypeContract
+from InscriptCandidatesWithQualification import InscriptCandidatesWithQualification
+from InscriptCandidatesWithQualifications import InscriptCandidatesWithQualifications
 
 VIOLET = '\033[38;2;128;0;128m'
 GREEN = '\033[92m'
@@ -21,8 +23,7 @@ RESET = '\033[0m'
 def RunRightRegisteringTest():
     print(VIOLET + "===== Procédure de test d'inscription =====" + RESET)
     
-    
-    test = InscriptCandidatesFull()
+    test = InscriptCandidates()
     test.run()
     
     test = InscriptCandidatesWithoutAddress()
@@ -47,6 +48,12 @@ def RunRightRegisteringTest():
     test.run()
     
     test = InscriptCandidatesWithoutTypeContract()
+    test.run()
+    
+    test = InscriptCandidatesWithQualification()
+    test.run()
+    
+    test = InscriptCandidatesWithQualifications()
     test.run()
     
     print(GREEN + "Procédure Validée" + RESET)
