@@ -55,7 +55,12 @@ class LoginController extends Controller {
      */
     public function logout() {
         if(isset($_SESSION['user']) && !empty($_SESSION['user']->getId())) {
-            // Todo : logs
+            $act_repo = new ActionRepository();                                         // Building the action
+            $type = $act_repo->searchType("Déconnexion")['Id'];
+
+            $act = Action::createAction($_SESSION['user']->getId(), $type);
+            
+            $act_repo->writeLogs($act);                                                 // Writing the logs   
         } 
 
         session_destroy();
