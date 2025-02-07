@@ -49,7 +49,7 @@
                 <?php if(isset($direction)): ?>
                     window.location.href = '<?= $direction; ?>' + links[index];
                 <?php else: ?>
-                    window.location.href = 'index.php?candidates=' + links[index];
+                    window.location.href = "<?= APP_PATH ?>/candidates/"  + links[index];
                 <?php endif; ?>
             });
         });

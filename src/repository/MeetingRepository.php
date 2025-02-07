@@ -4,6 +4,10 @@ namespace App\Repository;
 
 use App\Repository\Repository;
 
+/**
+ * Class representing a repository of meetings 
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class MeetingRepository extends Repository {
     /**
      * Public method searching the metting list

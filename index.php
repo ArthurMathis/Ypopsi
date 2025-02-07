@@ -8,6 +8,7 @@ use App\Core\FormsManip;
 use App\Core\AlertsManipulation;
 use App\Controllers\HomeController;
 use App\Controllers\LoginController;
+use App\Controllers\CandidatesController;
 
 test_process();
 env_start();
@@ -33,6 +34,12 @@ try {
     $router->addRoute('/login/get', LoginController::class, "display");
     $router->addRoute('/login/set', LoginController::class, "login");
     $router->addRoute('/logout', LoginController::class, "logout");
+
+    // todo :: /applications
+
+    $router->addRoute("/candidates", CandidatesController::class, "display");
+    $router->addRoute("/candidates/{id}", CandidatesController::class, "displayCandidate");
+    $router->addRoute("/candidates/meetings/input", CandidatesController::class, "displayInputMeeting");
     
     $router->dispatch($user_connected);
 } catch(Exception $e) {

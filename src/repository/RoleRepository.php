@@ -5,6 +5,10 @@ namespace App\Repository;
 use App\Repository\Repository;
 use App\Models\Role;
 
+/**
+ * Class representing a repository of roles 
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class RoleRepository extends Repository {
     /**
      * Public method searching a role by its primary key

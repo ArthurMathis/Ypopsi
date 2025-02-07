@@ -4,6 +4,10 @@ namespace App\Repository;
 
 use App\Repository\Repository;
 
+/**
+ * Class representing a repository of contracts 
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class ContractRepository extends Repository {
     /**
      * Public method searching the contract proposals in the database

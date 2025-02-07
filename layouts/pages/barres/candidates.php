@@ -1,6 +1,6 @@
 <nav class="options_barre">
     <article>
-        <a class="action_button reverse_color" href="index.php?applications=home">Liste des candidatures</a>
+        <a class="action_button reverse_color" href="<?= APP_PATH ?>/applications">Liste des candidatures</a>
     </article>
     <article>
         <p class="action_button" id="filtrer-button">Filtrer</p>
@@ -58,8 +58,8 @@
 </div>
 <script type='module'>
     // * IMPORTS * //
-    import { List } from "./layouts/assets/scripts/modules/List.mjs"; 
-    import { listManipulation } from "./layouts/assets/scripts/modules/ListManipulation.mjs";
+    import { List } from "./layouts/scripts/modules/List.mjs"; 
+    import { listManipulation } from "./layouts/scripts/modules/ListManipulation.mjs";
 
     document.addEventListener('DOMContentLoaded', () => {
         // * LISTE DYNAMIQUE * //

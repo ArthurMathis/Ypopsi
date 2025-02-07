@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 /**
- * Class representing one candidate's Exception
+ * Class representing one login's Exception
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class LoginExceptions extends \Exception {

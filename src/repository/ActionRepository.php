@@ -5,6 +5,10 @@ namespace App\Repository;
 use App\Repository\Repository;
 use App\Models\Action;
 
+/**
+ * Class representing a repository of actions 
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class ActionRepository extends Repository {
     // * LOGS * //
     /**

@@ -4,6 +4,10 @@ namespace App\Repository;
 
 use App\Repository\Repository;
 
+/**
+ * Class representing a repository of applications 
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class ApplicationRepository extends Repository {
     /**
      * Public method searching the unprocessed application in the database
