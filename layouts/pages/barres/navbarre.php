@@ -8,10 +8,10 @@
             </div>
         </article>
         <section class="action-section">
-            <a href="index.php" class="LignesHover <?php if($currentPage == HOME) echo 'selected'?>">
+            <a href="<?= APP_PATH ?>" class="LignesHover <?php if($currentPage == HOME) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/white/home.svg" alt="page d'accueil">
             </a>
-            <a href="index.php?applications=home" class="LignesHover <?php if($currentPage == APPLICATIONS) echo 'selected'?>">
+            <a href="<?= APP_PATH ?>/applications" class="LignesHover <?php if($currentPage == APPLICATIONS) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/white/applications.svg" alt="liste des candidatures">
             </a>
             <!--
@@ -42,10 +42,10 @@
             </div>
         </article>
         <section class="action-section">
-            <a href="index.php" class="LignesHover <?php if($currentPage == HOME) echo 'selected'?>">
+            <a href="<?= APP_PATH ?>" class="LignesHover <?php if($currentPage == HOME) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/home.svg" alt="page d'accueil">
             </a>
-            <a href="index.php?applications=home" class="LignesHover <?php if($currentPage == APPLICATIONS) echo 'selected'?>">
+            <a href="<?= APP_PATH ?>/applications" class="LignesHover <?php if($currentPage == APPLICATIONS) echo 'selected'?>">
                 <img src="layouts/assets/img/logo/applications.svg" alt="liste des candidatures">
             </a>
             <!--

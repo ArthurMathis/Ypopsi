@@ -8,6 +8,7 @@ use App\Core\FormsManip;
 use App\Core\AlertsManipulation;
 use App\Controllers\HomeController;
 use App\Controllers\LoginController;
+use App\Controllers\ApplicationsController;
 use App\Controllers\CandidatesController;
 
 test_process();
@@ -29,13 +30,13 @@ if($user_connected && $_SESSION['user']->getPasswordTemp()) {
 try {
     $router = new Router();
     
-    $router->addRoute('/', HomeController::class, "display");
+    $router->addRoute("/", HomeController::class, "display");
 
-    $router->addRoute('/login/get', LoginController::class, "display");
-    $router->addRoute('/login/set', LoginController::class, "login");
-    $router->addRoute('/logout', LoginController::class, "logout");
+    $router->addRoute("/login/get", LoginController::class, "display");
+    $router->addRoute("/login/set", LoginController::class, "login");
+    $router->addRoute("/logout", LoginController::class, "logout");
 
-    // todo :: /applications
+    $router->addRoute("/applications",  ApplicationsController::class, "display");
 
     $router->addRoute("/candidates", CandidatesController::class, "display");
     $router->addRoute("/candidates/{id}", CandidatesController::class, "displayCandidate");

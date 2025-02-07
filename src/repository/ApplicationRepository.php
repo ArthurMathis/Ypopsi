@@ -10,6 +10,37 @@ use App\Repository\Repository;
  */
 class ApplicationRepository extends Repository {
     /**
+     * Public function returning the liste of applications
+     *
+     * @return ?array The liste of applications
+     */
+    public function getCandidatures(): ?array { 
+        return $this->get_request(
+            "SELECT 
+            c.id AS Cle,
+            CASE 
+                WHEN app.IsAccepted = 1 THEN 'Acceptée'
+                WHEN app.IsRefused = 1 THEN 'Refusée'
+                ELSE 'Non-traitée' 
+            END AS Statut,
+            c.name AS Nom, 
+            c.firstname AS Prenom, 
+            j.titled AS Poste,
+            c.email AS Email, 
+            c.phone AS Telephone, 
+            s.titled AS Source, 
+            c.availability AS Disponibilite
+
+            FROM Applications as app
+            INNER JOIN Candidates as c on app.Key_Candidates = c.Id
+            INNER JOin Jobs as j on app.Key_Jobs = j.Id
+            INNER JOIN sources as s on app.Key_Sources = s.Id
+            
+            ORDER BY app.Id DESC"
+        );
+    }
+
+    /**
      * Public method searching the unprocessed application in the database
      *
      * @return Void

@@ -1,8 +1,8 @@
 <nav class="options_barre">
     <article>
-        <a class="action_button reverse_color" href="index.php?candidates=home">Liste des candidats</a>
-        <?php if($_SESSION['user_role'] != INVITE): ?>
-            <a class="action_button" href="index.php?applications=input-candidates">Nouvelle candidature</a>
+        <a class="action_button reverse_color" href="<?= APP_PATH ?>/candidates">Liste des candidats</a>
+        <?php if($_SESSION['user']->getRole() != INVITE): ?>
+            <a class="action_button" href="<?= APP_PATH ?>/candidates/input">Nouvelle candidature</a>
         <?php endif ?>    
     </article>
     <article>
@@ -84,8 +84,8 @@
 </div>
 <script type='module'>
     // * IMPORTS * //
-    import { List } from "./layouts/assets/scripts/modules/List.mjs"; 
-    import { listManipulation } from "./layouts/assets/scripts/modules/ListManipulation.mjs";
+    import { List } from "./layouts/scripts/modules/List.mjs"; 
+    import { listManipulation } from "./layouts/scripts/modules/ListManipulation.mjs";
 
     document.addEventListener('DOMContentLoaded', () => {
         // * LISTE DYNAMIQUE * //

@@ -34,8 +34,8 @@
     </main>
 </div>
 <script type='module'>
-    import { List } from "./layouts/assets/scripts/modules/List.mjs"; 
-    import { listManipulation } from "./layouts/assets/scripts/modules/ListManipulation.mjs";
+    import { List } from "./layouts/scripts/modules/List.mjs"; 
+    import { listManipulation } from "./layouts/scripts/modules/ListManipulation.mjs";
 
     document.addEventListener('DOMContentLoaded', () => {
         // * LISTE DYNAMIQUE * //

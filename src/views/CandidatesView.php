@@ -5,6 +5,10 @@ namespace App\Views;
 use App\Views\View;
 use App\Core\FormsManip;
 
+/**
+ * Class representing the candidates' pages view
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class CandidatesView extends View {
     // * DISPLAY * //
     /**

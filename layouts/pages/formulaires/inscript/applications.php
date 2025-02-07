@@ -51,8 +51,8 @@
 </form>
 
 <script type="module">
-    import { AutoComplete } from "./layouts/assets/scripts/modules/AutoComplete.mjs"; 
-    import { formManipulation } from "./layouts/assets/scripts/modules/FormManipulation.mjs";
+    import { AutoComplete } from "./layouts/scripts/modules/AutoComplete.mjs"; 
+    import { formManipulation } from "./layouts/scripts/modules/FormManipulation.mjs";
 
     new AutoComplete(document.getElementById('poste'), AutoComplete.arrayToSuggestions(<?= json_encode($job) ?>));
     new AutoComplete(document.getElementById('service'), AutoComplete.arrayToSuggestions(<?= json_encode($service) ?>));
