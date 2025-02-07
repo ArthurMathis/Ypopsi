@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Repository\ApplicationRepository;
+use App\Repository\ContractRepository;
 use App\Repository\MeetingRepository;
 
 /**
@@ -20,12 +22,12 @@ class HomeController extends Controller {
      * @return Void
      */
     public function display() {
-        // $items = (new )->getNonTraiteeCandidatures();
-        $items = [];
+        $items = (new ApplicationRepository())->getNonTraiteeCandidatures();
+
         $dashboard = [
             [
                 'titre' => 'Propositions en Attente', 
-                'content' => [], // $this->Model->getReductProposition(), 
+                'content' => (new ContractRepository())->getReductProposition(), 
                 'nb_item_max' => 6,
                 'link_add' => null,
                 'link_consult' => null
