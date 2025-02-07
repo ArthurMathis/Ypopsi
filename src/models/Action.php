@@ -9,13 +9,38 @@ use App\Exceptions\ActionExceptions;
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
 class Action {
+    /**
+     * Constructor class
+     * 
+     * @param ?int $id The primary key of the action
+     * @param ?string $description The description of action 
+     * @param ?string $date The date of action 
+     * @param ?int $user_key The primary key of the user 
+     * @param ?int $type_key The primary key of the type of the action 
+     * @throws ActionExceptions If any piece of information is invalid
+     */
     public function __construct(
         protected ?int $id, 
         protected ?string $description, 
         protected ?string $date, 
         protected int $user_key,
         protected int $type_key 
-    ) {}
+    ) {
+        // The primary key
+        if(!empty($id) && $id <= 0) {
+            throw new ActionExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
+        }
+
+        // The user's primary key
+        if($user_key <= 0) {
+            throw new ActionExceptions("Clé primaire de l'utilisateur invalide : {$user_key}. Clé attendue strictement positive.");
+        }
+        
+        // The candidate's primary key
+        if($type_key <= 0) {
+            throw new ActionExceptions("Clé primaire du type d'action invalide : {$type_key}. Clé attendue strictement positive.");
+        }
+    }
 
     /**
      * Public static method building a new action
@@ -25,7 +50,7 @@ class Action {
      * @param string $description The description of the action
      * @return Action The new action
      */
-    public static function createAction(int $user, int $type, ?string $description = null) {
+    public static function createAction(int $user, int $type, ?string $description = null): Action {
         return new Action(
             null, 
             $description,
@@ -67,6 +92,7 @@ class Action {
      */
     public function getType(): int { return $this->type_key; }
 
+
     // * CONVERT * //
     /**
      * Public static method returning an Action building from an array
@@ -94,7 +120,7 @@ class Action {
      * 
      * @return array The array that contains the pieces of information
      */
-    public function toArray(): ?array {
+    public function toArray(): array {
         return [
             'id'          => $this->getId(),
             'description' => $this->getDescription(),

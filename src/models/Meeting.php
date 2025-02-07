@@ -12,22 +12,35 @@ class Meeting {
     /**
      * Constructor class
      * 
-     * @param int $id The primary key of the meeting
+     * @param ?int $id The primary key of the meeting
      * @param string $date The date of the meeting
      * @param ?string $description The description of the meeting
      * @param int $user_key The primary key of the user
      * @param int $candidate_key The primary key of the candidate
+     * @throws MeetingExceptions If any piece of information is invalid
      */
     public function __construct(
-        protected int $id, 
+        protected ?int $id, 
         protected string $date, 
         protected ?string $description, 
         protected int $user_key, 
-        protected int $candidate_key
+        protected int $candidate_key,
+        protected int $establishment_key
     ) {
-        $this->setId($id);
-        $this->setUser($user_key);
-        $this->setCandidate($candidate_key);
+        // The primary key
+        if($id <= 0) {
+            throw new MeetingExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
+        }
+
+        // The user's primary key
+        if($user_key <= 0) {
+            throw new MeetingExceptions("Clé primaire de l'utilisateur invalide : {$user_key}. Clé attendue strictement positive.");
+        }
+        
+        // The candidate's primary key
+        if($candidate_key <= 0) {
+            throw new MeetingExceptions("Clé primaire du candidat invalide : {$candidate_key}. Clé attendue strictement positive.");
+        }
     }
 
     // * GET * //
@@ -36,7 +49,7 @@ class Meeting {
      * 
      * @return int
      */
-    public function getId(): int { return $this->id; }
+    public function getId(): ?int { return $this->id; }
     /**
      * Public method returning the date of the meeting
      * 
@@ -62,47 +75,43 @@ class Meeting {
      */
     public function getCandidate(): Int { return $this->candidate_key; }
 
-    // * SET * //
+
+    // * CONVERT * //
     /**
-     * Protected method setting the id of the meeting 
+     * Public static method creating and retuning a new meeting from the data array
      * 
-     * @param int $id The new id
-     * @throws MeetingExceptions If $id is invalid
-     * @return void
+     * @param array $data The data array
+     * @throws MeetingExceptions If any piece of information is invalid
+     * @return Meeting The meeting
      */
-    protected function setId(int $id) {
-        if($id <= 0) {
-            throw new MeetingExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
+    static public function fromArray(array $data): ?Meeting {
+        if(empty($data)) {
+            throw new MeetingExceptions("Erreur lors de la génération de l'utilisateur. Tableau de données absent.");
         }
 
-        $this->id = $id;
+        return new Meeting(
+            $data['Id'],
+            $data['Date'], 
+            $data['Description'], 
+            $data['Key_Users'], 
+            $data['Key_Candidates'], 
+            $data['Key_Establishemnts']
+        );
     }
-    /**
-     * Protected method setting the primary key of the user 
-     * 
-     * @param int $user_key The new primary key
-     * @throws MeetingExceptions If $id is invalid
-     * @return void
-     */
-    protected function setUser(int $user_key) {
-        if($user_key <= 0) {
-            throw new MeetingExceptions("Clé primaire de l'utilisateur invalide : {$user_key}. Clé attendue strictement positive.");
-        }
 
-        $this->user_key = $user_key;
-    }
     /**
-     * Protected method setting the primary key of the candidate 
+     * Public method returning the user's data in a array
      * 
-     * @param int $candidate_key The new primary key
-     * @throws MeetingExceptions If $id is invalid
-     * @return void
+     * @return array The array that contains the data of the meeting
      */
-    protected function setCandidate(int $candidate_key) {
-        if($candidate_key <= 0) {
-            throw new MeetingExceptions("Clé primaire du candidat invalide : {$candidate_key}. Clé attendue strictement positive.");
-        }
-
-        $this->candidate_key = $candidate_key;
+    public function toArray(): array {
+        return [
+            'id'            => $this->getId(),
+            'date'          => $this->getDate(),
+            'description'   => $this->getDescription(),
+            'user'          => $this->getUser(),
+            'candidate'     => $this->getCandidate(),
+            'establishment' => $this->getDescription()
+        ];
     }
 }

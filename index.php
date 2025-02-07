@@ -5,12 +5,25 @@ require_once('define.php');
 
 use App\Core\Router;
 use App\Core\FormsManip;
+use App\Core\AlertsManipulation;
 use App\Controllers\HomeController;
 use App\Controllers\LoginController;
 
 test_process();
 env_start();
 session_start();
+
+$user_connected = !(!isset($_SESSION['user']) || empty($_SESSION['user']) || empty($_SESSION['user']->getId())); 
+
+if($user_connected && $_SESSION['user']->getPasswordTemp()) {
+    AlertsManipulation::alert([
+        'title' => "Information importante",
+        'msg' => "<p>Bienvenue, c'est votre première connexion !</p><p>Vous devez <b>modifier votre mot de passe</b> au plus vite.</p>",
+        'icon' => 'warning',
+        'direction' => APP_PATH  . "/preferences/user/edit_password", 
+        'button' => true
+    ]);
+}
 
 try {
     $router = new Router();
@@ -21,7 +34,7 @@ try {
     $router->addRoute('/login/set', LoginController::class, "login");
     $router->addRoute('/logout', LoginController::class, "logout");
     
-    $router->dispatch();
+    $router->dispatch($user_connected);
 } catch(Exception $e) {
     FormsManip::error_alert([
         'msg'       => $e,

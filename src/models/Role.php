@@ -10,7 +10,7 @@ use App\Exceptions\RoleExceptions;
  */
 class Role {
     /**
-     * Class constructor
+     * Constructor class
      * 
      * @param int $id The primary key of the role
      * @param string $titled The title of the role

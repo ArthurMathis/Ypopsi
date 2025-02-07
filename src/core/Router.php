@@ -52,7 +52,7 @@ class Router {
      * @throws RouterExceptions If the controller or the method are not declared
      * @return Void
      */
-    public function dispatch() {
+    public function dispatch(bool $user_connected) {
         $path = $_SERVER['REQUEST_URI'] ?? '/';                                     // Récupération de l'url 
         $path = str_replace($this->app_path, '', $path);                            // Suppression de l'adresse de base
         $path = strtok($path, '?');                                                 // Suppression des paramètres GET
@@ -63,8 +63,12 @@ class Router {
             $path = '/';
         }
 
+        if(!$user_connected && $path != "/login/get") {
+            header("location: " . APP_PATH . "/login/get");
+        }
+
         foreach($this->routes as $route => $target) {
-            $routePattern = preg_replace('/\{[^\}]+\}/', '([^/]+)', $route);
+            $routePattern = preg_replace("/\{[^\}]+\}/", "([^/]+)", $route);
 
             if (preg_match('#^' . $routePattern . '$#', $path, $matches)) {         // Test de la correspondance
                 array_shift($matches);
@@ -81,7 +85,7 @@ class Router {
                 }
             }
         }
-        
+
         throw new RouterExceptions("Erreur 404 - url introuvable");
     }
-} 
+}

@@ -5,12 +5,12 @@ namespace App\Models;
 use App\Exceptions\UserExceptions;
 
 /**
- *  Class representing one user
+ * Class representing one user
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class User {
     /**
-     * Class constructor
+     * Constructor class
      * 
      * @param int $id The user's primary key
      * @param string $identifier The user's identifier
@@ -30,7 +30,7 @@ class User {
         protected string $firstname, 
         protected string $email, 
         protected string $password, 
-        protected bool $password_temp, 
+        protected ?bool $password_temp, 
         protected int $role_key, 
         protected int $establishment_key
     ) {
@@ -39,29 +39,28 @@ class User {
             throw new UserExceptions("La clé primaire doit être positive. La valeur : {$id} est invalide.");
         }
 
-        // todo : vérifier la présence de caractères spéciaux (regex)
-        // identifier
+        // identifier // todo : regex
         if(empty($identifier)) {
             throw new UserExceptions("L'identifiant d'un utilisateur ne peut être vide.");
         } elseif(is_numeric($identifier)) {
             throw new UserExceptions("L'identifiant d'un utilisateur doit être une chaine de caractères. La valeur : {$identifier} est invalide.");
         }
 
-        // name 
+        // name  // todo : regex
         if(empty($name)) {
             throw new UserExceptions("Le nom d'un utilisateur ne peut être vide.");
         } elseif(is_numeric($name)) {
             throw new UserExceptions("Le nom d'un utilisateur doit être une chaine de caractères. La valeur : {$name} est invalide.");
         }
 
-        // firstname
+        // firstname // todo : regex
         if(empty($firstname)) {
             throw new UserExceptions("Le prénom d'un utilisateur ne peut être vide.");
         } elseif(is_numeric($firstname)) {
             throw new UserExceptions("Le prénom d'un utilisateur doit être une chaine de caractères. La valeur : {$firstname} est invalide.");
         }
 
-        // email
+        // email // todo : regex
         if(empty($email)) {
             throw new UserExceptions("L'email d'un utilisateur ne peut être vide !");
         } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -122,7 +121,7 @@ class User {
      * 
      * @return bool
      */
-    public function getPasswordTemp(): bool { return $this->password_temp; }
+    public function getPasswordTemp(): ?bool { return $this->password_temp; }
     /**
      * Public methog returning the user's role
      * 
@@ -141,7 +140,7 @@ class User {
     /**
      * Public static method creating and retuning a new user from the data array
      * 
-     * @param Array $data The data array
+     * @param array $data The data array
      * @throws UserExceptions If any piece of information is invalid
      * @return User The user
      */
@@ -166,7 +165,7 @@ class User {
     /**
      * Public method returning the user's data in a array
      * 
-     * @return Array
+     * @return array
      */
     public function toArray(): array {
         return [

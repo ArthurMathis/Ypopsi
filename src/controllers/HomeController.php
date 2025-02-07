@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Repository\MeetingRepository;
 
 /**
  * Class representing the home page controller
@@ -31,7 +32,7 @@ class HomeController extends Controller {
             ],
             [
                 'titre' => 'Rendez-vous programmés', 
-                'content' => [], // $this->Model->getReductRendezVous(), 
+                'content' => (new MeetingRepository())->getReductRendezVous(), 
                 'nb_item_max' => 6,
                 'link_add' => null,
                 'link_consult' => null

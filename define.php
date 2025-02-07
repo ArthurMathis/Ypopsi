@@ -2,7 +2,7 @@
 
 $app_path = getenv('APP_PATH');
 if(empty($app_path)) {
-    $app_path = "/Ypopsi";
+    $app_path = "/ypopsi";
 }
 
 define('APP_PATH', $app_path);
