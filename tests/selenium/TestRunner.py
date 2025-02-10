@@ -148,8 +148,8 @@ class TestRunner:
         }
     ]  
 
-    APP_CANIDATES_HELPS_1   = [ "Bouse d'étude" ]
-    APP_CANIDATES_HELPS_2   = [ "Bouse d'étude", "Prime de cooptation" ]
+    APP_CANDIDATES_HELP     = [ "Bourse d'étude" ]
+    APP_CANDIDATES_HELPS    = [ "Bourse d'étude", "Prime de cooptation" ]
     APP_CANDIDATES_COOPTEUR = APP_CANDIDATES_NAME_1 + APP_CANDIDATES_FIRSTNAME_1
     
     APP_CANDIDATES_JOB_1 = "AGENT ADMINISTRATIF"

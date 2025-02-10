@@ -4,6 +4,7 @@ import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TestRunner import TestRunner
@@ -12,6 +13,12 @@ class TestApplications(TestRunner):
     QUALIFICATIONS_SECTION_ID = "diplome-section"
     QUALIFICATIONS_INPUT_STR_ID = "diplome-"
     QUALIFICATIONS_INPUT_DATE_ID = "diplomeDate-"
+    
+    NOTIFICATION_CONFIRM_BUTTON_ID = "swal2-confirm"
+    
+    HELPS_SECTION_ID = "aide-section"
+    HELPS_INPUT_NAME = "aide[]"
+    
     
     def start(self):
         """
@@ -96,6 +103,10 @@ class TestApplications(TestRunner):
         submit = self.find_element_by_css(driver, "button[type='submit']")
         submit.click()
         
+    def valideNotification(self, driver): 
+        valid_btn = self.find_element_by_class(driver, "swal2-confirm")
+        valid_btn.click()
+        
     def setApplicationForm(self, driver, job, service, establishment, contract_type, availability, source):
         i_poste = self.find_element_by_id(driver, "poste")
         self.setInputValue(i_poste, job)
@@ -134,8 +145,7 @@ class TestApplications(TestRunner):
             
             time.sleep(self.SLEEP_TIME)
             
-            valid_btn = self.find_element_by_class(driver, "swal2-confirm")
-            valid_btn.click()
+            self.valideNotification(driver)
             
             time.sleep(self.SLEEP_TIME)
             
@@ -148,3 +158,31 @@ class TestApplications(TestRunner):
             date_input = self.find_element_by_id(driver, date_id)
             
             self.setInputValue(date_input, obj['date'])
+            
+    def setHelps(self, driver, helps: list):
+        print("On renseigne les aides : " + str(helps))
+        
+        section = self.find_element_by_id(driver, self.HELPS_SECTION_ID)
+        if not section:
+            raise Exception(f"Section with ID '{self.HELPS_SECTION_ID}' not found")
+
+        button = self.find_element_by_class(section, "form_button")
+        if not button:
+            raise Exception("Button with class 'form_button' not found in helps section")
+        
+        for obj in helps:
+            button.click()
+            
+            time.sleep(self.SLEEP_TIME)
+            
+            self.valideNotification(driver)
+            
+            time.sleep(self.SLEEP_TIME)
+            
+        helps_input = self.find_element_by_css(section, "select")
+        
+        print("Liste des inputs : " + str(helps_input))
+        
+        for index, obj in enumerate(helps):
+            select_element = Select(helps_input)
+            select_element.select_by_visible_text(helps[index])           
