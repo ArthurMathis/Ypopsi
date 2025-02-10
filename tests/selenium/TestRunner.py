@@ -479,7 +479,6 @@ class TestRunner:
         else:
             raise Exception("erreur lors de la navigation vers la page candidatures - aucun bouton détecté")
             
-            
     def goToPreferencesPage(self, driver):
         """
         Navigue vers la section Applications en trouvant le bon lien dans la navbar
@@ -490,7 +489,7 @@ class TestRunner:
         if applications_link:
             applications_link.click()
             
-    def clickOnSearch(self, driver):
+    def clickOnFilter(self, driver):
         """
         Méthode ouvrant la panneaux de filtres
         """

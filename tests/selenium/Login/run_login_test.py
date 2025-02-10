@@ -1,13 +1,14 @@
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(current_dir)
 
 from Connect import TestConnect
 from Disconnect import TestDisconnect
 from ConnectFailure import TestConnectFailure
 
-ROSE = '\033[38;2;255;192;203m'
+ROSE  = '\033[38;2;255;192;203m'
 GREEN = '\033[92m'
 RESET = '\033[0m'
 
