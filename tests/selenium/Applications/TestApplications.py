@@ -19,6 +19,7 @@ class TestApplications(TestRunner):
     HELPS_SECTION_ID = "aide-section"
     HELPS_INPUT_NAME = "aide[]"
     
+    VISIT_ID = "visite_medicale"
     
     def start(self):
         """
@@ -160,8 +161,6 @@ class TestApplications(TestRunner):
             self.setInputValue(date_input, obj['date'])
             
     def setHelps(self, driver, helps: list):
-        print("On renseigne les aides : " + str(helps))
-        
         section = self.find_element_by_id(driver, self.HELPS_SECTION_ID)
         if not section:
             raise Exception(f"Section with ID '{self.HELPS_SECTION_ID}' not found")
@@ -186,3 +185,8 @@ class TestApplications(TestRunner):
         for index, obj in enumerate(helps):
             select_element = Select(helps_input)
             select_element.select_by_visible_text(helps[index])           
+        
+    def setVisit(self, driver, date: str): 
+        input = self.find_element_by_id(driver, self.VISIT_ID)
+        
+        self.setInputValue(input, date)

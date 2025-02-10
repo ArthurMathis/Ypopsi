@@ -3,6 +3,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'RightRegistering'))
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'RightWith'))
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'WrongName'))
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'WrongFirstname'))
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'WrongEmail'))
@@ -12,6 +13,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'WrongP
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'EmptyCandidate'))
 
 from RightRegistering.run_right_registering_test import RunRightRegisteringTest
+from RightWith.run_right_with_test import RunRightWithTest
 from WrongName.run_wrong_name_test import RunWrongNameTest
 from WrongFirstname.run_wrong_firstname_test import RunWrongFirstnameTest
 from WrongEmail.run_wrong_email_test import RunWrongEmailTest
@@ -29,6 +31,7 @@ def RunApplicationsTest():
 
     print(ROSE + "Candidats justes" + RESET)
     RunRightRegisteringTest()
+    RunRightWithTest()
     
     print(ROSE + "Candidats faux" + RESET)
     RunWrongNameTest()

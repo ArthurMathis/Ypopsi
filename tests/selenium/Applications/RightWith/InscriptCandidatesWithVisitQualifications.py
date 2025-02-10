@@ -3,6 +3,9 @@ import sys
 import time
 import re
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
@@ -10,7 +13,7 @@ from selenium.webdriver.support.ui import Select
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from TestApplications import TestApplications
 
-class InscriptCandidatesWithQualifications(TestApplications):
+class InscriptCandidatesWithVisitQualifications(TestApplications):
     """
     Classe de test pour l'inscription d'un candidat.
     Hérite de TestApplications pour utiliser ses fonctionnalités.
@@ -20,7 +23,7 @@ class InscriptCandidatesWithQualifications(TestApplications):
         """
         Initialise le test avec un nom descriptif
         """
-        super().__init__("Test d'inscription d'un candidat - avec qualifications")
+        super().__init__("Test d'inscription d'un candidat - avec un visite et des diplomes")
 
     def run(self):
         """
@@ -36,6 +39,10 @@ class InscriptCandidatesWithQualifications(TestApplications):
             self.clickOnCandidatesInput(driver) 
             
             # * CANDIDATE * #
+            date = (datetime.now() + relativedelta(months=2)).strftime("%d/%m/%Y")
+            
+            self.setVisit(driver, date)
+            
             self.setQualifications(driver, self.APP_CANIDIDATES_QUALIFICATIONS)
             
             self.setCandidateForm(
@@ -79,5 +86,5 @@ class InscriptCandidatesWithQualifications(TestApplications):
                 driver.quit()
 
 if __name__ == "__main__":
-    test = InscriptCandidatesWithQualifications()
+    test = InscriptCandidatesWithVisitQualifications()
     test.run()

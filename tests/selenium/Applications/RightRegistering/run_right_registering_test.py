@@ -13,8 +13,6 @@ from InscriptCandidatesWithoutPhone import InscriptCandidatesWithoutPhone
 from InscriptCandidatesWithoutService import InscriptCandidatesWithoutService
 from InscriptCandidatesWithoutServiceTypeContract import InscriptCandidatesWithoutServiceTypeContract
 from InscriptCandidatesWithoutTypeContract import InscriptCandidatesWithoutTypeContract
-from InscriptCandidatesWithQualification import InscriptCandidatesWithQualification
-from InscriptCandidatesWithQualifications import InscriptCandidatesWithQualifications
 
 VIOLET = '\033[38;2;128;0;128m'
 GREEN = '\033[92m'
@@ -48,12 +46,6 @@ def RunRightRegisteringTest():
     test.run()
     
     test = InscriptCandidatesWithoutTypeContract()
-    test.run()
-    
-    test = InscriptCandidatesWithQualification()
-    test.run()
-    
-    test = InscriptCandidatesWithQualifications()
     test.run()
     
     print(GREEN + "Procédure Validée" + RESET)

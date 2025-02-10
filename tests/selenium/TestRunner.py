@@ -137,6 +137,12 @@ class TestRunner:
     APP_CANDIDATES_CITY     = "Prairie-Land"
     APP_CANDIDATES_POSTCODE = "78451"
 
+    APP_CANIDIDATES_QUALIFICATION = [
+        {
+            "titled": "Baccalauréat général",
+            "date"  : "07/09/1992"
+        }
+    ]
     APP_CANIDIDATES_QUALIFICATIONS = [
         {
             "titled": "Baccalauréat général",
