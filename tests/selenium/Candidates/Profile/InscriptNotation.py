@@ -2,30 +2,23 @@ import os
 import sys
 import time
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 parent_dir = os.path.dirname(current_dir)
 
+sys.path.append(current_dir)
 sys.path.append(parent_dir)
 
-from TestRunner import TestRunner
+from TestCandidates import TestCandidates
 
-class TestConnect(TestRunner):
-    """
-    Classe de test pour l'inscription à un entretien.
-    Hérite de TestRunner pour utiliser ses fonctionnalités.
-    """
-    
+class InscriptNotation(TestCandidates):
     # * CONSTRUCTOR * #
     def __init__(self):
         """
         Initialise le test avec un nom descriptif
         """
-        super().__init__("Test de connexion à l'application")
-
+        super().__init__("Test d'inscription d'une notation (candidat nécessaire)")
+        
     # * RUN * #
     def run(self):
         """
@@ -35,19 +28,22 @@ class TestConnect(TestRunner):
         driver = None
         
         try:
-            driver = self.connect()
-            time.sleep(self.SLEEP_TIME)
+            driver = self.start()
+            
+            not_btn = self.find_element_by_css(driver, ".action_button.reverse_color.add_button")
+            not_btn.click()
+            
+            
             
             self.writeSuccess()
             
         except Exception as e:
-            self.writeFailure()
-            print(f"Erreur : {str(e)}")
+            self.writeError(e)
             
         finally:
             if driver:
                 driver.quit()
-
+                
 if __name__ == "__main__":
-    test = TestConnect()
+    test = InscriptNotation()
     test.run()

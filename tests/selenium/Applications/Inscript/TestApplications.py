@@ -6,7 +6,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+inscript_dir    = current_dir
+aplications_dir = os.path.dirname(inscript_dir)
+parent_dir      = os.path.dirname(aplications_dir)
+
+sys.path.append(parent_dir)
 
 from TestRunner import TestRunner
 

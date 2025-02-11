@@ -1,5 +1,7 @@
 import sys
 import time
+import re 
+
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -490,7 +492,8 @@ class TestRunner:
         
         if applications_link:
             applications_link.click()
-            
+        
+    ## LIST MENU ##
     def clickOnFilter(self, driver):
         """
         Méthode ouvrant la panneaux de filtres
@@ -507,6 +510,15 @@ class TestRunner:
         if(element):
             element.click()
             
+    ## LIST MANIP ##
+    def clickOnFirstElmt(self, driver):
+        item = self.find_element_by_css(driver, ".liste_items .table-wrapper table tbody tr")
+        
+        html_content = item.get_attribute('outerHTML')
+        print(html_content)
+        
+        item.click()
+        
     # * INPUT * #
     def setInputValue(self, input, value):
         """
@@ -521,3 +533,14 @@ class TestRunner:
                 raise Exception("Aucune valeur à saisir")
         else:
             raise Exception("Aucun input fourni")
+        
+    # * OTHERS * #
+    def linkTest(self, driver, expected_url_pattern: str): 
+        current_url = driver.current_url
+        
+        print(f"URL actuelle : {current_url}")
+        
+        print(f"URL recherchée : {expected_url_pattern}")
+        
+        if not re.match(expected_url_pattern, current_url):
+            raise Exception(f"L'URL est incorrect : {current_url}")

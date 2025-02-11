@@ -6,8 +6,13 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from TestRunner import TestApplications
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+parent_dir = os.path.dirname(current_dir)
+
+sys.path.append(parent_dir)
+
+from Applications.Inscript.TestApplications import TestApplications
 
 class TestCandidates(TestApplications):
     """
@@ -27,7 +32,14 @@ class TestCandidates(TestApplications):
         """
         driver = self.connect()
 
-        self.goToApplicationsPage()
+        self.goToApplicationsPage(driver)
+        
         time.sleep(self.SLEEP_TIME)
-
+        
+        self.clickOnFirstElmt(driver)
+        
+        time.sleep(self.SLEEP_TIME)  
+        
+        self.linkTest(driver, r"http://localhost/ypopsi/index.php\?candidates=\d+")
+        
         return driver
