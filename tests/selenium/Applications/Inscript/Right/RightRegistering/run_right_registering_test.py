@@ -2,7 +2,17 @@ import os
 import sys
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
+
+right_registering_dir = current_dir
+right_dir             = os.path.dirname(right_registering_dir)
+inscript_dir          = os.path.dirname(right_dir)
+applications_dir      = os.path.dirname(inscript_dir)
+parent_dir            = os.path.dirname(applications_dir)
+
 sys.path.append(current_dir)
+sys.path.append(parent_dir)
+
+from define import write
 
 from InscriptCandidates import InscriptCandidates
 from InscriptCandidatesWithoutAddress import InscriptCandidatesWithoutAddress
@@ -19,7 +29,7 @@ GREEN = '\033[92m'
 RESET = '\033[0m'
 
 def RunRightRegisteringTest():
-    print(VIOLET + "===== Procédure de test d'inscription =====" + RESET)
+    write("Procédure de test d'inscription", VIOLET, "subtitle")
     
     test = InscriptCandidates()
     test.run()
@@ -48,7 +58,7 @@ def RunRightRegisteringTest():
     test = InscriptCandidatesWithoutTypeContract()
     test.run()
     
-    print(GREEN + "Procédure Validée" + RESET)
+    write("Procédure Validée", GREEN, "valid")
     
 if __name__ == "__main__":
     RunRightRegisteringTest()

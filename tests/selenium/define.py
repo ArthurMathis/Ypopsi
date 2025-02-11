@@ -5,7 +5,7 @@ TYPE = [
     "text"
 ]
 
-def write(str_msg: str, color: str, type: str = "text", size: int = 120, margin_size: int = 15, line_char: str = "=", color_reset: str = "\033[0m"):
+def write(str_msg: str, color: str, type: str = "text", size: int = 160, margin_size: int = 15, line_char: str = "=", color_reset: str = "\033[0m"):
     margin = 2 * (margin_size + 1)
     padding = (size - margin - len(str_msg)) // 2  
     

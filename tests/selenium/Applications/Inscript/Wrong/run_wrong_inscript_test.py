@@ -2,7 +2,16 @@ import os
 import sys
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
+
+wrong_dir        = current_dir
+inscript_dir     = os.path.dirname(wrong_dir)
+applications_dir = os.path.dirname(inscript_dir)
+parent_dir       = os.path.dirname(applications_dir)
+
 sys.path.append(current_dir)
+sys.path.append(parent_dir)
+
+from define import write
 
 from WrongName.run_wrong_name_test import RunWrongNameTest
 from WrongFirstname.run_wrong_firstname_test import RunWrongFirstnameTest
@@ -17,9 +26,9 @@ GREEN = '\033[92m'
 RESET = '\033[0m'
 
 def RunWrongInscriptTest():
-    print(ROSE + "===== Procédure de test de l'inscription des candidats - Détection des erreurs =====" + RESET)
+    write("Procédure de test de l'inscription des candidats - Détection des erreurs", ROSE, "subtitle")
 
-    print(ROSE + "Candidats faux" + RESET)
+    write("Candidats faux", ROSE)
     RunWrongNameTest()
     RunWrongFirstnameTest()
     RunWrongEmailTest()
@@ -27,10 +36,10 @@ def RunWrongInscriptTest():
     RunWrongCityTest()    
     RunWrongPostcodeTest()
     
-    print(ROSE + "Candidats vides" + RESET)
+    write("Candidats vides", ROSE)
     RunEmptyCandidateTest()
     
-    print(GREEN + "===== Bloc de tests Validé =====" + RESET)
+    write("Bloc de tests Validé", GREEN, "valid")
 
 if __name__ == "__main__":
     RunWrongInscriptTest()

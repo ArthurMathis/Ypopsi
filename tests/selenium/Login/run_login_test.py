@@ -2,7 +2,14 @@ import os
 import sys
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
+
+list_dir        = current_dir
+parent_dir = os.path.dirname(list_dir)
+
 sys.path.append(current_dir)
+sys.path.append(parent_dir)
+
+from define import write
 
 from Connect import TestConnect
 from Disconnect import TestDisconnect
@@ -13,7 +20,7 @@ GREEN = '\033[92m'
 RESET = '\033[0m'
 
 def RunLoginTest():
-    print(ROSE + "===== Procédure de test du login =====" + RESET)
+    write("Procédure de test du login", ROSE, "subtitle")
     
     test = TestConnect()
     test.run()
@@ -24,7 +31,7 @@ def RunLoginTest():
     test = TestDisconnect()
     test.run()
     
-    print(GREEN + "===== Bloc de tests Validé =====" + RESET)
+    write("Bloc de tests Validé", GREEN, "valid")
 
 if __name__ == "__main__":
     RunLoginTest()

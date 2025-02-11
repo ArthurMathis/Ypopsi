@@ -2,7 +2,17 @@ import os
 import sys
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
+
+right_with_dir   = current_dir
+right_dir        = os.path.dirname(right_with_dir)
+inscript_dir     = os.path.dirname(right_dir)
+applications_dir = os.path.dirname(inscript_dir)
+parent_dir       = os.path.dirname(applications_dir)
+
 sys.path.append(current_dir)
+sys.path.append(parent_dir)
+
+from define import write
 
 from InscriptCandidatesWithHelp import InscriptCandidatesWithHelp
 from InscriptCandidatesWithHelpQualification import InscriptCandidatesWithHelpQualification
@@ -27,7 +37,7 @@ GREEN = '\033[92m'
 RESET = '\033[0m'
 
 def RunRightWithTest():
-    print(VIOLET + "===== Procédure de test d'inscription - avec paramètres optionnels =====" + RESET)
+    write("Procédure de test d'inscription - avec paramètres optionnels", VIOLET, "subtitle")
     
     test = InscriptCandidatesWithHelp()
     test.run()
@@ -80,7 +90,7 @@ def RunRightWithTest():
     test = InscriptCandidatesWithVisitQualifications()
     test.run()
     
-    print(GREEN + "Procédure Validée" + RESET)
+    write("Procédure Validée", GREEN, "valid")
     
 if __name__ == "__main__":
     RunRightWithTest()

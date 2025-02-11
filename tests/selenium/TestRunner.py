@@ -9,6 +9,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from define import write
+
 class TestRunner:
     """
     Classe développée pour exécuter des tests de fonctionnalités sur l'application Ypopsi.
@@ -252,9 +254,9 @@ class TestRunner:
     # * write * #
     def writeName(self):
         """
-        Méthode inscrivant le nom du test 
+        Méthode inscrivant le nom du test
         """
-        print(f"\n{self.BLUE}=== Exécution du test : {self._name} ==={self.RESET}")
+        write(f"Exécution du test : {self._name}", self.BLUE, "text")
         
     def writeSuccess(self):
         """

@@ -2,7 +2,17 @@ import os
 import sys
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
+
+wrong_qualifications_dir = current_dir
+wrong_dir                = os.path.dirname(wrong_qualifications_dir)
+inscript_dir             = os.path.dirname(wrong_dir)
+applications_dir         = os.path.dirname(inscript_dir)
+parent_dir               = os.path.dirname(applications_dir)
+
 sys.path.append(current_dir)
+sys.path.append(parent_dir)
+
+from define import write
 
 from InscriptCandidatesWrongQualification1 import InscriptCandidatesWrongQualification1
 from InscriptCandidatesWrongQualification2 import InscriptCandidatesWrongQualification2
@@ -16,7 +26,7 @@ GREEN = '\033[92m'
 RESET = '\033[0m'
 
 def RunEmptyCandidateTest():
-    print(VIOLET + "===== Procédure de test avec qualifications incorrectes =====" + RESET)
+    write("Procédure de test avec qualifications incorrectes", VIOLET, "subtitle")
     
     test = InscriptCandidatesWrongQualification1()
     test.run() 
@@ -36,7 +46,7 @@ def RunEmptyCandidateTest():
     test = InscriptCandidatesWrongQualification6()
     test.run()
     
-    print(GREEN + "Procédure Validée" + RESET)
+    write("Procédure Validée", GREEN, "valid")
     
 if __name__ == "__main__":
     RunEmptyCandidateTest()
