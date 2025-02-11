@@ -179,6 +179,12 @@ class TestRunner:
     
     APP_CANDIDATES_AVAILABILITY_1 = datetime.now().strftime("%d/%m/%Y")
     APP_CANDIDATES_AVAILABILITY_2 = (datetime.now() + relativedelta(months=2)).strftime("%d/%m/%Y")
+    
+    APP_CANDIDATES_RATING_1 = 1
+    APP_CANDIDATES_RATING_2 = 2
+    APP_CANDIDATES_RATING_3 = 3
+    APP_CANDIDATES_RATING_4 = 4
+    APP_CANDIDATES_RATING_5 = 5
 
     ## WRONG DATA ##
     APP_CANDIDATES_WRONG_NAME_1  = 1

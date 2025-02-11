@@ -4,20 +4,22 @@ import time
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-parent_dir = os.path.dirname(current_dir)
+rating_dir = current_dir
+profile_dir = os.path.dirname(rating_dir)
+parent_dir = os.path.dirname(profile_dir)
 
 sys.path.append(current_dir)
 sys.path.append(parent_dir)
 
 from TestCandidates import TestCandidates
 
-class InscriptNotation(TestCandidates):
+class InscriptRating2(TestCandidates):
     # * CONSTRUCTOR * #
     def __init__(self):
         """
         Initialise le test avec un nom descriptif
         """
-        super().__init__("Test d'inscription d'une notation (candidat nécessaire)")
+        super().__init__("Test d'inscription de la notation 2/5 (candidat nécessaire)")
         
     # * RUN * #
     def run(self):
@@ -33,7 +35,10 @@ class InscriptNotation(TestCandidates):
             not_btn = self.find_element_by_css(driver, ".action_button.reverse_color.add_button")
             not_btn.click()
             
+            self.setRating(driver, self.APP_CANDIDATES_RATING_2)
             
+            valid_btn = self.find_element_by_css(driver, "button[type=\"submit\"]")
+            valid_btn.click()
             
             self.writeSuccess()
             
@@ -45,5 +50,5 @@ class InscriptNotation(TestCandidates):
                 driver.quit()
                 
 if __name__ == "__main__":
-    test = InscriptNotation()
+    test = InscriptRating2()
     test.run()

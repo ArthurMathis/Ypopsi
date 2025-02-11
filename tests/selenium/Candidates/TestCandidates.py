@@ -43,3 +43,32 @@ class TestCandidates(TestApplications):
         self.linkTest(driver, r"http://localhost/ypopsi/index.php\?candidates=\d+")
         
         return driver
+    
+    def setRating(self, driver, rate: int):
+        star = self.find_element_by_id(driver, "notation" + str(rate))
+        
+        star.click()
+        
+    def setdesc(self, driver, desc: str):
+        desc_input = self.find_element_by_id(driver, "description")
+        
+        desc_input.setKeys(desc)
+        
+    def setBL(self, driver, checkbox: str):
+        input = self.find_element_by_id(driver, checkbox)
+        
+        input.click()
+        
+    def setratingForm(self, driver, rate: int, desc: str, a: bool, b: bool, c: bool):
+        self.setRating(driver, rate)
+        
+        if(a):
+            self.setBL(driver, "a")
+            
+        if(b):
+            self.setBL(driver, "b")
+            
+        if(c):
+            self.setBL(driver, "c")
+            
+        self.setdesc(self, driver, desc)
