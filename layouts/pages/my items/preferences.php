@@ -2,18 +2,18 @@
     <article>
         <header>
             <h2>Votre compte</h2>
-            <img src="layouts\assets\img\logo\white-profil.svg" alt="Logo de la section profil représentant une personne">
+            <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-profil.svg" alt="Logo de la section profil représentant une personne">
         </header>
         <content>
             <a <?php if($_GET['preferences'] == "home") echo 'class="selected"'; ?> href="index.php?preferences=home">Consulter vos informations</a>
             <a <?php if($_GET['preferences'] == "edit-password") echo 'class="selected"'; ?> href="index.php?preferences=edit-password">Modifier votre mot de passe</a>
         </content>
     </article>
-    <?php if($_SESSION['user_role'] == OWNER || $_SESSION['user_role'] == ADMIN): ?>
+    <?php if($_SESSION['user']->getRole() == OWNER || $_SESSION['user']->getRole() == ADMIN): ?>
     <article>
         <header>
             <h2>Utilisateurs</h2>
-            <img src="layouts\assets\img\logo\white-utilisateurs.svg" alt="Logo de la section utilisateurs représentant un groupe de personne">
+            <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-utilisateurs.svg" alt="Logo de la section utilisateurs représentant un groupe de personne">
         </header>
         <content>
             <a <?php if($_GET['preferences'] == "list-users") echo 'class="selected"'; ?> href="index.php?preferences=list-users">Liste des utilisateurs</a>
@@ -23,11 +23,11 @@
         </content>
     </article>
     <?php endif ?>
-    <?php if($_SESSION['user_role'] != INVITE): ?>
+    <?php if($_SESSION['user']->getRole() != INVITE): ?>
     <article>
         <header>
             <h2>Données</h2>
-            <img src="layouts\assets\img\logo\white-data.svg" alt="Logo de la section données représentant un nuage">
+            <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-data.svg" alt="Logo de la section données représentant un nuage">
         </header>
         <content>
             <a <?php if($_GET['preferences'] == "list-services") echo 'class="selected"'; ?> href="index.php?preferences=list-services">Services</a>

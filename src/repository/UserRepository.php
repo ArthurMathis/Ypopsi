@@ -12,7 +12,33 @@ use App\Exceptions\LoginExceptions;
  */
 class UserRepository extends Repository {
     // * GET * //
-    
+    /**
+     * Public method searching and returning one user by his primary key
+     * 
+     * @param int $key_user The user's primary key
+     * @return User The user
+     */
+    public function get(int $key_user): User {
+        $request = "SELECT * FROM Users WHERE Id = :id";
+
+        $params = array("id" => $key_user);
+
+        $fetch = $this->get_request($request, $params, true, true);
+
+        return User::fromArray($fetch);
+    }
+
+    public function getList(): array {
+        $request = "SELECT * FROM Users";
+
+        $fetch = $this->get_request($request);
+
+        $response = array_map(function($c) {
+            return User::fromArray($c);
+        }, $fetch);
+
+        return $response;
+    }
 
     // * INSERT * //
 

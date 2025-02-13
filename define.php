@@ -78,18 +78,18 @@ define('ERROR', "Accès refusé. Votre rôle est insufissant pour accéder à ce
  * @throws Exception If it is not
  * @return Void
  */
-function isAdminOrMore() { if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN) throw new Exception(ERROR); }
+function isAdminOrMore() { if($_SESSION['user']->getRole() != OWNER && $_SESSION['user']->getRole() != ADMIN) throw new Exception(ERROR); }
 /**
  * Fonction testing if the user role is superior or equal to MOD
  * 
  * @throws Exception If it is not
  * @return Void
  */
-function isModOrMore() { if($_SESSION['user_role'] != OWNER && $_SESSION['user_role'] != ADMIN && $_SESSION['user_role'] != MOD) throw new Exception(ERROR); }
+function isModOrMore() { if($_SESSION['user']->getRole() != OWNER && $_SESSION['user']->getRole() != ADMIN && $_SESSION['user']->getRole() != MOD) throw new Exception(ERROR); }
 /**
  * Fonction testing if the user role is superior or equal to USER
  * 
  * @throws Exception If it is not
  * @return Void
  */
-function isUserOrMore() { if($_SESSION['user_role'] === INVITE) throw new Exception(ERROR); }
+function isUserOrMore() { if($_SESSION['user']->getRole() === INVITE) throw new Exception(ERROR); }

@@ -23,7 +23,7 @@ class HomeView extends View {
         echo "<content>";
         $this->getListItems("Candidatures non-traitées", $items, null, 'main-liste');
         echo "<aside>";
-        $this->getDashboard($dashboard);
+        $this->getBubbleList($dashboard);
         echo "</aside>";
         echo "</content>";
 

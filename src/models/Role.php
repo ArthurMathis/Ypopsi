@@ -43,7 +43,7 @@ class Role {
      */
     public static function fromArray(array $data): ?Role {
         if(empty($data)) {
-            throw new RoleExceptions("Erreur lors de la génération de l'utilisateur. Tableau de données absent.");
+            throw new RoleExceptions("Erreur lors de la génération du rôle. Tableau de données absent.");
         }
 
         return new Role(

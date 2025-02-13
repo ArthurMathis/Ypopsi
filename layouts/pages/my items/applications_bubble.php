@@ -35,14 +35,14 @@
     </content>
     <?php if(!$item['acceptee'] && !$item['refusee']): ?>
         <footer>
-        <?php if($_SESSION['user_role'] != INVITE): ?>
+        <?php if($_SESSION['user']->getRole() != INVITE): ?>
             <a class="action_button grey_color" href="index.php?candidates=dismiss-applications&key_applications=<?= $item['cle']; ?>">
                 <p>Refuser</p>
-                <img src="layouts\assets\img\logo\close.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
             </a>
             <a class="action_button reverse_color" href="index.php?candidates=input-offers&key_candidate=<?= $key_candidate; ?>&key_application=<?= $item['cle']; ?>">
                 <p>Valider</p>
-                <img src="layouts\assets\img\logo\white-valider.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-valider.svg" alt="">
             </a> 
         <?php endif ?>     
         </footer>

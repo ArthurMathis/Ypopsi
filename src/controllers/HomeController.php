@@ -22,7 +22,7 @@ class HomeController extends Controller {
      * @return Void
      */
     public function display() {
-        $items = (new ApplicationRepository())->getNonTraiteeCandidatures();
+        $items = (new ApplicationRepository())->getNonTraiteeList();
 
         $dashboard = [
             [
@@ -34,7 +34,7 @@ class HomeController extends Controller {
             ],
             [
                 'titre' => 'Rendez-vous programmés', 
-                'content' => (new MeetingRepository())->getReductRendezVous(), 
+                'content' => (new MeetingRepository())->getReductList(), 
                 'nb_item_max' => 6,
                 'link_add' => null,
                 'link_consult' => null

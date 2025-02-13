@@ -47,13 +47,13 @@
         <section id='diplome-section' class="imp-section">
             <p>Diplômes</p>
             <button class="form_button" type="button">
-                <img src="layouts\assets\img\logo\blue\add.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\blue\add.svg" alt="">
             </button>
         </section>
         <section id='aide-section' class="imp-section">
             <parse_str>Aides au recrutement</parse_str>
             <button class="form_button" type="button">
-                <img src="layouts\assets\img\logo\blue\add.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\blue\add.svg" alt="">
             </button>
         </section>
         <section id='visite-section' class="imp-section">

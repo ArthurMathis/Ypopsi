@@ -7,7 +7,8 @@
     <article>
         <h3><?= $item['type_de_contrat']; ?></h3>
         <?php 
-            require_once(CLASSE.DS.'Moment.php');
+            use App\Core\Moment;
+
             $date = Moment::currentMoment()->getDate();
             
             if($item['demission']):
@@ -49,10 +50,10 @@
     </content>
     <?php if($item['demission'] == null && ($item['date_fin'] == null || $date < $item['date_fin'])): ?>
         <footer>
-            <?php if($_SESSION['user_role'] != INVITE): ?>
+            <?php if($_SESSION['user']->getRole() != INVITE): ?>
                 <a class="action_button reverse_color" href="index.php?candidates=resignations&key_contract=<?= $item['cle']; ?>">
                     <p>Démissioner</p>
-                    <img src="layouts\assets\img\logo\white-close.svg" alt="Logo de dmission du contrat, représenté par une croix">
+                    <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-close.svg" alt="Logo de dmission du contrat, représenté par une croix">
                 </a>
             <?php endif ?>    
         </footer>

@@ -181,7 +181,7 @@ class Candidate {
      */
     public static function fromArray(array $data): ?Candidate {
         if(empty($data)) {
-            throw new CandidateExceptions("Erreur lors de la génération de l'utilisateur. Tableau de données absent.");
+            throw new CandidateExceptions("Erreur lors de la génération du candidat. Tableau de données absent.");
         }
 
         return new Candidate(

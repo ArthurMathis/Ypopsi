@@ -113,11 +113,11 @@
         <aside>
             <button id="reinint-filtre" class="reinint_button LignesHover">
                 <p>Réinitialiser les filtres</p>
-                <img src="layouts\assets\img\logo\close.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
             </button>
             <button id="valider-filtre" class="reverse_color">
                 <p>Appliquer</p>
-                <img src="layouts\assets\img\logo\white-filtre.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-filtre.svg" alt="">
             </button>
         </aside>   
     </main>
@@ -142,11 +142,11 @@
         <aside>
             <button id="reinint-recherche" class="reinint_button LignesHover">
                 <p>Réinitialiser les filtres</p>
-                <img src="layouts\assets\img\logo\close.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
             </button>
             <button id="valider-recherche" class="reverse_color">
                 <p>Appliquer</p>
-                <img src="layouts\assets\img\logo\white-recherche.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-recherche.svg" alt="">
             </button>
         </aside>
     </main>

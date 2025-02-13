@@ -41,7 +41,7 @@ class LoginController extends Controller {
         );
 
         $role_repo = new RoleRepository();
-        $role = $role_repo->searchById($_SESSION['user']->getRole());
+        $role = $role_repo->get($_SESSION['user']->getRole());
         $_SESSION['user_titled_role'] = $role->getTitled();
 
         $act_repo = new ActionRepository();                                         // Building the action

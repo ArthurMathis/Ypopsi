@@ -1,3 +1,9 @@
+<?php
+
+use App\Core\FormsManip;
+
+?>
+
 <div class="meeting_bubble">
     <header>
         <h2><?php echo FormsManip::majusculeFormat($item['nom']) . ' ' . $item['prenom']; ?></h2>
@@ -24,16 +30,16 @@
         <?php endif?>    
     </content>
     <footer>
-        <?php if ($_SESSION['user_role'] != INVITE): ?>
+        <?php if ($_SESSION['user']->getRole() != INVITE): ?>
             <?php if(time() < strtotime($item['date'] . ' ' . $item['heure'])): ?>
                 <a class="action_button grey_color" href="index.php?candidates=delete-meetings&key_meeting=<?= urlencode($item['key_meeting']); ?>&key_candidate=<?= urlencode($key_candidate); ?>">
                     <p>Annuler</p>
-                    <img src="layouts\assets\img\logo\trash.svg" alt="Logo de modification du rendez-vous, représenté par un carnet et un stylo">
+                    <img src="<?= APP_PATH ?>\layouts\assets\img\logo\trash.svg" alt="Logo de modification du rendez-vous, représenté par un carnet et un stylo">
                 </a>    
             <?php endif ?>
             <a class="action_button reverse_color" href="index.php?candidates=edit-meetings&key_meeting=<?= $item['key_meeting']; ?>">
                 <p>Éditer</p>
-                <img src="layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du rendez-vous, représenté par un carnet et un stylo">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-edit.svg" alt="Logo de modification du rendez-vous, représenté par un carnet et un stylo">
             </a>
         <?php endif ?>
     </footer>

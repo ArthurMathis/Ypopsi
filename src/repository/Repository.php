@@ -58,8 +58,8 @@ class Repository {
         return $this->connection;
     }
 
-    // * METHODES DE REQUETES A LA BASE DE DONNEES * //
-
+    
+    // * REQUEST * //
     /**
      * Private method executing a GET request to the database
      *
@@ -70,20 +70,22 @@ class Repository {
      * @return ?array
      */
     protected function get_request(string $request, ?array $params = [], bool $unique = false, bool $present = false): ?array { 
-        if(empty($unique) || empty($present))  
+        if(empty($unique) || empty($present)) {
             $present = false;
+        }
 
         try {
             $query = $this->getConnection()->prepare($request);
+
             $query->execute($params);
+
             $result = $unique ? $query->fetch(PDO::FETCH_ASSOC) : $query->fetchAll(PDO::FETCH_ASSOC);
-            if(empty($result)) {
-                if($present) 
-                    throw new Exception("Requête: " . $request ."\nAucun résultat correspondant");
-                else 
-                    return null;
-            } else 
+
+            if(empty($result) && $present) {
+                throw new Exception("Requête: " . $request ."\nAucun résultat correspondant");
+            } else {
                 return $result;
+            }
     
         } catch(Exception $e){
             FormsManip::error_alert([
@@ -95,22 +97,23 @@ class Repository {
                 'title' => 'Erreur lors de la requête à la base de données',
                 'msg' => $e
             ]);
-        } 
-
-        return null;
+        }
     }
     /**
      * Private method executing a POST request to the database
      *
      * @param string $request The SQL request
-     * @param array<string>  $params The request data Array
+     * @param array  $params The request data Array
      * @return int The primary key og the new element
      */
     protected function post_request(string $request, array $params): int {
         try {
             $query = $this->getConnection()->prepare($request);
+
             $query->execute($params);
+
             $lastId = $this->getConnection()->lastInsertId();
+
             return $lastId;
     
         } catch(PDOException $e){
@@ -120,30 +123,4 @@ class Repository {
             ]);
         }
     }
-
-    // * WRITE * //
-    // todo : à tranférer dans un repoAction
-    // /**
-    //  * Public method recording application logs
-    //  * 
-    //  * @param Int $user_key The user identification key in the database
-    //  * @param String $action The action title
-    //  * @param String|Null optionnal $description The action description 
-    //  * @return Void
-    //  */
-    // public function writeLogs(int $user_key, string $action, ?string $description = null) {
-    //     try {
-    //         $this->inscriptActions(
-    //             $user_key, 
-    //             $this->serachTypesOfActions($action)['Id'], 
-    //             $description
-    //         );
-    // 
-    //     } catch (Exception $e) {
-    //         FormsManip::error_alert([
-    //             'title' => "Erreur lors de l'enregistrement des logs",
-    //             'msg' => $e
-    //         ]);
-    //     }
-    // }
 }

@@ -21,7 +21,7 @@
 <div class="morph"></div>
 <div class="morph"></div>
 
-<script src="layouts\assets\scripts\anime.min.js"></script>
+<script src="<?= APP_PATH ?>\layouts\assets\scripts\anime.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.morph').forEach(morph => { animateMorph(morph); });

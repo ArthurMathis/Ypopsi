@@ -16,9 +16,10 @@ class RoleRepository extends Repository {
      * @param int $id The primary key opf the role
      * @return ?Role the role
      */
-    public function searchById(int $id): ?Role {
+    public function get(int $id): ?Role {
         $request = "SELECT * FROM ROLES WHERE Id = :id";
-        $params = [ "id" => $id ];
+
+        $params = array("id" => $id);
 
         $response = $this->get_request($request, $params, true, true);
 

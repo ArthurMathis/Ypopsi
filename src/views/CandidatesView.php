@@ -4,6 +4,7 @@ namespace App\Views;
 
 use App\Views\View;
 use App\Core\FormsManip;
+use App\Models\Candidate;
 
 /**
  * Class representing the candidates' pages view
@@ -14,8 +15,8 @@ class CandidatesView extends View {
     /**
      * Public method returning the candidates list
      * 
-     * @param String $titre The HTML Page titled
-     * @param Array $items The array containing the candidates' data
+     * @param string $titre The HTML Page titled
+     * @param array $items The array containing the candidates' data
      * @return View The HTML Page
      */
     public function displayCandidatesList(string $titre, array $items) {
@@ -30,25 +31,37 @@ class CandidatesView extends View {
     /**
      * Public method generating the candidte's profil page dashboards 
      *
-     * @param String $title The page's title
-     * @param Array $item The candidate's data
+     * @param string $title The title og the page
+     * @param Candidate $candidate The candidate
+     * @param array $applications The array containing the candidate's applications
+     * @param ?array $contracts The array containing the candidate's contracts and job offers
+     * @param ?array $meetings The array containing the candidate's meetings
+     * @param ?array $qualifications The array containing the candidate's qualifications
+     * @param ?array $helps The array containing the candidate's helps
+     * @param ?Candidate $coopteur The employee that recommanded the candidate
      * @return View The HTML Page
      */
-    public function displayCandidateProfile(string $title, array $item) {
+    public function displayCandidateProfile(string $title, Candidate $candidate, array $applications, ?array $contracts = null, ?array $meetings = null, ?array $qualifications = null, ?array $helps = null, ?Candidate $coopteur = null){
         $this->generateCommonHeader($title, [PAGES_STYLES.DS.'candidats.css']);
         $this->generateMenu(false, NULL);
 
-        echo "<content>";
-        include(MY_ITEMS.DS.'candidate_profile.php');
-        echo "<main>";
         $buttons = ['Tableau de bord', 'Contrats', 'Propositions', 'Candidatures', 'Rendez-vous'] ;
+
+        echo "<content>";
+
+        include(MY_ITEMS.DS.'candidate_profile.php');
+
+        echo "<main>";
+
         include(BARRES.DS.'candidate_profile.php');
-        $this->getDashboard($item);
-        $this->getContractsBoard($item['candidate']['Id'], $item['contracts']);
-        $this->getOffersBoard($item['candidate']['Id'], $item['contracts']);
-        $this->getApplicationsBoard($item['candidate']['Id'], $item['applications']);
-        $this->getMeetingsBoard($item['candidate']['Id'], $item['meeting']);
+        $this->getDashboard($candidate, $applications, $contracts, $meetings, $qualifications, $helps, $coopteur);
+        $this->getContractsBoard($candidate->getId(), $contracts);
+        $this->getOffersBoard($candidate->getId(), $contracts);
+        $this->getApplicationsBoard($candidate->getId(), $applications);
+        $this->getMeetingsBoard($candidate->getId(), $meetings);
+
         echo "</main>";
+        
         echo "</content>";
 
         $this->generateCommonFooter();
@@ -58,13 +71,13 @@ class CandidatesView extends View {
     /**
      * Public function Returning the offers' html form 
      *
-     * @param String $title The HTML Page title
-     * @param Int $key_candidate The candidate's primary key
-     * @param Array $jobs The array containing the jobs list
-     * @param Array $services The array containing the services list
-     * @param Array $establishments The array containing the establishments list
-     * @param Array $types_of_contracts The array containing the tupes of contracts list
-     * @param Array|Null $offer The array containing the offer's data (if it is existing)
+     * @param string $title The HTML Page title
+     * @param int $key_candidate The candidate's primary key
+     * @param array $jobs The array containing the jobs list
+     * @param array $services The array containing the services list
+     * @param array $establishments The array containing the establishments list
+     * @param array $types_of_contracts The array containing the tupes of contracts list
+     * @param ?array $offer The array containing the offer's data (if it is existing)
      * @return View The HTML Page
      */
     public function displayInputOffers(string $title, int $key_candidate, array $jobs, array $services, array $establishments, array $types_of_contracts, ?array $offer = null) {
@@ -78,12 +91,12 @@ class CandidatesView extends View {
     /**
      * Public method returning the HTML form to register an contract
      *
-     * @param String $title The HTML page's title
-     * @param Int $key_candidate The candidate's primary key
-     * @param Array $jobs The array containing the list of jobs
-     * @param Array $services The array containing the list of services
-     * @param Array $establishments The array containing the list of establishments
-     * @param Array $types_of_contrats The array containing the list of types of contractss
+     * @param string $title The HTML page's title
+     * @param int $key_candidate The candidate's primary key
+     * @param array $jobs The array containing the list of jobs
+     * @param array $services The array containing the list of services
+     * @param array $establishments The array containing the list of establishments
+     * @param array $types_of_contrats The array containing the list of types of contractss
      * @return View The HTML Page
      */
     public function displayInputContracts(string $title, int $key_candidate, array $jobs, array $services, array $establishments, array $types_of_contrats) {
@@ -97,11 +110,11 @@ class CandidatesView extends View {
     /**
      * Public method returning the meeting's HTML form
      *
-     * @param String $title The HTML page's title
-     * @param Int $key_candidate The candidate's primary key
-     * @param String $user_establishment The user's establishment
-     * @param Array $users
-     * @param Array $establisments
+     * @param string $title The HTML page's title
+     * @param int $key_candidate The candidate's primary key
+     * @param string $user_establishment The user's establishment
+     * @param array $users
+     * @param array $establisments
      * @return View The HTML Page
      */
     public function displayInputMeetings(string $title, int $key_candidate, string $user_establishment, array $users, array $establisments) {
@@ -117,7 +130,7 @@ class CandidatesView extends View {
     /**
      * Public method building the edit candidates'ratings HTML form 
      *
-     * @param Array $candidate The arrayu containing the candidate's data
+     * @param array $candidate The arrayu containing the candidate's data
      * @return View The HTML page
      */
     public function displayEditRatings(array $candidate) {
@@ -134,10 +147,10 @@ class CandidatesView extends View {
     /**
      * Public method building the edit candidates HTML form 
      *
-     * @param Array $item The array containing the candidate's data
-     * @param Array $qualifications The array containing the list of qualifications
-     * @param Array $helps The array containing the list of helps
-     * @param Array $employee The array containing the the list of employee
+     * @param array $item The array containing the candidate's data
+     * @param array $qualifications The array containing the list of qualifications
+     * @param array $helps The array containing the list of helps
+     * @param array $employee The array containing the the list of employee
      * @return View The HTML Page
      */
     public function displayEditCandidates(array $item, array $qualifications, array $helps, array $employee) {
@@ -151,9 +164,9 @@ class CandidatesView extends View {
     /**
      * Public method building the edit meetings HTML form 
      *
-     * @param Array $meeting The array containing the meeting's data
-     * @param Array $users The array containing the list of users
-     * @param Array $establisments The array containing the list of establisments
+     * @param array $meeting The array containing the meeting's data
+     * @param array $users The array containing the list of users
+     * @param array $establisments The array containing the list of establisments
      * @return View The HTML Page
      */
     public function displayEditMeetings(array $meeting, array $users, array $establisments) {
@@ -168,16 +181,22 @@ class CandidatesView extends View {
     // * GET * //
     /**
      * Public method generatiing one candidate's profil dashbord 
-     *
-     * @param Array $item The array containing the candidate's data
+     * 
+     * @param Candidate $candidate The candidate
+     * @param array $applications The array containing the candidate's applications
+     * @param ?array $contracts The array containing the candidate's contracts and job offers
+     * @param ?array $meetings The array containing the candidate's meetings
+     * @param ?array $qualifications The array containing the candidate's qualifications
+     * @param ?array $helps The array containing the candidate's helps
+     * @param ?Candidate $coopteur The employee that recommanded the candidate
      * @return View The HTML Page
      */
-    public function getDashboard(array $item) { include(MY_ITEMS.DS.'dashboard.php'); }
+    public function getDashboard(Candidate $candidate, array $applications, ?array $contracts, ?array $meetings, ?array $qualifications = null, ?array $helps = null, ?Candidate $coopteur = null) { include(MY_ITEMS.DS.'dashboard.php'); }
     /**
      * Protected method generating the candidate's contracts tab
      *
-     * @param Int $key_candidate The candidate's primary key
-     * @param Array|Null $contracts The array containing the candidate's contract (if he has)
+     * @param int $key_candidate The candidate's primary key
+     * @param ?array $contracts The array containing the candidate's contract (if he has)
      * @return View The HTML Page
      */
     protected function getContractsBoard(int $key_candidate, ?array &$contracts = null) {  
@@ -197,7 +216,7 @@ class CandidatesView extends View {
             echo "<h2>Aucun contrat enregistré</h2>";
         }
 
-        $link = APP_PATH . "/candidates/contracts/input" . $key_candidate;
+        $link = APP_PATH . "/candidates/contracts/input/" . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
 
         echo "</section>";
@@ -205,8 +224,8 @@ class CandidatesView extends View {
     /**
      * Protected method generating the candidate's offers tab
      *
-     * @param Array|Null $offers The array containing the candidate's offers (if he has)
-     * @param Int $key_candidate The candidate's primary key
+     * @param ?array $offers The array containing the candidate's offers (if he has)
+     * @param int $key_candidate The candidate's primary key
      * @return View The HTML Page
      */
     protected function getOffersBoard(int $key_candidate, ?array &$offers = null) {
@@ -220,7 +239,7 @@ class CandidatesView extends View {
             echo "<h2>Aucune proposition enregistrée </h2>"; 
         }
         
-        $link = APP_PATH . "/candidates/offers/input" . $key_candidate;
+        $link = APP_PATH . "/candidates/offers/input/" . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
 
         echo "</section>";
@@ -228,8 +247,8 @@ class CandidatesView extends View {
     /**
      * Protected method generating the candidate's applications tab
      *
-     * @param Array|Null $applications The array containing the candidate's applications (if he has)
-     * @param Int $key_candidate The candidate's primary key
+     * @param ?array $applications The array containing the candidate's applications (if he has)
+     * @param int $key_candidate The candidate's primary key
      * @return View The HTML Page
      */
     protected function getApplicationsBoard(int $key_candidate, ?array &$applications = null) {
@@ -243,7 +262,7 @@ class CandidatesView extends View {
             echo "<h2>Aucune candidature enregistrée </h2>";
         }
 
-        $link = APP_PATH . "/applications/input" . $key_candidate;
+        $link = APP_PATH . "/applications/input/" . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php');  
 
         echo "</section>";
@@ -251,8 +270,8 @@ class CandidatesView extends View {
     /**
      * Protected method generating the candidate's meetings tab
      *
-     * @param Array|Null $meetings The array containing the candidate's meetings (if he has)
-     * @param Int $key_candidate The candidate's primary key
+     * @param ?array $meetings The array containing the candidate's meetings (if he has)
+     * @param int $key_candidate The candidate's primary key
      * @return View The HTML Page
      */
     protected function getMeetingsBoard(int $key_candidate, ?array &$meetings = null) {
@@ -266,7 +285,7 @@ class CandidatesView extends View {
             echo "<h2>Aucun rendez-vous enregistré </h2>"; 
         }
         
-        $link = APP_PATH . "/candidates/meetings/input" . $key_candidate;
+        $link = APP_PATH . "/candidates/meetings/input/" . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
 
         echo "</section>";
@@ -275,31 +294,31 @@ class CandidatesView extends View {
     /**
      * Protected method generating an contract bubble
      *
-     * @param Array $item The contract's data array
+     * @param array $item The contract's data array
      * @return HTMLElement
      */
     protected function getContractsBubble(array $item) { include(MY_ITEMS.DS.'contracts_bubble.php'); }
     /**
      * Protected method generating an offer bubble
      *
-     * @param Array $item The offer's data array
-     * @param Int $key_candidate The candidate's primary key
+     * @param array $item The offer's data array
+     * @param int $key_candidate The candidate's primary key
      * @return HTMLElement
      */
     protected function getOffersBubble(array $item, int $key_candidate) { include(MY_ITEMS.DS.'offers_bubble.php'); }
     /**
      * Protected method generating an application bubble
      *
-     * @param Array $item The application's data array
-     * @param Int $key_candidate The candidate's primary key
+     * @param array $item The application's data array
+     * @param int $key_candidate The candidate's primary key
      * @return HTMLElement
      */
     protected function getApplicationsBubble(array $item, int $key_candidate) { include(MY_ITEMS.DS.'applications_bubble.php'); }
     /**
      * Protected method generating an meeting bubble
      *
-     * @param Array $item The meeting's data array
-     * @param Int $key_candidate The candidate's primary key
+     * @param array $item The meeting's data array
+     * @param int $key_candidate The candidate's primary key
      * @return HTMLElement
      */
     protected function getMeetingsBubble(array $item, int $key_candidate) { include(MY_ITEMS.DS.'meetings_bubble.php'); }

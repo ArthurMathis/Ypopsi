@@ -65,7 +65,7 @@ class View {
      * @param Array $dashboard The data array
      * @return Void
      */
-    public function getDashboard(array $dashboard) {
+    public function getBubbleList(array $dashboard) {
         foreach($dashboard as $item) {
             $title = $item['titre'];
             $items = $item['content'];

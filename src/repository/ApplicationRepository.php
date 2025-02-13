@@ -3,20 +3,34 @@
 namespace App\Repository;
 
 use App\Repository\Repository;
+use AppendIterator;
 
 /**
  * Class representing a repository of applications 
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
 class ApplicationRepository extends Repository {
+    // * GET * //
+    /**
+     * Public method searching and returning one application from his primary key
+     *
+     * @param int $key_application The primary key of the application
+     * @return array
+     */
+    public function get(int $key_application): array {
+        $request = "SELECT * FROM Applications WHERE Id = :id";
+
+        $params = array("id" => $key_application);
+
+        return $this->get_request($request, $params, true, true);
+    }
     /**
      * Public function returning the liste of applications
      *
      * @return ?array The liste of applications
      */
-    public function getCandidatures(): ?array { 
-        return $this->get_request(
-            "SELECT 
+    public function getList(): ?array { 
+        $request = "SELECT 
             c.id AS Cle,
             CASE 
                 WHEN app.IsAccepted = 1 THEN 'Acceptée'
@@ -36,8 +50,9 @@ class ApplicationRepository extends Repository {
             INNER JOin Jobs as j on app.Key_Jobs = j.Id
             INNER JOIN sources as s on app.Key_Sources = s.Id
             
-            ORDER BY app.Id DESC"
-        );
+            ORDER BY app.Id DESC";
+
+        return $this->get_request($request);
     }
 
     /**
@@ -45,24 +60,58 @@ class ApplicationRepository extends Repository {
      *
      * @return Void
      */
-    public function getNonTraiteeCandidatures(): ?Array {
+    public function getNonTraiteeList(): ?Array {
         $request = "SELECT 
-        c.Id AS Cle,
-        j.Titled AS Poste, 
-        c.Name AS Nom, 
-        c.Firstname AS Prénom, 
-        c.Email AS Email, 
-        c.Phone AS Téléphone, 
-        s.Titled AS Source
+            c.Id AS Cle,
+            j.Titled AS Poste, 
+            c.Name AS Nom, 
+            c.Firstname AS Prénom, 
+            c.Email AS Email, 
+            c.Phone AS Téléphone, 
+            s.Titled AS Source
 
-        FROM applications as app
-        INNER JOIN Candidates as c on app.Key_Candidates = c.Id
-        INNER JOin jobs as j on app.Key_Jobs = j.Id
-        INNER JOIN sources as s on app.Key_Sources = s.Id
-        WHERE app.IsAccepted = FALSE AND app.IsRefused = FALSE
-        
-        ORDER BY app.Id DESC";
+            FROM applications as app
+            INNER JOIN Candidates as c on app.Key_Candidates = c.Id
+            INNER JOin jobs as j on app.Key_Jobs = j.Id
+            INNER JOIN sources as s on app.Key_Sources = s.Id
+            WHERE app.IsAccepted = FALSE AND app.IsRefused = FALSE
+            
+            ORDER BY app.Id DESC";
     
         return $this->get_request($request);
+    }
+
+    /**
+     * Public method searching and returning the liste of candidate's applications
+     *
+     * @param int $key_candidate The candidate's primary key
+     * @return ?array 
+     */
+    public function getListFromCandidates(int $key_candidate): ?array {
+        $request = "SELECT 
+            app.Id AS cle,
+            app.IsAccepted AS acceptee, 
+            app.IsRefused AS refusee, 
+            s.titled AS source, 
+            t.titled AS type_de_contrat,
+            app.moment AS date,
+            j.titled AS poste,
+            serv.titled AS service,
+            e.titled AS etablissement
+            
+            FROM Applications AS app
+            INNER JOIN Sources AS s ON app.key_sources = s.Id
+            INNER JOIN Jobs AS j ON app.key_jobs = j.Id
+            LEFT JOIN Types_of_contracts AS t ON app.Key_Types_of_contracts = t.Id
+            LEFT JOIN Services as serv ON app.Key_Services = serv.Id
+            LEFT JOIN Establishments AS e ON app.Key_Establishments = e.id
+
+            WHERE app.Key_Candidates = :cle
+
+            ORDER BY cle DESC";
+
+        $params = array("cle" => $key_candidate);
+
+        return $this->get_request($request, $params);
     }
 }

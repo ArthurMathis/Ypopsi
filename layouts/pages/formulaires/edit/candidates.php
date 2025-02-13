@@ -47,7 +47,7 @@
         <section id='diplome-section'>
             <p>Saisissez ses qualifications</p>
             <button class="form_button" type="button">
-                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
             </button>
             <?php if(isset($item['candidate']['qualifications'])) foreach($item['candidate']['qualifications'] as $index => $d): ?>
                 <div class="double-items">
@@ -59,7 +59,7 @@
         <section id='aide-section'>
             <p>Saisissez ses aides au recrutement</p>
             <button class="form_button" type="button">
-                <img src="layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\blue\add.svg" alt="Logo d'ajout d'un item', représenté par un symbole">
             </button>
             <?php if(isset($item['candidate']['helps'])) foreach($item['candidate']['helps'] as $a): ?>
                 <select name="aide[]">

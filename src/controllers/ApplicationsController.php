@@ -19,7 +19,7 @@ class ApplicationsController extends Controller {
      * @return void
      */
     public function display() { 
-        $applications = (new ApplicationRepository())->getCandidatures();
+        $applications = (new ApplicationRepository())->getList();
 
         $this->View->displayApplicationsList("Liste des candidatures", $applications);
     }

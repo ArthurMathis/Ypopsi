@@ -103,7 +103,7 @@ class Action {
      */
     public static function fromArray(array $data): ?Action {
         if(empty($data)) {
-            throw new ActionExceptions("Erreur lors de la génération de l'utilisateur. Tableau de données absent.");
+            throw new ActionExceptions("Erreur lors de la génération de l'action. Tableau de données absent.");
         }
 
         return new Action(

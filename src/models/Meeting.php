@@ -86,7 +86,7 @@ class Meeting {
      */
     static public function fromArray(array $data): ?Meeting {
         if(empty($data)) {
-            throw new MeetingExceptions("Erreur lors de la génération de l'utilisateur. Tableau de données absent.");
+            throw new MeetingExceptions("Erreur lors de la génération du rendez-vous. Tableau de données absent.");
         }
 
         return new Meeting(

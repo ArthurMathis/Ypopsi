@@ -1,12 +1,12 @@
 <aside>
     <div class="aside-wrapper">
         <header>
-            <h2><?= $item['candidate']['Gender'] ? 'M' : 'Mme'; ?>. <?= $item['candidate']['Name']; ?> <?= $item['candidate']['Firstname']; ?></h2>    
-            <h3><?= $item['applications'][0]['type_de_contrat']; ?></h3>
+            <h2><?= $candidate->getGender() ? 'M' : 'Mme'; ?>. <?= $candidate->getName(); ?> <?= $candidate->getFirstname(); ?></h2>    
+            <h3><?= $applications[0]['type_de_contrat']; ?></h3>
             <p><?php 
-                if($item['applications'][0]['acceptee'])
+                if($applications[0]['acceptee'])
                     echo ACCEPTED;
-                elseif($item['applications'][0]['refusee']) 
+                elseif($applications[0]['refusee']) 
                     echo REFUSED;  
                 else 
                     echo UNTREATED;   
@@ -15,7 +15,7 @@
         <section>
             <div>
                 <p>Disponibilité</p>
-                <p><?= $item['candidate']['Availability']; ?></p>
+                <p><?= $candidate->getAvailability(); ?></p>
             </div>
             <div>
                 <p>Service demandé</p>
@@ -33,33 +33,33 @@
         <section>
             <div>
                 <p>Numéro de téléphone</p>
-                <p><?= $item['candidate']['Phone']; ?></p>
+                <p><?= $candidate->getPhone(); ?></p>
             </div>
             <div>
                 <p>Adresse email</p>
-                <p><?= $item['candidate']['Email']; ?></p>
+                <p><?= $candidate->getEmail(); ?></p>
             </div>
             <div>
                 <p>Adresse</p>
                 <div>
-                    <p><?= $item['candidate']['Address']; ?></p>
-                    <p><?= $item['candidate']['City']; ?></p>
-                    <p><?= $item['candidate']['PostCode']; ?></p>
+                    <p><?= $candidate->getAddress(); ?></p>
+                    <p><?= $candidate->getCity(); ?></p>
+                    <p><?= $candidate->getPostcode(); ?></p>
                 </div>
             </div>
         </section>
     </div>
     <footer>
-        <?php if($_SESSION['user_role'] != INVITE): ?>
-            <?php if(isset($item['candidate']['Email']) && !empty($item['candidate']['Email'])): ?>
-                <a class="action_button reverse_color" href="mailto:<?= $item['candidate']['Email']; ?>">
+        <?php if($_SESSION['user']->getRole() != INVITE): ?>
+            <?php if(!empty($candidate->getEmail())): ?>
+                <a class="action_button reverse_color" href="mailto:<?= $candidate->getEmail(); ?>">
                     <p>Contacter</p>
-                    <img src="layouts\assets\img\logo\white-paperplane.svg" alt="Logo d'envoi d'un courrier, représenté par un avion en papier">
+                    <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-paperplane.svg" alt="">
                 </a>
             <?php endif ?>
-            <a class="action_button form_button" href="index.php?candidates=edit-candidates&key_candidate=<?= $item['candidate']['Id']; ?>">
+            <a class="action_button form_button" href="<?= APP_PATH ?>/candidates/edit/<?= $candidate->getId(); ?>">
                 <p>Modifier</p>
-                <img src="layouts\assets\img\logo\blue\edit.svg" alt="Logo de modification du candidat, représenté par un carnet et un stylo">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\blue\edit.svg" alt="">
             </a>  
         <?php endif ?>    
     </footer>

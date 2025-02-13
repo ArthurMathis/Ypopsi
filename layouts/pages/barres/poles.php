@@ -1,6 +1,6 @@
 <nav class="options_barre">
     <article>
-            <?php if($_SESSION['user_role'] == OWNER || $_SESSION['user_role'] == ADMIN): ?>
+            <?php if($_SESSION['user']->getRole() == OWNER || $_SESSION['user']->getRole() == ADMIN): ?>
             <a class="action_button reverse_color" href="index.php?preferences=input-poles">Nouveau pôle</a>
         <?php endif ?>
     </article>
@@ -19,11 +19,11 @@
         <aside>
             <button id="reinint-recherche" class="reinint_button LignesHover">
                 <p>Réinitialiser les filtres</p>
-                <img src="layouts\assets\img\logo\close.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
             </button>
             <button id="valider-recherche" class="reverse_color">
                 <p>Appliquer</p>
-                <img src="layouts\assets\img\logo\white-recherche.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-recherche.svg" alt="">
             </button>
         </aside> 
     </main>

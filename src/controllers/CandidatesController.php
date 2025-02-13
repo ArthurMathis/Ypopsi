@@ -3,7 +3,12 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Repository\ApplicationRepository;
 use App\Repository\CandidateRepository;
+use App\Repository\ContractRepository;
+use App\Repository\MeetingRepository;
+use App\Repository\QualificationRepository;
+use App\Repository\HelpRepository;
 
 class CandidatesController extends Controller {
     /**
@@ -41,7 +46,65 @@ class CandidatesController extends Controller {
      * @return View HTML PAGE
      */
     public function displayCandidate(int $key_candidate) {
-        echo "Bonjour";
+        $can_repo = new CandidateRepository();
+        $candidate = $can_repo->get($key_candidate);
+
+
+        $cont_repo = new ContractRepository();
+        $contracts = $cont_repo->getListFromCandidates($key_candidate);
+
+
+        $app_repo = new ApplicationRepository();
+        $applications = $app_repo->getListFromCandidates($key_candidate);
+
+
+        $meet_repo = new MeetingRepository();
+        $meetings = $meet_repo->getListFromCandidate($key_candidate);
+
+
+        $qua_repo = new QualificationRepository();
+        $fetch_qualifications = $qua_repo->getListFromCandidate($key_candidate);
+
+        $qualifications = array_map(function($c) use ($qua_repo, $key_candidate) {
+            $date = $qua_repo->searchdate($key_candidate, $c->getId());
+    
+            return [
+                "qualification" => $c,
+                "date"          => $date
+            ];
+        }, $fetch_qualifications);
+
+
+        $help_repo = new HelpRepository();
+        $helps = $help_repo->getListfromCandidates($key_candidate);
+
+        $i = 0;
+        $size = count($helps);
+        $find = false;
+        while(!$find && $i < $size) {
+            if($helps[$i]->getTitled() === COOPTATION) {
+                $find = true;
+            }
+
+            $i++;
+        }
+
+        $coopteur = null;
+        if($find) {
+            $coopt_id = $help_repo->searchCoopteurId($key_candidate);
+            $coopteur = $can_repo->get($coopt_id);
+        }
+
+        $this->View->displayCandidateProfile(
+            "Candidat " . $candidate->getName() . ' ' . $candidate->getFirstname(), 
+            $candidate, 
+            $applications, 
+            $contracts,
+            $meetings, 
+            $qualifications,
+            $helps, 
+            $coopteur
+        );
     }
 
     /**
