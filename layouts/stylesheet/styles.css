@@ -265,9 +265,13 @@ form textarea {
 .form-section {
   display: flex;
   justify-content: end;
+  gap: var(--radius);
 
   width: 100%;
   height: fit-content;
+}
+.form-section button:is(:hover, :focus) { 
+  box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.2) !important;
 }
 .form_button {
   width: 100%;

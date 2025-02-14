@@ -114,28 +114,34 @@ class CandidatesController extends Controller {
         );
     }
 
-    //// DISPLAY INPUT ////
     /**
      * Public method returning the html form of inputing a meeting
      *
      * @param Int $key_candidate The candidate's primary ket
      * @return View HTML page
      */
-    public function displayInputMeeting(int $key_candidate) {
-        $user_repo = new UserRepository();
-        $users = $user_repo->getAutoCompletion();
+    public function inputMeeting(int $key_candidate) {
+        isUserOrMore();                                                                     // Verifying the user's role
+
+
+        $recruiter = $_SESSION['user'];                                                     // Getting the recruiter
+
+        $users_list = (new UserRepository())->getAutoCompletion();                          // Fetching the list of users
+
     
         $esta_repo = new EstablishmentRepository();
-        $user_establishment = $esta_repo->get($_SESSION['user']->getEstablishment());
+
+        $establishment = $esta_repo->get($recruiter->getEstablishment());                   // Fetching the establishment
     
-        $establishments = $esta_repo->getAutoCompletion();
+        $establishments_list = $esta_repo->getAutoCompletion();                             // Fetching the list of establishments
     
-        $this->View->displayInputMeetings(
-            "Nouveau rendez-vous",
-            $key_candidate,
-            $user_establishment->getTitled(),
-            $users,
-            $establishments
+    
+        $this->View->displayInputMeeting(
+            $key_candidate, 
+            $recruiter, 
+            $establishment, 
+            $users_list, 
+            $establishments_list
         );
     }
 
@@ -157,9 +163,10 @@ class CandidatesController extends Controller {
 
         $meeting = Meeting::create(                                                         // Creating the meeting
             $_POST['date'] . " " . $_POST['time'], 
-            (int) $_POST['recruteur'], 
+            (int) $_POST['recruiter'], 
             $key_candidate, 
-            (int) $_POST['etablissement']
+            (int) $_POST['establishment'],
+            $_POST['description']
         );
 
         (new MeetingRepository())->inscript($meeting);                                      // Registering in database
@@ -178,7 +185,8 @@ class CandidatesController extends Controller {
             $_SESSION['user']->getId(), 
             $type->getId(),
             $desc
-        );             
+        );          
+        
 
         $act_repo->writeLogs($act);                                                         // Registering the action in logs
 
@@ -190,8 +198,45 @@ class CandidatesController extends Controller {
     }
 
 
-    // * EDIT * // 
+    // * EDIT * //
+    /**
+     * Public method displaying the edit meeting HTML form
+     * 
+     * @param int $key_meeting The primary key of the meeting
+     * @return void
+     */
+    public function editMeeting(int $key_meeting) {
+        isUserOrMore();                                                                     // Verifying the user's role
 
+
+        $meeting = (new MeetingRepository())->get($key_meeting);                            // Fetching the meeting
+
+
+        $user_repo = new UserRepository();
+        
+        $recruiter = $user_repo->get($meeting->getUser());                                  // Fetching the recruiter
+        
+        $users_list = $user_repo->getAutoCompletion();                                      // Fetching the list of users
+        
+        
+        $esta_repo = new EstablishmentRepository();
+        
+        $establishment = $esta_repo->get($meeting->getEstablishment());                     // Fetching the establishment
+        
+        $establishments_list = $esta_repo->getAutoCompletion();                             // Fetching the list of establishements
+
+
+        $this->View->displayEditMeeting(
+            $meeting, 
+            $recruiter, 
+            $establishment, 
+            $users_list, 
+            $establishments_list
+        );
+    }
+
+
+    // * UPDATE * //
 
 
     // * DELETE * //
@@ -202,6 +247,9 @@ class CandidatesController extends Controller {
      * @return void
      */
     public function deleteMeeting(int $key_meeting) {
+        isUserOrMore();                                                                     // Verifying the user's role
+
+
         $meet_repo = new MeetingRepository();
 
         $meeting = $meet_repo->get($key_meeting);                                           // Fetching the meeting
@@ -209,7 +257,7 @@ class CandidatesController extends Controller {
 
         $can_repo = new CandidateRepository();
 
-        $candidate = $can_repo->get($meeting->getCandidate());                                   // Fetching the candidate 
+        $candidate = $can_repo->get($meeting->getCandidate());                              // Fetching the candidate 
 
         $meet_repo->delete($meeting);                                                       // Deleting the meeting
 
@@ -228,6 +276,7 @@ class CandidatesController extends Controller {
             $type->getId(),
             $desc
         );             
+
 
         $act_repo->writeLogs($act);                                                         // Writing logs
 

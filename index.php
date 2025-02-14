@@ -51,9 +51,10 @@ try {
     $router->addRoute("/candidates/rating/edit/{id}", CandidatesController::class, "displayCandidate");             // todo
 
     //// MEETINGS ////
-    $router->addRoute("/candidates/meeting/input/{id}", CandidatesController::class, "displayInputMeeting");        
+    $router->addRoute("/candidates/meeting/input/{id}", CandidatesController::class, "inputMeeting");        
     $router->addRoute("/candidates/meeting/inscript/{id}", CandidatesController::class, "inscriptMeeting");         
     $router->addRoute("/candidates/meeting/edit/{id}", CandidatesController::class, "editMeeting");                 // todo
+    $router->addRoute("/candidates/meeting/update/{id}", CandidatesController::class, "updateMeeting");             // todo
     $router->addRoute("/candidates/meeting/delete/{id}", CandidatesController::class, "deleteMeeting");             // todo
 
     //// CONTRACTS ////

@@ -318,6 +318,8 @@ main section .candidatures_bulle article p.non-traitee::before {
     position: fixed;
     bottom: var(--very-big-radius);
     right: var(--very-big-radius);
+
+    box-shadow: var(--liste-shadow);
 }
 .add_button:is(:hover, :focus) {
     box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.85);

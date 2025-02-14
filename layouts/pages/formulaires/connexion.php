@@ -16,7 +16,10 @@
     <h3>Connexion à l'application</h3>
     <section>
         <div class="input-container">
-            <label>Indentifiant</label>
+            <label for="identifiant">
+                Indentifiant *
+            </label>
+
             <input 
                 type="text" 
                 id="identifiant" 
@@ -25,17 +28,22 @@
                 required
             >
         </div>
+        
         <div class="input-container">
-            <label>Mot de passe</label>
+            <label for="motdepasse">
+                Mot de passe *
+            </label>
+
             <input 
-            type="password" 
-            id="motdepasse" 
-            name="motdepasse" 
-            placeholder="................"
-            required
-        >
+                type="password" 
+                id="motdepasse" 
+                name="motdepasse" 
+                placeholder="................"
+                required
+            >
         </div>
     </section>
+
     <div class="form-section">
         <button 
             type="submit" 

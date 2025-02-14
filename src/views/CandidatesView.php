@@ -5,6 +5,11 @@ namespace App\Views;
 use App\Views\View;
 use App\Core\FormsManip;
 use App\Models\Candidate;
+use App\Models\Establishment;
+use App\Models\Meeting;
+use App\Models\User;
+use App\Repository\EstablishmentRepository;
+use App\Repository\UserRepository;
 
 /**
  * Class representing the candidates' pages view
@@ -67,6 +72,32 @@ class CandidatesView extends View {
         $this->generateCommonFooter();
     }
 
+
+    // * DISPLAY FORM * //
+    /**
+     * Public function displaying the meeting HTML form
+     * 
+     * @param string $title The method of the HTML form
+     * @param string $action_method The method of the HTML form
+     * @param string $action_value The value of the HTML form
+     * @param bool $editable Boolean indicating if the pieces of information in the HTML form can be edited or not
+     * @param ?Meeting $meeting The meeting
+     * @param User $recruiter The user in charge of this recruitement
+     * @param Establishment $establishment The establishment 
+     * @param array $users_list The list of users for AutoComplet
+     * @param array establishments_list The list of establishments for AutoComplet
+     * @return void
+     */
+    public function displayMeetingForm(string $title, string $action_method, string $action_value, bool $editable, ?Meeting $meeting, User $recruiter, Establishment $establishment, array $users_list, array $establishments_list) {
+        $this->generateCommonHeader("Ypopsi - {$title}", [ FORMS_STYLES.DS.'big-form.css' ]);
+
+        $this->generateMenu(true, null);
+
+        include FORMULAIRES.DS.'meeting.php';
+
+        $this->generateCommonFooter();
+    }
+
     // * DISPLAY INPUT * //
     /**
      * Public function Returning the offers' html form 
@@ -110,20 +141,33 @@ class CandidatesView extends View {
     /**
      * Public method returning the meeting's HTML form
      *
-     * @param string $title The title of the HTML page
-     * @param int $key_candidate The candidate's primary key
-     * @param string $user_establishement
-     * @param array $users The list of users
-     * @param array $establisments The list of establishments
-     * @return View The HTML Page
+     * @param Meeting $meeting The meeting
+     * @param User recruiter The user in charge of the recruitement
+     * @param Establishment $establishment The establishment 
+     * @param array $users_list The array containing the list of users
+     * @param array $establisments_list The array containing the list of establisments
+     * @return void
      */
-    public function displayInputMeetings(string $title, int $key_candidate, string $user_establishment, array $users, array $establisments) {
-        $this->generateCommonHeader($title, [FORMS_STYLES.DS.'small-form.css']);
-        $this->generateMenu(true, null);
+    public function displayInputMeeting(int $key_candidate, User $recruiter, Establishment $establishment, array $users_list, array $establishments_list) {
+        $title = "Inscription d'un rendez-vous";
 
-        include INSCRIPT_FORM.DS.'meeting.php';
+        $action_method = "inscript/{$key_candidate}";
 
-        $this->generateCommonFooter();
+        $action_value = "inscript_meeting";
+
+        $editable = true;
+
+        $this->displayMeetingForm(
+            $title, 
+            $action_method, 
+            $action_value, 
+            $editable, 
+            null,
+            $recruiter,
+            $establishment,
+            $users_list, 
+            $establishments_list
+        );
     }
 
     // * DISPLAY EDIT * //
@@ -164,18 +208,33 @@ class CandidatesView extends View {
     /**
      * Public method building the edit meetings HTML form 
      *
-     * @param array $meeting The array containing the meeting's data
-     * @param array $users The array containing the list of users
-     * @param array $establisments The array containing the list of establisments
-     * @return View The HTML Page
+     * @param Meeting $meeting The meeting
+     * @param User recruiter The user in charge of the recruitement
+     * @param Establishment $establishment The establishment 
+     * @param array $users_list The array containing the list of users
+     * @param array $establisments_list The array containing the list of establisments
+     * @return void
      */
-    public function displayEditMeetings(array $meeting, array $users, array $establisments) {
-        $this->generateCommonHeader('Ypopsi - Mise-à-jour rendez-vous', [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(true, null);
+    public function displayEditMeeting(Meeting $meeting, User $recruiter, Establishment $establishment, array $users_list, array $establishments_list) {
+        $title = "Mise-à-jour rendez-vous";
 
-        include EDIT_FORM.DS.'meeting.php';
+        $action_method = "update/{$meeting->getId()}";
 
-        $this->generateCommonFooter();
+        $action_value = "update_meeting";
+
+        $editable = time() <= strtotime($meeting->getDate());
+
+        $this->displayMeetingForm(
+            $title, 
+            $action_method, 
+            $action_value, 
+            $editable, 
+            $meeting,
+            $recruiter,
+            $establishment,
+            $users_list, 
+            $establishments_list
+        );
     }
 
     // * GET * //

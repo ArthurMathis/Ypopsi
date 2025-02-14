@@ -69,7 +69,9 @@ class MeetingRepository extends Repository {
      * Public method registering a new meeting
      */
     public function inscript(Meeting $meeting): int {
-        $request = "INSERT INTO Meetings (Date, Key_Users, Key_Candidates, Key_Establishments) VALUES (:moment, :key_user, :key_candidate, :key_establishment)";
+        $request = "INSERT INTO Meetings (Date, Key_Users, Key_Candidates, Key_Establishments";
+
+        $request_values =  " VALUES (:moment, :key_user, :key_candidate, :key_establishment";
         
         $params = array(
             "moment"            => $meeting->getDate(),
@@ -77,6 +79,18 @@ class MeetingRepository extends Repository {
             "key_candidate"     => $meeting->getCandidate(),
             "key_establishment" => $meeting->getEstablishment()
         );
+
+
+        if(!empty($meeting->getDescription())) {
+            $request .= ", Description";
+
+            $request_values .= ", :description";
+
+            $params["description"] = $meeting->getDescription();
+        }
+
+        
+        $request .= ")" . $request_values . ")";
     
         return $this->post_request($request, $params);
     }

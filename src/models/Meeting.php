@@ -50,13 +50,14 @@ class Meeting {
      * @param int $user The primary key of the recruiter of the meeting
      * @param int $candidate The primary key of the candidate of the meeting
      * @param int $establishment The primary key of the estalishment of the meeting
+     * @param ?string $description The description of the meeting
      * @return Meeting The new meeting
      */
-    public static function create(string $date, int $user, int $candidate, int $establishment): Meeting {
+    public static function create(string $date, int $user, int $candidate, int $establishment, ?string $description = null): Meeting {
         return new Meeting(
             null,
             $date, 
-            null, 
+            $description, 
             $user, 
             $candidate, 
             $establishment
