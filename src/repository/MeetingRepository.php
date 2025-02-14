@@ -63,4 +63,21 @@ class MeetingRepository extends Repository {
     
         return $this->get_request($request, $params);
     }
+
+    // * INSCRIPT * //
+    /**
+     * Public method registering a new meeting
+     */
+    public function inscript(Meeting $meeting): int {
+        $request = "INSERT INTO Meetings (Date, Key_Users, Key_Candidates, Key_Establishments) VALUES (:moment, :key_user, :key_candidate, :key_establishment)";
+        
+        $params = array(
+            "moment"            => $meeting->getDate(),
+            "key_user"          => $meeting->getUser(),
+            "key_candidate"     => $meeting->getCandidate(),
+            "key_establishment" => $meeting->getEstablishment()
+        );
+    
+        return $this->post_request($request, $params);
+    }
 }

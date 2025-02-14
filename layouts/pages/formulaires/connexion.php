@@ -9,20 +9,38 @@
     </button>
 </section>
 
-<form method="post" action="<?= APP_PATH ?>/login/set">
+<form 
+    method="post" 
+    action="<?= APP_PATH ?>/login/set"
+>
     <h3>Connexion à l'application</h3>
     <section>
         <div class="input-container">
-            <p>Indentifiant</p>
-            <input type="text" id="identifiant" name="identifiant" placeholder="dupond.j">
+            <label>Indentifiant</label>
+            <input 
+                type="text" 
+                id="identifiant" 
+                name="identifiant" 
+                placeholder="dupond.j"
+                required
+            >
         </div>
         <div class="input-container">
-            <p>Mot de passe</p>
-            <input type="password" id="motdepasse" name="motdepasse" placeholder="................">
+            <label>Mot de passe</label>
+            <input 
+            type="password" 
+            id="motdepasse" 
+            name="motdepasse" 
+            placeholder="................"
+            required
+        >
         </div>
     </section>
     <div class="form-section">
-        <button type="submit" value="new_user">
+        <button 
+            type="submit" 
+            value="login"
+        >
             <p>Se connecter</p>
             <img src="<?= APP_PATH ?>/layouts/assets/img/logo/blue/arrow.svg" alt="">
         </button>

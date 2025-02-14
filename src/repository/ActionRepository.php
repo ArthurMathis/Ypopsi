@@ -15,7 +15,7 @@ class ActionRepository extends Repository {
      * Public method recording application logs
      * 
      * @param Action The action to write in the logs
-     * @return Void
+     * @return void
      */
     public function writeLogs(Action $act) {
         $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, Description) VALUES (:user, :type, :description)";
@@ -35,15 +35,17 @@ class ActionRepository extends Repository {
      * @param int|string $action The primary key og the type of action 
      * @return array
      */
-    Public function searchType(int|string $act): Array {
+    Public function searchType(int|string $act): array {
         if(is_int($act)) {
             $request = "SELECT * FROM Types_of_actions WHERE Id = :action"; 
         } else {
             $request = "SELECT * FROM Types_of_actions WHERE Titled = :action";
         }
         
-        $params = [ "action" => $act ];
+        $params = array("action" => $act);
 
-        return $this->get_request($request, $params, true, true);
+        $response = $this->get_request($request, $params, true, true);
+
+        return $response;
     }
 }

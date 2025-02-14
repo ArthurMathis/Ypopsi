@@ -52,7 +52,7 @@ class EstablishmentRepository extends Repository {
 
         $response = array_map(function($c) {
             return array(
-                "key" => $c->getId(), 
+                "id" => $c->getId(), 
                 "text" => $c->getTitled()
             );
         }, $fetch);

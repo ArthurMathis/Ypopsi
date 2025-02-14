@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Models\Meeting;
+use App\Models\Action;
 use App\Repository\ApplicationRepository;
 use App\Repository\CandidateRepository;
 use App\Repository\ContractRepository;
@@ -11,6 +13,7 @@ use App\Repository\MeetingRepository;
 use App\Repository\QualificationRepository;
 use App\Repository\HelpRepository;
 use App\Repository\UserRepository;
+use App\Repository\ActionRepository;
 
 class CandidatesController extends Controller {
     /**
@@ -93,7 +96,7 @@ class CandidatesController extends Controller {
 
         $coopteur = null;
         if($find) {
-            $coopt_id = $help_repo->searchCoopteurId($key_candidate);
+            $coopt_id = $help_repo->searchCoopteurId($key_candidate)['Id'];
             $coopteur = $can_repo->get($coopt_id);
         }
 
@@ -109,6 +112,7 @@ class CandidatesController extends Controller {
         );
     }
 
+    //// DISPLAY INPUT ////
     /**
      * Public method returning the html form of inputing a meeting
      *
@@ -131,5 +135,41 @@ class CandidatesController extends Controller {
             $users,
             $establishments
         );
+    }
+
+    // * INSCRIPT * //
+    /**
+     * Public method registering a new meeting in the database
+     * 
+     * @param int $key_candidate The candidate's primary key
+     * @return void
+     */
+    public function inscriptMeeting(int $key_candidate) {
+        isUserOrMore();                                                                     // Verifying the user's role
+
+        $meeting = new Meeting(                                                             // Creating the meeting
+            null, 
+            $_POST['date'] . " " . $_POST['time'], 
+            null, 
+            (int) $_POST['recruteur'], 
+            $key_candidate, 
+            (int) $_POST['etablissement']
+        );
+
+        (new MeetingRepository())->inscript($meeting);                                      // Registering in database
+
+        $act_repo = new ActionRepository();                 
+        
+        $type = $act_repo->searchType("Nouveau rendez-vous")['Id']; 
+
+
+        $act = Action::create(                                                              // Creating the action
+            $_SESSION['user']->getId(), 
+            $type
+        );             
+
+        $act_repo->writeLogs($act);                                                         // Registering the action in logs
+
+        header("Location: " . APP_PATH . "/candidates/" . $key_candidate);
     }
 }

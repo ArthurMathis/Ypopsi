@@ -28,7 +28,7 @@ class Meeting {
         protected int $establishment_key
     ) {
         // The primary key
-        if($id <= 0) {
+        if(!empty($id) & $id <= 0) {
             throw new MeetingExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
@@ -74,6 +74,12 @@ class Meeting {
      * @return int
      */
     public function getCandidate(): Int { return $this->candidate_key; }
+    /**
+     * Public method returning the primary key of the establishment
+     * 
+     * @return int
+     */
+    public function getEstablishment(): int { return $this->establishment_key; }
 
 
     // * CONVERT * //

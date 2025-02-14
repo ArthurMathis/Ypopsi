@@ -75,13 +75,11 @@ class HelpRepository extends Repository {
 
     // * SEARCH * //
     public function searchCoopteurId(int $key_candidate) {
-        $request = "SELECT Key_Employee From Have_the_right_to WHERE Key_Candidates = :id";
+        $request = "SELECT Key_Employee AS Id From Have_the_right_to WHERE Key_Candidates = :id";
 
         $params = array("id" => $key_candidate);
 
         $response = $this->get_request($request, $params);
-
-        var_dump($response); exit;
 
         return $response;
     }

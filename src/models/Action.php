@@ -15,8 +15,8 @@ class Action {
      * @param ?int $id The primary key of the action
      * @param ?string $description The description of action 
      * @param ?string $date The date of action 
-     * @param ?int $user_key The primary key of the user 
-     * @param ?int $type_key The primary key of the type of the action 
+     * @param int $user_key The primary key of the user 
+     * @param int $type_key The primary key of the type of the action 
      * @throws ActionExceptions If any piece of information is invalid
      */
     public function __construct(
@@ -50,7 +50,7 @@ class Action {
      * @param string $description The description of the action
      * @return Action The new action
      */
-    public static function createAction(int $user, int $type, ?string $description = null): Action {
+    public static function create(int $user, int $type, ?string $description = null): Action {
         return new Action(
             null, 
             $description,
