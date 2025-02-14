@@ -11,6 +11,12 @@ use App\Models\Meeting;
  */
 class MeetingRepository extends Repository {
     // * GET * //
+    /**
+     * Public method retrning one meeting from its primar key
+     * 
+     * @param int $key_meeting The primary key of the meeting
+     * @return Meeting The meeting
+     */
     public function get(int $key_meeting): Meeting {
         $request = "SELECT * FROM Meetings WHERE Id = :id";
 
@@ -42,6 +48,12 @@ class MeetingRepository extends Repository {
         return $this->get_request($request, $params);
     }
 
+    /**
+     * Public method returning the list of candidate's meetings
+     * 
+     * @param int $key_candidate The candidate's primary key
+     * @return ?array The list of meetings
+     */
     public function getListFromCandidate(int $key_candidate): ?array {
         $request = "SELECT 
             meet.Id AS key_meeting,
@@ -95,8 +107,42 @@ class MeetingRepository extends Repository {
         return $this->post_request($request, $params);
     }
 
-    // * EDIT * //
-    
+    // * UPDATE * //
+    /**
+     * Public method updating a meeting
+     * 
+     * @param Meeting $meeting The meeting with its new information
+     * @return int The primary key of the meeting
+     */
+    public function update(Meeting $meeting): int {
+        $request = "UPDATE Meetings SET 
+            Date = :date,
+            Key_Users = :user, 
+            Key_Candidates = :candidate,
+            Key_Establishments = :establishment";
+
+        $params = array(
+            "date"          => $meeting->getDate(),
+            "user"          => $meeting->getUser(),
+            "candidate"     => $meeting->getCandidate(),
+            "establishment" => $meeting->getEstablishment(),
+            "id"            => $meeting->getId()
+        );
+        
+        $condition = " WHERE Id = :id";
+
+
+        if(!empty($meeting->getDescription())) {
+            $request .= ", Description = :description";
+
+            $params["description"] = $meeting->getDescription();
+        }
+
+
+        $request .= $condition;
+
+        return $this->post_request($request, $params);
+    }
     
     // * DELETE * //
     /**

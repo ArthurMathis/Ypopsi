@@ -51,11 +51,11 @@ try {
     $router->addRoute("/candidates/rating/edit/{id}", CandidatesController::class, "displayCandidate");             // todo
 
     //// MEETINGS ////
-    $router->addRoute("/candidates/meeting/input/{id}", CandidatesController::class, "inputMeeting");        
-    $router->addRoute("/candidates/meeting/inscript/{id}", CandidatesController::class, "inscriptMeeting");         
-    $router->addRoute("/candidates/meeting/edit/{id}", CandidatesController::class, "editMeeting");                 // todo
-    $router->addRoute("/candidates/meeting/update/{id}", CandidatesController::class, "updateMeeting");             // todo
-    $router->addRoute("/candidates/meeting/delete/{id}", CandidatesController::class, "deleteMeeting");             // todo
+    $router->addRoute("/candidates/meeting/input/{candidate}", CandidatesController::class, "inputMeeting");
+    $router->addRoute("/candidates/meeting/inscript/{candidate}", CandidatesController::class, "inscriptMeeting");
+    $router->addRoute("/candidates/meeting/edit/{meeting}", CandidatesController::class, "editMeeting");
+    $router->addRoute("/candidates/meeting/update/{candidate}/{meeting}", CandidatesController::class, "updateMeeting");
+    $router->addRoute("/candidates/meeting/delete/{meeting}", CandidatesController::class, "deleteMeeting");
 
     //// CONTRACTS ////
     $router->addRoute("/candidates/contracts/input/{id}", CandidatesController::class, "displayInputMeeting");      // todo

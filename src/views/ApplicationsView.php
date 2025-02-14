@@ -15,7 +15,7 @@ class ApplicationsView extends View {
      * @param String $title The HTML page's title
      * @param Array $items The array containing the list of applications
      * @param Int/Null $nb_items_max
-     * @return View HTML Page
+     * @return void
      */
     public function displayApplicationsList(string $title, array $items, ?int $nb_items_max = null) {
         $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'applications.css']);

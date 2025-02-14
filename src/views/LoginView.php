@@ -23,7 +23,7 @@ class LoginView extends View {
             ]
         );
 
-        include FORMULAIRES.DS.'connexion.php';
+        include FORMULAIRES.DS.'login.php';
 
         $this->generateCommonFooter();
     }

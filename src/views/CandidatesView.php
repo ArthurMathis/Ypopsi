@@ -8,8 +8,6 @@ use App\Models\Candidate;
 use App\Models\Establishment;
 use App\Models\Meeting;
 use App\Models\User;
-use App\Repository\EstablishmentRepository;
-use App\Repository\UserRepository;
 
 /**
  * Class representing the candidates' pages view
@@ -218,11 +216,12 @@ class CandidatesView extends View {
     public function displayEditMeeting(Meeting $meeting, User $recruiter, Establishment $establishment, array $users_list, array $establishments_list) {
         $title = "Mise-à-jour rendez-vous";
 
-        $action_method = "update/{$meeting->getId()}";
+        $action_method = "update/{$meeting->getCandidate()}/{$meeting->getId()}";
 
         $action_value = "update_meeting";
 
         $editable = time() <= strtotime($meeting->getDate());
+
 
         $this->displayMeetingForm(
             $title, 
