@@ -80,4 +80,19 @@ class MeetingRepository extends Repository {
     
         return $this->post_request($request, $params);
     }
+
+    // * EDIT * //
+    
+    
+    // * DELETE * //
+    /**
+     * Public function deleting a meeting
+     */
+    public function delete(Meeting $meeting) {
+        $request = "DELETE FROM Meetings WHERE Id = :key_meeting";
+
+        $params = array("key_meeting" => $meeting->getId());
+
+        $this->post_request($request, $params);
+    }
 }

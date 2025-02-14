@@ -121,7 +121,7 @@ class Meeting {
             $data['Description'], 
             $data['Key_Users'], 
             $data['Key_Candidates'], 
-            $data['Key_Establishemnts']
+            $data['Key_Establishments']
         );
     }
 

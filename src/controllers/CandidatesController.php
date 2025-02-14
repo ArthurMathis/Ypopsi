@@ -6,6 +6,7 @@ use App\Controllers\Controller;
 use App\Models\Meeting;
 use App\Models\Action;
 use App\Core\AlertsManipulation;
+use App\Core\FormsManip;
 use App\Repository\ApplicationRepository;
 use App\Repository\CandidateRepository;
 use App\Repository\ContractRepository;
@@ -148,6 +149,12 @@ class CandidatesController extends Controller {
     public function inscriptMeeting(int $key_candidate) {
         isUserOrMore();                                                                     // Verifying the user's role
 
+
+        $can_repo = new CandidateRepository();
+
+        $candidate = $can_repo->get($key_candidate);                                        // Fetching the candidate 
+
+
         $meeting = Meeting::create(                                                         // Creating the meeting
             $_POST['date'] . " " . $_POST['time'], 
             (int) $_POST['recruteur'], 
@@ -157,13 +164,20 @@ class CandidatesController extends Controller {
 
         (new MeetingRepository())->inscript($meeting);                                      // Registering in database
 
+
         $act_repo = new ActionRepository();                 
         
         $type = $act_repo->searchType("Nouveau rendez-vous"); 
 
+        $desc = "Nouveau rendez-vous avec " 
+                . strtoupper($candidate->getName()) . " " 
+                . FormsManip::nameFormat($candidate->getFirstname()) 
+                . ", le " . date('Y m d', strtotime($meeting->getDate()));
+
         $act = Action::create(                                                              // Creating the action
             $_SESSION['user']->getId(), 
-            $type->getId()
+            $type->getId(),
+            $desc
         );             
 
         $act_repo->writeLogs($act);                                                         // Registering the action in logs
@@ -172,6 +186,55 @@ class CandidatesController extends Controller {
             'title' => 'Action enregistrée',
             'msg' => 'Le rendez-vous a été ajouté avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
+
+
+    // * EDIT * // 
+
+
+
+    // * DELETE * //
+    /**
+     * Public method deleting a meeting from the database
+     * 
+     * @param int $key_meeting The primary key of the meeting
+     * @return void
+     */
+    public function deleteMeeting(int $key_meeting) {
+        $meet_repo = new MeetingRepository();
+
+        $meeting = $meet_repo->get($key_meeting);                                           // Fetching the meeting
+
+
+        $can_repo = new CandidateRepository();
+
+        $candidate = $can_repo->get($meeting->getCandidate());                                   // Fetching the candidate 
+
+        $meet_repo->delete($meeting);                                                       // Deleting the meeting
+
+
+        $act_repo = new ActionRepository();                 
+        
+        $type = $act_repo->searchType("Annulation rendez-vous"); 
+
+        $desc = strtoupper($candidate->getName()) . " " 
+                . FormsManip::nameFormat($candidate->getFirstname()) 
+                . " a annulé son rendez-vous du " 
+                . date('Y m d', strtotime($meeting->getDate()));
+
+        $act = Action::create(                                                              // Creating the action
+            $_SESSION['user']->getId(), 
+            $type->getId(),
+            $desc
+        );             
+
+        $act_repo->writeLogs($act);                                                         // Writing logs
+
+        AlertsManipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'Vous avez annulé le rendez-vous.',
+            'direction' => APP_PATH . "/candidates/" . $candidate->getId()
         ]);
     }
 }
