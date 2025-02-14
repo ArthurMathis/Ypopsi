@@ -15,6 +15,7 @@ class Help {
      * @param ?int $id The primary key help of the help
      * @param string $titled The title help of the help
      * @param ?string $titled The description help of the help
+     * @throws HelpExceptions If any piece of information is invalid
      */
     public function __construct(
         protected ?int $id,
@@ -72,10 +73,10 @@ class Help {
      * @return array The array that contains the pieces of information
      */
     public function toArray(): array {
-        return [
+        return array(
             'id'          => $this->getId(),
             'titled'      => $this->getTitled(),
             'description' => $this->getDescription()
-        ];
+        );
     }
 }

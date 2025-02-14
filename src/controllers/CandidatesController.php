@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\Controller;
 use App\Models\Meeting;
 use App\Models\Action;
+use App\Core\AlertsManipulation;
 use App\Repository\ApplicationRepository;
 use App\Repository\CandidateRepository;
 use App\Repository\ContractRepository;
@@ -147,10 +148,8 @@ class CandidatesController extends Controller {
     public function inscriptMeeting(int $key_candidate) {
         isUserOrMore();                                                                     // Verifying the user's role
 
-        $meeting = new Meeting(                                                             // Creating the meeting
-            null, 
+        $meeting = Meeting::create(                                                         // Creating the meeting
             $_POST['date'] . " " . $_POST['time'], 
-            null, 
             (int) $_POST['recruteur'], 
             $key_candidate, 
             (int) $_POST['etablissement']
@@ -160,16 +159,19 @@ class CandidatesController extends Controller {
 
         $act_repo = new ActionRepository();                 
         
-        $type = $act_repo->searchType("Nouveau rendez-vous")['Id']; 
-
+        $type = $act_repo->searchType("Nouveau rendez-vous"); 
 
         $act = Action::create(                                                              // Creating the action
             $_SESSION['user']->getId(), 
-            $type
+            $type->getId()
         );             
 
         $act_repo->writeLogs($act);                                                         // Registering the action in logs
 
-        header("Location: " . APP_PATH . "/candidates/" . $key_candidate);
+        AlertsManipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'Le rendez-vous a été ajouté avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
     }
 }

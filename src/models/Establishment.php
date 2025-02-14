@@ -93,7 +93,7 @@ class Establishment {
      * @throws EstablishmentExceptions If any piece of information is invalid
      * @return Establishment The establishment
      */
-    public static function fromArray(array $data): Establishment {
+    public static function fromArray(array $data): ?Establishment {
         if(empty($data)) {
             throw new EstablishmentExceptions("Erreur lors de la génération de l'action. Tableau de données absent.");
         }
@@ -115,13 +115,13 @@ class Establishment {
      * @return array The array that contains the pieces of information
      */
     public function toArray(): array {
-        return [
+        return array(
             'id'          => $this->getId(),
             'address'     => $this->getAddress(),
             'address'     => $this->getCity(),
             'address'     => $this->getPostcode(),
             'description' => $this->getDescription(),
             'pole'        => $this->getPole()
-        ];
+        );
     }
 }

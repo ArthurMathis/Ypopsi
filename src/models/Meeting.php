@@ -43,6 +43,26 @@ class Meeting {
         }
     }
 
+    /**
+     * Public static method building en returning a new Meeting
+     * 
+     * @param string $date The date of the meeting
+     * @param int $user The primary key of the recruiter of the meeting
+     * @param int $candidate The primary key of the candidate of the meeting
+     * @param int $establishment The primary key of the estalishment of the meeting
+     * @return Meeting The new meeting
+     */
+    public static function create(string $date, int $user, int $candidate, int $establishment): Meeting {
+        return new Meeting(
+            null,
+            $date, 
+            null, 
+            $user, 
+            $candidate, 
+            $establishment
+        );
+    }
+
     // * GET * //
     /**
      * Public method returning the primary key of the meeting
@@ -111,13 +131,13 @@ class Meeting {
      * @return array The array that contains the data of the meeting
      */
     public function toArray(): array {
-        return [
+        return array(
             'id'            => $this->getId(),
             'date'          => $this->getDate(),
             'description'   => $this->getDescription(),
             'user'          => $this->getUser(),
             'candidate'     => $this->getCandidate(),
             'establishment' => $this->getDescription()
-        ];
+        );
     }
 }

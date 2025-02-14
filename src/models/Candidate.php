@@ -211,24 +211,24 @@ class Candidate {
      * @return array The array that contains the pieces of information
      */
     public function toArray(): array {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'firstname' => $this->getFirstname(),
-            'gender' => $this->getGender(),
-            'email' => $this->getEmail(),
-            'phone' => $this->getPhone(),
-            'address' => $this->getAddress(), 
-            'city' => $this->getCity(),
-            'postcode' => $this->getPostcode(),
+        return array(
+            'id'           => $this->getId(),
+            'name'         => $this->getName(),
+            'firstname'    => $this->getFirstname(),
+            'gender'       => $this->getGender(),
+            'email'        => $this->getEmail(),
+            'phone'        => $this->getPhone(),
+            'address'      => $this->getAddress(),
+            'city'         => $this->getCity(),
+            'postcode'     => $this->getPostcode(),
             'availability' => $this->getAvailability(),
-            'visit' => $this->getVisit(),
-            'rating' => $this->getRating(),
-            'description' => $this->getDescription(),
-            'deleted' => $this->getDeleted(),
-            'a' => $this->getA(),
-            'b' => $this->getB(),
-            'c' => $this->getC()
-        ];
+            'visit'        => $this->getVisit(),
+            'rating'       => $this->getRating(),
+            'description'  => $this->getDescription(),
+            'deleted'      => $this->getDeleted(),
+            'a'            => $this->getA(),
+            'b'            => $this->getB(),
+            'c'            => $this->getC()
+        );
     }
 }

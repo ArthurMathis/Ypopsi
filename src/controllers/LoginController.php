@@ -45,11 +45,11 @@ class LoginController extends Controller {
         $_SESSION['user_titled_role'] = $role->getTitled();
 
         $act_repo = new ActionRepository();                                         // Building the action
-        $type = $act_repo->searchType("Connexion")['Id'];
+        $type = $act_repo->searchType("Connexion");
 
         $act = Action::create(
             $_SESSION['user']->getId(), 
-            $type
+            $type->getId()
         );
 
         $act_repo->writeLogs($act);                                                 // Writing the logs                
@@ -63,11 +63,14 @@ class LoginController extends Controller {
      */
     public function logout() {
         if(isset($_SESSION['user']) && !empty($_SESSION['user']->getId())) {
-            $act_repo = new ActionRepository();                                         // Building the action
+            $act_repo = new ActionRepository();
 
-            $type = $act_repo->searchType("Déconnexion")['Id'];
+            $type = $act_repo->searchType("Déconnexion");
 
-            $act = Action::create($_SESSION['user']->getId(), $type);
+            $act = Action::create(                                                      // Building the action
+                $_SESSION['user']->getId(), 
+                $type->getId()
+            );
             
             $act_repo->writeLogs($act);                                                 // Writing the logs   
         } 

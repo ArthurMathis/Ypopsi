@@ -14,11 +14,16 @@ class Role {
      * 
      * @param int $id The primary key of the role
      * @param string $titled The title of the role
+     * @throws RoleExceptions If any piece of information is invalid
      */
     public function __construct(
         protected int $id, 
         protected string $titled
-    ) {}
+    ) {
+        if(!empty($id) && $id <= 0) {
+            throw new RoleExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
+        }
+    }
 
     // * GET * //
     /**
@@ -49,6 +54,18 @@ class Role {
         return new Role(
             $data['Id'], 
             $data['Titled']
+        );
+    }
+
+    /**
+     * Public method returning the data of the role in a array
+     * 
+     * @return array
+     */
+    public function toArray(): array {
+        return array(
+            "id"     => $this->getId(),
+            "titled" => $this->getTitled()
         );
     }
 }

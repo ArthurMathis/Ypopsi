@@ -121,12 +121,12 @@ class Action {
      * @return array The array that contains the pieces of information
      */
     public function toArray(): array {
-        return [
+        return array(
             'id'          => $this->getId(),
             'description' => $this->getDescription(),
             'date'        => $this->getDate(),
             'user'        => $this->getUser(),
             'type'        => $this->getType()
-        ];
+        );
     }
 }

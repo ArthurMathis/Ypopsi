@@ -168,7 +168,7 @@ class User {
      * @return array
      */
     public function toArray(): array {
-        return [
+        return array(
             'id'             => $this->getId(),
             'identifier'     => $this->getIdentifier(),
             'name'           => $this->getName(),
@@ -178,6 +178,6 @@ class User {
             'password_temp'  => $this->getPasswordTemp(),
             'role'           => $this->getRole(),
             'establishement' => $this->getEstablishment()
-        ];
+        );
     }
 }

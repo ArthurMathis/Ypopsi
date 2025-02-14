@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Repository\Repository;
 use App\Models\Action;
+use App\Models\TypeOfActions;
 
 /**
  * Class representing a repository of actions 
@@ -19,9 +20,10 @@ class ActionRepository extends Repository {
      */
     public function writeLogs(Action $act) {
         $request = "INSERT INTO Actions (Key_Users, Key_Types_of_actions, Description) VALUES (:user, :type, :description)";
+
         $params = [
             "user"        => $act->getUser(),
-            "type"        => $this->searchType($act->getType())['Id'],
+            "type"        => $act->getType(),
             'description' => $act->getDescription()
         ];
 
@@ -33,9 +35,9 @@ class ActionRepository extends Repository {
      * Public method searching one type of action in the database
      * 
      * @param int|string $action The primary key og the type of action 
-     * @return array
+     * @return TypeOfActions
      */
-    Public function searchType(int|string $act): array {
+    Public function searchType(int|string $act): TypeOfActions {
         if(is_int($act)) {
             $request = "SELECT * FROM Types_of_actions WHERE Id = :action"; 
         } else {
@@ -44,7 +46,9 @@ class ActionRepository extends Repository {
         
         $params = array("action" => $act);
 
-        $response = $this->get_request($request, $params, true, true);
+        $fetch = $this->get_request($request, $params, true, true);
+
+        $response = TypeOfActions::fromArray($fetch);
 
         return $response;
     }

@@ -85,11 +85,11 @@ class Qualification {
      * @return array The array that contains the pieces of information
      */
     public function toArray(): array {
-        return [
+        return array(
             "id"          => $this->getId(),
             "titled"      => $this->getTitle(),
             "medical"     => $this->getMedical(),
             "abreviation" => $this->getAbreviation()
-        ];
+        );
     }
 }
