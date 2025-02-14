@@ -110,11 +110,11 @@ class CandidatesView extends View {
     /**
      * Public method returning the meeting's HTML form
      *
-     * @param string $title The HTML page's title
+     * @param string $title The title of the HTML page
      * @param int $key_candidate The candidate's primary key
-     * @param string $user_establishment The user's establishment
-     * @param array $users
-     * @param array $establisments
+     * @param string $user_establishement
+     * @param array $users The list of users
+     * @param array $establisments The list of establishments
      * @return View The HTML Page
      */
     public function displayInputMeetings(string $title, int $key_candidate, string $user_establishment, array $users, array $establisments) {
@@ -285,7 +285,7 @@ class CandidatesView extends View {
             echo "<h2>Aucun rendez-vous enregistré </h2>"; 
         }
         
-        $link = APP_PATH . "/candidates/meetings/input/" . $key_candidate;
+        $link = APP_PATH . "/candidates/meeting/input/" . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php'); 
 
         echo "</section>";

@@ -19,8 +19,8 @@ class User {
      * @param string $email The user's email
      * @param string $password The user's password
      * @param bool $password_temp If the user's password has never be changed
-     * @param int $role_key The primary key of the user's role
-     * @param int $establishment_key the primary key of the user's establishment
+     * @param int $role The primary key of the user's role
+     * @param int $establishment the primary key of the user's establishment
      * @throws UserExceptions If any attribut is invalid
      */
     public function __construct(
@@ -31,11 +31,11 @@ class User {
         protected string $email, 
         protected string $password, 
         protected ?bool $password_temp, 
-        protected int $role_key, 
-        protected int $establishment_key
+        protected int $role, 
+        protected int $establishment
     ) {
         // id
-        if($id <= 0) {
+        if(!empty($id) & $id <= 0) {
             throw new UserExceptions("La clé primaire doit être positive. La valeur : {$id} est invalide.");
         }
 
@@ -68,13 +68,13 @@ class User {
         }
 
         // role
-        if($role_key <= 0) {
-            throw new UserExceptions("La clé du rôle doit être positive. La valeur : {$role_key} est invalide.");
+        if($role <= 0) {
+            throw new UserExceptions("La clé du rôle doit être positive. La valeur : {$role} est invalide.");
         }
 
         // establishment
-        if($establishment_key <= 0) {
-            throw new UserExceptions("La clé due l'établissement doit être positive. La valeur : {$establishment_key} est invalide.");
+        if($establishment <= 0) {
+            throw new UserExceptions("La clé due l'établissement doit être positive. La valeur : {$establishment} est invalide.");
         }
     }
 
@@ -127,13 +127,13 @@ class User {
      * 
      * @return int
      */
-    public function getRole(): int { return $this->role_key; }
+    public function getRole(): int { return $this->role; }
     /**
      * Public methog returning the user's establishment
      * 
      * @return int
      */
-    public function getEstablishment(): int { return $this->establishment_key; }
+    public function getEstablishment(): int { return $this->establishment; }
 
     
     // * CONVERT * //

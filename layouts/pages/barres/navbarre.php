@@ -12,26 +12,50 @@
     </article>
     <section class="action-section">
         <a href="<?= APP_PATH ?>" class="LignesHover <?php if($currentPage == HOME) echo 'selected'?>">
-            <img src="<?= APP_PATH ?>/layouts/assets/img/logo/home.svg" alt="page d'accueil">
+            <?php if($form) : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/white-home.svg" alt="accueil">
+            <?php else : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/home.svg" alt="accueil">
+            <?php endif ?>
         </a>
         <a href="<?= APP_PATH ?>/applications" class="LignesHover <?php if($currentPage == APPLICATIONS) echo 'selected'?>">
-            <img src="<?= APP_PATH ?>/layouts/assets/img/logo/applications.svg" alt="liste des candidatures">
+            <?php if($form) : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/white-applications.svg" alt="candidatures">
+            <?php else : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/applications.svg" alt="candidatures">
+            <?php endif ?>
         </a>
         <!--
         <a href="#" class="LignesHover <?php if($currentPage == NEEDS) echo 'selected'?>">
-            <img src="<?= APP_PATH ?>/layouts/assets/img/logo/needs.svg" alt="liste des besoins">
+            <?php if($form) : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/white-needs.svg" alt="besoins">
+            <?php else : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/needs.svg" alt="besoins">
+            <?php endif ?>
         </a>
         <a href="#" class="LignesHover <?php if($currentPage == STATS) echo 'selected'?>">
-            <img src="<?= APP_PATH ?>/layouts/assets/img/logo/statistics.svg" alt="statistiques">
+            <?php if($form) : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/white-statistics.svg" alt="statistiques">
+            <?php else : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/statistics.svg" alt="statistiques">
+            <?php endif ?>
         </a>
         -->
     </section>
     <section>
         <a href="<?= APP_PATH ?>/index.php?preferences=home" class="LignesHover <?php if($currentPage == PREFERENCES) echo 'selected'?>">
-            <img src="<?= APP_PATH ?>/layouts/assets/img/logo/preferences.svg" alt="paramètres">
+            <?php if($form) : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/white-preferences.svg" alt="paramètres">
+            <?php else : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/preferences.svg" alt="paramètres">
+            <?php endif ?>
         </a>
         <a href="<?= APP_PATH ?>/logout" class="LignesHover">
-            <img src="<?= APP_PATH ?>/layouts/assets/img/logo/disconnect.svg" alt="déconnexion">
+            <?php if($form) : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/white/disconnect.svg" alt="déconnexion">
+            <?php else : ?>
+                <img src="<?= APP_PATH ?>/layouts/assets/img/logo/disconnect.svg" alt="déconnexion">
+            <?php endif ?>
         </a>
     </section>
 </nav>

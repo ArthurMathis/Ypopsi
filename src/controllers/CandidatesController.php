@@ -6,9 +6,11 @@ use App\Controllers\Controller;
 use App\Repository\ApplicationRepository;
 use App\Repository\CandidateRepository;
 use App\Repository\ContractRepository;
+use App\Repository\EstablishmentRepository;
 use App\Repository\MeetingRepository;
 use App\Repository\QualificationRepository;
 use App\Repository\HelpRepository;
+use App\Repository\UserRepository;
 
 class CandidatesController extends Controller {
     /**
@@ -113,7 +115,21 @@ class CandidatesController extends Controller {
      * @param Int $key_candidate The candidate's primary ket
      * @return View HTML page
      */
-    public function displayInputMeetings(int $key_candidate) {
-        echo "bonjour";
+    public function displayInputMeeting(int $key_candidate) {
+        $user_repo = new UserRepository();
+        $users = $user_repo->getAutoCompletion();
+    
+        $esta_repo = new EstablishmentRepository();
+        $user_establishment = $esta_repo->get($_SESSION['user']->getEstablishment());
+    
+        $establishments = $esta_repo->getAutoCompletion();
+    
+        $this->View->displayInputMeetings(
+            "Nouveau rendez-vous",
+            $key_candidate,
+            $user_establishment->getTitled(),
+            $users,
+            $establishments
+        );
     }
 }

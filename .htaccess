@@ -9,3 +9,5 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 # Redirige toutes les autres requêtes vers index.php pour que je puisse gérer mes routes avec mon routeur
 RewriteRule ^ index.php [QSA,L]
+
+AddType application/javascript .js

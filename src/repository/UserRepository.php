@@ -28,6 +28,11 @@ class UserRepository extends Repository {
         return User::fromArray($fetch);
     }
 
+    /**
+     * Public method returning the list of users 
+     * 
+     * @return array
+     */
     public function getList(): array {
         $request = "SELECT * FROM Users";
 
@@ -35,6 +40,24 @@ class UserRepository extends Repository {
 
         $response = array_map(function($c) {
             return User::fromArray($c);
+        }, $fetch);
+
+        return $response;
+    }
+
+    /**
+     * Public method returning the list of users for AutoComplet items
+     * 
+     * @return array The list of users
+     */
+    public function getAutoCompletion(): array {
+        $fetch = $this->getList();
+
+        $response = array_map(function($c) {
+            return array(
+                "key" => $c->getId(), 
+                "text" => $c->getName() . " " . $c->getFirstname()
+            );
         }, $fetch);
 
         return $response;
