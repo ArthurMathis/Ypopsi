@@ -7,6 +7,10 @@
   src: url('../assets/typo/Roboto/Roboto-Italic.ttf');
 }
 @font-face {
+  font-family: 'Roboto LightItalic';
+  src: url('../assets/typo/Roboto/Roboto-LightItalic.ttf');
+}
+@font-face {
   font-family: "Roboto Bold";
   src: url("../assets/typo/Roboto/Roboto-Bold.ttf");
 }
@@ -14,6 +18,7 @@
   font-family: "Pacifico";
   src: url("../assets/typo/Pacifico-Regular.ttf");
 }
+
 :root {
   --black: #2C3131;
   --grey: #d5d5d5;
@@ -369,6 +374,11 @@ form .checkbox-item label {
 }
 .autocomplete-items > div:is(:hover, :focus, .active) {
   color: var(--black);
+}
+
+.versionning {
+  color: var(--white);
+  font-family: 'Roboto LightItalic';
 }
 
 /******** Animations ********/
