@@ -98,6 +98,18 @@ class CandidatesView extends View {
 
     // * DISPLAY INPUT * //
     /**
+     * 
+     */
+    public function displayInputApplication(string $title, ?Candidate $candidate, array $jobs_list, array $services_list, array $establishments_list, array $type_of_contracts_list, array $sources_list) {
+        $this->generateCommonHeader("Ypopsi - {$title}", [ FORMS_STYLES.DS.'big-form.css' ]);
+
+        $this->generateMenu(true, null);
+
+        include FORMULAIRES.DS.'application.php';
+
+        $this->generateCommonFooter();
+    }
+    /**
      * Public function Returning the offers' html form 
      *
      * @param string $title The HTML Page title
@@ -320,7 +332,7 @@ class CandidatesView extends View {
             echo "<h2>Aucune candidature enregistrée </h2>";
         }
 
-        $link = APP_PATH . "/applications/input/" . $key_candidate;
+        $link = APP_PATH . "/candidates/applications/input/" . $key_candidate;
         include(MY_ITEMS.DS.'add_button.php');  
 
         echo "</section>";

@@ -4,6 +4,10 @@ namespace App\Models;
 
 use App\Exceptions\TypeOfActionsExceptions;
 
+/**
+ * Class representing a type of actions
+ * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ */
 class TypeOfActions {
     /**
      * Constructor class

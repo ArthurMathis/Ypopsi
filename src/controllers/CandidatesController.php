@@ -7,6 +7,7 @@ use App\Models\Meeting;
 use App\Models\Action;
 use App\Core\AlertsManipulation;
 use App\Core\FormsManip;
+use App\Models\TypeOfContracts;
 use App\Repository\ApplicationRepository;
 use App\Repository\CandidateRepository;
 use App\Repository\ContractRepository;
@@ -16,6 +17,10 @@ use App\Repository\QualificationRepository;
 use App\Repository\HelpRepository;
 use App\Repository\UserRepository;
 use App\Repository\ActionRepository;
+use App\Repository\JobRepository;
+use App\Repository\ServiceRepository;
+use App\Repository\SourceRepository;
+use App\Repository\TypeOfContractsRepository;
 
 class CandidatesController extends Controller {
     /**
@@ -116,6 +121,42 @@ class CandidatesController extends Controller {
 
 
     // * INPUT * //
+    /**
+     * Public method returning the HTML form of inputing an application
+     * 
+     * @param ?int $key_candidate The candidate's primary key
+     * @return void
+     */
+    public function inputApplication(?int $key_candidate = null) {
+        isUserOrMore();                                                                     // Verifying the user's role
+
+
+        if(!empty($key_candidate)) {                                                        // Fetching the candidate
+            $candidate = (new CandidateRepository())->get($key_candidate);
+        }
+
+
+        $jobs_list = (new JobRepository())->getAutoCompletion($candidate->getGender() ?? true);
+
+        $services_list = (new ServiceRepository())->getAutoCompletion();
+
+        $establishments_list = (new EstablishmentRepository())->getAutoCompletion();
+
+        $type_of_contracts_list = (new TypeOfContractsRepository())->getAutoCompletion();
+
+        $sources_list = (new SourceRepository())->getAutoCompletion();
+
+
+        $this->View->displayInputApplication(
+            "", 
+            $candidate, 
+            $jobs_list, 
+            $services_list,
+            $establishments_list, 
+            $type_of_contracts_list,
+            $sources_list
+        );
+    }
     /**
      * Public method returning the HTML form of inputing a meeting
      *
