@@ -6,12 +6,12 @@
             echo $size;
         ?></h3>
     </div>
-    <?php $keys = !empty($items) ? array_keys($items[0]) : ["Aucun élément"]; ?>
+    <?php $keys = !empty($items) ? array_keys($items[0]) : [ "Aucun élément" ]; ?>
     <div class="table-wrapper">
         <table>
             <thead>
             <tr>
-                <?php foreach($keys as $key): if($key != 'Cle') :?>
+                <?php foreach($keys as $key): if($key != "Cle") :?>
                     <th><?= $key ?></th>
                     <?php endif ?>
                 <?php endforeach ?>   
@@ -21,7 +21,7 @@
                 <?php if($size > 0): ?>
                     <?php $i = 0; while($i < $size && $i < $nb_items_max): ?>
                         <tr>
-                            <?php foreach($items[$i] as $key => $cell): if($key != 'Cle') :?>
+                            <?php foreach($items[$i] as $key => $cell): if($key != "Cle") :?>
                                 <th><?= $cell ?></th>  
                                 <?php endif ?>
                             <?php endforeach ?>
@@ -35,13 +35,13 @@
         </table>
     </div>
 </section>
-<?php if(isset($items[0]['Cle'])): ?>
+<?php if(isset($items[0][ "Cle" ])): ?>
     <?php 
         $links = [];
-        foreach($items as $row) array_push($links, $row['Cle']);   
+        foreach($items as $row) array_push($links, $row[ "Cle" ]);   
     ?>
     <script>
-        const rows = document.querySelectorAll('.liste_items .table-wrapper table tbody tr');
+        const rows = document.querySelectorAll(".liste_items .table-wrapper table tbody tr");
         const links = <?= json_encode($links); ?>;
 
         rows.forEach((obj, index) => {

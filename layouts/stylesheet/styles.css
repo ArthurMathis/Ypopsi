@@ -736,7 +736,7 @@ button.form_button:is(:hover, :focus),
 
   border-radius: var(--radius);
   transform: translateY(-50%);
-  background-image: url("../img/fleche.svg");
+  background-image: url("../assets/img/fleche.svg");
   background-size: contain;
 }
 .table-wrapper table thead tr th.reverse-tri::after {
