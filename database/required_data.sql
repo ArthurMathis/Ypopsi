@@ -763,11 +763,12 @@ INSERT INTO Helps (Titled) VALUES
     ("Rachat de contrat")
 ;
 INSERT INTO Types_of_contracts (Titled, Description) VALUES 
-    ('CDI', 'Contrat à durée indéterminée'), 
-    ('CDD', 'Contrat à durée déterminée'), 
-    ('Stage', 'Stage en entreprise'),
-    ('Alternance', 'Formation réalisée en alternance'), 
-    ('Interim', 'Mission réalisé par un prestatère')
+    ("CDI", "Contrat à durée indéterminée"), 
+    ("CDD", "Contrat à durée déterminée"), 
+    ("Stage", "Stage en entreprise"),
+    ("Alternance", "Formation réalisée en alternance"), 
+    ("Interim", "Mission réalisé par un prestatère"),
+    ("vacataire", "Mission réalisée par un vacataire")
 ;
 INSERT INTO sources (Titled) VALUES 
     ("1termed"),
