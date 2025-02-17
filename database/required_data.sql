@@ -846,11 +846,15 @@ INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES
     ("Licence Pro", FALSE, NULL),
     ("Maitre apprentissage", FALSE, NULL),
     ("Maitrise", FALSE, NULL),
-    ("Manipulateur d'électroradiologie médicale", TRUE, NULL),
+    ("Manipulateur d'électroradiologie médicale", TRUE, "M.E.R.M."),
     ("Master", FALSE, NULL),
     ("Master 1", FALSE, NULL),
     ("Master 2", FALSE, NULL),
-    ("Sage Femme D.E.", TRUE, "S.F.")
+    ("Sage Femme D.E.", TRUE, "S.F."),
+    ("Aide médico-psychologique D.E.", TRUE, "A.M.P."),
+    ("Auxiliaire de vie social D.E.", FALSE, "A.V.S."),
+    ("Diplôme d'Etat d'Ergothérapeute", TRUE, NULL),
+    ("Mention Complétaire Aide à Domicile", FALSE, "M.C.A.D.")
 ;
 
 
