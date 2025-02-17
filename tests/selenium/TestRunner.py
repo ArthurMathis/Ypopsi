@@ -239,6 +239,8 @@ class TestRunner:
         """
         driver = webdriver.Chrome()
         
+        driver.set_window_size(1700, 1000)
+        
         driver.get(self.APP_URL + self.APP_CONNEXION_FORM_LINK)
         time.sleep(self.SLEEP_TIME)
 
@@ -279,7 +281,7 @@ class TestRunner:
         print(f"\n{self.RED} Test échoué !{self.RESET}")
         sys.exit()
         
-    def writeError(self, exception, force_exit = False):
+    def writeError(self, exception, force_exit = True):
         """
         Méthode publlique inscrivant une erreur et arrêtant si besoin l'algorithme
 
@@ -519,9 +521,6 @@ class TestRunner:
     ## LIST MANIP ##
     def clickOnFirstElmt(self, driver):
         item = self.find_element_by_css(driver, ".liste_items .table-wrapper table tbody tr")
-        
-        html_content = item.get_attribute('outerHTML')
-        print(html_content)
         
         item.click()
         

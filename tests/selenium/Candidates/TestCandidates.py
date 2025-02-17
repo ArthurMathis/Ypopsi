@@ -19,6 +19,10 @@ class TestCandidates(TestApplications):
     Classe destinée aux tests des fonctionnalités de manipulations de candidats      
     """
     
+    APP_CANDIDATES_BL_A = "a"
+    APP_CANDIDATES_BL_B = "b"
+    APP_CANDIDATES_BL_C = "c"
+    
     def start(self):
         """
         Méthode préparant l'application pour le test
@@ -44,6 +48,26 @@ class TestCandidates(TestApplications):
         
         return driver
     
+    # * GET * #
+    def getBL(self, driver: webdriver, checkboxs: list, state: bool = True):
+        res = True
+        
+        i = 0
+        size = len(checkboxs)
+        while(res and i < size):
+            obj = checkboxs[i]
+            item = self.find_element_by_id(driver, obj)
+            
+            print(f"Checkbox {obj} - Selected: {item.is_selected()}")
+            
+            if((state and not item.is_selected()) or (not state and item.is_selected())):
+                res = False
+                
+            i += 1
+            
+        return res
+        
+    # * SET * #
     def setRating(self, driver, rate: int):
         star = self.find_element_by_id(driver, "notation" + str(rate))
         
@@ -54,10 +78,11 @@ class TestCandidates(TestApplications):
         
         desc_input.setKeys(desc)
         
-    def setBL(self, driver, checkbox: str):
+    def setBL(self, driver, checkbox: str, state: bool = True):
         input = self.find_element_by_id(driver, checkbox)
         
-        input.click()
+        if((state and not input.is_selected()) or (not state and input.is_selected())):
+            input.click()
         
     def setratingForm(self, driver, rate: int, desc: str, a: bool, b: bool, c: bool):
         self.setRating(driver, rate)
