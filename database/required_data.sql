@@ -218,7 +218,9 @@ INSERT INTO Services (Titled, Description) VALUES
     ("AHS - SODEXO HAS", ""),
     ("AHS - SODEXO DIACONAT", ""),
     ("AHS - ZONE DIVERS", ""),
-    ("ACCUEIL - MR", "")
+    ("ACCUEIL - MR", ""),
+    ("USLD", "Unités de soins de longue durée"),
+    ("SOINS", "Unités de soins réservées aux petites structures")
 ;
 INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
     -- Clinique du Diaconat Roosevelt -- 
