@@ -102,6 +102,7 @@ $completed = !empty($candidate);
                     id="availability" 
                     name="availability" 
                     min="<?php echo Moment::currentMoment()->getDate(); ?>"
+                    required
                 >
             </div>
 
@@ -117,21 +118,31 @@ $completed = !empty($candidate);
                         name="source" 
                         placeholder="HelloWork" 
                         autocomplete="off"
+                        required
                     >
+
                     <article></article>
                 </div>
             </div>
         </section>
 
-        <section class="buttons_actions">
+        <div class="form-section">
+            <button 
+                class="action_button grey_color"
+                type="button"
+                onclick="window.history.back()"
+            >
+                Annuler
+            </button>
+
             <button 
                 type="submit" 
-                class="submit_button" 
+                class="action_button reverse_color"
                 value="new_user"
             >
-                Valider
+                Enregistrer
             </button>
-        </section>
+        </div>
     </div>
 </form>
 

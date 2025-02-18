@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Models\Candidate;
 use App\Repository\Repository;
 use App\Models\Help;
 
@@ -74,13 +75,13 @@ class HelpRepository extends Repository {
     }
 
     // * SEARCH * //
-    public function searchCoopteurId(int $key_candidate) {
+    public function searchCoopteurId(int $key_candidate): int {
         $request = "SELECT Key_Employee AS Id From Have_the_right_to WHERE Key_Candidates = :id";
 
         $params = array("id" => $key_candidate);
 
         $response = $this->get_request($request, $params);
 
-        return $response;
+        return $response['Id'];
     }
 }

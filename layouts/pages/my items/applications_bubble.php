@@ -36,11 +36,11 @@
     <?php if(!$item['acceptee'] && !$item['refusee']): ?>
         <footer>
         <?php if($_SESSION['user']->getRole() != INVITE): ?>
-            <a class="action_button grey_color" href="index.php?candidates=dismiss-applications&key_applications=<?= $item['cle']; ?>">
+            <a class="action_button grey_color" href="<?= APP_PATH ?>/candidates/applications/reject/<?= $key_candidate ?>/<?= $item['cle'] ?>">
                 <p>Refuser</p>
                 <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
             </a>
-            <a class="action_button reverse_color" href="index.php?candidates=input-offers&key_candidate=<?= $key_candidate; ?>&key_application=<?= $item['cle']; ?>">
+            <a class="action_button reverse_color" href="<?= APP_PATH ?>/candidates/applications/accept/<?= $key_candidate ?>/<?= $item['cle'] ?>">
                 <p>Valider</p>
                 <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-valider.svg" alt="">
             </a> 

@@ -64,8 +64,8 @@ try {
     //// APPLICATIONS ////
     $router->addRoute("/candidates/applications/input", CandidatesController::class, "inputApplication");                   // todo
     $router->addRoute("/candidates/applications/input/{candidate}", CandidatesController::class, "inputApplication");       // todo
-    $router->addRoute("/candidates/applications/accept/{candidate}", CandidatesController::class, "acceptApplication");     // todo
-    $router->addRoute("/candidates/applications/reject/{candidate}", CandidatesController::class, "rejectApplication");     // todo
+    $router->addRoute("/candidates/applications/accept/{candidate}/{application}", CandidatesController::class, "acceptApplication");     // todo
+    $router->addRoute("/candidates/applications/reject/{candidate}/{application}", CandidatesController::class, "rejectApplication");     // todo
 
     //// MEETINGS ////
     $router->addRoute("/candidates/meeting/input/{candidate}", CandidatesController::class, "inputMeeting");

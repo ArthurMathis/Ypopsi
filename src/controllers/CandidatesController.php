@@ -7,7 +7,6 @@ use App\Models\Meeting;
 use App\Models\Action;
 use App\Core\AlertsManipulation;
 use App\Core\FormsManip;
-use App\Models\TypeOfContracts;
 use App\Repository\ApplicationRepository;
 use App\Repository\CandidateRepository;
 use App\Repository\ContractRepository;
@@ -59,23 +58,23 @@ class CandidatesController extends Controller {
      */
     public function displayCandidate(int $key_candidate) {
         $can_repo = new CandidateRepository();
-        $candidate = $can_repo->get($key_candidate);
+        $candidate = $can_repo->get($key_candidate);                                                                // Fetching the candidate 
 
 
         $cont_repo = new ContractRepository();
-        $contracts = $cont_repo->getListFromCandidates($key_candidate);
+        $contracts = $cont_repo->getListFromCandidates($key_candidate);                                             // Fetching the candidate's contracts
 
 
         $app_repo = new ApplicationRepository();
-        $applications = $app_repo->getListFromCandidates($key_candidate);
+        $applications = $app_repo->getListFromCandidates($key_candidate);                                           // Fetching the candidate's applications
 
 
         $meet_repo = new MeetingRepository();
-        $meetings = $meet_repo->getListFromCandidate($key_candidate);
+        $meetings = $meet_repo->getListFromCandidate($key_candidate);                                               // Fetching the candidate's meetings
 
 
         $qua_repo = new QualificationRepository();
-        $fetch_qualifications = $qua_repo->getListFromCandidate($key_candidate);
+        $fetch_qualifications = $qua_repo->getListFromCandidate($key_candidate);                                    // Fetching the candidate's qualifications
 
         $qualifications = array_map(function($c) use ($qua_repo, $key_candidate) {
             $date = $qua_repo->searchdate($key_candidate, $c->getId());
@@ -88,7 +87,7 @@ class CandidatesController extends Controller {
 
 
         $help_repo = new HelpRepository();
-        $helps = $help_repo->getListfromCandidates($key_candidate);
+        $helps = $help_repo->getListfromCandidates($key_candidate);                                                 // Fetching the candidate's helps
 
         $i = 0;
         $size = count($helps);
@@ -103,7 +102,7 @@ class CandidatesController extends Controller {
 
         $coopteur = null;
         if($find) {
-            $coopt_id = $help_repo->searchCoopteurId($key_candidate)['Id'];
+            $coopt_id = $help_repo->searchCoopteurId($key_candidate);
             $coopteur = $can_repo->get($coopt_id);
         }
 
@@ -118,6 +117,58 @@ class CandidatesController extends Controller {
             $coopteur
         );
     }
+
+
+    // * ACCEPT * //
+    public function acceptApplication(int $key_candidate, int $key_application) {
+
+    }
+
+    /**
+     * Public method refusing an application
+     * 
+     * @param int $key_candidate The candidate's primary key
+     * @param int $key_application The primari key of the application
+     * @return void
+     */
+    public function rejectApplication(int $key_candidate, int $key_application) {
+        $app_repo = new ApplicationRepository();
+
+        $application = $app_repo->get($key_application);                                                    // Fetching the application
+
+        $app_repo->reject($key_application);                                                                // Refusing the application
+
+
+        $candidate = (new CandidateRepository())->get($key_candidate);                                      // Fetching the candidate
+
+
+        $job = (new JobRepository())->get($application["Key_Jobs"]);                                        // Fetching the job 
+
+        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+
+        $act_repo = new ActionRepository();                 
+        
+        $type = $act_repo->searchType("Refus candidature"); 
+
+        $desc = "Refus de la candidature de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
+
+        $act = Action::create(                                                                              // Creating the action
+            $_SESSION['user']->getId(), 
+            $type->getId(),
+            $desc
+        );          
+        
+
+        $act_repo->writeLogs($act);                                                                         // Registering the action in logs
+
+        AlertsManipulation::alert([
+            'title'     => 'Action enregistrée',
+            'msg'       => 'La candidature a été refusée avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
+
 
 
     // * INPUT * //
@@ -148,7 +199,7 @@ class CandidatesController extends Controller {
 
 
         $this->View->displayInputApplication(
-            "", 
+            "Nouvelle candidature", 
             $candidate, 
             $jobs_list, 
             $services_list,

@@ -78,7 +78,7 @@ use App\Core\Moment;
                     name="date" 
                     id="date" 
 
-                    <?php if(!empty($meeting->getDate())): ?>
+                    <?php if(!empty($meeting)): ?>
                         value="<?= Moment::dayFromDate($meeting->getDate()) ?>" 
                     <?php endif ?>
 
@@ -99,7 +99,7 @@ use App\Core\Moment;
                     name="time" 
                     id="time"
 
-                    <?php if(!empty($meeting->getDate())): ?>
+                    <?php if(!empty($meeting)): ?>
                         value="<?= Moment::hourFromDate($meeting->getDate(), "h:m") ?>" 
                     <?php endif ?>
 
