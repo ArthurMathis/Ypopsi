@@ -11,6 +11,6 @@
 
 # Ignore pycache files
 __pycache__/
+/vendor/
 
-# Ignore the .env document
-# .env
+/database/pole_recrutement_donnees.xlsx
