@@ -69,7 +69,7 @@ class CandidatesController extends Controller {
 
 
         $app_repo = new ApplicationRepository();
-        $applications = $app_repo->getListFromCandidates($key_candidate);                                           // Fetching the candidate's applications
+        $applications = $app_repo->getListFromCandidates($key_candidate, $candidate->getGender());                                           // Fetching the candidate's applications
 
 
         $meet_repo = new MeetingRepository();

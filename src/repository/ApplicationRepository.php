@@ -113,7 +113,19 @@ class ApplicationRepository extends Repository {
 
         $params = array("cle" => $key_candidate);
 
-        $response = $this->get_request($request, $params);
+        $fetch = $this->get_request($request, $params);
+
+
+        $response = array_map(function($c) use ($gender) {
+            if(!$gender) {
+                $c["poste"] = $c["posteFeminin"];
+            }
+
+            unset($c["posteFeminin"]);
+            
+            return $c;
+        }, $fetch);
+
 
         return $response;
     }
