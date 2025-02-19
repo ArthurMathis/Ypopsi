@@ -42,4 +42,53 @@ class CandidateRepository extends Repository {
 
         return $response;
     }
+
+    // * INSCRIPT * //
+    /**
+     * Public method registering a new candidate in the database
+     * 
+     * @param Candidate $candidate The candidate to registering
+     * @return int The new candidate's primary key
+     */
+    public function inscript(Candidate &$candidate): int {
+        $request = "Name, Firstname, Gender, Availability";
+
+        $values_request = ":name, :firstname, :gender";
+
+        if(!empty($candidate->getEmail())) {
+            $request .= ", Email";
+            $values_request .= ", :email";
+        }
+
+        if(!empty($candidate->getPhone())) {
+            $request .= ", Phone";
+            $values_request .= ", :phone";
+        }
+
+        if(!empty($candidate->getAddress()) && !empty($candidate->getCity()) && !empty($candidate->getPostcode())) {
+            $request .= ", Address, City, Postcode";
+            $values_request .= ", :address, :city, :postcode";
+        }
+
+        if(!empty($candidate->getDescription())) {
+            $request .= ", Description";
+            $values_request .= ", :description";
+        }
+
+        if(!empty($candidate->getRating())) {
+            $request .= ", Rating";
+            $values_request .= ", :rating";
+        }
+
+        if(!empty($candidate->getVisit())) {
+            $request .= ", MedicalVisit";
+            $values_request .= ", :visit";
+        }
+
+        $request .= ")" . $values_request . ")";
+
+        unset($values_request);
+    
+        return $this->post_request($request, $candidate->toSQL());
+    }
 }

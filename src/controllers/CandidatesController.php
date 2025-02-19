@@ -3,10 +3,12 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
-use App\Models\Meeting;
-use App\Models\Action;
 use App\Core\AlertsManipulation;
 use App\Core\FormsManip;
+use App\Models\Meeting;
+use App\Models\Action;
+use App\Models\Application;
+use App\Models\Candidate;
 use App\Repository\ApplicationRepository;
 use App\Repository\CandidateRepository;
 use App\Repository\ContractRepository;
@@ -20,6 +22,7 @@ use App\Repository\JobRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\SourceRepository;
 use App\Repository\TypeOfContractsRepository;
+use Exception;
 
 class CandidatesController extends Controller {
     /**
@@ -120,8 +123,11 @@ class CandidatesController extends Controller {
 
 
     // * ACCEPT * //
+    /**
+     * 
+     */
     public function acceptApplication(int $key_candidate, int $key_application) {
-
+        
     }
 
     /**
@@ -242,6 +248,78 @@ class CandidatesController extends Controller {
 
     // * INSCRIPT * //
     /**
+     * Public method creating and registering a new application
+     * 
+     * @param ?int $key_candidate The candidate's primary key
+     * @return void
+     */
+    public function inscriptApplication(?int $key_candidate = null) {
+        isUserOrMore();                                                                     // Verifying the user's role
+
+
+        $candidate = null;
+
+        if(! is_null($key_candidate)) {                                                     // Fetching the candidate
+            $candidate = (new CandidateRepository())->get($key_candidate);
+        } 
+        
+
+        if(isset($_SESSION["candidate"])) {                                                 // Creating the candidate
+            $candidate = $_SESSION["candidate"];
+
+            $can_repo = new CandidateRepository();
+
+            $key_candidate = $can_repo->inscript($candidate);
+        } 
+        
+
+        if(empty($candidate)) {
+            throw new Exception("Il est impossible d'inscrire une candidature sans candidat.");
+        }
+
+
+        $application = Application::create(                                                 // Creating the application
+            $key_candidate, 
+            (int) $_POST["job"],
+            (int) $_POST["source"],
+            (int) $_POST["type_of_contract"] ?? null, 
+            (int) $_POST["establishment"] ?? null, 
+            (int) $_POST["service"] ?? null
+        );
+
+
+        (new ApplicationRepository())->inscript($application);                              // Registering the application
+
+
+        $job = (new JobRepository())->get($application->getJob());                          // Fetching the job
+
+        $job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+
+        $act_repo = new ActionRepository();
+
+        $type = $act_repo->searchType("Nouvelle candidature");
+
+        $desc = "Nouvelle candidature de " . strtoupper($candidate->getName()) . " " 
+                . FormsManip::nameFormat($candidate->getFirstname()) . " au poste de {$job}.";
+
+        $action = Action::create(                                                           // Creating the action
+            $_SESSION["user"]->getId(),
+            $type->getId(), 
+            $desc
+        );
+
+
+        $act_repo->writeLogs($action);                                                      // Registering the action
+
+
+        AlertsManipulation::alert([
+            "title" => "Action enregistrée",
+            "msg" => "La candidature a été ajoutée avec succès.",
+            "direction" => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
+    /**
      * Public method registering a new meeting in the database
      * 
      * @param int $key_candidate The candidate's primary key
@@ -277,7 +355,7 @@ class CandidatesController extends Controller {
                 . ", le " . date('Y m d', strtotime($meeting->getDate()));
 
         $act = Action::create(                                                              // Creating the action
-            $_SESSION['user']->getId(), 
+            $_SESSION["user"]->getId(), 
             $type->getId(),
             $desc
         );          

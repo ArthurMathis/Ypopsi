@@ -57,15 +57,17 @@ try {
     $router->addRoute("/candidates/contracts/dismiss/{id}", CandidatesController::class, "displayInputMeeting");            // todo
 
     //// OFFERS ////
-    $router->addRoute("/candidates/offers/input/{id}", CandidatesController::class, "displayInputMeeting");                 // todo
+    $router->addRoute("/candidates/offers/input/{candidate}", CandidatesController::class, "inputOffer");                   // todo
     $router->addRoute("/candidates/offers/accept/{id}", CandidatesController::class, "displayInputMeeting");                // todo
     $router->addRoute("/candidates/offers/reject/{id}", CandidatesController::class, "displayInputMeeting");                // todo
 
     //// APPLICATIONS ////
     $router->addRoute("/candidates/applications/input", CandidatesController::class, "inputApplication");                   // todo
     $router->addRoute("/candidates/applications/input/{candidate}", CandidatesController::class, "inputApplication");       // todo
-    $router->addRoute("/candidates/applications/accept/{candidate}/{application}", CandidatesController::class, "acceptApplication");     // todo
-    $router->addRoute("/candidates/applications/reject/{candidate}/{application}", CandidatesController::class, "rejectApplication");     // todo
+    $router->addRoute("/candidates/applications/inscript", CandidatesController::class, "inscriptApplication");
+    $router->addRoute("/candidates/applications/inscript/{candidate}", CandidatesController::class, "inscriptApplication");
+    $router->addRoute("/candidates/applications/accept/{candidate}/{application}", CandidatesController::class, "acceptApplication"); 
+    $router->addRoute("/candidates/applications/reject/{candidate}/{application}", CandidatesController::class, "rejectApplication");     
 
     //// MEETINGS ////
     $router->addRoute("/candidates/meeting/input/{candidate}", CandidatesController::class, "inputMeeting");

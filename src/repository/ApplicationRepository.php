@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Repository\Repository;
-use AppendIterator;
+use App\Models\Application;
 
 /**
  * Class representing a repository of applications 
@@ -87,7 +87,7 @@ class ApplicationRepository extends Repository {
      * @param int $key_candidate The candidate's primary key
      * @return ?array 
      */
-    public function getListFromCandidates(int $key_candidate): ?array {
+    public function getListFromCandidates(int $key_candidate, bool $gender = true): ?array {
         $request = "SELECT 
             app.Id AS cle,
             app.IsAccepted AS acceptee, 
@@ -96,6 +96,7 @@ class ApplicationRepository extends Repository {
             t.titled AS type_de_contrat,
             app.moment AS date,
             j.titled AS poste,
+            j.titledFeminin AS posteFeminin,
             serv.titled AS service,
             e.titled AS etablissement
             
@@ -112,10 +113,54 @@ class ApplicationRepository extends Repository {
 
         $params = array("cle" => $key_candidate);
 
-        return $this->get_request($request, $params);
+        $response = $this->get_request($request, $params);
+
+        return $response;
+    }
+
+    // * INSCRIPT * //
+
+    /**
+     * Public method registering a new application in the database
+     * 
+     * @param Application $application The application to registering
+     * @return int The primary key of the new application
+     */
+    public function inscript(Application &$application): int {
+        $request = "INSERT INTO Applications(Key_Candidates, Key_Jobs, Key_Sources";
+
+        $values_request = "VALUES (:candidate, :job, :source";
+
+        if(!empty($application->getType())) {
+            $request .= ", Key_Types_of_contracts";
+            $values_request .= ", :type";
+        }
+
+        if(!empty($application->getService()) && !empty($application->getEstablishment())) {
+            $request .= ", Key_Services, Key_Establishments";
+            $values_request .= ", :service, :establishment";
+        }
+
+        $request .= ")" . $values_request . ")";
+        unset($values_request);
+
+        return $this->post_request($request, $application->toSQL());
     }
 
     // * MANIPULATION * //
+    /**
+     * Public function accepting an application
+     * 
+     * @param int $key_application The primary key of the application
+     * @return int The primary key of the application
+     */
+    public function accept(int $key_application): int {
+        $request = "UPDATE Applications SET IsAccepted = TRUE, IsRefused = FALSE WHERE Id = :key_application";
+
+        $params = array("key_application" => $key_application);
+
+        return $this->post_request($request, $params);
+    }
     /**
      * Public function rejecting an application
      * 

@@ -66,6 +66,44 @@ class Candidate {
         // todo : vérification du code postal
     }
 
+    /**
+     * Public static method building and returing a new candidate
+     * 
+     * @param string $name The candidate's name
+     * @param string $firstname The candidate's firstname
+     * @param bool $gender The candidate's gender
+     * @param string $availability The candidate's availability
+     * @param ?string $email The candidate's email
+     * @param ?string $phone The candidate's phone
+     * @param ?string $address The candidate's address
+     * @param ?string $city The candidate's city
+     * @param ?string $postcode The candidate's postcode
+     * @param ?int $rating The candidate's rating
+     * @param ?string $description The candidate's description
+     * @param ?string $visit The candidate's visit
+     * @return Candidate The candidate
+     */
+    public static function create(string $name, string $firstname, bool $gender, string $availability, ?string $email = null, ?string $phone = null, ?string $address = null, ?string $city = null, ?string $postcode = null, ?int $rating = null, ?string $description = null, ?string $visit = null): Candidate {
+        return new Candidate(
+            null, 
+            $name, 
+            $firstname, 
+            $gender, 
+            $email, 
+            $phone, 
+            $address, 
+            $city, 
+            $postcode, 
+            $availability, 
+            $visit, 
+            $rating, 
+            $description, 
+            false, 
+            false, 
+            false, 
+            false
+        );
+    }
 
     // * GET * //
     /**
@@ -185,23 +223,23 @@ class Candidate {
         }
 
         return new Candidate(
-            $data['Id'],
-            $data['Name'],
-            $data['Firstname'],
-            $data['Gender'],
-            $data['Email'],
-            $data['Phone'],
-            $data['Address'],
-            $data['City'],
-            $data['PostCode'],
-            $data['Availability'],
-            $data['MedicalVisit'],
-            $data['Rating'],
-            $data['Description'],
-            $data['Is_delete'],
-            $data['A'],
-            $data['B'],
-            $data['C']
+            $data["Id"],
+            $data["Name"],
+            $data["Firstname"],
+            $data["Gender"],
+            $data["Email"],
+            $data["Phone"],
+            $data["Address"],
+            $data["City"],
+            $data["PostCode"],
+            $data["Availability"],
+            $data["MedicalVisit"],
+            $data["Rating"],
+            $data["Description"],
+            $data["Is_delete"],
+            $data["A"],
+            $data["B"],
+            $data["C"]
         );
     }
 
@@ -212,23 +250,65 @@ class Candidate {
      */
     public function toArray(): array {
         return array(
-            'id'           => $this->getId(),
-            'name'         => $this->getName(),
-            'firstname'    => $this->getFirstname(),
-            'gender'       => $this->getGender(),
-            'email'        => $this->getEmail(),
-            'phone'        => $this->getPhone(),
-            'address'      => $this->getAddress(),
-            'city'         => $this->getCity(),
-            'postcode'     => $this->getPostcode(),
-            'availability' => $this->getAvailability(),
-            'visit'        => $this->getVisit(),
-            'rating'       => $this->getRating(),
-            'description'  => $this->getDescription(),
-            'deleted'      => $this->getDeleted(),
-            'a'            => $this->getA(),
-            'b'            => $this->getB(),
-            'c'            => $this->getC()
+            "id"           => $this->getId(),
+            "name"         => $this->getName(),
+            "firstname"    => $this->getFirstname(),
+            "gender"       => $this->getGender(),
+            "email"        => $this->getEmail(),
+            "phone"        => $this->getPhone(),
+            "address"      => $this->getAddress(),
+            "city"         => $this->getCity(),
+            "postcode"     => $this->getPostcode(),
+            "availability" => $this->getAvailability(),
+            "visit"        => $this->getVisit(),
+            "rating"       => $this->getRating(),
+            "description"  => $this->getDescription(),
+            "deleted"      => $this->getDeleted(),
+            "a"            => $this->getA(),
+            "b"            => $this->getB(),
+            "c"            => $this->getC()
         );
+    }
+
+    /**
+     * Public function returning the candidate into an array for SQL registering
+     * 
+     * @return array The candidate
+     */
+    public function toSQL(): array {
+        $response = array(
+            "name"         => $this->getName(),
+            "firstname"    => $this->getFirstname(),
+            "gender"       => $this->getGender(),
+            "availability" => $this->getAvailability()
+        );
+
+        if(!empty($this->getEmail())) {
+            $response["email"] = $this->getEmail();
+        }
+
+        if(!empty($this->getPhone())) {
+            $response["phone"] = $this->getPhone();
+        }
+
+        if(!empty($this->getAddress()) && !empty($this->getCity()) && !empty($this->getPostcode())) {
+            $response["address"]  = $this->getAddress();
+            $response["city"]     = $this->getCity();
+            $response["postcode"] = $this->getPostcode();
+        }
+
+        if($this->getDescription()) {
+            $response["description"] = $this->getDescription();
+        }
+
+        if($this->getRating()) {
+            $response["rating"] = $this->getRating();
+        }
+
+        if($this->getVisit()) {
+            $response["visit"] = $this->getVisit();
+        }
+
+        return $response;
     }
 }
