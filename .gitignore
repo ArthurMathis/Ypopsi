@@ -1,4 +1,4 @@
-# .gitignore
+# * .gitignore * #
 
 # Ignore the .vscode document
 .vscode
@@ -13,5 +13,7 @@
 __pycache__/
 /vendor/
 
-/database/pole_recrutement_donnees.xlsx
-/database/~$pole_recrutement_donnees.xlsx
+# Ignore the Excel files
+*.xls
+*.xlsx
+*.xlsm

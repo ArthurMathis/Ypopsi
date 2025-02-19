@@ -1,19 +1,39 @@
 <?php
 
 require_once("../vendor/autoload.php");
+require_once('../define.php');
+
+test_process();
+
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-require_once('../define.php');
 
-
+/**
+ * Class containing the primary key of the objects of a row registering
+ */
 class registering {
-    public $candidate;
-    public $application;
-    public $contract;
+    /**
+     * Public attribute containing the candidate's primary key
+     *
+     * @var int
+     */
+    public int $candidate;
+    /**
+     * Public attribute containing the primary key of the application
+     *
+     * @var int
+     */
+    public int $application;
+    /**
+     * Public attribute containing the primary key of the contract
+     *
+     * @var int
+     */
+    public int $contract;
 }
 
 
@@ -580,18 +600,27 @@ class filePrinter {
      * @param string $path The path of the file
      */
     public function __construct(protected string $path) {
+        echo "<h2>Nouveau filePrinter</h2>";
+
         if(file_exists($this->getPath())) {
             $this->sheet = IOFactory::load($this->getpath());                   // Opening the file
         } else {
             $this->sheet = new Spreadsheet();                                   // Creating new file
         }
 
+        echo "<h3>Fichier {$this->path} ouvert</h3>";
+
+
         $this->writer = new Xlsx($this->getSheet());                            // Opening the writer
 
+        echo "<h3>Nouveau writer ouvert</h3>";
 
-        $title = $title = "Insertion des données du " . date('d/m/Y');
 
-        $this->addSheet($title);                                                // Creating the new sheet 
+        $title = $title = "Insertion du " . date('d/m/Y');
+
+        $title = $this->addSheet($title);                                                // Creating the new sheet 
+
+        echo "<h3>Nouvelle page : {$title} prête</h3>";
     }
 
     // * GET * //
@@ -661,12 +690,26 @@ class filePrinter {
      * @param string $sheetname The title of the sheet
      * @return void
      */
-    public function addSheet(string $sheetname) {
-        $worksheet = new Worksheet($this->getSheet(), filePrinter::getBasedSheet());                        // Creating the new sheet
+    protected function addSheet(string $sheetname): string {
+        $sheetname = str_replace("/", "-", $sheetname);
+
+        $sheetname = preg_replace('/[\\/?*:[]"<>|]/', ' ', $sheetname);
+
+        $sheetname = substr($sheetname, 0, 31);
+
+
+        var_dump($sheetname); 
+        echo "<br>";
+
+
+        $worksheet = new Worksheet($this->getSheet(), $sheetname);                                          // Creating the new sheet
 
         $this->getSheet()->addSheet($worksheet);                                                            // Adding the new sheet
 
         $this->getSheet()->getSheet(filePrinter::getBasedSheet())->setTitle($sheetname);                    // Setting the title 
+
+
+        return $sheetname;
     }
 }
 
@@ -702,17 +745,16 @@ class fileReader {
         ?string $registerLogsPath = null,
         ?string $errorsLogsPath = null
     ) {
+        echo "<h1>Nouveau fileReader</h1>";
+
         if($page < 0) {
             die("Il est impossble de lire une feuille d'indice négatif");
         }
 
-        if(! empty($registerLogsPath)) {
-            $this->logsRegister = new filePrinter($registerLogsPath);
-        }
 
-        if(! empty($errorsLogsPath)) {
-            $this->errorsRegister = new fileprinter($errorsLogsPath);
-        }
+        $this->logsRegister = new filePrinter($registerLogsPath ?? fileReader::getBasedRegistersLogsPath());
+
+        $this->errorsRegister = new fileprinter($errorsLogsPath ?? fileReader::getBasedErrorsLogsPath());
     }
 
 
@@ -731,6 +773,32 @@ class fileReader {
      */
     public function getPage(): int { return $this->page; }
 
+    /**
+     * Public method returning the fileprinter for registerings
+     *
+     * @return filePrinter
+     */
+    public function getLogsRegister(): filePrinter { return $this->logsRegister; }
+    /**
+     * public method returning the filePrinter for errors
+     *
+     * @return filePrinter
+     */
+    public function getErrorsRegister(): filePrinter { return $this->errorsRegister; }
+
+    /**
+     * Public static method returning the based path for logs of registerings
+     *
+     * @return string
+     */
+    public static function getBasedRegistersLogsPath(): string { return "registerings_logs.xlsx"; }
+    /**
+     * Public static method returning the based path for logs of errors
+     *
+     * @return string
+     */
+    public static function getBasedErrorsLogsPath(): string { return "errors_logs.xlsx"; }
+
 
     // * READ * //
     /**
@@ -739,23 +807,26 @@ class fileReader {
      * @return void
      */
     public function readFile() {
-        echo "On débute la procédure<br>";
+        echo "<h2>On débute la procédure</h2>";
 
         $file = IOFactory::load($this->getPath());                                                  // Loading the file
 
-        echo "Fichier ouvert<br>";
+
+        $file_name = $this->getpath();
+        
+        echo "<h3>Fichier : {$file_name} ouvert</h3>";
 
 
         $sheet = $file->getSheet($this->getPage());                                                 // Loading the page
         
-        echo "Page sélectionnée<br>";
+        echo "<h3>Page sélectionnée</h3>";
 
 
         $size = $sheet->getHighestRow();
 
         echo "{$size} lignes trouvées<br>";
 
-        echo "On débute la lecture<br>";
+        echo "<h3>On débute la lecture</h3>";
 
 
         $rowStructure = $this->readLine($sheet, 1);
@@ -764,10 +835,30 @@ class fileReader {
             $rowData = (array) $this->readLine($sheet, $rowCount);
 
             if(! $this->isEmptyRow($rowData)) {
-                var_dump($rowData);
-                echo "<br>";
+                echo "<h4>Ligne : {$rowCount}</h4>";
+
+                print_r($rowData);
+
+                $this->getLogsRegister()->printRow($rowCount - 1, $rowData);
             }
         }
+
+
+        echo "<h3>Lecture terminée</h3>";
+
+
+
+        echo "<h2>On enregistre</h2>";
+
+        echo "<h3>Les logs</h3>";
+
+        $this->getLogsRegister()->save();
+
+        echo "<h3>Les erreurs</h3>";
+
+        $this->getErrorsRegister()->save();
+
+        echo "<h2>Terminé</h2>";
     }
 
     /**
@@ -818,7 +909,7 @@ class fileReader {
 
 //// MAIN ////
 function main() {
-    $file_reader = new fileReader("pole_recrutement_donnees.xlsx", 0);
+    $file_reader = new fileReader("test_donnees.xlsx", 0);
 
     $file_reader->readFile();
 }
