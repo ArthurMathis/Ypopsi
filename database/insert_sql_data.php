@@ -6,6 +6,14 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 require_once('../define.php');
 
+
+class registering {
+    public $candidate;
+    public $application;
+    public $contract;
+}
+
+
 /**
  * Class manipulating the database connection
  * 
@@ -118,6 +126,7 @@ class sqlInserter {
         return null;
     }
 }
+
 
 /**
  * Class analzing an arrray and making a database request 
@@ -237,12 +246,20 @@ class sqlInterpreter {
     }
 
     // * ANALYSE * //
+    /**
+     * Public function analyzing a row 
+     *
+     * @param array $data The row
+     * @return void
+     */
     public function rowAnalyse(array &$data) {
-        $key_candidate = $this->makecandidate($data); 
-        
-        $key_application = $this->makeApplication($data, $key_candidate);
+        $registering = new Registering();
 
-        $key_contract = $this->makeContract($data, $key_candidate, $key_application);
+        $registering->candidate = $this->makecandidate($data); 
+        
+        $registering->application = $this->makeApplication($data, $registering->candidate);
+
+        $registering->contract = $this->makeContract($data, $registering->candidate, $registering->application);
     }
 
     /**
@@ -358,6 +375,14 @@ class sqlInterpreter {
         return $this->inscriptApplication($application);
     }
 
+    /**
+     * Protected method geeting the information of a contract ang register its in the database
+     *
+     * @param array $data The row
+     * @param integer $key_candidate The candidate's primary key 
+     * @param integer $key_application The primary key of the application
+     * @return ?int
+     */
     protected function makeContract(array &$data, int $key_candidate, int $key_application): ?int {
         $contract = ["candidate" => $key_candidate];
 
@@ -528,7 +553,17 @@ class sqlInterpreter {
     }
 }
 
+
+/**
+ * Class reading a file 
+ */
 class fileReader {
+    /**
+     * Constructor class
+     *
+     * @param string $filePath The path of the file 
+     * @param int $page The index of the page
+     */
     public function __construct(
         protected string $filePath,
         protected int $page
@@ -540,12 +575,27 @@ class fileReader {
 
 
     // * GET * //
+    /**
+     * Public method returning the path of file
+     *
+     * @return string The path
+     */
     public function getPath(): string { return $this->filePath; }
 
+    /**
+     * Public method returning the index of the page
+     *
+     * @return int The index
+     */
     public function getPage(): int { return $this->page; }
 
 
     // * READ * //
+    /**
+     * Public method reading a file
+     *
+     * @return void
+     */
     public function readFile() {
         echo "On débute la procédure<br>";
 
@@ -568,8 +618,8 @@ class fileReader {
 
         $rowStructure = $this->readLine($sheet, 1);
 
-        for($rowCount = 2; $rowCount <= $size; $rowCount++) {
-            $rowData = $this->readLine($sheet, $rowCount);
+        for($rowCount = 2; $rowCount <= $size; $rowCount++) {                                       // Reading the file
+            $rowData = (array) $this->readLine($sheet, $rowCount);
 
             if(! $this->isEmptyRow($rowData)) {
                 var_dump($rowData);
@@ -578,6 +628,13 @@ class fileReader {
         }
     }
 
+    /**
+     * Protected method reading a line of the Excel 
+     *
+     * @param $sheet The file to read
+     * @param int $row The index of the row
+     * @return void
+     */
     protected function readLine($sheet, int $row) {
         $rowData = [];
 
@@ -592,6 +649,12 @@ class fileReader {
     }
 
     // * OTHER * //
+    /**
+     * Peotected method testing if a row is empty or not
+     *
+     * @param array $row The rom
+     * @return boolean 
+     */
     protected function isEmptyRow(array $row): bool {
         $i = 0;
 
