@@ -784,7 +784,7 @@ INSERT INTO sources (Titled) VALUES
     ("France Travail"),
     ("Indeed"),
     ("Jobergroup"),
-    ("Job Dating")
+    ("Job Dating"),
     ("Job Fondation"),
     ("Job Médical"),
     ("JPL Interim"),
@@ -799,7 +799,7 @@ INSERT INTO sources (Titled) VALUES
     ("Menway"),
     ("Profil Santé"),
     ("Recommandée"),
-    ("Salon Emploi Formation")
+    ("Salon Emploi Formation"),
     ("Satis TT"),
     ("Sourcing"),
     ("Spontanée"),
