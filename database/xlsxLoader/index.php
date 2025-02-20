@@ -15,3 +15,5 @@ use DB\fileReader;
 $file_reader = new fileReader("./assets/test_process.xlsx", 0);
 
 $file_reader->readFile();
+
+echo "<h1>Processus terminé</h1>";

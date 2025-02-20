@@ -47,7 +47,7 @@ class sqlInserter {
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
         } catch(PDOException $e) {
-            die("Connexion à la base de données réchouée. " . $e->getMessage());
+            die("Connexion à la base de données échouée. " . $e->getMessage());
         }
 
         return $this->connection;

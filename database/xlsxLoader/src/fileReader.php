@@ -42,8 +42,6 @@ class fileReader {
         ?string $registerLogsPath = null,
         ?string $errorsLogsPath = null
     ) {
-        echo "<h1>Nouveau fileReader</h1>";
-
         if($page < 0) {
             die("Il est impossble de lire une feuille d'indice négatif");
         }

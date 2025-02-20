@@ -38,7 +38,7 @@ class filePrinter {
 
         $this->writer = new Xlsx($this->getSheet());                                    // Opening the writer
 
-        $title = $title = "Insertion du " . date('d/m/Y');
+        $title = "Insertion du " . date('d/m/Y');
         $title = $this->addSheet($title);                                                // Creating the new sheet 
     }
 
@@ -117,19 +117,24 @@ class filePrinter {
         $originalSheetname = $sheetname;
         $index = 1;
 
-        // Vérifier si une feuille avec le même nom existe déjà
         while ($this->sheetNameExists($sheetname)) {
             $sheetname = substr($originalSheetname, 0, 31 - strlen(" - $index")) . " - $index";
             $index++;
         }
 
-        $worksheet = new Worksheet($this->getSheet(), $sheetname); // Creating the new sheet
-        $this->getSheet()->addSheet($worksheet); // Adding the new sheet
-        $worksheet->setTitle($sheetname); // Setting the title
+        $worksheet = new Worksheet($this->getSheet(), $sheetname);                                                      // Creating the new sheet
+        $this->getSheet()->addSheet($worksheet);                                                                        // Adding the new sheet
+        $worksheet->setTitle($sheetname);                                                                               // Setting the title
 
         return $sheetname;
     }
 
+    /**
+     * Protected method testing if a sheetname is free pr not
+     *
+     * @param string $sheetname The name
+     * @return bool
+     */
     protected function sheetNameExists(string $sheetname): bool {
         foreach ($this->getSheet()->getSheetNames() as $existingSheetName) {
             if ($existingSheetName === $sheetname) {

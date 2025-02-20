@@ -135,13 +135,31 @@ class sqlInterpreter {
      * @return Registering
      */
     public function rowAnalyse(array &$data): Registering {
+        echo "<h2>On enregistre un nouveau candidat</h2>";
+
+        
         $registering = new Registering();
 
         $registering->candidate = $this->makecandidate($data); 
+
+
+        echo "<h3>Profile : {$registering->candidate}</h3>";
+
         
         $registering->application = $this->makeApplication($data, $registering->candidate);
 
+
+        echo "<h3>Candidature : {$registering->application}</h3>";
+
+
         $registering->contract = $this->makeContract($data, $registering->candidate, $registering->application);
+
+
+        echo "<h3>Candidature : {$registering->contract}</h3>";
+
+        // todo : qualifications
+        // todo : aides
+        // todo : coopteur 
 
         return $registering;
     }
@@ -155,13 +173,25 @@ class sqlInterpreter {
     protected function makeCandidate(array &$data): int {
         $candidate = [];
 
-        $candidate["name"] = $this->getColumnContent($data, sqlInterpreter::$NAME_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
+        $candidate["name"] = $this->getColumnContent(
+            $data,
+            sqlInterpreter::$NAME_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$REQUIRED
+        );
+        $candidate["firstname"] = $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$FIRSTNAME_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$REQUIRED
+        );
 
-        $candidate["firstname"] = $this->getColumnContent($data, sqlInterpreter::$FIRSTNAME_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
-
-
-        $gender = $this->getColumnContent($data, sqlInterpreter::$GENDER_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
-
+        $gender = $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$GENDER_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$REQUIRED
+        );
         switch($gender) {
             case sqlInterpreter::$MALE: 
                 $candidate["gender"] = true;
@@ -175,42 +205,108 @@ class sqlInterpreter {
                             . sqlInterpreter::$MALE . " - pour homme et " . sqlInterpreter::$FEMALE . " - pour femme.");
         }
 
+        $email = $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$EMAIL_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
+        if(!empty($email)) {
+            $candidate["email"] = $email;
+        }
 
-        $candidate["email"] = $this->getColumnContent($data, sqlInterpreter::$EMAIL_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
+        $phone = $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$PHONE_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
+        if(!empty($email)) {
+            $candidate["phone"] = $phone;
+        }
 
-        $candidate["phone"] = $this->getColumnContent($data, sqlInterpreter::$PHONE_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
-
-
-        $address = $this->getColumnContent($data, sqlInterpreter::$ADDRESS_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
-
-        $city = $this->getColumnContent($data, sqlInterpreter::$ADDRESS_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
-
-        $postcode = $this->getColumnContent($data, sqlInterpreter::$ADDRESS_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
-
-        if((! empty($address) && ! empty($city) && ! empty($postcode)) || (empty($address) && empty($city) && empty($postcode))){
-            $candidate["address"] = $address;
-
-            $candidate["city"] = $city;
-
+        $address = $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$ADDRESS_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
+        $city = $this->getColumnContent(
+            $data,
+            sqlInterpreter::$CITY_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
+        $postcode = $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$POSTCODE_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
+        if(!empty($address) && !empty($city) && !empty($postcode)) {
+            $candidate["address"]  = $address;
+            $candidate["city"]     = $city;
             $candidate["postcode"] = $postcode;
             
-        } else {
+        } elseif(empty($address) && empty($city) && empty($postcode)) {
             throw new Exception("Impossible d'enregistrer un candidat avec une adresse partielle. Valeur attendue : adresse + ville + code postale ou complètement vide");
         }
 
+        $candidate["availability"] = $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$STARTING_DATE_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
 
-        $candidate["description"] = $this->getColumnContent($data, sqlInterpreter::$DESCRIPTION_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED);
-
-        $candidate["rating"] = $this->getColumnContent($data, sqlInterpreter::$RATING_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED);
-
-        $candidate["availability"] = $this->getColumnContent($data, sqlInterpreter::$STARTING_DATE_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED);
-
+        $description = $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$DESCRIPTION_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
+        if(!empty($description)) {
+            $candidate["description"] = $description;
+        }
+        $rating =  $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$RATING_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
+        if(!empty($rating)) {
+            $candidate["rating"] = $rating;
+        }
         
-        $candidate["a"] = $this->getColumnContent($data, sqlInterpreter::$BL_A_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED) ?? true;
+        $a = !empty($this->getColumnContent(
+            $data, 
+            sqlInterpreter::$BL_A_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        ));
+        if($a) {
+            $candidate["a"] = $a;
+        }
 
-        $candidate["b"] = $this->getColumnContent($data, sqlInterpreter::$BL_B_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED) ?? true;
+        $b = !empty($this->getColumnContent(
+            $data, 
+            sqlInterpreter::$BL_B_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        ));
+        if($b) {
+            $candidate["b"] = $b;
+        }
 
-        $candidate["c"] = $this->getColumnContent($data, sqlInterpreter::$BL_C_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED) ?? true;
+        $c = !empty($this->getColumnContent(
+            $data, 
+            sqlInterpreter::$BL_C_ROW, 
+            sqlInterpreter::$CANDIDATE_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        ));
+        if($c) {
+            $candidate["c"] = $c;
+        }
 
         return $this->inscriptCandidate($candidate);
     }
@@ -314,10 +410,74 @@ class sqlInterpreter {
      * @return int The candidate's primary key
      */
     protected function inscriptCandidate(array &$candidate): int {
-        $request = "INSERT INTO Candidates (Name, Firstname, Gender, Phone, Email, Address, City, PostCode, Description, Rating, A, B, C)" 
-                    . " VALUES (:name, :firstname, :gender, :phone, :email, :address, :city, :post_code, :availability, :description, :rating: a, :b, :c)";
+        $request = "INSERT INTO Candidates (Name, Firstname, Gender, Availability";
+        $values_request = " VALUES (:name, :firstname, :gender, :availability";
 
-        $lastId = $this->getInserter()->post_request($request, $candidate);
+        if(!empty($candidate["email"])) {
+            $request .= ", Email";
+            $values_request .= ", :email";
+        }
+
+        if(!empty($candidate["phone"])) {
+            $request .= ", Phone";
+            $values_request .= ", :phone";
+        }
+
+        if(!empty($candidate["address"]) && !empty($candidate["city"]) && !empty($candidate["postcode"])) {
+            $request .= ", Address, City, PostCode";
+            $values_request .= ", :address, :city, :postcode";
+        }
+
+        if(!empty($candidate["description"])) {
+            $request .= ", Description";
+            $values_request .= ", :description";
+        }
+
+        if(!empty($candidate["rating"])) {
+            $request .= ", Rating";
+            $values_request .= ", :rating";
+        }
+
+        if(!empty($candidate["a"])) {
+            $request .= ", A";
+            $values_request .= ", :a";
+        }
+
+        if(!empty($candidate["b"])) {
+            $request .= ", B";
+            $values_request .= ", :b";
+        }
+
+        if(!empty($candidate["c"])) {
+            $request .= ", C";
+            $values_request .= ", :c";
+        }
+
+        $request .= ")" . $values_request . ")";
+        unset($values_request);
+
+        echo "<h4>Request : </h4>";
+        var_dump($request);
+        echo "<br>";
+
+        echo "<h4>Params : </h4>";
+        var_dump($candidate);
+        echo "<br>";
+
+        $lastId = null;
+
+        try {
+            $inserter = $this->getInserter();
+            $lastId = $inserter->post_request($request, $candidate);
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+
+        
+
+        echo "<h4>Id : </h4>";
+        var_dump($lastId);
+        echo "<br>";
 
         return $lastId;
     }
