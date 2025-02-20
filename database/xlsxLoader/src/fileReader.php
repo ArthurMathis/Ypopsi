@@ -184,7 +184,7 @@ class fileReader {
         $size = count($row);
 
         while($empty && $i < $size) {
-            if(! is_null($row[$i]) || ! empty($row[$i])) {
+            if(! is_null($row[$i]) || !empty($row[$i])) {
                 $empty = false;
             }
 

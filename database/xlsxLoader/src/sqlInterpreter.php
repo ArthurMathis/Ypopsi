@@ -248,7 +248,7 @@ class sqlInterpreter {
             $candidate["city"]     = $city;
             $candidate["postcode"] = $postcode;
             
-        } elseif(empty($address) && empty($city) && empty($postcode)) {
+        } elseif(!(empty($address) && empty($city) && empty($postcode))) {
             throw new Exception("Impossible d'enregistrer un candidat avec une adresse partielle. Valeur attendue : adresse + ville + code postale ou complètement vide");
         }
 
@@ -321,35 +321,57 @@ class sqlInterpreter {
      */
     protected function makeApplication(array &$data, int $key_candidate): int {
         $application = [];
-
         $application["candidate"] = $key_candidate;
 
-
-        $job = (string) $this->getColumnContent($data, sqlInterpreter::$JOB_ROW, sqlInterpreter::$REQUIRED, sqlInterpreter::$APPLICATION_TABLE);
-
+        $job = (string) $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$JOB_ROW, 
+            sqlInterpreter::$APPLICATION_TABLE, 
+            sqlInterpreter::$REQUIRED
+        );
         $application["job"] = $this->searchJobId($job);
 
+        $source = (string) $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$SOURCE_ROW, 
+            sqlInterpreter::$APPLICATION_TABLE,
+            sqlInterpreter::$REQUIRED
+        );
+        $application["source"] = $this->searchSource($source);
 
-        $service = (string) $this->getColumnContent($data, sqlInterpreter::$SERVICE_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$APPLICATION_TABLE);
+        $service = (string) $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$SERVICE_ROW, 
+            sqlInterpreter::$APPLICATION_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
+        $estbablishment = (string) $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$ESTABLISHMENT_ROW, 
+            sqlInterpreter::$APPLICATION_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
+        if(!empty($service) && !empty($estbablishment)) {
+            $application["service"]       = $this->searchServiceId($service);
+            $application["establishment"] = $this->searchEstablishmentId($estbablishment);
+        }
 
-        $estbablishment = (string) $this->getColumnContent($data, sqlInterpreter::$ESTABLISHMENT_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$APPLICATION_TABLE);
-
-        $application["service"] = $this->searchServiceId($service);
-
-        $application["establishment"] = $this->searchEstablishmentId($estbablishment);
-
-        if(! empty($application["service"]) && empty($application["establishment"])) {
+        if(!empty($application["service"]) && empty($application["establishment"])) {
             throw new Exception("Impossible d'enregistrer une candidature avec un service et sans établissement. Valeurs du service : " . $application["service"] . " ; valeur du l'établissement : " . $application["establishment"] . ".");
 
-        } else if(empty($application["service"]) && ! empty($application["establishment"])) {
+        } else if(empty($application["service"]) && !empty($application["establishment"])) {
             throw new Exception("Impossible d'enregistrer une candidature avec un établissement et sans service. Valeurs du service : " . $application["service"] . " ; valeur du l'établissement : " . $application["establishment"] . ".");
         }
 
-
-        $type = (string) $this->getColumnContent($data, sqlInterpreter::$TYPE_OF_CONTRACTS_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$APPLICATION_TABLE);
-
-        $application["type"] = $this->searchTypeId($type);
-
+        $type = (string) $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$TYPE_OF_CONTRACTS_ROW, 
+            sqlInterpreter::$APPLICATION_TABLE, 
+            sqlInterpreter::$NOT_REQUIRED
+        );
+        if(!empty($type)) {
+            $application["type"] = $this->searchTypeId($type);
+        }
 
         return $this->inscriptApplication($application);
     }
@@ -365,39 +387,27 @@ class sqlInterpreter {
     protected function makeContract(array &$data, int $key_candidate, int $key_application): ?int {
         $contract = ["candidate" => $key_candidate];
 
-
         $application = $this->searchApplication($key_application);
 
-
-        $contract["job"] = $application["Key_Jobs"];
-
-        $contract["service"] = $application["Key_Services"];
-
+        $contract["job"]           = $application["Key_Jobs"];
+        $contract["service"]       = $application["Key_Services"];
         $contract["establishment"] = $application["Key_Applications"];
-
-        $contract["type"] = $application["Key_Types_of_contracts"];
+        $contract["type"]          = $application["Key_Types_of_contracts"];
 
         if(empty($contract["type"])) {
             throw new Exception("Impossible d'inscrire un contrat sans type de contrat. Valeur : " . $contract["type"] . ".");
         }
 
-
         unset($application);
 
-
-        $contract["start_date"] = $this->getColumnContent($data, sqlInterpreter::$STARTING_DATE_ROW, sqlInterpreter::$REQUIRED, sqlInterpreter::$CONTRACT_TABLE);
-
+        $contract["start_date"]       = $this->getColumnContent($data, sqlInterpreter::$STARTING_DATE_ROW, sqlInterpreter::$CONTRACT_TABLE);
         $contract["proposition_date"] = $contract["start_date"];
+        $contract["signature_date"]   = $contract["start_date"];
 
-        $contract["signature_date"] = $contract["start_date"];
-
-        
+    
         $cdi_id = $this->searchTypeId("CDI");
-
         $required = $contract["type"] !== $cdi_id;
-
         $contract["end_date"] = $this->getColumnContent($data, sqlInterpreter::$ENDING_DATE_ROW, $required, sqlInterpreter::$CONTRACT_TABLE);
-
 
         return $this->inscriptContract($contract);
     }
@@ -456,30 +466,8 @@ class sqlInterpreter {
         $request .= ")" . $values_request . ")";
         unset($values_request);
 
-        echo "<h4>Request : </h4>";
-        var_dump($request);
-        echo "<br>";
-
-        echo "<h4>Params : </h4>";
-        var_dump($candidate);
-        echo "<br>";
-
-        $lastId = null;
-
-        try {
-            $inserter = $this->getInserter();
-            $lastId = $inserter->post_request($request, $candidate);
-        } catch(Exception $e) {
-            echo $e->getMessage();
-        }
-
-        
-
-        echo "<h4>Id : </h4>";
-        var_dump($lastId);
-        echo "<br>";
-
-        return $lastId;
+        $inserter = $this->getInserter();
+        return $inserter->post_request($request, $candidate);
     }
 
     /**
@@ -489,32 +477,23 @@ class sqlInterpreter {
      * @return int The primary key of the application
      */
     protected function inscriptApplication(array &$application): int {
-        $request = "INSERT INTO Applications (Key_Candidates, Key_Jobs, Key_sources";
-                    
+        $request = "INSERT INTO Applications (Key_Candidates, Key_Jobs, Key_sources";    
         $values_request = " VALUES (:candidate, :job, :source";
 
-
-        if(! empty($candidate["service"]) && ! empty($application["establishment"])) {
+        if(!empty($candidate["service"]) && !empty($application["establishment"])) {
             $request .= ", Key_Services, Key_Establishments";
-
             $values_request .= ", :service, :estbalishment";
         }
 
-
-
-        if(! empty($application["type"])) {
+        if(!empty($application["type"])) {
             $request .= ", Key_Types_of_contracts";
-
             $values_request .= ", :type";
         }
 
-
         $request .= ")" . $values_request . ")";
 
-
-        $lastId = $this->getInserter()->post_request($request, $application);
-
-        return $lastId;
+        $inserter = $this->getInserter();
+        return $inserter->post_request($request, $application);
     }
 
     /**
@@ -529,7 +508,7 @@ class sqlInterpreter {
         $values_request = " VALUES (:proposition_date, :signature_date, :start_date, :candidate, :job, :service, :establishment, :type";
 
 
-        if(! empty($contract["end_date"])) {
+        if(!empty($contract["end_date"])) {
             $request .= ", EndDate";
 
             $values_request .= ", :end_date";
@@ -598,6 +577,21 @@ class sqlInterpreter {
      */
     protected function searchTypeId(string $titled): int {
         $request = "SELECT Id FROM Types_of_contracts WHERE Titled = :titled";
+
+        $params = array("titled" => $titled);
+
+        $response = $this->getInserter()->get_request($request, $params, true, true)['Id'];
+
+        return $response;
+    }
+    /**
+     * Protected method searching a source in the database
+     *
+     * @param string $titled The title of the source
+     * @return int The primary key of the source
+     */
+    protected function searchSource(string $titled): int {
+        $request = "SELECT Id FROM Sources WHERE Titled = :titled";
 
         $params = array("titled" => $titled);
 
