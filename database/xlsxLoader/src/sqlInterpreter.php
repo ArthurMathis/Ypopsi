@@ -111,8 +111,12 @@ class sqlInterpreter {
      * @param string $table_err The name of the table 
      * @return void
      */
-    protected function getColumnContent(array &$data, string $column, bool $present = false, string $table_err) {
+    protected function getColumnContent(array &$data, string $column, string $table_err, bool $present = false) {
         $index = $this->getIndex($column);
+
+        if($index == sqlInterpreter::$BASED_INDEX) {
+            throw new Exception("La colonne {$column} est introuvable");
+        }
 
         $response = $data[$index];
 
@@ -128,9 +132,9 @@ class sqlInterpreter {
      * Public function analyzing a row 
      *
      * @param array $data The row
-     * @return void
+     * @return Registering
      */
-    public function rowAnalyse(array &$data) {
+    public function rowAnalyse(array &$data): Registering {
         $registering = new Registering();
 
         $registering->candidate = $this->makecandidate($data); 
@@ -138,6 +142,8 @@ class sqlInterpreter {
         $registering->application = $this->makeApplication($data, $registering->candidate);
 
         $registering->contract = $this->makeContract($data, $registering->candidate, $registering->application);
+
+        return $registering;
     }
 
     /**
@@ -149,12 +155,12 @@ class sqlInterpreter {
     protected function makeCandidate(array &$data): int {
         $candidate = [];
 
-        $candidate["name"] = $this->getColumnContent($data, sqlInterpreter::$NAME_ROW, sqlInterpreter::$REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $candidate["name"] = $this->getColumnContent($data, sqlInterpreter::$NAME_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
 
-        $candidate["firstname"] = $this->getColumnContent($data, sqlInterpreter::$FIRSTNAME_ROW, sqlInterpreter::$REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $candidate["firstname"] = $this->getColumnContent($data, sqlInterpreter::$FIRSTNAME_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
 
 
-        $gender = $this->getColumnContent($data, sqlInterpreter::$GENDER_ROW, sqlInterpreter::$REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $gender = $this->getColumnContent($data, sqlInterpreter::$GENDER_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
 
         switch($gender) {
             case sqlInterpreter::$MALE: 
@@ -170,16 +176,16 @@ class sqlInterpreter {
         }
 
 
-        $candidate["email"] = $this->getColumnContent($data, sqlInterpreter::$EMAIL_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $candidate["email"] = $this->getColumnContent($data, sqlInterpreter::$EMAIL_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
 
-        $candidate["phone"] = $this->getColumnContent($data, sqlInterpreter::$PHONE_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $candidate["phone"] = $this->getColumnContent($data, sqlInterpreter::$PHONE_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
 
 
-        $address = $this->getColumnContent($data, sqlInterpreter::$ADDRESS_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $address = $this->getColumnContent($data, sqlInterpreter::$ADDRESS_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
 
-        $city = $this->getColumnContent($data, sqlInterpreter::$ADDRESS_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $city = $this->getColumnContent($data, sqlInterpreter::$ADDRESS_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
 
-        $postcode = $this->getColumnContent($data, sqlInterpreter::$ADDRESS_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $postcode = $this->getColumnContent($data, sqlInterpreter::$ADDRESS_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$REQUIRED);
 
         if((! empty($address) && ! empty($city) && ! empty($postcode)) || (empty($address) && empty($city) && empty($postcode))){
             $candidate["address"] = $address;
@@ -193,19 +199,18 @@ class sqlInterpreter {
         }
 
 
-        $candidate["description"] = $this->getColumnContent($data, sqlInterpreter::$DESCRIPTION_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $candidate["description"] = $this->getColumnContent($data, sqlInterpreter::$DESCRIPTION_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED);
 
-        $candidate["rating"] = $this->getColumnContent($data, sqlInterpreter::$RATING_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $candidate["rating"] = $this->getColumnContent($data, sqlInterpreter::$RATING_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED);
 
-        $candidate["availability"] = $this->getColumnContent($data, sqlInterpreter::$STARTING_DATE_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE);
+        $candidate["availability"] = $this->getColumnContent($data, sqlInterpreter::$STARTING_DATE_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED);
 
         
-        $candidate["a"] = $this->getColumnContent($data, sqlInterpreter::$BL_A_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE) ?? true;
+        $candidate["a"] = $this->getColumnContent($data, sqlInterpreter::$BL_A_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED) ?? true;
 
-        $candidate["b"] = $this->getColumnContent($data, sqlInterpreter::$BL_B_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE) ?? true;
+        $candidate["b"] = $this->getColumnContent($data, sqlInterpreter::$BL_B_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED) ?? true;
 
-        $candidate["c"] = $this->getColumnContent($data, sqlInterpreter::$BL_C_ROW, sqlInterpreter::$NOT_REQUIRED, sqlInterpreter::$CANDIDATE_TABLE) ?? true;
-
+        $candidate["c"] = $this->getColumnContent($data, sqlInterpreter::$BL_C_ROW, sqlInterpreter::$CANDIDATE_TABLE, sqlInterpreter::$NOT_REQUIRED) ?? true;
 
         return $this->inscriptCandidate($candidate);
     }
@@ -380,6 +385,12 @@ class sqlInterpreter {
     }
 
     // * SEARCH * //
+    /**
+     * Protected method searching a job in the database
+     *
+     * @param string $titled The title of the job
+     * @return int The primary key of the title
+     */
     protected function searchJobId(string $titled): int {
         $request = "SELECT Id FROM Jobs WHERE Titled = :titled";
 
@@ -389,7 +400,12 @@ class sqlInterpreter {
 
         return $response;
     }
-
+    /**
+     * Protected method searching a service in the database
+     *
+     * @param string $titled The title of the service
+     * @return int The primary key of the service
+     */
     protected function searchServiceId(string $titled): int {
         $request = "SELECT Id FROM Services WHERE Titled = :titled";
 
@@ -399,7 +415,12 @@ class sqlInterpreter {
 
         return $response;
     }
-
+    /**
+     * Protected method searching an establishment in the database
+     *
+     * @param string $titled The title of the establishment
+     * @return int The primary key of the establishment
+     */
     protected function searchEstablishmentId(string $titled): int {
         $request = "SELECT Id FROM Establishments WHERE Titled = :titled";
 
@@ -409,7 +430,12 @@ class sqlInterpreter {
 
         return $response;
     }
-
+    /**
+     * Protected method searching a type of contract in the database
+     * 
+     * @param string $titled The title of the type
+     * @return int The primary key of the type
+     */
     protected function searchTypeId(string $titled): int {
         $request = "SELECT Id FROM Types_of_contracts WHERE Titled = :titled";
 
@@ -419,7 +445,12 @@ class sqlInterpreter {
 
         return $response;
     }
-
+    /**
+     * Protected method searching an application in the database
+     *
+     * @param integer $key_application The primary key of the application
+     * @return array The application
+     */
     protected function searchApplication(int $key_application): array {
         $request = "SELECT * FROM Types_of_contracts WHERE Id = :id";
 

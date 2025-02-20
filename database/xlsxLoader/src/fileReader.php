@@ -21,6 +21,12 @@ class fileReader {
      * @var filePrinter
      */
     protected filePrinter $errorsRegister;
+    /**
+     * Protected attribute containing the sqlInterpreter wich analizes data
+     *
+     * @var sqlInterpreter
+     */
+    protected sqlInterpreter $interpreter;
 
     /**
      * Constructor class
@@ -42,9 +48,8 @@ class fileReader {
             die("Il est impossble de lire une feuille d'indice négatif");
         }
 
-
         $this->logsRegister = new filePrinter($registerLogsPath ?? fileReader::getBasedRegistersLogsPath());
-
+        
         $this->errorsRegister = new fileprinter($errorsLogsPath ?? fileReader::getBasedErrorsLogsPath());
     }
 
@@ -78,6 +83,13 @@ class fileReader {
     public function getErrorsRegister(): filePrinter { return $this->errorsRegister; }
 
     /**
+     * Public method returning the sqlInterpreter
+     *
+     * @return sqlInterpreter
+     */
+    public function getInterpreter(): sqlInterpreter { return $this->interpreter; }
+
+    /**
      * Public static method returning the based path for logs of registerings
      *
      * @return string
@@ -98,57 +110,43 @@ class fileReader {
      * @return void
      */
     public function readFile() {
-        echo "<h2>On débute la procédure</h2>";
-
-        $file = IOFactory::load($this->getPath());                                                  // Loading the file
-
-
-        $file_name = $this->getpath();
-        
-        echo "<h3>Fichier : {$file_name} ouvert</h3>";
-
-
-        $sheet = $file->getSheet($this->getPage());                                                 // Loading the page
-        
-        echo "<h3>Page sélectionnée</h3>";
-
-
+        $file = IOFactory::load($this->getPath());                                                      // Loading the file
+        $sheet = $file->getSheet($this->getPage());                                                     // Loading the page
         $size = $sheet->getHighestRow();
 
-        echo "{$size} lignes trouvées<br>";
+        $this->getLogsRegister()->printRow(1, Registering::toXlsx());                                   // Writing the header
 
-        echo "<h3>On débute la lecture</h3>";
+        $rowStructure = (array) $this->readLine($sheet, 1);                                             // Reading header
+        $this->interpreter = new sqlInterpreter($rowStructure);
 
-
-        $rowStructure = $this->readLine($sheet, 1);
 
         $err_row = 1;
-
-        for($rowCount = 2; $rowCount <= $size; $rowCount++) {                                       // Reading the file
+        for($rowCount = 2; $rowCount <= $size; $rowCount++) {                                           // Reading the file
             $rowData = (array) $this->readLine($sheet, $rowCount);
 
             if(! $this->isEmptyRow($rowData)) try {
-                echo "<h4>Ligne : {$rowCount}</h4>";
-
-                print_r($rowData);
-
-                $this->getLogsRegister()->printRow($rowCount - 1, $rowData);
+                $registering = $this->getInterpreter()->rowAnalyse($rowData);                           // Analyzing the row
+                // todo : $registering->toArray());
+                $this->getLogsRegister()->printRow($rowCount, $registering->toArray());                 // Writing the registration 
 
             } catch(Exception $e) {
                 $rowData["Erreur"] = get_class($e);
-
                 $rowData["Erreur description"] = $e->getMessage();
 
+                if($err_row == 1) {
+                    array_push($rowStructure, "Erreur");
+                    array_push($rowStructure, "Erreur description");
+
+                    $this->getErrorsRegister()->printRow($err_row, $rowStructure);
+
+                    $err_row++;
+                }
 
                 $this->getErrorsRegister()->printRow($err_row, $rowData); 
 
                 $err_row++;
             }
         }
-
-
-        echo "<h3>Lecture terminée</h3>";
-
 
         $this->saveWork();
     }
@@ -204,16 +202,8 @@ class fileReader {
      * @return void
      */
     protected function saveWork() {
-        echo "<h2>On enregistre</h2>";
-
-        echo "<h3>Les logs</h3>";
-
         $this->getLogsRegister()->save();
 
-        echo "<h3>Les erreurs</h3>";
-
         $this->getErrorsRegister()->save();
-
-        echo "<h2>Terminé</h2>";
     }
 }

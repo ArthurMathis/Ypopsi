@@ -30,27 +30,16 @@ class filePrinter {
      * @param string $path The path of the file
      */
     public function __construct(protected string $path) {
-        echo "<h2>Nouveau filePrinter</h2>";
-
         if(file_exists($this->getPath())) {
-            $this->sheet = IOFactory::load($this->getpath());                   // Opening the file
+            $this->sheet = IOFactory::load($this->getpath());                           // Opening the file
         } else {
-            $this->sheet = new Spreadsheet();                                   // Creating new file
+            $this->sheet = new Spreadsheet();                                           // Creating new file
         }
 
-        echo "<h3>Fichier {$this->path} ouvert</h3>";
-
-
-        $this->writer = new Xlsx($this->getSheet());                            // Opening the writer
-
-        echo "<h3>Nouveau writer ouvert</h3>";
-
+        $this->writer = new Xlsx($this->getSheet());                                    // Opening the writer
 
         $title = $title = "Insertion du " . date('d/m/Y');
-
         $title = $this->addSheet($title);                                                // Creating the new sheet 
-
-        echo "<h3>Nouvelle page : {$title} prête</h3>";
     }
 
     // * GET * //
@@ -94,7 +83,7 @@ class filePrinter {
      * @param array $data The data to write
      * @return void
      */
-    public function printRow(int $row, array &$data) {
+    public function printRow(int $row, array $data) {
         $sheet = $this->getSheet()->getActiveSheet();
 
         $column = filePrinter::getBasedColumn();
@@ -122,23 +111,31 @@ class filePrinter {
      */
     protected function addSheet(string $sheetname): string {
         $sheetname = str_replace("/", "-", $sheetname);
-
         $sheetname = preg_replace('/[\\/?*:[]"<>|]/', ' ', $sheetname);
-
         $sheetname = substr($sheetname, 0, 31);
 
+        $originalSheetname = $sheetname;
+        $index = 1;
 
-        var_dump($sheetname); 
-        echo "<br>";
+        // Vérifier si une feuille avec le même nom existe déjà
+        while ($this->sheetNameExists($sheetname)) {
+            $sheetname = substr($originalSheetname, 0, 31 - strlen(" - $index")) . " - $index";
+            $index++;
+        }
 
-
-        $worksheet = new Worksheet($this->getSheet(), $sheetname);                                          // Creating the new sheet
-
-        $this->getSheet()->addSheet($worksheet);                                                            // Adding the new sheet
-
-        $this->getSheet()->getSheet(filePrinter::getBasedSheet())->setTitle($sheetname);                    // Setting the title 
-
+        $worksheet = new Worksheet($this->getSheet(), $sheetname); // Creating the new sheet
+        $this->getSheet()->addSheet($worksheet); // Adding the new sheet
+        $worksheet->setTitle($sheetname); // Setting the title
 
         return $sheetname;
+    }
+
+    protected function sheetNameExists(string $sheetname): bool {
+        foreach ($this->getSheet()->getSheetNames() as $existingSheetName) {
+            if ($existingSheetName === $sheetname) {
+                return true;
+            }
+        }
+        return false;
     }
 }

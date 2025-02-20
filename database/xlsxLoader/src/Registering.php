@@ -24,4 +24,28 @@ class registering {
      * @var int
      */
     public int $contract;
+
+    /**
+     * Public method returning the registering in an array
+     *
+     * @return array
+     */
+    public function toArray(): array {
+        return array(
+            "Candidat"    => $this->candidate,
+            "Candidature" => $this->application,
+            "Contrat"     => $this->contract,
+        );
+    }
+
+    /**
+     * Public static function returning the xlsx header for registering
+     *
+     * @return array
+     */
+    public static function toXlsx(): array {
+        return array(
+            "Candidat", "Candidature", "Contrat"
+        );
+    }
 }

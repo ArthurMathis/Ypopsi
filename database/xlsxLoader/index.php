@@ -6,6 +6,7 @@ require_once("define.php");
 
 
 test_process();
+env_start();
 
 
 use DB\fileReader;
