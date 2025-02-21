@@ -296,11 +296,11 @@ class sqlInterpreter {
      */
     protected function completeDate(string $date): string {
         if (preg_match('/^\d{2}\/\d{4}$/', $date)) {
-            return "01/" . $date;
+            return $date . "-01";
         }
     
         if (preg_match('/^\d{4}$/', $date)) {
-            return "01/01/" . $date;
+            return $date . "-01-01";
         }
     
         return $date;
