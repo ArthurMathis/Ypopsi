@@ -51,6 +51,7 @@ class sqlInterpreter {
 
     public static string $CANDIDATE_TABLE = "Candidat";
     public static string $QUALIFICATION_TABLE = "Qualification";
+    public static string $HELPS_TABLE = "Aide au recrutement";
     public static string $APPLICATION_TABLE = "Candidature";
     public static string $CONTRACT_TABLE = "Contrat";
 
@@ -150,7 +151,7 @@ class sqlInterpreter {
 
         $registering->qualifications = $this->makeQualifications($data, $registering->candidate);
 
-        // todo : aides
+        $registering->helps = $this->makeHelps($data, $registering->candidate);
         // todo : coopteur 
 
         return $registering;
@@ -319,7 +320,7 @@ class sqlInterpreter {
             sqlInterpreter::$APPLICATION_TABLE,
             sqlInterpreter::$REQUIRED
         );
-        $application["source"] = $this->searchSource($source);
+        $application["source"] = $this->searchSourceId($source);
 
         $service = (string) $this->getColumnContent(
             $data, 
@@ -356,7 +357,7 @@ class sqlInterpreter {
     }
 
     /**
-     * Protected method geeting the information of a contract ang register its in the database
+     * Protected method geeting the information of a contract and register its in the database
      *
      * @param array $data The row
      * @param int $key_candidate The candidate's primary key 
@@ -419,7 +420,7 @@ class sqlInterpreter {
     }
 
     /**
-     * Protected method geeting the information of qualifications ang register them in the database 
+     * Protected method geeting the information of qualifications and register them in the database 
      *
      * @param array $data The row
      * @param int $key_candidate The candidate's primary key 
@@ -472,6 +473,34 @@ class sqlInterpreter {
         for($i = 0; $i < $qualifs_count; $i++) {
             $key_qualification = $this->searchQualificationId($qualifs[$i]);
             $lastId = $this->inscriptQualification($key_candidate, $key_qualification, $qualifs_date[$i]);
+            array_push($arr, $lastId);
+        }
+
+        return $arr;
+    }
+
+    protected function makeHelps(array $data, int $key_candidate): array {
+        $helps_str = (string) $this->getColumnContent(
+            $data,
+            sqlInterpreter::$HELPS_ROW,
+            sqlInterpreter::$HELPS_TABLE
+        );
+
+        if(empty($helps)) {
+            return [];
+        }
+
+
+        $helps = explode(";", $helps_str);
+        $helps = array_map(function($c) {
+            return trim($c);
+        }, $helps);
+
+        $arr = array();
+
+        foreach($helps as $obj) {
+            $key_help = $this->searchHelpId($obj);
+            $lastId = $this->inscriptHelp($key_candidate, $key_help);
             array_push($arr, $lastId);
         }
 
@@ -618,14 +647,34 @@ class sqlInterpreter {
         return $inserter->post_request($request, $params);
     }
 
+    /**
+     * protected method registering a new help 
+     *
+     * @param int $key_qualification The primary key of the help
+     * @return int The primary key of the registering
+     */
+    protected function inscriptHelp(int $key_candidate, int $key_help): int {
+        $request = "INSERT INTO Have_the_right_to (Key_Candidates, Key_Helps, Date) VALUES (:candidate, :help)";
+
+        $params = array(
+            "candidate" => $key_candidate,
+            "help"      => $key_help
+        );
+
+        $inserter = $this->getInserter();
+
+        return $inserter->post_request($request, $params);
+    }
+
+
     // * DELETE * //
     /**
-     * Protected method deleting a Registering
+     * Public method deleting a Registering
      *
      * @param Registering $register The registering
      * @return void
      */
-    protected function deleteRegistering(Registering $register) {
+    public function deleteRegistering(Registering $register) {
         if(!empty($register->application)) {                                                            // Deleting the application
             $this->deleteApplication($register->application);
         }
@@ -730,7 +779,24 @@ class sqlInterpreter {
         
         $inserter->post_request($request, $params);
     }
+
+
     // * SEARCH * //
+    /**
+     * Protected method searching an application in the database
+     *
+     * @param int $key_application The primary key of the application
+     * @return array The application
+     */
+    protected function searchApplication(int $key_application): array {
+        $request = "SELECT * FROM Applications WHERE Id = :id";
+
+        $params = array("id" => $key_application);
+
+        $response = $this->getInserter()->get_request($request, $params, true, true);
+
+        return $response;
+    }
     /**
      * Protected method searching a job in the database
      *
@@ -797,7 +863,7 @@ class sqlInterpreter {
      * @param string $titled The title of the source
      * @return int The primary key of the source
      */
-    protected function searchSource(string $titled): int {
+    protected function searchSourceId(string $titled): int {
         $request = "SELECT Id FROM Sources WHERE Titled = :titled";
 
         $params = array("titled" => $titled);
@@ -822,18 +888,18 @@ class sqlInterpreter {
         return $inserter->get_request($request, $params, true, true)["Id"];
     }
     /**
-     * Protected method searching an application in the database
+     * Protected ùethod searching a Help in the database
      *
-     * @param int $key_application The primary key of the application
-     * @return array The application
+     * @param string $titled The title of the help
+     * @return int The primary key of the help
      */
-    protected function searchApplication(int $key_application): array {
-        $request = "SELECT * FROM Applications WHERE Id = :id";
+    protected function searchHelpId(string $titled): int {
+        $request = "SELECT Id FROM Helps WHERE Titled = :titled";
 
-        $params = array("id" => $key_application);
+        $params = array("titled" => $titled);
 
-        $response = $this->getInserter()->get_request($request, $params, true, true);
+        $inserter = $this->getInserter();
 
-        return $response;
+        return $inserter->get_request($request, $params, true, true)["Id"];
     }
 }

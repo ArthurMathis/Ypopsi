@@ -126,12 +126,13 @@ class fileReader {
 
             if(! $this->isEmptyRow($rowData)) try {
                 $registering = $this->getInterpreter()->rowAnalyse($rowData);                           // Analyzing the row
-                // todo : $registering->toArray());
                 $this->getLogsRegister()->printRow($rowCount, $registering->toArray());                 // Writing the registration 
 
             } catch(Exception $e) {
                 $rowData["Erreur"] = get_class($e);
                 $rowData["Erreur description"] = $e->getMessage();
+
+                $this->getInterpreter()->deleteRegistering($registering);                               // Deleting incompleted data
 
                 if($err_row == 1) {
                     array_push($rowStructure, "Erreur");
@@ -142,7 +143,7 @@ class fileReader {
                     $err_row++;
                 }
 
-                $this->getErrorsRegister()->printRow($err_row, $rowData); 
+                $this->getErrorsRegister()->printRow($err_row, $rowData);                               // Registering the erreors logs
 
                 $err_row++;
             }
