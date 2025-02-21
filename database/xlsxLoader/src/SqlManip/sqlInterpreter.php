@@ -604,9 +604,9 @@ class sqlInterpreter {
         $request = "INSERT INTO Applications (Key_Candidates, Key_Jobs, Key_sources";    
         $values_request = " VALUES (:candidate, :job, :source";
 
-        if(!empty($candidate["service"]) && !empty($application["establishment"])) {
+        if(!empty($application["service"]) && !empty($application["establishment"])) {
             $request .= ", Key_Services, Key_Establishments";
-            $values_request .= ", :service, :estbalishment";
+            $values_request .= ", :service, :establishment";
         }
 
         if(!empty($application["type"])) {
