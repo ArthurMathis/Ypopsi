@@ -120,6 +120,7 @@ class fileReader {
         $this->interpreter = new sqlInterpreter($rowStructure);
 
 
+        $resgister_row = 2;
         $err_row = 1;
         for($rowCount = 2; $rowCount <= $size; $rowCount++) {                                           // Reading the file
             $registering = new Registering();
@@ -133,7 +134,8 @@ class fileReader {
                 print_r($registering);
                 echo "<br>";
 
-                $this->getLogsRegister()->printRow($rowCount, $registering->toArray());                 // Writing the registration 
+                $this->getLogsRegister()->printRow($resgister_row, $registering->toArray());           // Writing the registration 
+                $resgister_row++;
 
             } catch(Exception $e) {
                 $rowData["Erreur"] = get_class($e);
@@ -151,12 +153,10 @@ class fileReader {
                     array_push($rowStructure, "Erreur description");
 
                     $this->getErrorsRegister()->printRow($err_row, $rowStructure);
-
                     $err_row++;
                 }
 
                 $this->getErrorsRegister()->printRow($err_row, $rowData);                               // Registering the erreors logs
-
                 $err_row++;
             }
 

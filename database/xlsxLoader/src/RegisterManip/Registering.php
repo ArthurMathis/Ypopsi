@@ -104,7 +104,7 @@ class registering {
      */
     public static function toXlsx(): array {
         return array(
-            "Candidat", "Candidature", "Contrat"
+            "Candidat", "Candidature", "Contrat", "Qualifications", "Aides"
         );
     }
 }

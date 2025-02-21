@@ -31,15 +31,15 @@ class filePrinter {
      */
     public function __construct(protected string $path) {
         if(file_exists($this->getPath())) {
-            $this->sheet = IOFactory::load($this->getpath());                           // Opening the file
+            $this->sheet = IOFactory::load($this->getpath());                                                           // Opening the file
         } else {
-            $this->sheet = new Spreadsheet();                                           // Creating new file
+            $this->sheet = new Spreadsheet();                                                                           // Creating new file
         }
 
-        $this->writer = new Xlsx($this->getSheet());                                    // Opening the writer
+        $this->writer = new Xlsx($this->getSheet());                                                                    // Opening the writer
 
         $title = "Insertion du " . date('d/m/Y');
-        $title = $this->addSheet($title);                                                // Creating the new sheet 
+        $title = $this->addSheet($title);                                                                               // Creating the new sheet 
     }
 
     // * GET * //
@@ -79,7 +79,7 @@ class filePrinter {
     /**
      * Public method writing a row in the file
      *
-     * @param int $row The index og the row
+     * @param int $row The index of the row
      * @param array $data The data to write
      * @return void
      */
@@ -90,7 +90,6 @@ class filePrinter {
 
         foreach($data as $obj) {
             $sheet->setCellValue($column . $row, $obj);
-
             $column++;
         }
     }
@@ -122,15 +121,21 @@ class filePrinter {
             $index++;
         }
 
-        $worksheet = new Worksheet($this->getSheet(), $sheetname);                                                      // Creating the new sheet
-        $this->getSheet()->addSheet($worksheet);                                                                        // Adding the new sheet
-        $worksheet->setTitle($sheetname);                                                                               // Setting the title
+        $worksheet = new Worksheet($this->getSheet(), $sheetname); // Creating the new sheet
+        $this->getSheet()->addSheet($worksheet); // Adding the new sheet
+        $worksheet->setTitle($sheetname); // Setting the title
+
+        // Définir la nouvelle feuille comme feuille active
+        $this->getSheet()->setActiveSheetIndexByName($sheetname);
+
+        // Supprimer la feuille par défaut si elle existe
+        $this->removeDefaultSheet();
 
         return $sheetname;
     }
 
     /**
-     * Protected method testing if a sheetname is free pr not
+     * Protected method testing if a sheetname is free or not
      *
      * @param string $sheetname The name
      * @return bool
@@ -142,5 +147,20 @@ class filePrinter {
             }
         }
         return false;
+    }
+
+    /**
+     * Protected method removing the default sheet if it exists
+     *
+     * @return void
+     */
+    protected function removeDefaultSheet() {
+        $defaultSheetName = 'Worksheet';
+        $sheetNames = $this->getSheet()->getSheetNames();
+
+        if (in_array($defaultSheetName, $sheetNames)) {
+            $sheetIndex = array_search($defaultSheetName, $sheetNames);
+            $this->getSheet()->removeSheetByIndex($sheetIndex);
+        }
     }
 }
