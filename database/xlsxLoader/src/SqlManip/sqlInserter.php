@@ -1,6 +1,6 @@
 <?php
 
-namespace DB;
+namespace DB\SqlManip;
 
 use \PDO;
 use \PDOException;

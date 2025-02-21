@@ -1,6 +1,6 @@
 <?php
 
-namespace DB;
+namespace DB\FileManip;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;

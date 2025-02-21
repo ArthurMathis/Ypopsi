@@ -1,9 +1,11 @@
 <?php
 
-namespace DB;
+namespace DB\FileManip;
 
 use \Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use DB\SqlManip\sqlInterpreter;
+use DB\RegisterManip\Registering;
 
 /**
  * Class reading a file 

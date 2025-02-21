@@ -1,58 +1,60 @@
 <?php
 
-namespace DB;
+namespace DB\SqlManip;
 
 use \Exception;
-use DB\sqlInserter;
-use DB\Registering;
+use DB\SqlManip\sqlInserter;
+use DB\RegisterManip\registering;
 
 /**
  * Class analzing an arrray and making a database request 
  */
 class sqlInterpreter {
-    public static $BASED_INDEX = -1;
+    public static int $BASED_INDEX = -1;
+    public static string $STR_SEPARATOR = ";";
 
-    public static $REQUIRED = true;
-    public static $NOT_REQUIRED = false;
+    public static bool $REQUIRED = true;
+    public static bool $NOT_REQUIRED = false;
 
-    public static $MALE = "M";
-    public static $FEMALE = "F";
+    public static string $MALE = "M";
+    public static string $FEMALE = "F";
 
     /// Name of column 
-    public static $NAME_ROW = "NOM";
-    public static $FIRSTNAME_ROW = "PRENOM";
-    public static $PHONE_ROW = "Telephone";
-    public static $EMAIL_ROW = "Email";
-    public static $GENDER_ROW = "Sexe";
+    public static string $NAME_ROW = "NOM";
+    public static string $FIRSTNAME_ROW = "PRENOM";
+    public static string $PHONE_ROW = "Telephone";
+    public static string $EMAIL_ROW = "Email";
+    public static string $GENDER_ROW = "Sexe";
 
-    public static $ADDRESS_ROW = "Adresse";
-    public static $CITY_ROW = "Ville";
-    public static $POSTCODE_ROW = "Code postal";
+    public static string $ADDRESS_ROW = "Adresse";
+    public static string $CITY_ROW = "Ville";
+    public static string $POSTCODE_ROW = "Code postal";
 
-    public static $SERVICE_ROW = "Service";
-    public static $ESTABLISHMENT_ROW = "Etablissement";
-    public static $JOB_ROW = "POSTE";
+    public static string $SERVICE_ROW = "Service";
+    public static string $ESTABLISHMENT_ROW = "Etablissement";
+    public static string $JOB_ROW = "POSTE";
 
-    public static $QUALIFICATIONS_ROW = "Qualifications";
-    public static $QUALIFICATIONS_date_ROW = "Date de Diplôme";
-    public static $RATING_ROW = "Notation (de 1 à 5)";
-    public static $BL_A_ROW = "B.L. A";
-    public static $BL_B_ROW = "B.L. B";
-    public static $BL_C_ROW = "B.L. C"; 
-    public static $DESCRIPTION_ROW = "Observations";
+    public static string $QUALIFICATIONS_ROW = "Qualifications";
+    public static string $QUALIFICATIONS_DATE_ROW = "Date de Diplôme";
+    public static string $RATING_ROW = "Notation (de 1 à 5)";
+    public static string $BL_A_ROW = "B.L. A";
+    public static string $BL_B_ROW = "B.L. B";
+    public static string $BL_C_ROW = "B.L. C"; 
+    public static string $DESCRIPTION_ROW = "Observations";
 
-    public static $TYPE_OF_CONTRACTS_ROW = "Type de contrat";
-    public static $HELPS_ROW = "Aides (recrutement)";
-    public static $SOURCE_ROW = "Sources";
+    public static string $TYPE_OF_CONTRACTS_ROW = "Type de contrat";
+    public static string $HELPS_ROW = "Aides (recrutement)";
+    public static string $SOURCE_ROW = "Sources";
 
-    public static $STARTING_DATE_ROW = "DATE DEBUT";
-    public static $ENDING_DATE_ROW = "DATE FIN";
+    public static string $STARTING_DATE_ROW = "DATE DEBUT";
+    public static string $ENDING_DATE_ROW = "DATE FIN";
 
-    public static $CANDIDATE_TABLE = "Candidats";
-    public static $APPLICATION_TABLE = "Candidatures";
-    public static $CONTRACT_TABLE = "Contrats";
+    public static string $CANDIDATE_TABLE = "Candidat";
+    public static string $QUALIFICATION_TABLE = "Qualification";
+    public static string $APPLICATION_TABLE = "Candidature";
+    public static string $CONTRACT_TABLE = "Contrat";
 
-    protected $sql_inserter;
+    protected sqlInserter $sql_inserter;
 
     /**
      * Constructor class
@@ -142,28 +144,19 @@ class sqlInterpreter {
 
         $registering->candidate = $this->makecandidate($data); 
 
-
-        echo "<h3>Profile : {$registering->candidate}</h3>";
-
-        
         $registering->application = $this->makeApplication($data, $registering->candidate);
-
-
-        echo "<h3>Candidature : {$registering->application}</h3>";
-
 
         $registering->contract = $this->makeContract($data, $registering->candidate, $registering->application);
 
+        $registering->qualifications = $this->makeQualifications($data, $registering->candidate);
 
-        echo "<h3>Candidature : {$registering->contract}</h3>";
-
-        // todo : qualifications
         // todo : aides
         // todo : coopteur 
 
         return $registering;
     }
 
+    // * ANALYSE * //
     /**
      * Protected method getting the candidate's information and register him in the database
      *
@@ -208,8 +201,7 @@ class sqlInterpreter {
         $email = $this->getColumnContent(
             $data, 
             sqlInterpreter::$EMAIL_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         );
         if(!empty($email)) {
             $candidate["email"] = $email;
@@ -218,8 +210,7 @@ class sqlInterpreter {
         $phone = $this->getColumnContent(
             $data, 
             sqlInterpreter::$PHONE_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         );
         if(!empty($email)) {
             $candidate["phone"] = $phone;
@@ -228,20 +219,17 @@ class sqlInterpreter {
         $address = $this->getColumnContent(
             $data, 
             sqlInterpreter::$ADDRESS_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         );
         $city = $this->getColumnContent(
             $data,
             sqlInterpreter::$CITY_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         );
         $postcode = $this->getColumnContent(
             $data, 
             sqlInterpreter::$POSTCODE_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         );
         if(!empty($address) && !empty($city) && !empty($postcode)) {
             $candidate["address"]  = $address;
@@ -255,15 +243,13 @@ class sqlInterpreter {
         $candidate["availability"] = $this->getColumnContent(
             $data, 
             sqlInterpreter::$STARTING_DATE_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         );
 
         $description = $this->getColumnContent(
             $data, 
             sqlInterpreter::$DESCRIPTION_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         );
         if(!empty($description)) {
             $candidate["description"] = $description;
@@ -271,8 +257,7 @@ class sqlInterpreter {
         $rating =  $this->getColumnContent(
             $data, 
             sqlInterpreter::$RATING_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         );
         if(!empty($rating)) {
             $candidate["rating"] = $rating;
@@ -281,8 +266,7 @@ class sqlInterpreter {
         $a = !empty($this->getColumnContent(
             $data, 
             sqlInterpreter::$BL_A_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         ));
         if($a) {
             $candidate["a"] = $a;
@@ -291,8 +275,7 @@ class sqlInterpreter {
         $b = !empty($this->getColumnContent(
             $data, 
             sqlInterpreter::$BL_B_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         ));
         if($b) {
             $candidate["b"] = $b;
@@ -301,8 +284,7 @@ class sqlInterpreter {
         $c = !empty($this->getColumnContent(
             $data, 
             sqlInterpreter::$BL_C_ROW, 
-            sqlInterpreter::$CANDIDATE_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$CANDIDATE_TABLE
         ));
         if($c) {
             $candidate["c"] = $c;
@@ -315,7 +297,7 @@ class sqlInterpreter {
      * Protected method geeting the information of an application and register its in the database
      *
      * @param array $data The row 
-     * @param integer $key_candidate The candidate's primary key
+     * @param int $key_candidate The candidate's primary key
      * @throws Exception If the application is invalid
      * @return int The primary key of the application
      */
@@ -342,14 +324,12 @@ class sqlInterpreter {
         $service = (string) $this->getColumnContent(
             $data, 
             sqlInterpreter::$SERVICE_ROW, 
-            sqlInterpreter::$APPLICATION_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$APPLICATION_TABLE
         );
         $estbablishment = (string) $this->getColumnContent(
             $data, 
             sqlInterpreter::$ESTABLISHMENT_ROW, 
-            sqlInterpreter::$APPLICATION_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$APPLICATION_TABLE
         );
         if(!empty($service) && !empty($estbablishment)) {
             $application["service"]       = $this->searchServiceId($service);
@@ -366,8 +346,7 @@ class sqlInterpreter {
         $type = (string) $this->getColumnContent(
             $data, 
             sqlInterpreter::$TYPE_OF_CONTRACTS_ROW, 
-            sqlInterpreter::$APPLICATION_TABLE, 
-            sqlInterpreter::$NOT_REQUIRED
+            sqlInterpreter::$APPLICATION_TABLE
         );
         if(!empty($type)) {
             $application["type"] = $this->searchTypeId($type);
@@ -380,36 +359,123 @@ class sqlInterpreter {
      * Protected method geeting the information of a contract ang register its in the database
      *
      * @param array $data The row
-     * @param integer $key_candidate The candidate's primary key 
-     * @param integer $key_application The primary key of the application
+     * @param int $key_candidate The candidate's primary key 
+     * @param int $key_application The primary key of the application
      * @return ?int
      */
     protected function makeContract(array &$data, int $key_candidate, int $key_application): ?int {
-        $contract = ["candidate" => $key_candidate];
+        $application = $this->searchApplication($key_application);                                                                  // fetching the application
 
-        $application = $this->searchApplication($key_application);
+        $completed_application = !empty($application["Key_Services"]) 
+                                && !empty($application["Key_Applications"]) 
+                                && !empty($application["Key_Types_of_contracts"]);
 
-        $contract["job"]           = $application["Key_Jobs"];
-        $contract["service"]       = $application["Key_Services"];
-        $contract["establishment"] = $application["Key_Applications"];
-        $contract["type"]          = $application["Key_Types_of_contracts"];
+        $start_date = (string) $this->getColumnContent(                                                                             // Getting the start date
+            $data, 
+            sqlInterpreter::$STARTING_DATE_ROW, 
+            sqlInterpreter::$CONTRACT_TABLE,
+            sqlInterpreter::$NOT_REQUIRED
+        );
 
-        if(empty($contract["type"])) {
-            throw new Exception("Impossible d'inscrire un contrat sans type de contrat. Valeur : " . $contract["type"] . ".");
+
+        $end_date =  $this->getColumnContent(                                                                                       // Getting the end date
+            $data,
+            sqlInterpreter::$ENDING_DATE_ROW, 
+            sqlInterpreter::$CONTRACT_TABLE
+        );
+
+
+        if(!$completed_application || empty($start_date)) {
+            return null;
         }
+
+
+        if(!empty($start_date) && !$completed_application) {                                                                        // Testing datat integrity
+            throw new Exception("Impossible d'enregistrer un contrat sans : un service, un établissement et un type de contrat.");
+        }
+
+        if($application["Key_Types_of_contracts"] !== $this->searchTypeId("CDI") && empty($end_date)) {                                                                                                      // Testing datat integrity
+            throw new Exception("Impossible d'enregistrer un contrat à durée déterminée sans date de fin de contrat.");
+        }
+
+
+        $contract = array(
+            "candidate"        => $key_candidate,
+            "job"              => $application["Key_Jobs"],
+            "service"          => $application["Key_Services"],
+            "establishment"    => $application["Key_Types_of_contracts"],
+            "start_date"       => $start_date,
+            "proposition_date" => $start_date,
+            "signature_date"   => $start_date
+        );
 
         unset($application);
 
-        $contract["start_date"]       = $this->getColumnContent($data, sqlInterpreter::$STARTING_DATE_ROW, sqlInterpreter::$CONTRACT_TABLE);
-        $contract["proposition_date"] = $contract["start_date"];
-        $contract["signature_date"]   = $contract["start_date"];
-
-    
-        $cdi_id = $this->searchTypeId("CDI");
-        $required = $contract["type"] !== $cdi_id;
-        $contract["end_date"] = $this->getColumnContent($data, sqlInterpreter::$ENDING_DATE_ROW, $required, sqlInterpreter::$CONTRACT_TABLE);
+        if(!empty($end_date)) {
+            $contracts["end_date"] = $end_date;
+        }
 
         return $this->inscriptContract($contract);
+    }
+
+    /**
+     * Protected method geeting the information of qualifications ang register them in the database 
+     *
+     * @param array $data The row
+     * @param int $key_candidate The candidate's primary key 
+     * @return array
+     */
+    protected function makeQualifications(array $data, int $key_candidate): array {
+        $qualifs = (string) $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$QUALIFICATIONS_ROW,
+            sqlInterpreter::$QUALIFICATION_TABLE
+        );
+        $qualifs_date = (string) $this->getColumnContent(
+            $data, 
+            sqlInterpreter::$QUALIFICATIONS_DATE_ROW,
+            sqlInterpreter::$QUALIFICATION_TABLE
+        );
+
+        if(empty($qualifs) && empty($qualifs_date)) {
+            return [];
+        }
+
+
+        if(empty($qualifs) && !empty($qualifs_date)) {
+            throw new Exception("Impossible de rensigner une qualification sans son intitulé");
+        }
+
+        if(!empty($qualifs) && empty($qualifs_date)) {
+            throw new Exception("Impossible de rensigner une qualification sans sa date d'obtention");
+        }
+
+
+        $qualifs = explode(";", $qualifs);
+        $qualifs = array_map(function($c) {
+            return trim($c);
+        }, $qualifs); 
+
+        $qualifs_date = explode(";", $qualifs_date);
+        $qualifs_date = array_map(function($c) {
+            return trim($c);
+        }, $qualifs_date); 
+
+        $qualifs_count = count($qualifs);
+        $qualifs_date_count = count($qualifs_date);
+        if($qualifs_count !== $qualifs_date_count) {
+            throw new Exception("Impossible d'enregistrer une qualification sans sa date d'obtenion. Le nombre de qualifications : {$qualifs_count} ne coincide pas avec le nombre de dates : {$qualifs_date_count}");
+        }
+
+        $arr = array();
+
+        for($i = 0; $i < $qualifs_count; $i++) {
+            $key_qualification = $this->searchQualificationId($qualifs[$i]);
+            $lastId = $this->inscriptQualification($key_candidate, $key_qualification, $qualifs_date[$i]);
+            array_push($arr, $lastId);
+        }
+
+        return $arr;
     }
 
     // * INSCRIPT * //
@@ -504,25 +570,166 @@ class sqlInterpreter {
      */
     protected function inscriptContract(array $contract): int {
         $request = "INSERT INTO Contracts (PropositionDate, SignatureDate, StartDate, Key_Candidates, Key_Jobs, Key_Services, Key_Establishments, Key_Types_of_contracts";
-
         $values_request = " VALUES (:proposition_date, :signature_date, :start_date, :candidate, :job, :service, :establishment, :type";
-
 
         if(!empty($contract["end_date"])) {
             $request .= ", EndDate";
-
             $values_request .= ", :end_date";
         }
 
-
         $request .= ")" . $values_request . ")";
 
+        echo "<h4>Request</h4>";
+        var_dump($request);
+        echo "<br>";
 
-        $lastId = $this->getInserter()->post_request($request, $candidate);
+        echo "<h4>Params</h4>";
+        var_dump($contract);
+        echo "<br>";
 
+        $inserter = $this->getInserter();
+        $lastId = $inserter->post_request($request, $candidate);
+
+        echo "<h4>Id</h4>";
+        var_dump($lastId);
+        echo "<br>";
+        
         return $lastId;
     }
 
+    /**
+     * protected method registering a new qualification 
+     *
+     * @param int $key_qualification The primary key of the qualification
+     * @param string $date The date 
+     * @return int The primary key of the registering
+     */
+    protected function inscriptQualification(int $key_candidate, int $key_qualification, string $date): int {
+        $request = "INSERT INTO Get_qualifications (Key_Candidates, Key_Qualifications, Date) VALUES (:candidate, :qualification, :date)";
+
+        $params = array(
+            "candidate"     => $key_candidate,
+            "qualification" => $key_qualification,
+            "date"          => $date
+        );
+
+        $inserter = $this->getInserter();
+
+        return $inserter->post_request($request, $params);
+    }
+
+    // * DELETE * //
+    /**
+     * Protected method deleting a Registering
+     *
+     * @param Registering $register The registering
+     * @return void
+     */
+    protected function deleteRegistering(Registering $register) {
+        if(!empty($register->application)) {                                                            // Deleting the application
+            $this->deleteApplication($register->application);
+        }
+
+        if(!empty($register->contract)) {                                                               // Deleting the contract
+            $this->deleteContract($register->contract);
+        }
+
+        if(!empty($register->qualifications)) {                                                         // Deleting the qualifications
+            foreach($register->qualifications as $obj) {
+                $this->deleteQualification($obj);
+            }
+        }
+
+        if(!empty($register->helps)) {                                                                  // Deleting the helps
+            foreach($register->helps as $obj) {
+                $this->deleteHelp($obj);
+            }
+        }
+
+        if(!empty($register->candidate)) {                                                              // Deleting the candidate
+            $this->deleteCandidate($register->candidate);
+        }
+    }
+
+    /**
+     * Protected method deleting a Candidate
+     *
+     * @param int $key_candidate The candidate's primary key
+     * @return void
+     */
+    protected function deleteCandidate(int $key_candidate) {
+        $request = "DELETE Candidates WHERE Id =: id";
+
+        $params = array("id" => $key_candidate);
+
+        $inserter = $this->getInserter();
+        
+        $inserter->post_request($request, $params);
+    }
+
+    /**
+     * Protected method deleting a Application
+     *
+     * @param int $key_candidate The primary key of the application
+     * @return void
+     */
+    protected function deleteApplication(int $key_application) {
+        $request = "DELETE Applications WHERE Id =: id";
+
+        $params = array("id" => $key_application);
+
+        $inserter = $this->getInserter();
+        
+        $inserter->post_request($request, $params);
+    }
+
+    /**
+     * Protected method deleting a Contract
+     *
+     * @param int $key_candidate The primary key of the contract
+     * @return void
+     */
+    protected function deleteContract(int $key_contract) {
+        $request = "DELETE Contracts WHERE Id =: id";
+
+        $params = array("id" => $key_contract);
+
+        $inserter = $this->getInserter();
+        
+        $inserter->post_request($request, $params);
+    }
+
+    /**
+     * Protected method deleting an Help
+     *
+     * @param int $key_candidate The primary key of the help
+     * @return void
+     */
+    protected function deleteHelp(int $key_help) {
+        $request = "DELETE Have_the_right_to WHERE Id =: id";
+
+        $params = array("id" => $key_help);
+
+        $inserter = $this->getInserter();
+        
+        $inserter->post_request($request, $params);
+    }
+
+    /**
+     * Protected method deleting a Qualification
+     *
+     * @param int $key_candidate The primary key of the qualification
+     * @return void
+     */
+    protected function deleteQualification(int $key_qualification) {
+        $request = "DELETE Get_qualifications WHERE Id =: id";
+
+        $params = array("id" => $key_qualification);
+
+        $inserter = $this->getInserter();
+        
+        $inserter->post_request($request, $params);
+    }
     // * SEARCH * //
     /**
      * Protected method searching a job in the database
@@ -600,13 +807,28 @@ class sqlInterpreter {
         return $response;
     }
     /**
+     * Protected ùethod searching a Qualification in the database
+     *
+     * @param string $titled The title of the qualification
+     * @return int The primary key of the qulification
+     */
+    protected function searchQualificationId(string $titled): int {
+        $request = "SELECT Id FROM Qualifications WHERE Titled = :titled";
+
+        $params = array("titled" => $titled);
+
+        $inserter = $this->getInserter();
+
+        return $inserter->get_request($request, $params, true, true)["Id"];
+    }
+    /**
      * Protected method searching an application in the database
      *
-     * @param integer $key_application The primary key of the application
+     * @param int $key_application The primary key of the application
      * @return array The application
      */
     protected function searchApplication(int $key_application): array {
-        $request = "SELECT * FROM Types_of_contracts WHERE Id = :id";
+        $request = "SELECT * FROM Applications WHERE Id = :id";
 
         $params = array("id" => $key_application);
 
