@@ -122,15 +122,27 @@ class fileReader {
 
         $err_row = 1;
         for($rowCount = 2; $rowCount <= $size; $rowCount++) {                                           // Reading the file
+            $registering = new Registering();
+
             $rowData = (array) $this->readLine($sheet, $rowCount);
 
             if(! $this->isEmptyRow($rowData)) try {
-                $registering = $this->getInterpreter()->rowAnalyse($rowData);                           // Analyzing the row
+                $this->getInterpreter()->rowAnalyse($registering, $rowData);                           // Analyzing the row
+
+                echo "On a enregistré la ligne : ";
+                print_r($registering);
+                echo "<br>";
+
                 $this->getLogsRegister()->printRow($rowCount, $registering->toArray());                 // Writing the registration 
 
             } catch(Exception $e) {
                 $rowData["Erreur"] = get_class($e);
                 $rowData["Erreur description"] = $e->getMessage();
+
+                echo "Erreur : " . $e->getMessage() . "<br>";
+                echo "On supprime : ";
+                print_r($registering);
+                echo "<br><br>";
 
                 $this->getInterpreter()->deleteRegistering($registering);                               // Deleting incompleted data
 
@@ -147,6 +159,8 @@ class fileReader {
 
                 $err_row++;
             }
+
+            unset($registering);
         }
 
         $this->saveWork();

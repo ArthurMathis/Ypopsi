@@ -135,13 +135,10 @@ class sqlInterpreter {
      * Public function analyzing a row 
      *
      * @param array $data The row
-     * @return Registering
+     * @return void
      */
-    public function rowAnalyse(array &$data): Registering {
+    public function rowAnalyse(registering &$registering, array &$data) {
         echo "<h2>On enregistre un nouveau candidat</h2>";
-
-        
-        $registering = new Registering();
 
         $registering->candidate = $this->makecandidate($data); 
 
@@ -152,9 +149,6 @@ class sqlInterpreter {
         $registering->qualifications = $this->makeQualifications($data, $registering->candidate);
 
         $registering->helps = $this->makeHelps($data, $registering->candidate);
-        // todo : coopteur 
-
-        return $registering;
     }
 
     // * ANALYSE * //
@@ -295,6 +289,24 @@ class sqlInterpreter {
     }
 
     /**
+     * Protected method adapting the date format 
+     *
+     * @param string $date The date
+     * @return string
+     */
+    protected function completeDate(string $date): string {
+        if (preg_match('/^\d{2}\/\d{4}$/', $date)) {
+            return "01/" . $date;
+        }
+    
+        if (preg_match('/^\d{4}$/', $date)) {
+            return "01/01/" . $date;
+        }
+    
+        return $date;
+    }
+
+    /**
      * Protected method geeting the information of an application and register its in the database
      *
      * @param array $data The row 
@@ -377,13 +389,15 @@ class sqlInterpreter {
             sqlInterpreter::$CONTRACT_TABLE,
             sqlInterpreter::$NOT_REQUIRED
         );
+        $start_date = $this->completeDate($start_date);
 
 
-        $end_date =  $this->getColumnContent(                                                                                       // Getting the end date
+        $end_date = (string) $this->getColumnContent(                                                                                       // Getting the end date
             $data,
             sqlInterpreter::$ENDING_DATE_ROW, 
             sqlInterpreter::$CONTRACT_TABLE
         );
+        $end_date = $this->completeDate($end_date);
 
 
         if(!$completed_application || empty($start_date)) {
@@ -398,7 +412,6 @@ class sqlInterpreter {
         if($application["Key_Types_of_contracts"] !== $this->searchTypeId("CDI") && empty($end_date)) {                                                                                                      // Testing datat integrity
             throw new Exception("Impossible d'enregistrer un contrat à durée déterminée sans date de fin de contrat.");
         }
-
 
         $contract = array(
             "candidate"        => $key_candidate,
@@ -459,7 +472,9 @@ class sqlInterpreter {
 
         $qualifs_date = explode(";", $qualifs_date);
         $qualifs_date = array_map(function($c) {
-            return trim($c);
+            $temp = trim($c);
+            $response = $this->completeDate($temp);
+            return $response;
         }, $qualifs_date); 
 
         $qualifs_count = count($qualifs);
@@ -472,13 +487,27 @@ class sqlInterpreter {
 
         for($i = 0; $i < $qualifs_count; $i++) {
             $key_qualification = $this->searchQualificationId($qualifs[$i]);
-            $lastId = $this->inscriptQualification($key_candidate, $key_qualification, $qualifs_date[$i]);
+
+            $this->inscriptQualification($key_candidate, $key_qualification, $qualifs_date[$i]);
+
+            $lastId = array(
+                "candidate"     => $key_candidate,
+                "qualification" => $key_qualification
+            );
+
             array_push($arr, $lastId);
         }
 
         return $arr;
     }
 
+    /**
+     * Protected method geeting the information of helps and register them in the database
+     *
+     * @param array $data The row
+     * @param integer $key_candidate The candidate's primary key 
+     * @return array
+     */
     protected function makeHelps(array $data, int $key_candidate): array {
         $helps_str = (string) $this->getColumnContent(
             $data,
@@ -675,6 +704,8 @@ class sqlInterpreter {
      * @return void
      */
     public function deleteRegistering(Registering $register) {
+        echo "<b>On lance la procédure de supression </b>";
+
         if(!empty($register->application)) {                                                            // Deleting the application
             $this->deleteApplication($register->application);
         }
@@ -685,7 +716,7 @@ class sqlInterpreter {
 
         if(!empty($register->qualifications)) {                                                         // Deleting the qualifications
             foreach($register->qualifications as $obj) {
-                $this->deleteQualification($obj);
+                $this->deleteQualification($obj["qualification"], $obj["candidate"]);
             }
         }
 
@@ -698,6 +729,8 @@ class sqlInterpreter {
         if(!empty($register->candidate)) {                                                              // Deleting the candidate
             $this->deleteCandidate($register->candidate);
         }
+
+        echo "Register effacé : " . print_r($register) . "<br>";
     }
 
     /**
@@ -707,7 +740,7 @@ class sqlInterpreter {
      * @return void
      */
     protected function deleteCandidate(int $key_candidate) {
-        $request = "DELETE Candidates WHERE Id =: id";
+        $request = "DELETE FROM Candidates WHERE Id = :id";
 
         $params = array("id" => $key_candidate);
 
@@ -717,13 +750,13 @@ class sqlInterpreter {
     }
 
     /**
-     * Protected method deleting a Application
+     * Protected method deleting an Application
      *
-     * @param int $key_candidate The primary key of the application
+     * @param int $key_application The primary key of the application
      * @return void
      */
     protected function deleteApplication(int $key_application) {
-        $request = "DELETE Applications WHERE Id =: id";
+        $request = "DELETE FROM Applications WHERE Id = :id";
 
         $params = array("id" => $key_application);
 
@@ -735,11 +768,11 @@ class sqlInterpreter {
     /**
      * Protected method deleting a Contract
      *
-     * @param int $key_candidate The primary key of the contract
+     * @param int $key_contract The primary key of the contract
      * @return void
      */
     protected function deleteContract(int $key_contract) {
-        $request = "DELETE Contracts WHERE Id =: id";
+        $request = "DELETE FROM Contracts WHERE Id = :id";
 
         $params = array("id" => $key_contract);
 
@@ -751,11 +784,11 @@ class sqlInterpreter {
     /**
      * Protected method deleting an Help
      *
-     * @param int $key_candidate The primary key of the help
+     * @param int $key_help The primary key of the help
      * @return void
      */
     protected function deleteHelp(int $key_help) {
-        $request = "DELETE Have_the_right_to WHERE Id =: id";
+        $request = "DELETE FROM Have_the_right_to WHERE Id = :id";
 
         $params = array("id" => $key_help);
 
@@ -767,13 +800,16 @@ class sqlInterpreter {
     /**
      * Protected method deleting a Qualification
      *
-     * @param int $key_candidate The primary key of the qualification
+     * @param int $key_qualification The primary key of the qualification
      * @return void
      */
-    protected function deleteQualification(int $key_qualification) {
-        $request = "DELETE Get_qualifications WHERE Id =: id";
+    protected function deleteQualification(int $key_qualification, int $key_candidate) {
+        $request = "DELETE FROM Get_qualifications WHERE Key_Candidates = :candidate AND Key_Qualifications = :qualification";
 
-        $params = array("id" => $key_qualification);
+        $params = array(
+            "candidate"     => $key_candidate,
+            "qualification" => $key_qualification
+        );
 
         $inserter = $this->getInserter();
         

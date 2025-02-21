@@ -37,6 +37,15 @@ class registering {
      */
     public array $helps;
 
+
+    // * GET * //
+    public function getQualification(int $index): string {
+        return "[ " . $this->qualifications[$index]["candidate"] . " - "
+                    . $this->qualifications[$index]["qualification"] . " ]";
+    } 
+
+
+    // * CONVERT * //
     /**
      * Public method returning the registering in an array
      *
@@ -60,10 +69,10 @@ class registering {
         $str = "";
 
         if(!empty($this->qualifications)) {
-            $str .= (string) $this->qualifications[0];
+            $str .= (string) $this->getQualification(0);
 
             for($i = 1; $i < count($this->qualifications); $i++) {
-                $str .= " ; " . $this->qualifications[$i];
+                $str .= " ; " . $this->getQualification($i);
             }
         }
 

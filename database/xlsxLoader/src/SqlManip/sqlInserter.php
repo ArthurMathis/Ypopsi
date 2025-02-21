@@ -69,6 +69,11 @@ class sqlInserter {
      * @return int The primary key of the new registration
      */
     public function post_request(string &$request, array &$params): int {
+        var_dump($request); 
+        echo "<br>";
+        var_dump($params);
+        echo "<br><br>";
+
         $query = $this->getConnection()->prepare($request);
 
         $query->execute($params);
