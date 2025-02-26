@@ -15,14 +15,18 @@ class ApplicationRepository extends Repository {
      * Public method searching and returning one application from his primary key
      *
      * @param int $key_application The primary key of the application
-     * @return array
+     * @return Application
      */
-    public function get(int $key_application): array {
+    public function get(int $key_application): Application {
         $request = "SELECT * FROM Applications WHERE Id = :id";
 
         $params = array("id" => $key_application);
 
-        return $this->get_request($request, $params, true, true);
+        $fetch = $this->get_request($request, $params, true, true);
+
+        $response = Application::fromArray($fetch);
+
+        return $response;
     }
     /**
      * Public function returning the liste of applications

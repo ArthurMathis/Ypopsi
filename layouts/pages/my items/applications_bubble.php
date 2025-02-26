@@ -40,7 +40,7 @@
                 <p>Refuser</p>
                 <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
             </a>
-            <a class="action_button reverse_color" href="<?= APP_PATH ?>/candidates/applications/accept/<?= $key_candidate ?>/<?= $item['cle'] ?>">
+            <a class="action_button reverse_color" href="<?= APP_PATH ?>/candidates/offers/input/<?= $key_candidate ?>/<?= $item['cle'] ?>">
                 <p>Valider</p>
                 <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-valider.svg" alt="">
             </a> 

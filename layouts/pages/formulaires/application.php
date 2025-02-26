@@ -94,7 +94,7 @@ $completed = !empty($candidate);
 
             <div class="input-container">
                 <label for="availability">
-                    Disponibilité *
+                    Disponibilité
                 </label>
 
                 <input 
@@ -102,7 +102,6 @@ $completed = !empty($candidate);
                     id="availability" 
                     name="availability" 
                     min="<?php echo Moment::currentMoment()->getDate(); ?>"
-                    required
                 >
             </div>
 

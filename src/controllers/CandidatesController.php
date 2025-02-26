@@ -124,13 +124,6 @@ class CandidatesController extends Controller {
 
     // * ACCEPT * //
     /**
-     * 
-     */
-    public function acceptApplication(int $key_candidate, int $key_application) {
-        
-    }
-
-    /**
      * Public method refusing an application
      * 
      * @param int $key_candidate The candidate's primary key
@@ -187,11 +180,9 @@ class CandidatesController extends Controller {
     public function inputApplication(?int $key_candidate = null) {
         isUserOrMore();                                                                     // Verifying the user's role
 
-
         if(!empty($key_candidate)) {                                                        // Fetching the candidate
             $candidate = (new CandidateRepository())->get($key_candidate);
         }
-
 
         $jobs_list = (new JobRepository())->getAutoCompletion($candidate->getGender() ?? true);
 
@@ -202,7 +193,6 @@ class CandidatesController extends Controller {
         $type_of_contracts_list = (new TypeOfContractsRepository())->getAutoCompletion();
 
         $sources_list = (new SourceRepository())->getAutoCompletion();
-
 
         $this->View->displayInputApplication(
             "Nouvelle candidature", 
@@ -215,6 +205,60 @@ class CandidatesController extends Controller {
         );
     }
     /**
+     * Public method returning the HTML form of inputing an offer
+     * 
+     * @param int $key_candidate The candidate's primary key
+     * @param ?int $key_application The primary key of the application
+     * @return void
+     */
+    public function inputOffer(int $key_candidate, ?int $key_application = null) {
+        isUserOrMore();                                                                                         // Verifying the user's role
+
+        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
+
+        $application = null;
+        $job = null;
+        $service = null;
+        $establishment = null;
+        $type = null;
+        if(!empty($key_application)) {
+            $application = (new ApplicationRepository())->get($key_application);                                // Fetching the application
+
+            $job = (new JobRepository())->get($application->getJob());                                          // Fetching the job
+
+            if(!empty($application->getService())) {
+                $service = (new ServiceRepository())->get($application->getService());                          // Fetching the service
+            }
+
+            if(!empty($application->getEstablishment())) {
+                $establishment = (new EstablishmentRepository())->get($application->getEstablishment());        // Fetching the establishment
+            }
+
+            if(!empty($application->getType())) {
+                $type_of_contract = (new TypeOfContractsRepository())->get($application->getType());            // Fetching the type of contract
+            }
+        }
+
+        $jobs_list = (new JobRepository())->getAutoCompletion($candidate->getGender() ?? true);
+        $services_list = (new ServiceRepository())->getAutoCompletion();
+        $establishments_list = (new EstablishmentRepository())->getAutoCompletion();
+        $type_of_contracts_list = (new TypeOfContractsRepository())->getAutoCompletion();
+
+        $this->View->displayInputOffer(
+            "Nouvelle proposition", 
+            $candidate,
+            $jobs_list,
+            $services_list,
+            $establishments_list,
+            $type_of_contracts_list,
+            $job,
+            $service,
+            $establishment,
+            $type
+        );
+    }
+    
+    /**
      * Public method returning the HTML form of inputing a meeting
      *
      * @param int $key_candidate The candidate's primary ket
@@ -223,18 +267,12 @@ class CandidatesController extends Controller {
     public function inputMeeting(int $key_candidate) {
         isUserOrMore();                                                                     // Verifying the user's role
 
-
         $recruiter = $_SESSION['user'];                                                     // Getting the recruiter
-
         $users_list = (new UserRepository())->getAutoCompletion();                          // Fetching the list of users
-
     
         $esta_repo = new EstablishmentRepository();
-
         $establishment = $esta_repo->get($recruiter->getEstablishment());                   // Fetching the establishment
-    
         $establishments_list = $esta_repo->getAutoCompletion();                             // Fetching the list of establishments
-    
     
         $this->View->displayInputMeeting(
             $key_candidate, 
@@ -381,23 +419,15 @@ class CandidatesController extends Controller {
     public function editMeeting(int $key_meeting) {
         isUserOrMore();                                                                     // Verifying the user's role
 
-
         $meeting = (new MeetingRepository())->get($key_meeting);                            // Fetching the meeting
 
-
         $user_repo = new UserRepository();
-        
         $recruiter = $user_repo->get($meeting->getUser());                                  // Fetching the recruiter
-        
         $users_list = $user_repo->getAutoCompletion();                                      // Fetching the list of users
         
-        
         $esta_repo = new EstablishmentRepository();
-        
         $establishment = $esta_repo->get($meeting->getEstablishment());                     // Fetching the establishment
-        
         $establishments_list = $esta_repo->getAutoCompletion();                             // Fetching the list of establishements
-
 
         $this->View->displayEditMeeting(
             $meeting, 
@@ -420,7 +450,6 @@ class CandidatesController extends Controller {
     public function updateMeeting(int $key_candidate, int $key_meeting) {
         isUserOrMore();                                                                     // Verifying the user's role
 
-
         $meeting = new Meeting(                                                             // Building the meeting
             $key_meeting,
             $_POST['date'] . " " . $_POST['time'], 
@@ -432,14 +461,10 @@ class CandidatesController extends Controller {
 
         (new MeetingRepository())->update($meeting);                                        // Registering in database
 
-
         $candidate = (new CandidateRepository())->get($key_candidate);                      // Fetching the candidate 
 
-
         $act_repo = new ActionRepository();                 
-        
         $type = $act_repo->searchType("Mise-à-jour rendez-vous"); 
-
         $desc = "Mise-à-jour du rendez-vous de " 
                 . strtoupper($candidate->getName()) . " " 
                 . FormsManip::nameFormat($candidate->getFirstname());

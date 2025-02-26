@@ -18,7 +18,7 @@ class ServiceRepository extends Repository {
      * @return Service The service
      */
     public function get(int $key_service): Service {
-        $request = "SELECT * FROM Service WHERE Id = :id";
+        $request = "SELECT * FROM Services WHERE Id = :id";
 
         $params = array("id" => $key_service);
 
