@@ -117,7 +117,7 @@ use App\Core\Moment;
                     type="date" 
                     name="date_debut" 
                     id="date_debut" 
-                    min="<?= Moment::currentMoment()->getDate() ?>"
+                    min="<?= Moment::dayFromDate(Moment::currentMoment()->getDate()) ?>"
                     required
                 >
             </div>
