@@ -8,7 +8,7 @@ use App\Core\FormsManip;
 use App\Models\Meeting;
 use App\Models\Action;
 use App\Models\Application;
-use App\Models\Candidate;
+use App\Models\Contract;
 use App\Repository\ApplicationRepository;
 use App\Repository\CandidateRepository;
 use App\Repository\ContractRepository;
@@ -121,7 +121,6 @@ class CandidatesController extends Controller {
         );
     }
 
-
     // * ACCEPT * //
     /**
      * Public method refusing an application
@@ -167,8 +166,6 @@ class CandidatesController extends Controller {
             'direction' => APP_PATH . "/candidates/" . $key_candidate
         ]);
     }
-
-
 
     // * INPUT * //
     /**
@@ -251,6 +248,7 @@ class CandidatesController extends Controller {
             $services_list,
             $establishments_list,
             $type_of_contracts_list,
+            $key_application,
             $job,
             $service,
             $establishment,
@@ -282,7 +280,6 @@ class CandidatesController extends Controller {
             $establishments_list
         );
     }
-
 
     // * INSCRIPT * //
     /**
@@ -358,6 +355,62 @@ class CandidatesController extends Controller {
         ]);
     }
     /**
+     * Public method registering a new offre in the database
+     * 
+     * @param int $key_candidate The candidate's primary key
+     * @param ?int $key_application The primary key of the application
+     * @return void
+     */
+    public function inscriptOffer(int $key_candidate, ?int $key_application = null) {
+        isUserOrMore();                                                                     // Verifying the user's role
+
+        if(!empty($key_application)) {
+            $app_repo = new ApplicationRepository();
+            $app_repo->accept($key_application);                                            // Accepting the application
+        }
+
+        $offer = Contract::create(                                                          // Creating the offer
+            $key_candidate, 
+            (int) $_POST["job"],
+            (int) $_POST["service"],
+            (int) $_POST["establishment"],
+            (int) $_POST["type_of_contrat"],
+            $_POST["start_date"],
+            $_POST["end_date"] ?? null,
+            (int) $_POST["salary"] ?? null,
+            (int) $_POST["hourly_rate"] ?? null,
+            (bool) !empty($_POST["night_work"]) ?? false,
+            (bool) !empty($_POST["wk_work"]) ?? false
+        );
+
+        (new ContractRepository())->inscript($offer);                                       // Registering the offer
+
+        $candidate = (new CandidateRepository())->get($key_candidate);                      // Fetching the candidate
+
+        $job = (new JobRepository())->get($offer->getJob());
+        $job_titled = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+        $act_repo = new ActionRepository();
+        $type = $act_repo->searchType("Nouvelle proposition");
+        $desc = "Nouvelle proposition de contrat pour " . strtoupper($candidate->getName()) 
+                . " " . FormsManip::nameFormat($candidate->getFirstname()) 
+                . " au poste de " . $job_titled;
+
+        $act = Action::create(                                                              // Creating the action
+            $_SESSION["user"]->getId(), 
+            $type->getId(),
+            $desc
+        );          
+
+        $act_repo->writeLogs($act);                                                         // Registering the action in logs
+
+        AlertsManipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'La proposition a été ajoutée avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
+    /**
      * Public method registering a new meeting in the database
      * 
      * @param int $key_candidate The candidate's primary key
@@ -366,11 +419,8 @@ class CandidatesController extends Controller {
     public function inscriptMeeting(int $key_candidate) {
         isUserOrMore();                                                                     // Verifying the user's role
 
-
         $can_repo = new CandidateRepository();
-
         $candidate = $can_repo->get($key_candidate);                                        // Fetching the candidate 
-
 
         $meeting = Meeting::create(                                                         // Creating the meeting
             $_POST['date'] . " " . $_POST['time'], 
@@ -384,9 +434,7 @@ class CandidatesController extends Controller {
 
 
         $act_repo = new ActionRepository();                 
-        
         $type = $act_repo->searchType("Nouveau rendez-vous"); 
-
         $desc = "Nouveau rendez-vous avec " 
                 . strtoupper($candidate->getName()) . " " 
                 . FormsManip::nameFormat($candidate->getFirstname()) 
@@ -397,7 +445,6 @@ class CandidatesController extends Controller {
             $type->getId(),
             $desc
         );          
-        
 
         $act_repo->writeLogs($act);                                                         // Registering the action in logs
 

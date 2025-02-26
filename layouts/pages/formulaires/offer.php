@@ -7,7 +7,7 @@ use App\Core\Moment;
 <form 
     class="big-form" 
     method="post" 
-    action="<?= APP_PATH ?>/candidates/offers/inscript/<?= $candidate->getId() ?>"
+    action="<?= APP_PATH ?>/candidates/offers/inscript/<?= $candidate->getId() ?><?php if(!empty($key_application)): ?>/<?= $key_application ?><?php endif; ?>"
 >
     <div class="form-container">
         <h3>
@@ -16,14 +16,14 @@ use App\Core\Moment;
 
         <section>
             <div class="input-container">
-                <label for="poste">
+                <label for="job">
                     Poste *
                 </label>
                 <div class="autocomplete">
                     <input 
                         type="text" 
-                        id="poste" 
-                        name="poste" 
+                        id="job" 
+                        name="job" 
                         placeholder="AGENT ADMINISTRATIF" 
                         autocomplete="off" 
 
@@ -62,14 +62,14 @@ use App\Core\Moment;
             </div>
 
             <div class="input-container">
-                <p>
+                <babel for="establishment">
                     Etablissement *
-                </p>
+                </babel>
                 <div class="autocomplete">
                     <input 
                         type="text" 
-                        id="etablissement" 
-                        name="etablissement" 
+                        id="establishment" 
+                        name="establishment" 
                         placeholder="Clinique du Diaconat Roosevelt" 
                         autocomplete="off" 
 
@@ -84,14 +84,14 @@ use App\Core\Moment;
             </div>
 
             <div class="input-container">
-                <p>
+                <label for="type_of_contrat">
                     Type de contrat *
-                </p>
+                </label>
                 <div class="autocomplete">
                     <input 
                         type="text" 
-                        id="type_contrat" 
-                        name="type_contrat" 
+                        id="type_of_contrat" 
+                        name="type_of_contrat" 
                         placeholder="CDI" 
                         autocomplete="off" 
 
@@ -110,51 +110,51 @@ use App\Core\Moment;
 
         <section class="double-items">
             <div class="input-container">
-                <label for="date_debut">
+                <label for="start_date">
                     Date de début *
                 </label>
                 <input 
                     type="date" 
-                    name="date_debut" 
-                    id="date_debut" 
+                    name="start_date" 
+                    id="start_date" 
                     min="<?= Moment::dayFromDate(Moment::currentMoment()->getDate()) ?>"
                     required
                 >
             </div>
 
             <div class="input-container">
-                <label for="date_fin">
+                <label for="end_date">
                     Date de fin
                 </label>
 
                 <input 
                     type="date" 
-                    name="date_fin" 
-                    id="date_fin"
+                    name="end_date" 
+                    id="end_date"
                 >
             </div>
         </section>
 
         <section>
             <div class="input-container">
-                <p>
+                <label for="salary">
                     Rémunération
-                </p>
+                </label>
                 <input 
-                    id="salaire_mensuel" 
-                    name="salaire_mensuel" 
+                    id="salary" 
+                    name="salary" 
                     type="number" 
                     placeholder="1500"
                 >
             </div>
 
             <div class="input-container">
-                <p>
+                <label for="hourly_rate">
                     Taux horaire
-                </p>
+                </label>
                 <input 
-                    id="taux_horaire_hebdomadaire" 
-                    name="taux_horaire_hebdomadaire" 
+                    id="hourly_rate" 
+                    name="hourly_rate" 
                     type="number" 
                     placeholder="35"
                 >
@@ -162,23 +162,25 @@ use App\Core\Moment;
 
             <div class="checkbox-liste">
                 <div class="checkbox-item">
-                    <label for="travail_nuit">
+                    <label for="night_work">
                         Travail de nuit
                     </label>
+
                     <input 
                         type="checkbox" 
-                        id="travail_nuit" 
-                        name="travail_nuit"
+                        id="night_work" 
+                        name="night_work"
                     >
                 </div>
 
                 <div class="checkbox-item">
                     <input 
                         type="checkbox" 
-                        id="travail_wk" 
-                        name="travail_wk"
+                        id="wk_work" 
+                        name="wk_work"
                     />
-                    <label for="travail_wk">
+
+                    <label for="wk_work">
                         Travail le week-end
                     </label>
                 </div>
@@ -209,13 +211,13 @@ use App\Core\Moment;
     import { AutoComplete } from "<?= APP_PATH.DS.SCRIPTS  ?>modules/AutoComplete.mjs";
     import { formManipulation } from "<?= APP_PATH.DS.SCRIPTS  ?>modules/FormManipulation.mjs";
 
-    new AutoComplete(document.getElementById('poste'), AutoComplete.arrayToSuggestions(<?= json_encode($jobs_list) ?>));
+    new AutoComplete(document.getElementById('job'), AutoComplete.arrayToSuggestions(<?= json_encode($jobs_list) ?>));
     new AutoComplete(document.getElementById('service'), AutoComplete.arrayToSuggestions(<?= json_encode($services_list) ?>));
-    new AutoComplete(document.getElementById('etablissement'), AutoComplete.arrayToSuggestions(<?= json_encode($establishments_list) ?>));
-    new AutoComplete(document.getElementById('type_contrat'), AutoComplete.arrayToSuggestions(<?= json_encode($types_of_contracts_list) ?>));
+    new AutoComplete(document.getElementById('establishment'), AutoComplete.arrayToSuggestions(<?= json_encode($establishments_list) ?>));
+    new AutoComplete(document.getElementById('type_of_contrat'), AutoComplete.arrayToSuggestions(<?= json_encode($types_of_contracts_list) ?>));
 
-    const inputTypeContrat = document.getElementById('type_contrat');
-    const inputDateFin = document.getElementById('date_fin');
+    const inputTypeContrat = document.getElementById('type_of_contrat');
+    const inputDateFin = document.getElementById('end_date');
     const checkContratType = (input) => {
         if (inputTypeContrat.value.trim().toUpperCase() === 'CDI') {
             inputDateFin.value = '';

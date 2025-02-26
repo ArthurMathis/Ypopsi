@@ -59,6 +59,8 @@ try {
     //// OFFERS ////
     $router->addRoute("/candidates/offers/input/{candidate}", CandidatesController::class, "inputOffer");
     $router->addRoute("/candidates/offers/input/{candidate}/{application}", CandidatesController::class, "inputOffer");
+    $router->addRoute("/candidates/offers/inscript/{candidate}", CandidatesController::class, "inscriptOffer");
+    $router->addRoute("/candidates/offers/inscript/{candidate}/{application}", CandidatesController::class, "inscriptOffer");
     $router->addRoute("/candidates/offers/accept/{id}", CandidatesController::class, "displayInputMeeting");                // todo
     $router->addRoute("/candidates/offers/reject/{id}", CandidatesController::class, "displayInputMeeting");                // todo
 

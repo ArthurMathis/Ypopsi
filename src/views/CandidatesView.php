@@ -150,6 +150,7 @@ class CandidatesView extends View {
         array $services_list, 
         array $establishments_list, 
         array $types_of_contracts_list, 
+        ?int $key_application = null,
         ?Job $application_job = null, 
         ?Service $application_service = null, 
         ?Establishment $application_establishment = null,

@@ -3,12 +3,48 @@
 namespace App\Repository;
 
 use App\Repository\Repository;
+use App\Models\Contract;
 
 /**
  * Class representing a repository of contracts 
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
 class ContractRepository extends Repository {
+    // * GET * //
+    /**
+     * Public method searching and returning one contract from his primary key
+     * 
+     * @param int $key_contract The contract's primary key
+     * @return Contract
+     */
+    public function get(int $key_contract): Contract {
+        $request = "SELECT * FROM Contracts WHERE Id = :key";
+
+        $params = array("key" => $key_contract);
+
+        $fetch = $this->get_request($request, $params, true, true);
+
+        $response = Contract::fromArray($fetch);
+
+        return $response;
+    }
+    /**
+     * Public function returning the liste of contracts
+     * 
+     * @return array
+     */
+    public function getList(): array {
+        $resquest = "SELECT * FROM Contracts";
+
+        $fetch = $this->get_request($resquest);
+
+        $response = array_map(function($c) {
+            return Contract::fromArray($c);
+        }, $fetch);
+
+        return $response;
+    }
+
     /**
      * Public method searching the contract proposals in the database
      *
@@ -67,5 +103,41 @@ class ContractRepository extends Repository {
         $params = array("key" => $key_candidate);
 
         return $this->get_request($request, $params);
+    }
+
+    // * INSCRIPT * //
+    /**
+     * Public method registering a new contract in the database
+     * 
+     * @param Contract $contract The contract to registering
+     * @return int The primary key of the new contract
+     */
+    public function inscript(Contract $contract) {
+        $request = "INSERT INTO Contracts (StartDate, Key_Candidates, Key_Jobs, Key_Services, Key_Establishments, Key_Types_of_contracts";
+        $values_request = " VALUES (:start_date, :candidate, :job, :service, :establishment, :type";
+
+        if(!empty($contract->getSalary())) {
+            $request .= ", Salary";
+            $values_request .= ", :salary";
+        }
+
+        if(!empty($contract->getHourlyRate())) {
+            $request .= ", HourlyRate";
+            $values_request .= ", :hourly_rate";
+        }
+
+        if(!empty($contract->getNightWork())) {
+            $request .= ", NightWork";
+            $values_request .= ", :night_work";
+        }
+
+        if(!empty($contract->getWkWork())) {
+            $request .= ", WeekEndWork";
+            $values_request .= ", :week_end_work";
+        }
+
+        $request .= ")" . $values_request . ")";
+
+        return $this->post_request($request, $contract->toSQL());
     }
 }

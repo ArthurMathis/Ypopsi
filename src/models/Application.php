@@ -76,7 +76,7 @@ class Application {
     }
 
     /**
-     * Public static method buildaing and returning a new Application
+     * Public static method building and returning a new Application
      * 
      * @param int $candidate
      * @param int $job 
