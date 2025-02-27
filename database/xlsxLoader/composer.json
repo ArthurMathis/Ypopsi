@@ -1,0 +1,21 @@
+{
+    "name": "mathis.a/database",
+    "description": "Projet d'insertion des données pour le logiciel Ypopsi",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "DB\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Arthur MATHIS",
+            "email": "arthur.mathis@diaconat-mulhouse.fr"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require":  {
+        "phpoffice/phpspreadsheet": "^1.18"
+    }
+}

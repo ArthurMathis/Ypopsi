@@ -218,7 +218,9 @@ INSERT INTO Services (Titled, Description) VALUES
     ("AHS - SODEXO HAS", ""),
     ("AHS - SODEXO DIACONAT", ""),
     ("AHS - ZONE DIVERS", ""),
-    ("ACCUEIL - MR", "")
+    ("ACCUEIL - MR", ""),
+    ("USLD", "Unités de soins de longue durée"),
+    ("SOINS", "Unités de soins réservées aux petites structures")
 ;
 INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
     -- Clinique du Diaconat Roosevelt -- 
@@ -448,6 +450,7 @@ INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
     (54, 4),
     (5, 4),
     (168, 4),
+    (199, 4),
 
     -- Hôpital le Neuenberg -- 
     (72, 5),
@@ -541,6 +544,7 @@ INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
     -- EHPAD Notre Dame des Apôtres -- 
     (72, 11),
     (169, 11),
+    (200, 11),
 
     -- Solidarités Adultes et Familles --
     (72, 12),
@@ -555,6 +559,7 @@ INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
 
     -- Maison de retraite Saint Joseph --
     (72, 13),
+    (200, 13),
 
     -- EHPAD les Violettes --
     (72, 14),
@@ -748,7 +753,9 @@ INSERT INTO Jobs (Titled, TitledFeminin) VALUES
     ("TRAVAILLEUR SOCIAL", "TRAVAILLEUSE SOCIAL"),
     ("TRESORIER ADJOINT", "TRESORIERE ADJOINTE"),
     ("FORMATEUR", "FORMATRICE"),
-    ("FF D'INTERNE EN PHARMACIE", "FF D'INTERNE EN PHARMACIE")
+    ("FF D'INTERNE EN PHARMACIE", "FF D'INTERNE EN PHARMACIE"),
+    ("GESTIONNAIRE DE PAIE", "GESTIONNAIRE DE PAIE"),
+    ("INFIRMIER COORDINATEUR", "INFIRMIERE COORDINATRICE")
 ;
 
 -- Recrutement --
@@ -759,43 +766,49 @@ INSERT INTO Helps (Titled) VALUES
     ("Rachat de contrat")
 ;
 INSERT INTO Types_of_contracts (Titled, Description) VALUES 
-    ('CDI', 'Contrat à durée indéterminée'), 
-    ('CDD', 'Contrat à durée déterminée'), 
-    ('Stage', 'Stage en entreprise'),
-    ('Alternance', 'Formation réalisée en alternance'), 
-    ('Interim', 'Mission réalisé par un prestatère')
+    ("CDI", "Contrat à durée indéterminée"), 
+    ("CDD", "Contrat à durée déterminée"), 
+    ("Stage", "Stage en entreprise"),
+    ("Alternance", "Formation réalisée en alternance"), 
+    ("Interim", "Mission réalisé par un prestatère"),
+    ("vacation", "Mission réalisée par un vacataire")
 ;
 INSERT INTO sources (Titled) VALUES 
-    ('Adecco'),
-    ('Appel Médical'),
-    ('Camo Gémo'),
-    ('Contact Fondation'),
-    ('Crit'),
-    ('Domino RH'),
-    ('Duo Santé'),
-    ('Email'), 
-    ('Ergalis'),
-    ('Indeed'),
-    ('Jobergroup'),
-    ('Job Fondation'),
-    ('Job Médical'),
-    ('JPL Interim'),
-    ('Harry Hope'),
-	('Hellowork'), 
-    ('Hublo'),
-    ('Les experts de l\emploi'),
-    ('LinkedIn'),
-    ('LHH Recruitment Solutions'),
-    ('Madeline Recrutement'),
-    ('Manpower'),
-    ('Menway'),
-    ('Profil Santé'),
-    ('Satis TT'),
-    ('Sourcing'),
-    ('Talent Santé'),
-    ('Téléphone'),
-    ('Vitalis'),
-    ('1termed')
+    ("1termed"),
+    ("Adecco"),
+    ("Appel Médical"),
+    ("Camo Gémo"),
+    ("Contact Fondation"),
+    ("Crit"),
+    ("Domino RH"),
+    ("Duo Santé"),
+    ("Email"), 
+    ("Ergalis"),
+    ("France Travail"),
+    ("Indeed"),
+    ("Jobergroup"),
+    ("Job Dating"),
+    ("Job Fondation"),
+    ("Job Médical"),
+    ("JPL Interim"),
+    ("Harry Hope"),
+	("Hellowork"), 
+    ("Hublo"),
+    ("Les experts de l\emploi"),
+    ("LinkedIn"),
+    ("LHH Recruitment Solutions"),
+    ("Madeline Recrutement"),
+    ("Manpower"),
+    ("Menway"),
+    ("Profil Santé"),
+    ("Recommandée"),
+    ("Salon Emploi Formation"),
+    ("Satis TT"),
+    ("Sourcing"),
+    ("Spontanée"),
+    ("Talent Santé"),
+    ("Téléphone"),
+    ("Vitalis")
 ;   
 INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES 
     ("Aide soignant D.E.", TRUE, "A.S."),
@@ -844,11 +857,15 @@ INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES
     ("Licence Pro", FALSE, NULL),
     ("Maitre apprentissage", FALSE, NULL),
     ("Maitrise", FALSE, NULL),
-    ("Manipulateur d'électroradiologie médicale", TRUE, NULL),
+    ("Manipulateur d'électroradiologie médicale", TRUE, "M.E.R.M."),
     ("Master", FALSE, NULL),
     ("Master 1", FALSE, NULL),
     ("Master 2", FALSE, NULL),
-    ("Sage Femme D.E.", TRUE, "S.F.")
+    ("Sage Femme D.E.", TRUE, "S.F."),
+    ("Aide médico-psychologique D.E.", TRUE, "A.M.P."),
+    ("Auxiliaire de vie social D.E.", FALSE, "A.V.S."),
+    ("Diplôme d'Etat d'Ergothérapeute", TRUE, NULL),
+    ("Mention Complétaire Aide à Domicile", FALSE, "M.C.A.D.")
 ;
 
 
@@ -895,15 +912,3 @@ INSERT INTO Types_of_actions (Titled) VALUES
     ('Nouveau poste'), 
     ('Nouvelle qualification')
 ;
-
--- User de test --
-INSERT INTO Users (Identifier, Name, Firstname, Email, Password, Key_Roles, Key_Establishments, PasswordTemp) VALUES 
-	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$YjmR/M/Wkce8YvEyot8r8epdqAuhHENAI1Atd3tEzDwS6/GwL1eYe', 1, 1, 0),
-    ('test.py', 'Test', 'Python', 'python.test@diaconat-mulhouse.fr', '$2y$10$tlDdD8ZMnafyDhFrFHi3uuubfAYyudvHUOJuR8sxOcFiLw9emxkP2', 2, 1, 1)
-;    
-
--- User for Mac -- 
-INSERT INTO Users (Identifier, Name, Firstname, Email, Password, Key_Roles, Key_Establishments, PasswordTemp) VALUES 
-	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$3xb6yXKTChND9pB3NDtTGeLtQhpYjeRQwg/7qypX2yOuTHtb1XmJO', 1, 1, 0),
-    ('test.py', 'Test', 'Python', 'python.test@diaconat-mulhouse.fr', '$2y$10$GtAGXml1IVvuaNdfeBkSpO0ND9/qgRgrr.oojXEwe0XF.vX/sUdFO', 2, 1, 1)
-; 

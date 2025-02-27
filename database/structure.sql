@@ -80,12 +80,12 @@ CREATE TABLE Candidates (
   Name VARCHAR(64) NOT NULL,
   Firstname VARCHAR(64) NOT NULL,
   Gender BOOLEAN NOT NULL,
-  Email VARCHAR(64) DEFAULT NULL UNIQUE,
-  Phone VARCHAR(14)DEFAULT NULL,
+  Email VARCHAR(64) DEFAULT NULL,
+  Phone VARCHAR(14) DEFAULT NULL,
   Address VARCHAR(256) DEFAULT NULL,
   City VARCHAR(64) DEFAULT NULL,
   PostCode VARCHAR(5) DEFAULT NULL, 
-  Availability DATE NOT NULL,
+  Availability DATE DEFAULT NULL,
   MedicalVisit DATE DEFAULT NULL, 
   Rating INTEGER DEFAULT NULL,
   Description TEXT DEFAULT NULL,
@@ -239,6 +239,8 @@ CREATE TABLE Applications (
 
   CHECK (
     (Key_Establishments IS NULL AND Key_Services IS NULL AND Key_Needs IS NULL) OR
+    (Key_Establishments IS NOT NULL AND Key_Services IS NULL AND Key_Needs IS NULL) OR
+    (Key_Establishments IS NULL AND Key_Services IS NOT NULL AND Key_Needs IS NULL) OR
     (Key_Establishments IS NOT NULL AND Key_Services IS NOT NULL AND Key_Needs IS NULL) OR
     (Key_Needs IS NOT NULL AND Key_Establishments IS NULL AND Key_Services IS NULL)
   )  
