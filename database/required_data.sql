@@ -450,6 +450,7 @@ INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
     (54, 4),
     (5, 4),
     (168, 4),
+    (200, 4),
 
     -- Hôpital le Neuenberg -- 
     (72, 5),
@@ -543,6 +544,7 @@ INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
     -- EHPAD Notre Dame des Apôtres -- 
     (72, 11),
     (169, 11),
+    (200, 11),
 
     -- Solidarités Adultes et Familles --
     (72, 12),
@@ -557,6 +559,7 @@ INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
 
     -- Maison de retraite Saint Joseph --
     (72, 13),
+    (200, 13),
 
     -- EHPAD les Violettes --
     (72, 14),
