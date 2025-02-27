@@ -450,7 +450,7 @@ INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
     (54, 4),
     (5, 4),
     (168, 4),
-    (200, 4),
+    (199, 4),
 
     -- Hôpital le Neuenberg -- 
     (72, 5),
@@ -771,7 +771,7 @@ INSERT INTO Types_of_contracts (Titled, Description) VALUES
     ("Stage", "Stage en entreprise"),
     ("Alternance", "Formation réalisée en alternance"), 
     ("Interim", "Mission réalisé par un prestatère"),
-    ("vacataire", "Mission réalisée par un vacataire")
+    ("vacation", "Mission réalisée par un vacataire")
 ;
 INSERT INTO sources (Titled) VALUES 
     ("1termed"),
