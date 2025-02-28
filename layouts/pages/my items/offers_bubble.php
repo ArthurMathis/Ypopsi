@@ -51,14 +51,30 @@
     </content>
     <?php if(empty($item['signature']) && empty($item['statut'])): ?>
         <footer>
-            <?php if($_SESSION['user']->getRole() != INVITE): ?>
-                <a class="action_button grey_color" href="index.php?candidates=reject-offers&key_offer=<?= $item['cle']; ?>">
+            <?php if(isUserOrMore()): ?>
+                <a 
+                    class="action_button grey_color" 
+                    href="<?= APP_PATH ?>/candidates/offers/reject/<?= urlencode($key_candidate) ?>/<?= urlencode($item['cle']) ?>"
+                >
                     <p>Refuser</p>
-                    <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="Logo de refus de la proposition, représenté par une croix">
+
+                    <img 
+                        src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" 
+                        alt="Refuser"
+                    >
                 </a>
-                <a class="action_button reverse_color" href="index.php?candidates=inscript-contracts&key_candidate=<?= $key_candidate; ?>&key_offer=<?= $item['cle']; ?>">
+
+                <a 
+                    class="action_button reverse_color" 
+                    href="<?= APP_PATH ?>/candidates/contracts/inscript/<?= urlencode($key_candidate) ?>/<?= urlencode($item['cle']) ?>"
+                >
+
                     <p>Accepter</p>
-                    <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-valider.svg" alt="Logo de d'acceptation de la proposition, représenté par une coche">
+
+                    <img 
+                        src="<?= APP_PATH ?>\layouts\assets\img\logo\white-valider.svg" 
+                        alt="Accepter"
+                    >
                 </a>
             <?php endif ?>
         </footer>

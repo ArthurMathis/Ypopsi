@@ -112,7 +112,7 @@ class ContractRepository extends Repository {
      * @param Contract $contract The contract to registering
      * @return int The primary key of the new contract
      */
-    public function inscript(Contract $contract) {
+    public function inscript(Contract &$contract) {
         $request = "INSERT INTO Contracts (StartDate, Key_Candidates, Key_Jobs, Key_Services, Key_Establishments, Key_Types_of_contracts";
         $values_request = " VALUES (:start_date, :candidate, :job, :service, :establishment, :type";
 
@@ -139,5 +139,22 @@ class ContractRepository extends Repository {
         $request .= ")" . $values_request . ")";
 
         return $this->post_request($request, $contract->toSQL());
+    }
+
+    // * UPDATE * //
+
+    // * DELETE * //
+    /**
+     * public method refusing an offer
+     * 
+     * @param Contract $contract The contract to refuse
+     * @return int The primary key of the contract
+     */
+    public function reject(Contract &$contract) {
+        $request = "UPDATE Contracts SET IsRefused = 1 WHERE Id = :key";
+
+        $params = array("key" => $contract->getId());
+
+        return $this->post_request($request, $params);
     }
 }

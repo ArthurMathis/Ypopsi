@@ -183,10 +183,10 @@ class ApplicationRepository extends Repository {
      * @param int $key_application The primary key of the application
      * @return int The primary key of the application
      */
-    public function reject(int $key_application): int {
+    public function reject(Application &$application): int {
         $request = "UPDATE Applications SET IsAccepted = FALSE, IsRefused = TRUE WHERE Id = :key_application";
 
-        $params = array("key_application" => $key_application);
+        $params = array("key_application" => $application->getId());
 
         return $this->post_request($request, $params);
     }

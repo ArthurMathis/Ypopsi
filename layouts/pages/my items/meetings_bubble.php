@@ -30,7 +30,7 @@ use App\Core\FormsManip;
         <?php endif?>    
     </content>
     <footer>
-        <?php if ($_SESSION['user']->getRole() != INVITE): ?>
+        <?php if (isUserOrMore()): ?>
             <?php if(time() < strtotime($item['date'] . ' ' . $item['heure'])): ?>
                 <a 
                     class="action_button grey_color" 

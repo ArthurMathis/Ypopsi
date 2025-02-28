@@ -123,6 +123,41 @@ class CandidatesController extends Controller {
 
     // * ACCEPT * //
     /**
+     * Public method refusing an offer
+     * 
+     * @param int $key_candidate The candidate's primary key
+     * @param int $key_offer The primary key of the offer
+     * @return void
+     */
+    public function rejectOffer(int $key_candidate, int $key_offer) {
+        $cont_repo = new ContractRepository();
+        $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
+        $cont_repo->reject($contract);                                                                          // Rejecting the contract
+
+        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
+
+        $job = (new JobRepository())->get($contract->getJob());                                                 // Fetching the job 
+        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+        $act_repo = new ActionRepository();                 
+        $type = $act_repo->searchType("Refus candidature"); 
+        $desc = "Refus de la proposition de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
+
+        $act = Action::create(                                                                                  // Creating the action
+            $_SESSION['user']->getId(), 
+            $type->getId(),
+            $desc
+        );          
+        
+        $act_repo->writeLogs($act);                                                                             // Registering the action in logs
+
+        AlertsManipulation::alert([
+            'title'     => 'Action enregistrée',
+            'msg'       => 'La candidature a été refusée avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
+    /**
      * Public method refusing an application
      * 
      * @param int $key_candidate The candidate's primary key
@@ -131,24 +166,16 @@ class CandidatesController extends Controller {
      */
     public function rejectApplication(int $key_candidate, int $key_application) {
         $app_repo = new ApplicationRepository();
-
         $application = $app_repo->get($key_application);                                                    // Fetching the application
-
-        $app_repo->reject($key_application);                                                                // Refusing the application
-
+        $app_repo->reject($application);                                                                // Refusing the application
 
         $candidate = (new CandidateRepository())->get($key_candidate);                                      // Fetching the candidate
 
-
-        $job = (new JobRepository())->get($application["Key_Jobs"]);                                        // Fetching the job 
-
+        $job = (new JobRepository())->get($application->getJob());                                          // Fetching the job 
         $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
 
-
         $act_repo = new ActionRepository();                 
-        
         $type = $act_repo->searchType("Refus candidature"); 
-
         $desc = "Refus de la candidature de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
 
         $act = Action::create(                                                                              // Creating the action
@@ -157,7 +184,6 @@ class CandidatesController extends Controller {
             $desc
         );          
         
-
         $act_repo->writeLogs($act);                                                                         // Registering the action in logs
 
         AlertsManipulation::alert([
