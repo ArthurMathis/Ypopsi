@@ -51,9 +51,16 @@
     <?php if($item['demission'] == null && ($item['date_fin'] == null || $date < $item['date_fin'])): ?>
         <footer>
             <?php if($_SESSION['user']->getRole() != INVITE): ?>
-                <a class="action_button reverse_color" href="index.php?candidates=resignations&key_contract=<?= $item['cle']; ?>">
+                <a 
+                    class="action_button reverse_color" 
+                    href="<?= APP_PATH ?>/candidates/contracts/dismiss/<?= urlencode($item['cle']) ?>"
+                >
                     <p>Démissioner</p>
-                    <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-close.svg" alt="Logo de dmission du contrat, représenté par une croix">
+
+                    <img 
+                        src="<?= APP_PATH ?>\layouts\assets\img\logo\white-close.svg" 
+                        alt="Démission"
+                    >
                 </a>
             <?php endif ?>    
         </footer>

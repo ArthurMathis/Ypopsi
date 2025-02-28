@@ -144,6 +144,13 @@ class ContractRepository extends Repository {
     // * UPDATE * //
 
     // * DELETE * //
+    public function dismiss(Contract &$contract) {
+        $request = "DELETE FROM Contracts WHERE Id = :key";
+
+        $params = array("key" => $contract->getId());
+
+        return $this->post_request($request, $params);
+    }
     /**
      * public method refusing an offer
      * 

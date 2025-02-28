@@ -53,7 +53,7 @@ try {
     $router->addRoute("/candidates/contracts/input/{candidate}", CandidatesController::class, "displayInputMeeting");               // todo
     $router->addRoute("/candidates/contracts/inscript/{candidate}", CandidatesController::class, "displayInputMeeting");            // todo
     $router->addRoute("/candidates/contracts/inscript/{candidate}/{offer}", CandidatesController::class, "displayInputMeeting");    // todo
-    $router->addRoute("/candidates/contracts/dismiss/{contract}", CandidatesController::class, "displayInputMeeting");              // todo
+    $router->addRoute("/candidates/contracts/dismiss/{contract}", CandidatesController::class, "dismissContract");
 
     //// OFFERS ////
     $router->addRoute("/candidates/offers/input/{candidate}", CandidatesController::class, "inputOffer");

@@ -123,6 +123,43 @@ class CandidatesController extends Controller {
 
     // * ACCEPT * //
     /**
+     * Public method dimissins to a contract
+     * 
+     * @param int $key_contract The primary key of the contract
+     * @return void
+     */
+    public function dismissContract(int $key_contract) {
+        isUserOrMore();                                                                                         // Verifying the user's role
+
+        $con_repo = new ContractRepository();
+        $contract = $con_repo->get($key_contract);                                                              // Fetching the contract
+
+        $con_repo->dismiss($contract);                                                                          // Dismissing the contract
+
+        $candidate = (new CandidateRepository())->get($contract->getCandidate());                               // Fetching the candidate
+
+        $job = (new JobRepository())->get($contract->getJob());                                                 // Fetching the job 
+        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+        $act_repo = new ActionRepository();
+        $type = $act_repo->searchType("Démission"); 
+        $desc = "Refus de la proposition de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
+
+        $act = Action::create(                                                                                  // Creating the action
+            $_SESSION['user']->getId(), 
+            $type->getId(),
+            $desc
+        );          
+        
+        $act_repo->writeLogs($act);                                                                             // Registering the action in logs
+
+        AlertsManipulation::alert([
+            'title'     => 'Action enregistrée',
+            'msg'       => 'La démission a été enregistrée avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $candidate->getId()
+        ]);
+    }
+    /**
      * Public method refusing an offer
      * 
      * @param int $key_candidate The candidate's primary key
@@ -130,6 +167,8 @@ class CandidatesController extends Controller {
      * @return void
      */
     public function rejectOffer(int $key_candidate, int $key_offer) {
+        isUserOrMore();                                                                                         // Verifying the user's role
+
         $cont_repo = new ContractRepository();
         $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
         $cont_repo->reject($contract);                                                                          // Rejecting the contract
@@ -165,9 +204,11 @@ class CandidatesController extends Controller {
      * @return void
      */
     public function rejectApplication(int $key_candidate, int $key_application) {
+        isUserOrMore();                                                                                     // Verifying the user's role
+
         $app_repo = new ApplicationRepository();
         $application = $app_repo->get($key_application);                                                    // Fetching the application
-        $app_repo->reject($application);                                                                // Refusing the application
+        $app_repo->reject($application);                                                                    // Refusing the application
 
         $candidate = (new CandidateRepository())->get($key_candidate);                                      // Fetching the candidate
 
