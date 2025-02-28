@@ -49,7 +49,7 @@
         <?php endif ?>
         <!-- Ajouter la rémunération proposée -->
     </content>
-    <?php if(empty($item['signature']) && empty($item['statut'])): ?>
+    <?php if(empty($item['signature']) && empty($item['statut']) && ($item['date_fin'] == null || $date < $item['date_fin'])): ?>
         <footer>
             <?php if(isUserOrMore()): ?>
                 <a 
@@ -66,7 +66,7 @@
 
                 <a 
                     class="action_button reverse_color" 
-                    href="<?= APP_PATH ?>/candidates/contracts/inscript/<?= urlencode($key_candidate) ?>/<?= urlencode($item['cle']) ?>"
+                    href="<?= APP_PATH ?>/candidates/contracts/sign/<?= urlencode($key_candidate) ?>/<?= urlencode($item['cle']) ?>"
                 >
 
                     <p>Accepter</p>

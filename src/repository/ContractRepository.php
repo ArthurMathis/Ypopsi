@@ -141,16 +141,26 @@ class ContractRepository extends Repository {
         return $this->post_request($request, $contract->toSQL());
     }
 
-    // * UPDATE * //
+    /**
+     * Public method registering the signature date of a contract in the database 
+     * 
+     * @param Contract $contract The contract to sign
+     * @return int The primary key of the contract
+     */
+    public function sign(Contract &$contract): int {
+        $request = "UPDATE Contracts SET SignatureDate = :signature WHERE Id = :key";
 
-    // * DELETE * //
-    public function dismiss(Contract &$contract) {
-        $request = "DELETE FROM Contracts WHERE Id = :key";
-
-        $params = array("key" => $contract->getId());
+        $params = array(
+            "key"       => $contract->getId(),
+            "signature" => $contract->getSignature()
+        );
 
         return $this->post_request($request, $params);
     }
+
+    // * UPDATE * //
+
+    // * DELETE * //
     /**
      * public method refusing an offer
      * 
@@ -161,6 +171,19 @@ class ContractRepository extends Repository {
         $request = "UPDATE Contracts SET IsRefused = 1 WHERE Id = :key";
 
         $params = array("key" => $contract->getId());
+
+        return $this->post_request($request, $params);
+    }
+    /**
+     * Public method registering the resignation of a contract in the database
+     */
+    public function dismiss(Contract &$contract) {
+        $request = "UPDATE Contracts SET ResignationDate = :resignation WHERE Id = :key";
+
+        $params = array(
+            "key"         => $contract->getId(),
+            "resignation" => $contract->getResignation()
+        );
 
         return $this->post_request($request, $params);
     }

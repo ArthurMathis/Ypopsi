@@ -227,6 +227,33 @@ class Contract {
      */
     public function getType(): int { return $this->type_key; }
 
+    // * ADD * // 
+    /**
+     * Public method adding a signature to the contract
+     * 
+     * @param string $signature The signature date
+     * @return void
+     */
+    public function addSignature(string $signature = null): void {
+        if(empty($signature)) {
+            $signature = date("Y-m-d");
+        }
+
+        $this->signature_date = $signature;
+    }
+    /**
+     * Public method adding a resignation to the contract
+     * 
+     * @param string $resignation The resignation date
+     * @return void
+     */
+    public function addResignation(string $resignation = null): void {
+        if(empty($resignation)) {
+            $resignation = date("Y-m-d");
+        }
+
+        $this->resignation_date = $resignation;
+    }
     // * CONVERT * //
     /**
      * Public static method returning an Contract building from an array

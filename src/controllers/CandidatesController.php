@@ -121,7 +121,42 @@ class CandidatesController extends Controller {
         );
     }
 
-    // * ACCEPT * //
+    // * MANAGE * //
+    /**
+     * Public method signing a contract
+     */
+    public function signContract(int $key_candidate, int $key_offer) {
+        isUserOrMore();                                                                                         // Verifying the user's role
+
+        $cont_repo = new ContractRepository();
+        $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
+        $contract->addSignature();      
+
+        $cont_repo->sign($contract);                                                                            // Signing the contract
+
+        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
+
+        $job = (new JobRepository())->get($contract->getJob());                                                 // Fetching the job 
+        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+        $act_repo = new ActionRepository();
+        $type = $act_repo->searchType("Nouveau contrat"); 
+        $desc = "Signature du contrat de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
+
+        $act = Action::create(                                                                                  // Creating the action
+            $_SESSION['user']->getId(), 
+            $type->getId(),
+            $desc
+        );          
+        
+        $act_repo->writeLogs($act);                                                                             // Registering the action in logs
+
+        AlertsManipulation::alert([
+            'title'     => 'Action enregistrée',
+            'msg'       => 'La signature a été enregistrée avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
     /**
      * Public method dimissins to a contract
      * 
@@ -133,6 +168,7 @@ class CandidatesController extends Controller {
 
         $con_repo = new ContractRepository();
         $contract = $con_repo->get($key_contract);                                                              // Fetching the contract
+        $contract->addResignation();
 
         $con_repo->dismiss($contract);                                                                          // Dismissing the contract
 
