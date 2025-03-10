@@ -117,12 +117,7 @@ use App\Core\Moment;
                 Compte rendu
             </label>
 
-            <textarea 
-                name="description" 
-                id="description"
-            >
-                <?php if(!empty($meeting)) { echo $meeting->getDescription(); } ?>
-            </textarea>
+            <textarea name="description" id="description"><?php if(!empty($meeting)) { echo $meeting->getDescription(); } ?></textarea>
         </section>
 
         <div class="form-section">
@@ -146,8 +141,8 @@ use App\Core\Moment;
 </form>
 
 <script type="module">
-    import { AutoComplete } from "<?= APP_PATH.DS.SCRIPTS  ?>modules/AutoComplete.mjs"; 
-    import { formManipulation } from "<?= APP_PATH.DS.SCRIPTS ?>modules/FormManipulation.mjs";
+    import { AutoComplete } from "<?= APP_PATH  ?>\\layouts\\scripts\\modules/AutoComplete.mjs"; 
+    import { formManipulation } from "<?= APP_PATH ?>\\layouts\\scripts\\modules/FormManipulation.mjs";
     
     new AutoComplete(
         document.getElementById('recruiter'), 
