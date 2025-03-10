@@ -80,15 +80,15 @@ CREATE TABLE Candidates (
   Name VARCHAR(64) NOT NULL,
   Firstname VARCHAR(64) NOT NULL,
   Gender BOOLEAN NOT NULL,
-  Email VARCHAR(64) UNIQUE,
-  Phone VARCHAR(14),
-  Address VARCHAR(256),
-  City VARCHAR(64),
-  PostCode VARCHAR(5), 
-  Availability DATE NOT NULL,
-  MedicalVisit DATE, 
-  Rating INTEGER,
-  Description TEXT,
+  Email VARCHAR(64) DEFAULT NULL,
+  Phone VARCHAR(14) DEFAULT NULL,
+  Address VARCHAR(256) DEFAULT NULL,
+  City VARCHAR(64) DEFAULT NULL,
+  PostCode VARCHAR(5) DEFAULT NULL, 
+  Availability DATE DEFAULT NULL,
+  MedicalVisit DATE DEFAULT NULL, 
+  Rating INTEGER DEFAULT NULL,
+  Description TEXT DEFAULT NULL,
   Is_delete BOOLEAN DEFAULT FALSE,
   A BOOLEAN DEFAULT FALSE, 
   B BOOLEAN DEFAULT FALSE, 
@@ -239,6 +239,8 @@ CREATE TABLE Applications (
 
   CHECK (
     (Key_Establishments IS NULL AND Key_Services IS NULL AND Key_Needs IS NULL) OR
+    (Key_Establishments IS NOT NULL AND Key_Services IS NULL AND Key_Needs IS NULL) OR
+    (Key_Establishments IS NULL AND Key_Services IS NOT NULL AND Key_Needs IS NULL) OR
     (Key_Establishments IS NOT NULL AND Key_Services IS NOT NULL AND Key_Needs IS NULL) OR
     (Key_Needs IS NOT NULL AND Key_Establishments IS NULL AND Key_Services IS NULL)
   )  
