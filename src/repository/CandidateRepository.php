@@ -71,7 +71,7 @@ class CandidateRepository extends Repository {
         $response = array_map(function($c) {
             return array(
                 "id"   => $c->getId(),
-                "text" => $c->getTitled()
+                "text" => $c->getName() . " " . $c->getFirstname()
             );
         }, $fetch);
 
