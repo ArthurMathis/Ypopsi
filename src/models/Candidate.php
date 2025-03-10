@@ -21,7 +21,7 @@ class Candidate {
      * @param ?string $address The address of the candidate
      * @param ?string $city The city of the candidate
      * @param ?string $postcode The postcode of the candidate
-     * @param string $availability The availability of the candidate
+     * @param ?string $availability The availability of the candidate
      * @param ?string $visit The expiry date of the medical check-up of the candidate
      * @param ?int $rating The rate of the candidate
      * @param ?string $description The description of the candidate
@@ -41,7 +41,7 @@ class Candidate {
         protected ?string $address, 
         protected ?string $city, 
         protected ?string $postcode,
-        protected string $availability,
+        protected ?string $availability,
         protected ?string $visit, 
         protected ?int $rating, 
         protected ?string $description, 
@@ -72,7 +72,7 @@ class Candidate {
      * @param string $name The candidate's name
      * @param string $firstname The candidate's firstname
      * @param bool $gender The candidate's gender
-     * @param string $availability The candidate's availability
+     * @param ?string $availability The candidate's availability
      * @param ?string $email The candidate's email
      * @param ?string $phone The candidate's phone
      * @param ?string $address The candidate's address
@@ -83,7 +83,20 @@ class Candidate {
      * @param ?string $visit The candidate's visit
      * @return Candidate The candidate
      */
-    public static function create(string $name, string $firstname, bool $gender, string $availability, ?string $email = null, ?string $phone = null, ?string $address = null, ?string $city = null, ?string $postcode = null, ?int $rating = null, ?string $description = null, ?string $visit = null): Candidate {
+    public static function create(
+        string $name, 
+        string $firstname, 
+        bool $gender, 
+        ?string $email = null, 
+        ?string $phone = null, 
+        ?string $address = null, 
+        ?string $city = null, 
+        ?string $postcode = null, 
+        ?int $rating = null, 
+        ?string $description = null, 
+        ?string $availability = null, 
+        ?string $visit = null
+    ): Candidate {
         return new Candidate(
             null, 
             $name, 
@@ -165,7 +178,7 @@ class Candidate {
      * 
      * @return string
      */
-    public function getAvailability(): string { return $this->availability; }
+    public function getAvailability(): ?string { return $this->availability; }
     /**
      * Public function returning the expiry date of the medical check-up of the candidate
      * 
@@ -208,6 +221,22 @@ class Candidate {
      * @return 
      */
     public function getC(): bool { return $this->c; }
+
+    // * SET * //
+    /**
+     * Public function setting the primary key of the candidate
+     *
+     * @param int $id The candidate's primary key
+     * @throws CandidateExceptions If the primary key is invalid
+     * @return void
+     */
+    public function setId(int $id) {
+        if($id <= 0) {
+            throw new CandidateExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
+        }
+
+        $this->id = $id;
+    }
 
     // * CONVERT * //
     /**
@@ -279,8 +308,7 @@ class Candidate {
         $response = array(
             "name"         => $this->getName(),
             "firstname"    => $this->getFirstname(),
-            "gender"       => $this->getGender(),
-            "availability" => $this->getAvailability()
+            "gender"       => $this->getGender()
         );
 
         if(!empty($this->getEmail())) {
@@ -303,6 +331,10 @@ class Candidate {
 
         if($this->getRating()) {
             $response["rating"] = $this->getRating();
+        }
+
+        if($this->getAvailability()) {
+            $reponse["availability"] = $this->getAvailability();
         }
 
         if($this->getVisit()) {

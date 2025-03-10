@@ -81,6 +81,23 @@ class CandidatesView extends View {
 
 
     // * DISPLAY FORM * //
+    public function displayCandidateForm(
+        string $title, 
+        string $action_method, 
+        string $action_value, 
+        bool $editable,
+        array $qualifications_list, 
+        array $helps_list,
+        array $employee_list
+    ) {
+        $this->generateCommonHeader("Ypopsi - {$title}", [ FORMS_STYLES.DS.'big-form.css' ]);
+
+        $this->generateMenu(true, null);
+
+        include FORMULAIRES.DS.'candidate.php';
+
+        $this->generateCommonFooter();
+    }
     /**
      * Public function displaying the meeting HTML form
      * 
@@ -117,9 +134,51 @@ class CandidatesView extends View {
 
     // * DISPLAY INPUT * //
     /**
-     * 
+     * Public function displaying the HTML form to register a new candidate
+     *
+     * @return void
      */
-    public function displayInputApplication(string $title, ?Candidate $candidate, array $jobs_list, array $services_list, array $establishments_list, array $type_of_contracts_list, array $sources_list) {
+    public function displayInputCandidate(
+        array $qualifications_list, 
+        array $helps_list,
+        array $employee_list
+    ) {
+        $title = "Inscription d'un candidat";
+        $action_method = "/inscript";
+        $action_value = "inscript_candidate";
+        $editable = true;
+
+        $this->displayCandidateForm(
+            $title, 
+            $action_method, 
+            $action_value, 
+            $editable, 
+            $qualifications_list, 
+            $helps_list,
+            $employee_list
+        );
+    }
+    /**
+     * Public function displaying the HTML form to register a new candidate
+     *
+     * @param string $title The HTML page's title
+     * @param Candidate|null $candidate The candidate
+     * @param array $jobs_list The array containing the jobs list
+     * @param array $services_list The array containing the services list
+     * @param array $establishments_list The array containing the establishments list
+     * @param array $type_of_contracts_list The array containing the tupes of contracts list
+     * @param array $sources_list The array containing the sources list
+     * @return void
+     */
+    public function displayInputApplication(
+        string $title, 
+        ?Candidate $candidate, 
+        array $jobs_list, 
+        array $services_list, 
+        array $establishments_list, 
+        array $type_of_contracts_list, 
+        array $sources_list
+    ) {
         $this->generateCommonHeader("Ypopsi - {$title}", [ FORMS_STYLES.DS.'big-form.css' ]);
 
         $this->generateMenu(true, null);
@@ -174,7 +233,14 @@ class CandidatesView extends View {
      * @param array $types_of_contrats The array containing the list of types of contractss
      * @return View The HTML Page
      */
-    public function displayInputContracts(string $title, int $key_candidate, array $jobs, array $services, array $establishments, array $types_of_contrats) {
+    public function displayInputContracts(
+        string $title, 
+        int $key_candidate, 
+        array $jobs, 
+        array $services, 
+        array $establishments, 
+        array $types_of_contrats
+    ) {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
 

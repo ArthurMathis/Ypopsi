@@ -43,6 +43,41 @@ class CandidateRepository extends Repository {
         return $response;
     }
 
+    public function getEmployee(): array {
+        $request = "SELECT * 
+        
+        FROM candidates 
+        INNER JOIN Contracts on Candidates.Id = Contracts.Key_Candidates
+        
+        WHERE Contracts.SignatureDate IS NOT NULL";
+
+        $response = $this->get_request($request);
+
+        $response = array_map(function($c) {
+            return Candidate::fromArray($c);
+        }, $response);
+
+        return $response;
+    }
+
+    /**
+     * Public method returning the list of employees for AutoComplet items
+     * 
+     * @return array The list of sources
+     */
+    public function getAutoCompletion(): array {
+        $fetch = $this->getEmployee();
+
+        $response = array_map(function($c) {
+            return array(
+                "id"   => $c->getId(),
+                "text" => $c->getTitled()
+            );
+        }, $fetch);
+
+        return $response;
+    }
+
     // * INSCRIPT * //
     /**
      * Public method registering a new candidate in the database
@@ -51,9 +86,9 @@ class CandidateRepository extends Repository {
      * @return int The new candidate's primary key
      */
     public function inscript(Candidate &$candidate): int {
-        $request = "Name, Firstname, Gender, Availability";
+        $request = "INSERT INTO Candidates (Name, Firstname, Gender";
 
-        $values_request = ":name, :firstname, :gender";
+        $values_request = " VALUES (:name, :firstname, :gender";
 
         if(!empty($candidate->getEmail())) {
             $request .= ", Email";
@@ -80,13 +115,17 @@ class CandidateRepository extends Repository {
             $values_request .= ", :rating";
         }
 
+        if(!empty($candidate->getAvailability())) {
+            $request .= ", Availability";
+            $values_request .= ", :availability";
+        }
+
         if(!empty($candidate->getVisit())) {
             $request .= ", MedicalVisit";
             $values_request .= ", :visit";
         }
 
         $request .= ")" . $values_request . ")";
-
         unset($values_request);
     
         return $this->post_request($request, $candidate->toSQL());

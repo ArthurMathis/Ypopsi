@@ -25,8 +25,8 @@ function test_process() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * DIRECTORY * //
-define('ROOT',dirname('.'));
-define('DS',DIRECTORY_SEPARATOR);
+define('ROOT', dirname('.'));
+define('DS', DIRECTORY_SEPARATOR);
 
 define('LAYOUTS', ROOT.DS.'layouts');
 define('ASSETS', LAYOUTS.DS.'assets');

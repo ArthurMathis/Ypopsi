@@ -117,7 +117,12 @@ use App\Core\Moment;
                 Compte rendu
             </label>
 
-            <textarea name="description" id="description"><?php if(!empty($meeting)) { echo $meeting->getDescription(); } ?></textarea>
+            <textarea 
+                name="description" 
+                id="description"
+            >
+                <?php if(!empty($meeting)) { echo $meeting->getDescription(); } ?>
+            </textarea>
         </section>
 
         <div class="form-section">

@@ -5,23 +5,28 @@ namespace App\Controllers;
 use App\Controllers\Controller;
 use App\Core\AlertsManipulation;
 use App\Core\FormsManip;
-use App\Models\Meeting;
 use App\Models\Action;
 use App\Models\Application;
+use App\Models\Candidate;
 use App\Models\Contract;
+use App\Models\GetQualification;
+use App\Models\HaveTheRightTo;
+use App\Models\Meeting;
+use App\Repository\ActionRepository;
 use App\Repository\ApplicationRepository;
 use App\Repository\CandidateRepository;
 use App\Repository\ContractRepository;
 use App\Repository\EstablishmentRepository;
+use App\Repository\GetQualificationRepository;
+use App\Repository\HaveTheRightToRepository;
+use App\Repository\HelpRepository;
+use App\Repository\JobRepository;
 use App\Repository\MeetingRepository;
 use App\Repository\QualificationRepository;
-use App\Repository\HelpRepository;
-use App\Repository\UserRepository;
-use App\Repository\ActionRepository;
-use App\Repository\JobRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\SourceRepository;
 use App\Repository\TypeOfContractsRepository;
+use App\Repository\UserRepository;
 use Exception;
 
 class CandidatesController extends Controller {
@@ -272,6 +277,24 @@ class CandidatesController extends Controller {
 
     // * INPUT * //
     /**
+     * Public method returning the HTML form of inputing a candidate
+     *
+     * @return void
+     */
+    public function inputCandidate() {
+        isUserOrMore();                                                                     // Verifying the user's role
+
+        $qualifications_list = (new QualificationRepository())->getAutoCompletion();        // Fetching the list of qualifications
+        $helps_list = (new HelpRepository())->getAutoCompletion();                          // Fetching the list of helps
+        $employee_list = (new CandidateRepository())->getAutoCompletion();                  // Fetching the list of employees
+
+        $this->View->displayInputCandidate(
+            $qualifications_list,
+            $helps_list,
+            $employee_list
+        );
+    }
+    /**
      * Public method returning the HTML form of inputing an application
      * 
      * @param ?int $key_candidate The candidate's primary key
@@ -280,17 +303,20 @@ class CandidatesController extends Controller {
     public function inputApplication(?int $key_candidate = null) {
         isUserOrMore();                                                                     // Verifying the user's role
 
+        $candidate = null;
+        $gender = true;
         if(!empty($key_candidate)) {                                                        // Fetching the candidate
             $candidate = (new CandidateRepository())->get($key_candidate);
+            $gender = $candidate->getGender();
         }
 
-        $jobs_list = (new JobRepository())->getAutoCompletion($candidate->getGender() ?? true);
+        $jobs_list = (new JobRepository())->getAutoCompletion($gender);                     // Fetching the list of jobs
 
-        $services_list = (new ServiceRepository())->getAutoCompletion();
+        $services_list = (new ServiceRepository())->getAutoCompletion();                    // Fetching the list of services
 
-        $establishments_list = (new EstablishmentRepository())->getAutoCompletion();
+        $establishments_list = (new EstablishmentRepository())->getAutoCompletion();        // Fetching the list of establishments
 
-        $type_of_contracts_list = (new TypeOfContractsRepository())->getAutoCompletion();
+        $type_of_contracts_list = (new TypeOfContractsRepository())->getAutoCompletion();   // Fetching the list of type of contracts
 
         $sources_list = (new SourceRepository())->getAutoCompletion();
 
@@ -386,37 +412,96 @@ class CandidatesController extends Controller {
 
     // * INSCRIPT * //
     /**
+     * Public method creating and registering a new candidate
+     *
+     * @return void
+     */
+    public function inscriptCandidate() {
+        isUserOrMore();                                                                                                         // Verifying the user's role
+
+        $_SESSION["candidate"] = Candidate::create(                                                                             // Creating the candidate
+            $_POST["name"], 
+            $_POST["firstname"], 
+            $_POST["gender"],
+            $_POST["email"],
+            $_POST["phone"],
+            $_POST["address"],
+            $_POST["city"],
+            $_POST["postcode"]
+        );
+
+        if(!empty($_POST["qualifications"]) && !empty($_POST["qualificationsDate"])) {
+            if(count($_POST["qualifications"]) !== count($_POST["qualificationsDate"])) {
+                throw new Exception("Une qualification doit être saisie avec sa date d'obtetion pour être enregistrée !");
+            }
+
+            $_SESSION["qualifications"] = array_map(function($qua, $date){                                                      // Creating the qualifications           
+                return new GetQualification(null, $qua, $date);
+            }, $_POST["qualifications"], $_POST["qualificationsDate"]);
+        }
+
+        if(!empty($_POST["helps"])) {
+            $_SESSION["helps"] = array_map(function($c) {                                                                       // Creating the helps   
+                return new HaveTheRightTo(null, $c, $c == 3 ? $_POST["employee"] : null);
+            }, $_POST["helps"] ?? null);
+        }
+
+        header("Location: " . APP_PATH . "/candidates/applications/input");                                                     // Redirecting to the application form
+    }
+    /**
      * Public method creating and registering a new application
      * 
      * @param ?int $key_candidate The candidate's primary key
      * @return void
      */
     public function inscriptApplication(?int $key_candidate = null) {
-        isUserOrMore();                                                                     // Verifying the user's role
+        isUserOrMore();                                                                                         // Verifying the user's role
 
-
+        //// CANDIDATE ////
         $candidate = null;
+        if(is_null($key_candidate)) { 
+            $candidate = $_SESSION["candidate"];
+            // unset($_SESSION["candidate"]);   // todo 
 
-        if(! is_null($key_candidate)) {                                                     // Fetching the candidate
+            $candidate_id = (new CandidateRepository())->inscript($candidate);                                  // Registering the new candidate and his informations
+            $candidate->setId($candidate_id); 
+
+            if(isset($_SESSION["qualifications"])) {                                                           // Adding the qualifications to the candidate
+                $qua_repo = new GetQualificationRepository();
+                foreach($_SESSION["qualifications"] as $obj) {
+                    $obj->setCandidate($candidate->getId());
+                    $qua_repo->inscript($obj);
+                }
+
+                // unset($_SESSION["qualifications"]); // todo
+            }
+            
+            if(isset($_SESSION["helps"])) {                                                                    // Adding the helps to the candidate
+                $help_repo = new HaveTheRightToRepository();
+                foreach($_SESSION["helps"] as $obj) {
+                    $obj->setCandidate($candidate->getId());
+                    $help_repo->inscript($obj);
+                }
+
+                // unset($_SESSION["helps"]); // todo
+            }
+
+        } else {                                                                                                // Fetching the candidate
             $candidate = (new CandidateRepository())->get($key_candidate);
         } 
-        
 
-        if(isset($_SESSION["candidate"])) {                                                 // Creating the candidate
+        if(isset($_SESSION["candidate"])) {                                                                     // Creating the candidate
             $candidate = $_SESSION["candidate"];
-
             $can_repo = new CandidateRepository();
-
             $key_candidate = $can_repo->inscript($candidate);
         } 
-        
 
         if(empty($candidate)) {
             throw new Exception("Il est impossible d'inscrire une candidature sans candidat.");
         }
 
-
-        $application = Application::create(                                                 // Creating the application
+        //// APPLICATION ////
+        $application = Application::create(                                                                     // Creating the application
             $key_candidate, 
             (int) $_POST["job"],
             (int) $_POST["source"],
@@ -425,31 +510,23 @@ class CandidatesController extends Controller {
             (int) $_POST["service"] ?? null
         );
 
+        (new ApplicationRepository())->inscript($application);                                                  // Registering the application
 
-        (new ApplicationRepository())->inscript($application);                              // Registering the application
-
-
-        $job = (new JobRepository())->get($application->getJob());                          // Fetching the job
-
+        $job = (new JobRepository())->get($application->getJob());                                              // Fetching the job
         $job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
-
 
         $act_repo = new ActionRepository();
 
         $type = $act_repo->searchType("Nouvelle candidature");
-
         $desc = "Nouvelle candidature de " . strtoupper($candidate->getName()) . " " 
                 . FormsManip::nameFormat($candidate->getFirstname()) . " au poste de {$job}.";
-
-        $action = Action::create(                                                           // Creating the action
+        $action = Action::create(                                                                               // Creating the action
             $_SESSION["user"]->getId(),
             $type->getId(), 
             $desc
         );
 
-
-        $act_repo->writeLogs($action);                                                      // Registering the action
-
+        $act_repo->writeLogs($action);                                                                          // Registering the action
 
         AlertsManipulation::alert([
             "title" => "Action enregistrée",

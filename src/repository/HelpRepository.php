@@ -47,6 +47,24 @@ class HelpRepository extends Repository {
     }
 
     /**
+     * Public method returning the list of helps for AutoComplet items
+     * 
+     * @return array The list of sources
+     */
+    public function getAutoCompletion(): array {
+        $fetch = $this->getList();
+
+        $response = array_map(function($c) {
+            return array(
+                "id"   => $c->getId(),
+                "text" => $c->getTitled()
+            );
+        }, $fetch);
+
+        return $response;
+    }
+
+    /**
      * Public method searching and returning the list of help that the candidate thas the right to have
      * 
      * @param int $key_candidate The primary key of the candidate

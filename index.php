@@ -43,6 +43,8 @@ try {
     // * CANDIDATES * //
     //// PROFILE ////
     $router->addRoute("/candidates", CandidatesController::class, "display");
+    $router->addRoute("/candidates/input", CandidatesController::class, "inputCandidate");
+    $router->addRoute("/candidates/inscript", CandidatesController::class, "inscriptCandidate");
     $router->addRoute("/candidates/{candidate}", CandidatesController::class, "displayCandidate");
     $router->addRoute("/candidates/edit/{candidate}", CandidatesController::class, "displayCandidate");                             // todo
     $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "displayCandidate");                           // todo
@@ -77,6 +79,7 @@ try {
     $router->addRoute("/candidates/meeting/delete/{meeting}", CandidatesController::class, "deleteMeeting");
 
     $router->dispatch($user_connected);
+
 } catch(Exception $e) {
     FormsManip::error_alert([
         'msg'       => $e,

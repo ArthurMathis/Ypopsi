@@ -44,6 +44,24 @@ class QualificationRepository extends Repository {
         return $reponse;
     }
 
+    /**
+     * Public method returning the list of qualifications for AutoComplet items
+     * 
+     * @return array The list of sources
+     */
+    public function getAutoCompletion(): array {
+        $fetch = $this->getList();
+
+        $response = array_map(function($c) {
+            return array(
+                "id"   => $c->getId(),
+                "text" => $c->getTitle()
+            );
+        }, $fetch);
+
+        return $response;
+    }
+
 
     // * GET FROM * //
     /**
