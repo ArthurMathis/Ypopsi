@@ -29,11 +29,11 @@ class AuthMiddleware {
             return ;
         }
 
-        if(!isset($_SESSION["user"]) or empty($_SESSIOn["user"])) {
-            throw new AuthentificationExceptions("Aucun utilisateur conecté.");
+        if(!isset($_SESSION["user"]) or empty($_SESSION["user"])) {
+            throw new AuthentificationExceptions("Aucun utilisateur connecté.");
         }
 
-        if($_SESSION["user"]->getRole() < $required_role) {
+        if(!self::roleIsMore($required_role)) {
             throw new AuthentificationExceptions("Les droits d'accès sont insuffisants.");
         }
     }
