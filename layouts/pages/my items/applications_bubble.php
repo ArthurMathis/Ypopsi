@@ -1,3 +1,9 @@
+<?php
+
+use App\Core\Middleware\AuthMiddleware;
+
+?>
+
 <div class="candidatures_bulle">
     <header>
         <h2><?= $item['poste']; ?></h2>
@@ -35,7 +41,7 @@
     </content>
     <?php if(!$item['acceptee'] && !$item['refusee']): ?>
         <footer>
-        <?php if($_SESSION['user']->getRole() != INVITE): ?>
+        <?php if(AuthMiddleware::isUserOrMore()): ?>
             <a class="action_button grey_color" href="<?= APP_PATH ?>/candidates/applications/reject/<?= $key_candidate ?>/<?= $item['cle'] ?>">
                 <p>Refuser</p>
                 <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">

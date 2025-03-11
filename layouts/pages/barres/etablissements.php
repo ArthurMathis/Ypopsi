@@ -1,6 +1,12 @@
+<?php
+
+use App\Core\Middleware\AuthMiddleware;
+
+?>
+
 <nav class="options_barre">
     <article>
-        <?php if($_SESSION['user']->getRole() == OWNER || $_SESSION['user']->getRole() == ADMIN): ?>
+        <?php if(AuthMiddleware::isAdminOrMore()): ?>
             <a class="action_button reverse_color" href="index.php?preferences=input-establishments">Nouvel établissement</a>
         <?php endif ?>
     </article>

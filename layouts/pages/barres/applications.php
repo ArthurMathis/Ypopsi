@@ -1,7 +1,13 @@
+<?php 
+
+use App\Core\Middleware\AuthMiddleware;
+
+?>
+
 <nav class="options_barre">
     <article>
         <a class="action_button reverse_color" href="<?= APP_PATH ?>/candidates">Liste des candidats</a>
-        <?php if($_SESSION['user']->getRole() != INVITE): ?>
+        <?php if(AuthMiddleware::isUserOrMore()): ?>
             <a class="action_button" href="<?= APP_PATH ?>/candidates/input">Nouvelle candidature</a>
         <?php endif ?>    
     </article>

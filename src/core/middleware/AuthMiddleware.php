@@ -8,20 +8,16 @@ use App\Exceptions\AuthentificationExceptions;
  * Class checking the user's access rights 
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
-class AuthMiddlware {
+class AuthMiddleware {
+    // * ATTRIBUTES * //
     /**
-     * Public static attribute contaiing the roles 
+     * Public static attribute containing the users' role in the application
      *
-     * @var array
+     * @var int
      */
-    public static array $ROLE = array(OWNER, ADMIN, MOD, USER, INVITE);
+    public static int $OWNER = 1, $ADMIN = 2, $MODERATOR = 3, $USER = 4, $INVITE = 5;
 
-    public static function isValidRole(int $role): void {
-        if(!in_array($role, AuthMiddlware::$ROLE)) {
-            throw new AuthentificationExceptions("Role invalide.");
-        }
-    }
-
+    // * REQUEST * //
     /**
      * Public static method handle a url request and checking if the user's access rights are enough
      *
@@ -41,4 +37,63 @@ class AuthMiddlware {
             throw new AuthentificationExceptions("Les droits d'accès sont insuffisants.");
         }
     }
+
+    // * UNTILS * //
+    /**
+     * Public static method checking if the user's role is enough
+     *
+     * @param integer $role
+     * @return void
+     */
+    public static function isValidRole(int $role): void {
+        $roles = array(
+            AuthMiddleware::$OWNER, 
+            AuthMiddleware::$ADMIN, 
+            AuthMiddleware::$MODERATOR,
+            AuthMiddleware::$USER, 
+            AuthMiddleware::$INVITE
+        );
+
+        if(!in_array($role, $roles)) {
+            throw new AuthentificationExceptions("Role invalide.");
+        }
+    }
+    /**
+     * Protected static ùethod checking if a role is more, eaqual or less than a required role
+     *
+     * @param int $required_role The required role
+     * @return bool
+     */
+    protected static function roleIsMore(int $required_role): bool {
+        if(empty($_SESSION["user"])) {
+            throw new AuthentificationExceptions("Aucun utilisateur conecté.");
+        }
+
+        self::isValidRole($required_role);
+
+        return $_SESSION["user"]->getRole() <= $required_role;
+    }
+
+    // * CHECK ROLE * // 
+    /**
+     * Public statuc method testing if the user's role is superior or equal to ADMIN
+     * 
+     * @throws AuthentificationExceptions If no user is connected
+     * @return bool
+     */
+    public static function isAdminOrMore(): bool { return self::roleIsMore(self::$ADMIN); }
+    /**
+     * Public statuc method testing if the user's role is superior or equal to MOD
+     * 
+     * @throws AuthentificationExceptions If no user is connected
+     * @return bool
+     */
+    public static function isModeratorOrMore(): bool { return self::roleIsMore(self::$MODERATOR); }
+    /**
+     * Public statuc method testing if the user's role is superior or equal to USER
+     * 
+     * @throws AuthentificationExceptions If no user is connected
+     * @return bool
+     */
+    public static function isUserOrMore(): bool { return self::roleIsMore(self::$USER); }
 }

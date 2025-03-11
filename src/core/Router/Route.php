@@ -2,7 +2,7 @@
 
 namespace App\Core\Router;
 
-use App\Core\Middleware\AuthMiddlware;
+use App\Core\Middleware\AuthMiddleware;
 
 /**
  * Class représenting a Route in the router
@@ -23,7 +23,7 @@ class Route {
         protected ?int $middleware = null
     ) {
         if(!empty($middleware)) {
-            AuthMiddlware::isValidRole($middleware);
+            AuthMiddleware::isValidRole($middleware);
         }
     }
 

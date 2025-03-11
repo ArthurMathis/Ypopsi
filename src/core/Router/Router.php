@@ -4,7 +4,7 @@ namespace App\Core\Router;
 
 use App\Core\Router\Route;
 use App\Exceptions\RouterExceptions;
-use App\Core\Middleware\AuthMiddlware;
+use App\Core\Middleware\AuthMiddleware;
 
 /**
  * Class managing the url request in the application
@@ -86,7 +86,7 @@ class Router {
                     $c = new ($target->getController())();
 
                     if($target->getMiddleware()) {
-                        AuthMiddlware::handle($target->getMiddleware());
+                        AuthMiddleware::handle($target->getMiddleware());
                     }
                 
                     if(method_exists($c, $target->getMethod())) {                   // Appel de la méthode

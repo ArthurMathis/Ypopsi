@@ -1,3 +1,9 @@
+<?php 
+
+use App\Core\Middleware\AuthMiddleware;
+
+?>
+
 <aside>
     <div class="aside-wrapper">
         <header>
@@ -50,7 +56,7 @@
         </section>
     </div>
     <footer>
-        <?php if($_SESSION['user']->getRole() != INVITE): ?>
+        <?php if(AuthMiddleware::isUserOrMore()): ?>
             <?php if(!empty($candidate->getEmail())): ?>
                 <a class="action_button reverse_color" href="mailto:<?= $candidate->getEmail(); ?>">
                     <p>Contacter</p>

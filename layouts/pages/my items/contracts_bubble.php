@@ -1,6 +1,7 @@
 <?php
 
 use App\Core\Moment;
+use App\Core\Middleware\AuthMiddleware;
 
 $date = Moment::currentMoment()->getDate();
 
@@ -61,7 +62,7 @@ $date = Moment::currentMoment()->getDate();
     </content>
     <?php if($item['demission'] == null && ($item['date_fin'] == null || $date < $item['date_fin'])): ?>
         <footer>
-            <?php if($_SESSION['user']->getRole() != INVITE): ?>
+            <?php if(AuthMiddleware::isUserOrMore()): ?>
                 <a 
                     class="action_button reverse_color" 
                     href="<?= APP_PATH ?>/candidates/contracts/dismiss/<?= urlencode($item['cle']) ?>"

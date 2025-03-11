@@ -1,3 +1,9 @@
+<?php 
+
+use App\Core\Middleware\AuthMiddleware;
+
+?>
+
 <aside>
     <article>
         <header>
@@ -9,7 +15,7 @@
             <a <?php if($_GET['preferences'] == "edit-password") echo 'class="selected"'; ?> href="index.php?preferences=edit-password">Modifier votre mot de passe</a>
         </content>
     </article>
-    <?php if($_SESSION['user']->getRole() == OWNER || $_SESSION['user']->getRole() == ADMIN): ?>
+    <?php if(AuthMiddleware::isAdminOrMore()): ?>
     <article>
         <header>
             <h2>Utilisateurs</h2>
@@ -23,7 +29,7 @@
         </content>
     </article>
     <?php endif ?>
-    <?php if($_SESSION['user']->getRole() != INVITE): ?>
+    <?php if(AuthMiddleware::isUserOrMore()): ?>
     <article>
         <header>
             <h2>Données</h2>

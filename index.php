@@ -10,6 +10,7 @@ use App\Controllers\HomeController;
 use App\Controllers\LoginController;
 use App\Controllers\ApplicationsController;
 use App\Controllers\CandidatesController;
+use App\Core\Middleware\AuthMiddleware;
 
 test_process();
 env_start();
@@ -43,40 +44,40 @@ try {
     // * CANDIDATES * //
     //// PROFILE ////
     $router->addRoute("/candidates", CandidatesController::class, "display");
-    $router->addRoute("/candidates/input", CandidatesController::class, "inputCandidate");
-    $router->addRoute("/candidates/inscript", CandidatesController::class, "inscriptCandidate");
+    $router->addRoute("/candidates/input", CandidatesController::class, "inputCandidate", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/inscript", CandidatesController::class, "inscriptCandidate", AuthMiddleware::$USER);
     $router->addRoute("/candidates/{candidate}", CandidatesController::class, "displayCandidate");
-    $router->addRoute("/candidates/edit/{candidate}", CandidatesController::class, "editCandidate");                             // todo
-    $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "displayCandidate");                           // todo
-    $router->addRoute("/candidates/rating/edit/{candidate}", CandidatesController::class, "displayCandidate");                      // todo
-    $router->addRoute("/candidates/rating/update/{candidate}", CandidatesController::class, "displayCandidate");                    // todo
+    $router->addRoute("/candidates/edit/{candidate}", CandidatesController::class, "editCandidate", AuthMiddleware::$USER);                                 // todo
+    $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "displayCandidate", AuthMiddleware::$USER);                            // todo
+    $router->addRoute("/candidates/rating/edit/{candidate}", CandidatesController::class, "displayCandidate", AuthMiddleware::$USER);                       // todo
+    $router->addRoute("/candidates/rating/update/{candidate}", CandidatesController::class, "displayCandidate", AuthMiddleware::$USER);                     // todo
 
     //// CONTRACTS ////
-    $router->addRoute("/candidates/contracts/input/{candidate}", CandidatesController::class, "displayInputMeeting");               // todo
-    $router->addRoute("/candidates/contracts/inscript/{candidate}", CandidatesController::class, "displayInputMeeting");            // todo
-    $router->addRoute("/candidates/contracts/sign/{candidate}/{offer}", CandidatesController::class, "signContract");
-    $router->addRoute("/candidates/contracts/dismiss/{contract}", CandidatesController::class, "dismissContract");
+    $router->addRoute("/candidates/contracts/input/{candidate}", CandidatesController::class, "displayInputMeeting", AuthMiddleware::$USER);                // todo
+    $router->addRoute("/candidates/contracts/inscript/{candidate}", CandidatesController::class, "displayInputMeeting", AuthMiddleware::$USER);             // todo
+    $router->addRoute("/candidates/contracts/sign/{candidate}/{offer}", CandidatesController::class, "signContract", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/contracts/dismiss/{contract}", CandidatesController::class, "dismissContract", AuthMiddleware::$USER);
 
     //// OFFERS ////
-    $router->addRoute("/candidates/offers/input/{candidate}", CandidatesController::class, "inputOffer");
-    $router->addRoute("/candidates/offers/input/{candidate}/{application}", CandidatesController::class, "inputOffer");
-    $router->addRoute("/candidates/offers/inscript/{candidate}", CandidatesController::class, "inscriptOffer");
-    $router->addRoute("/candidates/offers/inscript/{candidate}/{application}", CandidatesController::class, "inscriptOffer");
-    $router->addRoute("/candidates/offers/reject/{candidate}/{offer}", CandidatesController::class, "rejectOffer"); 
+    $router->addRoute("/candidates/offers/input/{candidate}", CandidatesController::class, "inputOffer", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/offers/input/{candidate}/{application}", CandidatesController::class, "inputOffer", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/offers/inscript/{candidate}", CandidatesController::class, "inscriptOffer", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/offers/inscript/{candidate}/{application}", CandidatesController::class, "inscriptOffer", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/offers/reject/{candidate}/{offer}", CandidatesController::class, "rejectOffer", AuthMiddleware::$USER); 
 
     //// APPLICATIONS ////
-    $router->addRoute("/candidates/applications/input", CandidatesController::class, "inputApplication");                           // todo
-    $router->addRoute("/candidates/applications/input/{candidate}", CandidatesController::class, "inputApplication");       
-    $router->addRoute("/candidates/applications/inscript", CandidatesController::class, "inscriptApplication");
-    $router->addRoute("/candidates/applications/inscript/{candidate}", CandidatesController::class, "inscriptApplication");
-    $router->addRoute("/candidates/applications/reject/{candidate}/{application}", CandidatesController::class, "rejectApplication");     
+    $router->addRoute("/candidates/applications/input", CandidatesController::class, "inputApplication", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/applications/input/{candidate}", CandidatesController::class, "inputApplication", AuthMiddleware::$USER);       
+    $router->addRoute("/candidates/applications/inscript", CandidatesController::class, "inscriptApplication", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/applications/inscript/{candidate}", CandidatesController::class, "inscriptApplication", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/applications/reject/{candidate}/{application}", CandidatesController::class, "rejectApplication", AuthMiddleware::$USER);     
 
     //// MEETINGS ////
-    $router->addRoute("/candidates/meeting/input/{candidate}", CandidatesController::class, "inputMeeting");
-    $router->addRoute("/candidates/meeting/inscript/{candidate}", CandidatesController::class, "inscriptMeeting");
-    $router->addRoute("/candidates/meeting/edit/{meeting}", CandidatesController::class, "editMeeting");
-    $router->addRoute("/candidates/meeting/update/{candidate}/{meeting}", CandidatesController::class, "updateMeeting");
-    $router->addRoute("/candidates/meeting/delete/{meeting}", CandidatesController::class, "deleteMeeting");
+    $router->addRoute("/candidates/meeting/input/{candidate}", CandidatesController::class, "inputMeeting", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/meeting/inscript/{candidate}", CandidatesController::class, "inscriptMeeting", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/meeting/edit/{meeting}", CandidatesController::class, "editMeeting", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/meeting/update/{candidate}/{meeting}", CandidatesController::class, "updateMeeting", AuthMiddleware::$USER);
+    $router->addRoute("/candidates/meeting/delete/{meeting}", CandidatesController::class, "deleteMeeting", AuthMiddleware::$USER);
 
     $router->dispatch($user_connected);
 
