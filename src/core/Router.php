@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Core;
+namespace App\Core\Router;
 
+use App\Core\Router\Route;
 use App\Exceptions\RouterExceptions;
+use App\Core\Middleware\AuthMiddlware;
 
 /**
- * Class representing the Router 
+ * Class managing the url request in the application
  * @author Arthur MATHIS - arthur.mathis@uha.fr
  */
 class Router {
     /**
-     * Private attribute containing the array of routes request
+     * Private attribute containing the routes
      * 
      * @var Array
      */
-    protected array $routes = [];
+    protected array $routes = array();
     /**
      * Protected attribute containing the path of the application
      * 
@@ -37,14 +39,21 @@ class Router {
      * @param String $urlPattern The url of the request
      * @param String $controllerMethod The controller to handle the request
      * @param String $methodController The method to handle the request
+     * @param ?int $requiredMiddleware The required role to access at the functionnal
      * @throws RouterExceptions If the route is already defined 
      * @return Void
      */
-    public function addRoute(string $urlPattern, string $controllerClass, string $methodController) { 
-        if(isset($this->routes[$urlPattern])) 
-            throw new RouterExceptions("Erreur de routage, la route : " . $urlPattern . " est déjà attribuée à " . $this->routes[$urlPattern]['controller'] . '::' . $this->routes[$urlPattern]['method'] . " !");
-        else 
-            $this->routes[$urlPattern] = ['controller' => $controllerClass, 'method' => $methodController];
+    public function addRoute(string $urlPattern, string $controllerClass, string $methodController, ?int $requiredMiddleware = null) { 
+        if(isset($this->routes[$urlPattern])) {
+            throw new RouterExceptions("Erreur de routage, la route : " . $urlPattern . " est déjà attribuée à " 
+                . $this->routes[$urlPattern]->getController() . '::' . $this->routes[$urlPattern]->getMethod() . " !");
+        }
+
+        $this->routes[$urlPattern] = new Route(
+            $controllerClass,
+            $methodController,
+            $requiredMiddleware
+        );
     }
     /**
      * Public method launching the process to answer to the request
@@ -73,13 +82,18 @@ class Router {
             if (preg_match('#^' . $routePattern . '$#', $path, $matches)) {         // Test de la correspondance
                 array_shift($matches);
 
-                if(class_exists($target['controller'])) {                           // Instanciation du controller
-                    $c = new $target['controller']();
+                if(class_exists($target->getController())) {                        // Instanciation du controller
+                    $c = new ($target->getController())();
+
+                    if($target->getMiddleware()) {
+                        AuthMiddlware::handle($target->getMiddleware());
+                    }
                 
-                    if(method_exists($c, $target['method']))                        // Appel de la méthode
-                        return $c->{$target['method']}(...$matches);
-                    else 
+                    if(method_exists($c, $target->getMethod())) {                   // Appel de la méthode
+                        return $c->{$target->getMethod()}(...$matches);
+                    } else {
                         throw new RouterExceptions("Méthode introuvable.");
+                    } 
                 } else {
                     throw new RouterExceptions("Controller introuvable.");
                 }

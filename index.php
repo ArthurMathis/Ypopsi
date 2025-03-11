@@ -3,7 +3,7 @@
 require_once("vendor/autoload.php");
 require_once('define.php'); 
 
-use App\Core\Router;
+use App\Core\Router\Router;
 use App\Core\FormsManip;
 use App\Core\AlertsManipulation;
 use App\Controllers\HomeController;
@@ -46,7 +46,7 @@ try {
     $router->addRoute("/candidates/input", CandidatesController::class, "inputCandidate");
     $router->addRoute("/candidates/inscript", CandidatesController::class, "inscriptCandidate");
     $router->addRoute("/candidates/{candidate}", CandidatesController::class, "displayCandidate");
-    $router->addRoute("/candidates/edit/{candidate}", CandidatesController::class, "displayCandidate");                             // todo
+    $router->addRoute("/candidates/edit/{candidate}", CandidatesController::class, "editCandidate");                             // todo
     $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "displayCandidate");                           // todo
     $router->addRoute("/candidates/rating/edit/{candidate}", CandidatesController::class, "displayCandidate");                      // todo
     $router->addRoute("/candidates/rating/update/{candidate}", CandidatesController::class, "displayCandidate");                    // todo

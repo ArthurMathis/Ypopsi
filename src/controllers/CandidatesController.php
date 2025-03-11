@@ -41,7 +41,7 @@ class CandidatesController extends Controller {
      *
      * @return void
      */
-    public function display() {
+    public function display(): void {
         $fetch = (new CandidateRepository())->getList();
 
         $candidates = array_map(function($c) {
@@ -64,7 +64,7 @@ class CandidatesController extends Controller {
      * @param int $key_candidate The candidate's primary key
      * @return void
      */
-    public function displayCandidate(int $key_candidate) {
+    public function displayCandidate(int $key_candidate): void {
         $can_repo = new CandidateRepository();
         $candidate = $can_repo->get($key_candidate);                                                                // Fetching the candidate 
 
@@ -130,7 +130,7 @@ class CandidatesController extends Controller {
     /**
      * Public method signing a contract
      */
-    public function signContract(int $key_candidate, int $key_offer) {
+    public function signContract(int $key_candidate, int $key_offer): void {
         isUserOrMore();                                                                                         // Verifying the user's role
 
         $cont_repo = new ContractRepository();
@@ -168,7 +168,7 @@ class CandidatesController extends Controller {
      * @param int $key_contract The primary key of the contract
      * @return void
      */
-    public function dismissContract(int $key_contract) {
+    public function dismissContract(int $key_contract): void {
         isUserOrMore();                                                                                         // Verifying the user's role
 
         $con_repo = new ContractRepository();
@@ -207,7 +207,7 @@ class CandidatesController extends Controller {
      * @param int $key_offer The primary key of the offer
      * @return void
      */
-    public function rejectOffer(int $key_candidate, int $key_offer) {
+    public function rejectOffer(int $key_candidate, int $key_offer): void {
         isUserOrMore();                                                                                         // Verifying the user's role
 
         $cont_repo = new ContractRepository();
@@ -244,7 +244,7 @@ class CandidatesController extends Controller {
      * @param int $key_application The primari key of the application
      * @return void
      */
-    public function rejectApplication(int $key_candidate, int $key_application) {
+    public function rejectApplication(int $key_candidate, int $key_application): void {
         isUserOrMore();                                                                                     // Verifying the user's role
 
         $app_repo = new ApplicationRepository();
@@ -281,7 +281,7 @@ class CandidatesController extends Controller {
      *
      * @return void
      */
-    public function inputCandidate() {
+    public function inputCandidate(): void {
         isUserOrMore();                                                                     // Verifying the user's role
 
         $qualifications_list = (new QualificationRepository())->getAutoCompletion();        // Fetching the list of qualifications
@@ -300,7 +300,7 @@ class CandidatesController extends Controller {
      * @param ?int $key_candidate The candidate's primary key
      * @return void
      */
-    public function inputApplication(?int $key_candidate = null) {
+    public function inputApplication(?int $key_candidate = null): void {
         isUserOrMore();                                                                     // Verifying the user's role
 
         $candidate = null;
@@ -337,7 +337,7 @@ class CandidatesController extends Controller {
      * @param ?int $key_application The primary key of the application
      * @return void
      */
-    public function inputOffer(int $key_candidate, ?int $key_application = null) {
+    public function inputOffer(int $key_candidate, ?int $key_application = null): void {
         isUserOrMore();                                                                                         // Verifying the user's role
 
         $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
@@ -391,7 +391,7 @@ class CandidatesController extends Controller {
      * @param int $key_candidate The candidate's primary ket
      * @return void
      */
-    public function inputMeeting(int $key_candidate) {
+    public function inputMeeting(int $key_candidate): void {
         isUserOrMore();                                                                     // Verifying the user's role
 
         $recruiter = $_SESSION['user'];                                                     // Getting the recruiter
@@ -416,7 +416,7 @@ class CandidatesController extends Controller {
      *
      * @return void
      */
-    public function inscriptCandidate() {
+    public function inscriptCandidate(): void {
         isUserOrMore();                                                                                                         // Verifying the user's role
 
         $_SESSION["candidate"] = Candidate::create(                                                                             // Creating the candidate
@@ -454,7 +454,7 @@ class CandidatesController extends Controller {
      * @param ?int $key_candidate The candidate's primary key
      * @return void
      */
-    public function inscriptApplication(?int $key_candidate = null) {
+    public function inscriptApplication(?int $key_candidate = null): void {
         isUserOrMore();                                                                                         // Verifying the user's role
 
         //// CANDIDATE ////
@@ -541,7 +541,7 @@ class CandidatesController extends Controller {
      * @param ?int $key_application The primary key of the application
      * @return void
      */
-    public function inscriptOffer(int $key_candidate, ?int $key_application = null) {
+    public function inscriptOffer(int $key_candidate, ?int $key_application = null): void {
         isUserOrMore();                                                                     // Verifying the user's role
 
         if(!empty($key_application)) {
@@ -596,7 +596,7 @@ class CandidatesController extends Controller {
      * @param int $key_candidate The candidate's primary key
      * @return void
      */
-    public function inscriptMeeting(int $key_candidate) {
+    public function inscriptMeeting(int $key_candidate): void {
         isUserOrMore();                                                                     // Verifying the user's role
 
         $can_repo = new CandidateRepository();
@@ -637,13 +637,16 @@ class CandidatesController extends Controller {
 
 
     // * EDIT * //
+    public function editCandidate(int $key_candidate): void {
+        
+    }
     /**
      * Public method displaying the edit meeting HTML form
      * 
      * @param int $key_meeting The primary key of the meeting
      * @return void
      */
-    public function editMeeting(int $key_meeting) {
+    public function editMeeting(int $key_meeting): void {
         isUserOrMore();                                                                     // Verifying the user's role
 
         $meeting = (new MeetingRepository())->get($key_meeting);                            // Fetching the meeting
@@ -674,7 +677,7 @@ class CandidatesController extends Controller {
      * @param int $key_meeting The primary key of the meeting
      * @return void
      */
-    public function updateMeeting(int $key_candidate, int $key_meeting) {
+    public function updateMeeting(int $key_candidate, int $key_meeting): void {
         isUserOrMore();                                                                     // Verifying the user's role
 
         $meeting = new Meeting(                                                             // Building the meeting
@@ -720,7 +723,7 @@ class CandidatesController extends Controller {
      * @param int $key_meeting The primary key of the meeting
      * @return void
      */
-    public function deleteMeeting(int $key_meeting) {
+    public function deleteMeeting(int $key_meeting): void {
         isUserOrMore();                                                                     // Verifying the user's role
 
 
