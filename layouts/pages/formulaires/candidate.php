@@ -1,11 +1,15 @@
 <form 
     class="big-form" 
     method="post" 
-    action="<?= APP_PATH ?>/candidates<?= $action_method ?>"
+    action="<?= APP_PATH ?>/candidates/<?= $action_method ?>"
 >
     <div class="form-container">
         <h3>
-            Nouveau candidat
+            <?php if(!$completed): ?>
+                Nouveau candidat
+            <?php else: ?>
+                Mise à jour de <?= $candidate->getCompleteName() ?>
+            <?php endif ?>
         </h3>
 
         <section>
@@ -20,6 +24,10 @@
                     name="name" 
                     placeholder="Dupond"
                     required
+
+                    <?php if($completed): ?>
+                        value="<?= $candidate->getName() ?>"
+                    <?php endif ?>
                 >
             </div>
 
@@ -34,6 +42,10 @@
                     name="firstname" 
                     placeholder="Jean"
                     required
+
+                    <?php if($completed): ?>
+                        value="<?= $candidate->getFirstname() ?>"
+                    <?php endif ?>
                 >
             </div>
 
@@ -48,13 +60,20 @@
                 >
                     <option 
                         value="1" 
-                        selected
+                        
+                        <?php if(!$completed || (!empty($candidate) && $candidate->getGender())): ?>
+                            selected
+                        <?php endif ?>
                     >
                         Homme
                     </option>
 
                     <option 
                         value="0"
+
+                        <?php if(!empty($candidate) && !$candidate->getGender()): ?>
+                            selected
+                        <?php endif ?>
                     >
                         Femme
                     </option>
@@ -73,6 +92,10 @@
                     id="email" 
                     name="email" 
                     placeholder="jean.dupond@example.com"
+
+                    <?php if($completed && !empty($candidate->getEmail())): ?>
+                        value="<?= $candidate->getEmail() ?>" 
+                    <?php endif ?>
                 >
             </div>
 
@@ -86,6 +109,10 @@
                     id="phone" 
                     name="phone" 
                     placeholder="06.12.34.57.89"
+
+                    <?php if($completed && !empty($candidate->getPhone())): ?>
+                        value="<?= $candidate->getPhone() ?>" 
+                    <?php endif ?>
                 >
             </div>
         </section>
@@ -101,6 +128,10 @@
                     id="address" 
                     name="address" 
                     placeholder="1er Grand Rue"
+
+                    <?php if($completed && !empty($candidate->getAddress())): ?>
+                        value="<?= $candidate->getAddress() ?>" 
+                    <?php endif ?>
                 >
             </div>
 
@@ -115,6 +146,10 @@
                         id="city" 
                         name="city" 
                         placeholder="Colmar"
+
+                        <?php if($completed && !empty($candidate->getCity())): ?>
+                            value="<?= $candidate->getCity() ?>" 
+                        <?php endif ?>
                     >
                 </div>
 
@@ -128,6 +163,10 @@
                         id="postcode" 
                         name="postcode" 
                         placeholder="68000"
+
+                        <?php if($completed && !empty($candidate->getPostcode())): ?>
+                            value="<?= $candidate->getPostcode() ?>" 
+                        <?php endif ?>
                     >
                 </div>
             </div>
@@ -150,6 +189,27 @@
                     alt=""
                 >
             </button>
+
+            <?php if($completed && !empty($users_qualifications)): ?>
+                <?php foreach($users_qualifications as $index => $obj): ?>
+                    <div class="double-items">
+                        <input 
+                            type="text" 
+                            id="diplome-<?= $index+1; ?>" 
+                            name="diplome[]" 
+                            value="<?= $obj["qualification"]->getTitle(); ?>"
+                        >
+
+                        <input 
+                            type="date" 
+                            id="diplomeDate-<?= $index+1; ?>"
+                            name="diplomeDate[]" 
+                            max="<?= date('Y-m-d'); ?>" 
+                            value="<?= date('Y-m-d', strtotime($obj["get_qualification"]->getDate())); ?>"
+                        >
+                    </div>
+                <?php endforeach ?>
+            <?php endif ?>
         </section>
 
         <section 
@@ -168,7 +228,45 @@
                     src="<?= APP_PATH ?>\layouts\assets\img\logo\blue\add.svg" 
                     alt=""
                 >
-            </button>
+                </button>
+
+            <?php if(isset($users_helps)): ?>
+                <?php foreach($users_helps as $obj): ?>
+                    <select name="aide[]">
+                        <?php foreach($helps_list as $elmt): ?>
+                            <option
+                                value = "<?= $elmt->getId() ?>"
+
+                                <?php if($obj->getTitled() === $elmt->getTitled()): ?>
+                                    selected
+                                <?php endif ?>
+                            >
+                                <?= $obj->getTitled() ?>
+                            </option>
+                        <?php endforeach ?>    
+                    </select> 
+
+                    <?php if($obj->getTitled() === COOPTATION): ?>
+                        <select 
+                            id="coopteur" 
+                            name="coopteur"
+                        >
+
+                        <?php foreach($employee as $c): ?>
+                            <option 
+                                value="<?= $c->getId(); ?>" 
+                                
+                                <?php if($obj->getId() === $c->getId()): ?>
+                                    selected
+                                <?php endif ?>
+                            >
+                                <?= $c->getCompletedName() ?>
+                            </option>
+                        <?php endforeach ?>
+                        </select>
+                    <?php endif ?>
+                <?php endforeach ?>
+            <?php endif ?>
         </section>
 
         <section 
@@ -183,7 +281,12 @@
                 id="visite_medicale" 
                 name="visite_medicale" 
                 type="date" 
-                min="<?= date('Y-m-d'); ?>"
+
+                <?php if($completed && !empty($candidate->getVisit())): ?>
+                    value="<?= $candidate->getVisit() ?>"
+                <?php else: ?>
+                    min="<?= date('Y-m-d'); ?>"
+                <?php endif ?>
             >
         </section>
 

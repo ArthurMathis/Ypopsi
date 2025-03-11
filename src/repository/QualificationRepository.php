@@ -96,7 +96,7 @@ class QualificationRepository extends Repository {
 
     // * SEARCH * //
     public function searchDate(int $key_candidate, int $key_qualification): string {
-        $request = "SELECT Date FROM Get_qualifications WHERE Key_candidates = :key_candidate AND Key_Qualifications = :key_qualification";
+        $request = "SELECT * FROM Get_qualifications WHERE Key_candidates = :key_candidate AND Key_Qualifications = :key_qualification";
 
         $params = [
             "key_candidate" => $key_candidate,

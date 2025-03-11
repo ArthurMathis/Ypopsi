@@ -20,7 +20,7 @@ class GetQualificationRepository extends Repository {
      * @return GetQualification
      */
     public function get(int $key_candidate, int $key_qualification): GetQualification {
-        $request = "SELECT * FROM Get_qualifications WHERE Candidate = :candidate AND Qualification = :qualification";
+        $request = "SELECT * FROM Get_qualifications WHERE Key_Candidates = :candidate AND Key_Qualifications = :qualification";
 
         $params = array(
             "candidate" => $key_candidate,

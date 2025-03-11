@@ -85,10 +85,14 @@ class CandidatesView extends View {
         string $title, 
         string $action_method, 
         string $action_value, 
-        bool $editable,
         array $qualifications_list, 
         array $helps_list,
-        array $employee_list
+        array $employee_list,
+        bool $completed = false,
+        ?Candidate $candidate = null,
+        ?array $users_qualifications = null, 
+        ?array $users_helps = null,
+        ?candidate $employee = null
     ) {
         $this->generateCommonHeader("Ypopsi - {$title}", [ FORMS_STYLES.DS.'big-form.css' ]);
 
@@ -144,15 +148,13 @@ class CandidatesView extends View {
         array $employee_list
     ) {
         $title = "Inscription d'un candidat";
-        $action_method = "/inscript";
+        $action_method = "inscript";
         $action_value = "inscript_candidate";
-        $editable = true;
 
         $this->displayCandidateForm(
             $title, 
             $action_method, 
             $action_value, 
-            $editable, 
             $qualifications_list, 
             $helps_list,
             $employee_list
@@ -285,7 +287,47 @@ class CandidatesView extends View {
 
     // * DISPLAY EDIT * //
     /**
+     * Public method building the edit candidates HTML form 
+     *
+     * @param Candidate $candidate The candidate
+     * @param ?array $users_qualifications The list of the candidate's qualifications
+     * @param ?array $users_helps The list of the candidate's helps
+     * @param ?candidate $employee The coopter
+     * @param array $qualifications_list The list of the qualifications
+     * @param array $helps_list The list of the helps
+     * @param array $employee_list The list of the employees
+     * @return void
+     */
+    public function displayEditCandidate(
+        Candidate &$candidate, 
+        ?array $users_qualifications, 
+        ?array $users_helps, 
+        ?candidate $employee,
+        array $qualifications_list, 
+        array $helps_list,
+        array $employee_list
+    ) {
+        $title = "Mise-à-jour des informations de " . $candidate->getCompleteName();
+        $action_method = "update/{$candidate->getId()}";
+        $action_value = "update_candidate";
+
+        $this->displayCandidateForm(
+            $title,
+            $action_method,
+            $action_value,
+            $qualifications_list,
+            $helps_list, 
+            $employee_list,
+            true, 
+            $candidate,
+            $users_qualifications, 
+            $users_helps
+        );
+    }
+    /**
      * Public method building the edit candidates'ratings HTML form 
+     * 
+     * todo : remake with Candidate::class
      *
      * @param array $candidate The arrayu containing the candidate's data
      * @return View The HTML page
@@ -293,28 +335,11 @@ class CandidatesView extends View {
     public function displayEditRatings(array $candidate) {
         $this->generateCommonHeader(
             'Ypopsi - Modification de la notation de ' . FormsManip::majusculeFormat($candidate['Name']) . ' ' . $candidate['Firstname'], 
-            [FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-rating.css']
+            array(FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-rating.css')
         );
         $this->generateMenu(true, null);
 
         include EDIT_FORM.DS.'rating.php';
-
-        $this->generateCommonFooter();
-    }
-    /**
-     * Public method building the edit candidates HTML form 
-     *
-     * @param array $item The array containing the candidate's data
-     * @param array $qualifications The array containing the list of qualifications
-     * @param array $helps The array containing the list of helps
-     * @param array $employee The array containing the the list of employee
-     * @return View The HTML Page
-     */
-    public function displayEditCandidates(array $item, array $qualifications, array $helps, array $employee) {
-        $this->generateCommonHeader('Ypopsi - Modification de ' . FormsManip::majusculeFormat($item['candidate']['Name']) . ' ' . $item['candidate']['Firstname'], [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(true, null);
-
-        include EDIT_FORM.DS.'candidates.php';
 
         $this->generateCommonFooter();
     }
@@ -330,13 +355,9 @@ class CandidatesView extends View {
      */
     public function displayEditMeeting(Meeting $meeting, User $recruiter, Establishment $establishment, array $users_list, array $establishments_list) {
         $title = "Mise-à-jour rendez-vous";
-
         $action_method = "update/{$meeting->getCandidate()}/{$meeting->getId()}";
-
         $action_value = "update_meeting";
-
         $editable = time() <= strtotime($meeting->getDate());
-
 
         $this->displayMeetingForm(
             $title, 

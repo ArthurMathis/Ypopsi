@@ -130,7 +130,8 @@ class CandidatesController extends Controller {
     /**
      * Public method signing a contract
      */
-    public function signContract(int $key_candidate, int $key_offer): void {$cont_repo = new ContractRepository();
+    public function signContract(int $key_candidate, int $key_offer): void {
+        $cont_repo = new ContractRepository();
         $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
         $contract->addSignature();      
 
@@ -201,7 +202,8 @@ class CandidatesController extends Controller {
      * @param int $key_offer The primary key of the offer
      * @return void
      */
-    public function rejectOffer(int $key_candidate, int $key_offer): void {$cont_repo = new ContractRepository();
+    public function rejectOffer(int $key_candidate, int $key_offer): void {
+        $cont_repo = new ContractRepository();
         $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
         $cont_repo->reject($contract);                                                                          // Rejecting the contract
 
@@ -235,7 +237,8 @@ class CandidatesController extends Controller {
      * @param int $key_application The primari key of the application
      * @return void
      */
-    public function rejectApplication(int $key_candidate, int $key_application): void {$app_repo = new ApplicationRepository();
+    public function rejectApplication(int $key_candidate, int $key_application): void {
+        $app_repo = new ApplicationRepository();
         $application = $app_repo->get($key_application);                                                    // Fetching the application
         $app_repo->reject($application);                                                                    // Refusing the application
 
@@ -269,7 +272,8 @@ class CandidatesController extends Controller {
      *
      * @return void
      */
-    public function inputCandidate(): void {$qualifications_list = (new QualificationRepository())->getAutoCompletion();        // Fetching the list of qualifications
+    public function inputCandidate(): void {
+        $qualifications_list = (new QualificationRepository())->getAutoCompletion();        // Fetching the list of qualifications
         $helps_list = (new HelpRepository())->getAutoCompletion();                          // Fetching the list of helps
         $employee_list = (new CandidateRepository())->getAutoCompletion();                  // Fetching the list of employees
 
@@ -285,7 +289,8 @@ class CandidatesController extends Controller {
      * @param ?int $key_candidate The candidate's primary key
      * @return void
      */
-    public function inputApplication(?int $key_candidate = null): void {$candidate = null;
+    public function inputApplication(?int $key_candidate = null): void {
+        $candidate = null;
         $gender = true;
         if(!empty($key_candidate)) {                                                        // Fetching the candidate
             $candidate = (new CandidateRepository())->get($key_candidate);
@@ -319,7 +324,8 @@ class CandidatesController extends Controller {
      * @param ?int $key_application The primary key of the application
      * @return void
      */
-    public function inputOffer(int $key_candidate, ?int $key_application = null): void {$candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
+    public function inputOffer(int $key_candidate, ?int $key_application = null): void {
+        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
 
         $application = null;
         $job = null;
@@ -370,7 +376,8 @@ class CandidatesController extends Controller {
      * @param int $key_candidate The candidate's primary ket
      * @return void
      */
-    public function inputMeeting(int $key_candidate): void {$recruiter = $_SESSION['user'];                                                     // Getting the recruiter
+    public function inputMeeting(int $key_candidate): void {
+        $recruiter = $_SESSION['user'];                                                     // Getting the recruiter
         $users_list = (new UserRepository())->getAutoCompletion();                          // Fetching the list of users
     
         $esta_repo = new EstablishmentRepository();
@@ -604,8 +611,61 @@ class CandidatesController extends Controller {
 
 
     // * EDIT * //
+    /**
+     * Public method displaying the edit candidate HTML form
+     *
+     * @param int $key_candidate The candidate's primary key
+     * @return void
+     */
     public function editCandidate(int $key_candidate): void {
+        $qualifications_list = (new QualificationRepository())->getAutoCompletion();                                // Fetching the list of qualifications
+        $helps_list = (new HelpRepository())->getAutoCompletion();                                                  // Fetching the list of helps
+        $employee_list = (new CandidateRepository())->getAutoCompletion();                                          // Fetching the list of employees
 
+        $can_repo = new CandidateRepository();
+        $candidate = $can_repo->get($key_candidate);                                                                // fetching the candidate
+
+        $users_qualifications = null;
+        $fetch_qualifications = (new QualificationRepository())->getListFromCandidate($key_candidate);              // Fetching the candidate's qualifications
+        if(!empty($fetch_qualifications)) {
+            $qua_repo = new getQualificationRepository();
+            $users_qualifications = array_map(function($c) use ($qua_repo, $key_candidate) {
+                return array(
+                    "qualification"     => $c,
+                    "get_qualification" => $qua_repo->get($key_candidate, $c->getId())
+                );
+            }, $fetch_qualifications);
+        }
+        
+        $help_repo = new HelpRepository();
+        $users_helps = $help_repo->getListfromCandidates($key_candidate);                                           // Fetching the candidate's helps
+        
+        $i = 0;
+        $size = count($users_helps);
+        $find = false;
+        while(!$find && $i < $size) {
+            if($users_helps[$i]->getTitled() === COOPTATION) {                                                      // Searching if there is a coopter or not
+                $find = true;
+            }
+
+            $i++;
+        }
+
+        $employee = null;
+        if($find) {
+            $coopt_id = $help_repo->searchCoopteurId($key_candidate);                                               // fetching the coopter
+            $employee = $can_repo->get($coopt_id);
+        }
+
+        $this->View->displayEditCandidate(
+            $candidate,
+            $users_qualifications,
+            !empty($users_helps) ? $users_helps : null,
+            $employee,
+            $qualifications_list,
+            $helps_list,
+            $employee_list
+        );
     }
     /**
      * Public method displaying the edit meeting HTML form

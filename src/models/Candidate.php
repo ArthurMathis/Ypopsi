@@ -138,6 +138,16 @@ class Candidate {
      */
     public function getFirstname(): string { return $this->firstname; }
     /**
+     * Public method erturning the complete candidate's name 
+     *
+     * @return string
+     */
+    public function getCompleteName(): string {
+        $response = $this->getGender() ? "M" : "Mme";
+        $response .= ". " . strtoupper($this->getname()) . " " . $this->getFirstname();
+        return $response;
+    }
+    /**
      * Public function returning the gender of the candidate
      * 
      * @return bool
