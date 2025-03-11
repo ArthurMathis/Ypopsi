@@ -12,7 +12,11 @@
 # Ignore pycache files
 __pycache__/
 /vendor/
+<<<<<<< HEAD
 !/database/xlsxLoader/vendor/
+=======
+/database/xlsxLoader/vendor/
+>>>>>>> 6f63b5336cefb0fc21e76164585c4ace0aa522b6
 
 # Ignore the Excel files
 *.xls
