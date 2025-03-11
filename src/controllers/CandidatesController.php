@@ -130,10 +130,7 @@ class CandidatesController extends Controller {
     /**
      * Public method signing a contract
      */
-    public function signContract(int $key_candidate, int $key_offer): void {
-        isUserOrMore();                                                                                         // Verifying the user's role
-
-        $cont_repo = new ContractRepository();
+    public function signContract(int $key_candidate, int $key_offer): void {$cont_repo = new ContractRepository();
         $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
         $contract->addSignature();      
 
@@ -168,10 +165,7 @@ class CandidatesController extends Controller {
      * @param int $key_contract The primary key of the contract
      * @return void
      */
-    public function dismissContract(int $key_contract): void {
-        isUserOrMore();                                                                                         // Verifying the user's role
-
-        $con_repo = new ContractRepository();
+    public function dismissContract(int $key_contract): void {$con_repo = new ContractRepository();
         $contract = $con_repo->get($key_contract);                                                              // Fetching the contract
         $contract->addResignation();
 
@@ -207,10 +201,7 @@ class CandidatesController extends Controller {
      * @param int $key_offer The primary key of the offer
      * @return void
      */
-    public function rejectOffer(int $key_candidate, int $key_offer): void {
-        isUserOrMore();                                                                                         // Verifying the user's role
-
-        $cont_repo = new ContractRepository();
+    public function rejectOffer(int $key_candidate, int $key_offer): void {$cont_repo = new ContractRepository();
         $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
         $cont_repo->reject($contract);                                                                          // Rejecting the contract
 
@@ -244,10 +235,7 @@ class CandidatesController extends Controller {
      * @param int $key_application The primari key of the application
      * @return void
      */
-    public function rejectApplication(int $key_candidate, int $key_application): void {
-        isUserOrMore();                                                                                     // Verifying the user's role
-
-        $app_repo = new ApplicationRepository();
+    public function rejectApplication(int $key_candidate, int $key_application): void {$app_repo = new ApplicationRepository();
         $application = $app_repo->get($key_application);                                                    // Fetching the application
         $app_repo->reject($application);                                                                    // Refusing the application
 
@@ -281,10 +269,7 @@ class CandidatesController extends Controller {
      *
      * @return void
      */
-    public function inputCandidate(): void {
-        isUserOrMore();                                                                     // Verifying the user's role
-
-        $qualifications_list = (new QualificationRepository())->getAutoCompletion();        // Fetching the list of qualifications
+    public function inputCandidate(): void {$qualifications_list = (new QualificationRepository())->getAutoCompletion();        // Fetching the list of qualifications
         $helps_list = (new HelpRepository())->getAutoCompletion();                          // Fetching the list of helps
         $employee_list = (new CandidateRepository())->getAutoCompletion();                  // Fetching the list of employees
 
@@ -300,10 +285,7 @@ class CandidatesController extends Controller {
      * @param ?int $key_candidate The candidate's primary key
      * @return void
      */
-    public function inputApplication(?int $key_candidate = null): void {
-        isUserOrMore();                                                                     // Verifying the user's role
-
-        $candidate = null;
+    public function inputApplication(?int $key_candidate = null): void {$candidate = null;
         $gender = true;
         if(!empty($key_candidate)) {                                                        // Fetching the candidate
             $candidate = (new CandidateRepository())->get($key_candidate);
@@ -337,10 +319,7 @@ class CandidatesController extends Controller {
      * @param ?int $key_application The primary key of the application
      * @return void
      */
-    public function inputOffer(int $key_candidate, ?int $key_application = null): void {
-        isUserOrMore();                                                                                         // Verifying the user's role
-
-        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
+    public function inputOffer(int $key_candidate, ?int $key_application = null): void {$candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
 
         $application = null;
         $job = null;
@@ -391,10 +370,7 @@ class CandidatesController extends Controller {
      * @param int $key_candidate The candidate's primary ket
      * @return void
      */
-    public function inputMeeting(int $key_candidate): void {
-        isUserOrMore();                                                                     // Verifying the user's role
-
-        $recruiter = $_SESSION['user'];                                                     // Getting the recruiter
+    public function inputMeeting(int $key_candidate): void {$recruiter = $_SESSION['user'];                                                     // Getting the recruiter
         $users_list = (new UserRepository())->getAutoCompletion();                          // Fetching the list of users
     
         $esta_repo = new EstablishmentRepository();
@@ -416,10 +392,7 @@ class CandidatesController extends Controller {
      *
      * @return void
      */
-    public function inscriptCandidate(): void {
-        isUserOrMore();                                                                                                         // Verifying the user's role
-
-        $_SESSION["candidate"] = Candidate::create(                                                                             // Creating the candidate
+    public function inscriptCandidate(): void {$_SESSION["candidate"] = Candidate::create(                                                                             // Creating the candidate
             $_POST["name"], 
             $_POST["firstname"], 
             $_POST["gender"],
@@ -455,8 +428,6 @@ class CandidatesController extends Controller {
      * @return void
      */
     public function inscriptApplication(?int $key_candidate = null): void {
-        isUserOrMore();                                                                                         // Verifying the user's role
-
         //// CANDIDATE ////
         $candidate = null;
         if(is_null($key_candidate)) { 
@@ -542,8 +513,6 @@ class CandidatesController extends Controller {
      * @return void
      */
     public function inscriptOffer(int $key_candidate, ?int $key_application = null): void {
-        isUserOrMore();                                                                     // Verifying the user's role
-
         if(!empty($key_application)) {
             $app_repo = new ApplicationRepository();
             $app_repo->accept($key_application);                                            // Accepting the application
@@ -597,8 +566,6 @@ class CandidatesController extends Controller {
      * @return void
      */
     public function inscriptMeeting(int $key_candidate): void {
-        isUserOrMore();                                                                     // Verifying the user's role
-
         $can_repo = new CandidateRepository();
         $candidate = $can_repo->get($key_candidate);                                        // Fetching the candidate 
 
@@ -638,7 +605,7 @@ class CandidatesController extends Controller {
 
     // * EDIT * //
     public function editCandidate(int $key_candidate): void {
-        
+
     }
     /**
      * Public method displaying the edit meeting HTML form
@@ -647,8 +614,6 @@ class CandidatesController extends Controller {
      * @return void
      */
     public function editMeeting(int $key_meeting): void {
-        isUserOrMore();                                                                     // Verifying the user's role
-
         $meeting = (new MeetingRepository())->get($key_meeting);                            // Fetching the meeting
 
         $user_repo = new UserRepository();
@@ -678,8 +643,6 @@ class CandidatesController extends Controller {
      * @return void
      */
     public function updateMeeting(int $key_candidate, int $key_meeting): void {
-        isUserOrMore();                                                                     // Verifying the user's role
-
         $meeting = new Meeting(                                                             // Building the meeting
             $key_meeting,
             $_POST['date'] . " " . $_POST['time'], 
@@ -724,25 +687,15 @@ class CandidatesController extends Controller {
      * @return void
      */
     public function deleteMeeting(int $key_meeting): void {
-        isUserOrMore();                                                                     // Verifying the user's role
-
-
         $meet_repo = new MeetingRepository();
-
         $meeting = $meet_repo->get($key_meeting);                                           // Fetching the meeting
 
-
         $can_repo = new CandidateRepository();
-
         $candidate = $can_repo->get($meeting->getCandidate());                              // Fetching the candidate 
-
         $meet_repo->delete($meeting);                                                       // Deleting the meeting
 
-
         $act_repo = new ActionRepository();                 
-        
         $type = $act_repo->searchType("Annulation rendez-vous"); 
-
         $desc = strtoupper($candidate->getName()) . " " 
                 . FormsManip::nameFormat($candidate->getFirstname()) 
                 . " a annulé son rendez-vous du " 
@@ -753,7 +706,6 @@ class CandidatesController extends Controller {
             $type->getId(),
             $desc
         );             
-
 
         $act_repo->writeLogs($act);                                                         // Writing logs
 
