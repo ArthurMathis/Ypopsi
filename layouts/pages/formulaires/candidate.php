@@ -315,8 +315,8 @@
     import { formManipulation } from "<?= APP_PATH ?>\\layouts\\scripts\\modules/FormManipulation.mjs";
 
     document.addEventListener('elementCreated', function(e) {
-        if(e.detail.element.parentNode === document.getElementById('aide-section')) {
-            const aideSection = document.getElementById('aide-section');
+        if(e.detail.element.parentNode === document.getElementById('helps-section')) {
+            const aideSection = document.getElementById('helps-section');
             const inputAide = aideSection.querySelectorAll('select');
             
             const obj = new formManipulation.cooptInput(
