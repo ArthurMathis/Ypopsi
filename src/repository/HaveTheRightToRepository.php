@@ -50,6 +50,20 @@ class HaveTheRightToRepository extends Repository {
         return $response;
     }
 
+    public function getListFromcandidate(int $key_candidate): ?array {
+        $request = "SELECT * FROM have_the_right_to WHERE Candidate = :candidate";
+
+        $params = array("candidate" => $key_candidate);
+
+        $fetch = $this->get_request($request, $params);
+
+        $response = array_map(function($c) {
+            return HaveTheRightTo::fromArray($c);
+        }, $fetch);
+
+        return $response;
+    }
+
     // * INSCRIPT * //
     /**
      * Insert a HaveTheRightTo
@@ -70,5 +84,23 @@ class HaveTheRightToRepository extends Repository {
         unset($values_request);
 
         $this->post_request($request, $have->toSQL());
+    }
+
+    // * DELETE * //
+    /**
+     * Public method deleting a HaveTheRightTo
+     *
+     * @param HaveTheRightTo $have The haveTheRightTo to delete
+     * @return void
+     */
+    public function delete(HaveTheRightTo &$have): void {
+        $request = "DELETE Have_the_right_to WHERE Key_Candidates = :candidate AND Key_Helps = :help";
+
+        $params = array(
+            "candidate" => $have->getcandidate(),
+            "help" => $have->getHelp()
+        );
+
+        $this->post_request($request, $params);
     }
 }

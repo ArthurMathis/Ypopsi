@@ -696,12 +696,13 @@ class CandidatesController extends Controller {
 
     // * UPDATE * //
     public function updateCandidate(int $key_candidate): void {
+        //// CANDIDATE ////
         $can_repo = new CandidateRepository();
-        $candidate = $can_repo->get($key_candidate);
+        $candidate = $can_repo->get($key_candidate);                                                        // Fetching the candidate
 
         $changed = false;
 
-        if($_POST["name"] !== $candidate->getName()) {
+        if($_POST["name"] !== $candidate->getName()) {                                                      // Checking if data have changed
             $changed = true;
             $candidate->setName($_POST["name"]);
         }
@@ -736,11 +737,39 @@ class CandidatesController extends Controller {
             $candidate->setPostcode($_POST["postcode"]);
         }
 
-        if($changed) {
+        if($changed) {                                                                                  // Updating the candidate
+            $changed = false;
             $can_repo->update($candidate);
         }
 
-        else echo "aucun changement";
+        //// QUALIFICATIONS ////
+        
+
+        //// HELPS ////
+        $have_repo = new HaveTheRightToRepository();
+        $helps = $have_repo->getListFromcandidate($key_candidate);
+
+        if(count($helps) !== count($_POST["aide"])) {                                                   // Checking if data have changed
+            $changed = true;
+        } elseif(!empty($aide)) {
+            foreach($aide as $index => $obj) {
+                if($obj !== $helps["$index"]->getHelp()) {
+                    $changed = true;
+                }
+            }
+        }
+
+        if($changed) {                                                                                  // Updating the helps
+            foreach($helps as $obj) {
+                $have_repo->delete($obj);
+            } 
+            unset($helps);
+
+            foreach($_POST["aide"] as $obj) {
+                $help = new HaveTheRightTo($key_candidate, $obj, $obj == 3 ? $_POST["employee"] : null);
+                $have_repo->inscript($help);
+            }
+        }
     }
     /**
      * Public method updating one meeting

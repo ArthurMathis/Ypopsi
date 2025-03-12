@@ -248,8 +248,8 @@
 
                     <?php if($obj->getTitled() === COOPTATION): ?>
                         <select 
-                            id="coopteur" 
-                            name="coopteur"
+                            id="employee" 
+                            name="employee"
                         >
 
                         <?php foreach($employee as $c): ?>

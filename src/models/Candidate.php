@@ -396,7 +396,6 @@ class Candidate {
         if(!empty($this->getEmail())) {
             $response["email"] = $this->getEmail();
         }
-
         if(!empty($this->getPhone())) {
             $response["phone"] = $this->getPhone();
         }
@@ -410,7 +409,6 @@ class Candidate {
         if($this->getDescription()) {
             $response["description"] = $this->getDescription();
         }
-
         if($this->getRating()) {
             $response["rating"] = (int) $this->getRating();
         }
@@ -418,7 +416,6 @@ class Candidate {
         if($this->getAvailability()) {
             $reponse["availability"] = $this->getAvailability();
         }
-
         if($this->getVisit()) {
             $response["visit"] = $this->getVisit();
         }
