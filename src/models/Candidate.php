@@ -234,18 +234,90 @@ class Candidate {
 
     // * SET * //
     /**
-     * Public function setting the primary key of the candidate
+     * Public function setting the candidate's primary key
      *
      * @param int $id The candidate's primary key
      * @throws CandidateExceptions If the primary key is invalid
      * @return void
      */
-    public function setId(int $id) {
+    public function setId(int $id): void {
         if($id <= 0) {
             throw new CandidateExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
         $this->id = $id;
+    }
+    /**
+     * Public method setting candidate's name
+     *
+     * @param string $name The new name of the candidate
+     * @return void
+     */
+    public function setName(string $name): void {
+        $this->name = $name;
+    }
+    /**
+     * Public method setting candidate's firstname
+     *
+     * @param string $firstname The new firstname of the candidate
+     * @return void
+     */
+    public function setFirstname(string $firstname): void {
+        $this->firstname = $firstname;
+    }
+    /**
+     * Public method setting candidate's gender
+     *
+     * @param bool $name The new gender of the candidate
+     * @return void
+     */
+    public function setGender(bool $gender): void {
+        $this->gender = $gender;
+    }
+    /**
+     * Public method setting candidate's email
+     *
+     * @param string $email The new email of the candidate
+     * @return void
+     */
+    public function setEmail(string $email): void {
+        $this->email = $email;
+    }
+    /**
+     * Public method setting candidate's phone
+     *
+     * @param string $phone The new phone of the candidate
+     * @return void
+     */
+    public function setPhone(string $phone): void {
+        $this->phone = $phone;
+    }
+    /**
+     * Public method setting candidate's address
+     *
+     * @param string $address The new address of the candidate
+     * @return void
+     */
+    public function setAddress(string $address): void {
+        $this->address = $address;
+    }
+    /**
+     * Public method setting candidate's city
+     *
+     * @param string $city The new city of the candidate
+     * @return void
+     */
+    public function setCity(string $city): void {
+        $this->city = $city;
+    }
+    /**
+     * Public method setting candidate's postcode
+     *
+     * @param string $postcode The new postcode of the candidate
+     * @return void
+     */
+    public function setPostcode(string $postcode): void {
+        $this->postcode = $postcode;
     }
 
     // * CONVERT * //
@@ -314,11 +386,11 @@ class Candidate {
      * 
      * @return array The candidate
      */
-    public function toSQL(): array {
+    public function toSQL(bool $completed = false): array {
         $response = array(
-            "name"         => $this->getName(),
-            "firstname"    => $this->getFirstname(),
-            "gender"       => $this->getGender()
+            "name"      => $this->getName(),
+            "firstname" => $this->getFirstname(),
+            "gender"    => $this->getGender()
         );
 
         if(!empty($this->getEmail())) {
@@ -340,7 +412,7 @@ class Candidate {
         }
 
         if($this->getRating()) {
-            $response["rating"] = $this->getRating();
+            $response["rating"] = (int) $this->getRating();
         }
 
         if($this->getAvailability()) {
@@ -349,6 +421,18 @@ class Candidate {
 
         if($this->getVisit()) {
             $response["visit"] = $this->getVisit();
+        }
+
+        if($completed) { // Ajout des paramètres manquants pour éviter les erreurs
+            $response['email']        = $response['email'] ?? '';
+            $response['phone']        = $response['phone'] ?? '';
+            $response['address']      = $response['address'] ?? '';
+            $response['city']         = $response['city'] ?? '';
+            $response['postcode']     = $response['postcode'] ?? '';
+            $response['description']  = $response['description'] ?? '';
+            $response['rating']       = $response['rating'] ?? '';
+            $response['availability'] = $response['availability'] ?? '';
+            $response['visit']        = $response['visit'] ?? '';
         }
 
         return $response;

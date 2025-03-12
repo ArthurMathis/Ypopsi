@@ -130,4 +130,34 @@ class CandidateRepository extends Repository {
     
         return $this->post_request($request, $candidate->toSQL());
     }
+
+    // * UPDATE * //
+    /**
+     * Public method updating a candidate
+     *
+     * @param Candidate $candidate The candidate to update
+     * @return void
+     */
+    public function update(Candidate $candidate): void {
+        $request = "UPDATE Candidates SET
+            Name = :name,
+            Firstname = :firstname,
+            Gender = :gender, 
+            Email = NULLIF(:email, ''),
+            Phone = NULLIF(:phone, ''),
+            Address = NULLIF(:address, ''),
+            City = NULLIF(:city, ''),
+            Postcode = NULLIF(:postcode, ''),
+            Description = NULLIF(:description, ''),
+            Rating = NULLIF(:rating, ''),
+            Availability = NULLIF(:availability, ''),
+            MedicalVisit = NULLIF(:visit, '')
+
+            WHERE Id = :id";
+
+        $params = $candidate->toSQL(true);
+        $params['id'] = $candidate->getId();
+
+        $this->post_request($request, $params);
+    }
 }

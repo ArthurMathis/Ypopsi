@@ -695,6 +695,53 @@ class CandidatesController extends Controller {
 
 
     // * UPDATE * //
+    public function updateCandidate(int $key_candidate): void {
+        $can_repo = new CandidateRepository();
+        $candidate = $can_repo->get($key_candidate);
+
+        $changed = false;
+
+        if($_POST["name"] !== $candidate->getName()) {
+            $changed = true;
+            $candidate->setName($_POST["name"]);
+        }
+        if($_POST["firstname"] !== $candidate->getFirstname()) {
+            $changed = true;
+            $candidate->setFirstname($_POST["firstname"]);
+        }
+        if($_POST["gender"] !== $candidate->getGender()) {
+            $changed = true;
+            $candidate->setGender($_POST["gender"]);
+        }
+
+        if(!empty($_POST["email"]) && $_POST["email"] !== $candidate->getEmail()) {
+            $changed = true;
+            $candidate->setEmail($_POST["email"]);
+        }
+        if(!empty($_POST["phone"]) && $_POST["phone"] !== $candidate->getPhone()) {
+            $changed = true;
+            $candidate->setPhone($_POST["phone"]);
+        }
+
+        if(!empty($_POST["address"]) && $_POST["address"] !== $candidate->getAddress()) {
+            $changed = true;
+            $candidate->setAddress($_POST["address"]);
+        }
+        if(!empty($_POST["city"]) && $_POST["city"] !== $candidate->getCity()) {
+            $changed = true;
+            $candidate->setCity($_POST["city"]);
+        }
+        if(!empty($_POST["postcode"]) && $_POST["postcode"] !== $candidate->getPostcode()) {
+            $changed = true;
+            $candidate->setPostcode($_POST["postcode"]);
+        }
+
+        if($changed) {
+            $can_repo->update($candidate);
+        }
+
+        else echo "aucun changement";
+    }
     /**
      * Public method updating one meeting
      * 

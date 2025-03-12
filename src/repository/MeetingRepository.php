@@ -112,9 +112,9 @@ class MeetingRepository extends Repository {
      * Public method updating a meeting
      * 
      * @param Meeting $meeting The meeting with its new information
-     * @return int The primary key of the meeting
+     * @return void
      */
-    public function update(Meeting $meeting): int {
+    public function update(Meeting $meeting): void {
         $request = "UPDATE Meetings SET 
             Date = :date,
             Key_Users = :user, 
@@ -141,7 +141,7 @@ class MeetingRepository extends Repository {
 
         $request .= $condition;
 
-        return $this->post_request($request, $params);
+        $this->post_request($request, $params);
     }
     
     // * DELETE * //

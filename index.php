@@ -48,7 +48,7 @@ try {
     $router->addRoute("/candidates/inscript", CandidatesController::class, "inscriptCandidate", AuthMiddleware::$USER);
     $router->addRoute("/candidates/{candidate}", CandidatesController::class, "displayCandidate");
     $router->addRoute("/candidates/edit/{candidate}", CandidatesController::class, "editCandidate", AuthMiddleware::$USER);                                 // todo
-    $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "displayCandidate", AuthMiddleware::$USER);                            // todo
+    $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "updateCandidate", AuthMiddleware::$USER);                            // todo
     $router->addRoute("/candidates/rating/edit/{candidate}", CandidatesController::class, "displayCandidate", AuthMiddleware::$USER);                       // todo
     $router->addRoute("/candidates/rating/update/{candidate}", CandidatesController::class, "displayCandidate", AuthMiddleware::$USER);                     // todo
 
