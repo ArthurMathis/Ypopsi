@@ -743,10 +743,31 @@ class CandidatesController extends Controller {
         }
 
         //// QUALIFICATIONS ////
-        $qua_repo = new QualificationRepository();
-        $qualifications = $qua_repo->getListFromCandidate($key_candidate);
+        $get_repo = new GetQualificationRepository();
+        $qualifications = $get_repo->getListFromCandidate($key_candidate);
 
-        
+        if(count($qualifications) !== count($_POST["qualifications"])) {
+            $changed = true;
+        } elseif(!empty($_POST["qualifications"])) {
+            foreach($_POST["qualifications"] as $index => $obj) {
+                if($obj !== $qualifications[$index]->getQualification()) {
+                    $changed = true;
+                }
+            }
+        }
+
+        if($changed) {
+            $changed = false;
+            foreach($qualifications as $obj) {
+                $get_repo->delete($obj);
+            }
+
+            foreach($_POST["qualifications"] as $index => $obj) {
+                $get = new GetQualification($key_candidate, $obj, $_POST["qualificationsDate"][$index]);
+                $get_repo->inscript($get);
+            }
+        }
+        unset($qualifications);
 
         //// HELPS ////
         $have_repo = new HaveTheRightToRepository();
@@ -766,7 +787,6 @@ class CandidatesController extends Controller {
             foreach($helps as $obj) {
                 $have_repo->delete($obj);
             } 
-            unset($helps);
 
             foreach($_POST["helps"] as $obj) {
                 $help = new HaveTheRightTo($key_candidate, $obj, $obj == 3 ? $_POST["employee"] : null);

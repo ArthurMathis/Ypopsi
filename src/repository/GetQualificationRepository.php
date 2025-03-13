@@ -51,6 +51,26 @@ class GetQualificationRepository extends Repository {
         return $response;
     }
 
+    /**
+     * Public method searching and returning the list of the getQualifications of a candidate 
+     *
+     * @param int $key_candidate The candidate's primary key
+     * @return ?array The list 
+     */
+    public function getListFromCandidate(int $key_candidate): ?array {
+        $request = "SELECT * FROM Get_qualifications WHERE Key_Candidates = :candidate";
+
+        $params = array("candidate" => $key_candidate);
+
+        $fetch = $this->get_request($request, $params);
+
+        $response = array_map(function($c) {
+            return GetQualification::fromArray($c);
+        }, $fetch);
+
+        return $response;
+    }
+
     // * INSCRIPT * //
     /**
      * Insert a GetQualification
@@ -58,8 +78,26 @@ class GetQualificationRepository extends Repository {
      * @param GetQualification $get The GetQualification to insert
      * @return void
      */
-    public function inscript(GetQualification &$get) {
+    public function inscript(GetQualification &$get): void {
         $request = "INSERT INTO Get_qualifications (Key_Candidates, Key_Qualifications, Date) VALUES (:candidate, :qualification, :date)";
         $this->post_request($request, $get->toSQL());
+    }
+
+    // * DELETE * //
+    /**
+     * Public function deleting a GetQualification
+     *
+     * @param GetQualification $get
+     * @return void
+     */
+    public function delete(GetQualification &$get): void {
+        $request = "DELETE FROM Get_qualifications WHERE Key_Candidates = :candidate AND Key_Qualifications = :qualification";
+
+        $params = array(
+            "candidate"     => $get->getCandidate(),
+            "qualification" => $get->getQualification()
+        );
+
+        $this->post_request($request, $params);
     }
 }
