@@ -207,6 +207,13 @@
                             max="<?= date('Y-m-d'); ?>" 
                             value="<?= date('Y-m-d', strtotime($obj["get_qualification"]->getDate())); ?>"
                         >
+
+                        <button>
+                            <img
+                                src="<?= APP_PATH ?>\layouts\assets\img\logo\trash.svg"
+                                alt=""
+                            >
+                        </button>
                     </div>
                 <?php endforeach ?>
             <?php endif ?>
@@ -300,13 +307,14 @@
         AutoComplete.arrayToSuggestions(<?= json_encode($qualifications_list) ?>), 
         'Licence', 
         <?= count($qualifications_list); ?>, 
-        null
+        "<?= APP_PATH ?>\\layouts\\assets\\img\\logo\\trash.svg"
     ); 
     const helps = new formManipulation.implementInputList(
         'helps', 
         'helps-section', 
         AutoComplete.arrayToSuggestions(<?= json_encode($helps_list) ?>), 
-        <?= count($helps_list); ?>
+        <?= count($helps_list); ?>,
+        "<?= APP_PATH ?>\layouts\assets\img\logo\trash.svg"
     );
 
     // Ajout des données du candidat

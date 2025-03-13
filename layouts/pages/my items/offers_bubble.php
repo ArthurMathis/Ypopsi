@@ -6,7 +6,11 @@
     </header>
     <article>
         <h3><?= $item['type_de_contrat']; ?></h3>
-        <?php if(!empty($item['signature'])): ?>
+        <?php
+
+            use App\Core\Middleware\AuthMiddleware;
+
+ if(!empty($item['signature'])): ?>
             <p class="acceptee">Acceptée</p>
         <?php elseif(!empty($item['statut'])) : ?>
             <p class="refusee">Refusée</p>
@@ -51,7 +55,7 @@
     </content>
     <?php if(empty($item['signature']) && empty($item['statut']) && ($item['date_fin'] == null || $date < $item['date_fin'])): ?>
         <footer>
-            <?php if(isUserOrMore()): ?>
+            <?php if(AuthMiddleware::isUserOrMore()): ?>
                 <a 
                     class="action_button grey_color" 
                     href="<?= APP_PATH ?>/candidates/offers/reject/<?= urlencode($key_candidate) ?>/<?= urlencode($item['cle']) ?>"

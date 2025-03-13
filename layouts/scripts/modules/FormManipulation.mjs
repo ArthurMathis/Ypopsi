@@ -156,11 +156,15 @@ class implementInput {
      * @param {String} inputName The input's name 
      * @param {HTMLInputElement} inputParent The container of inputs to generate
      * @param {Integer} nbMaxInput The maximum number of inputs allowed in the container
+     * @param {String} icon The path of the icon
      */
-    constructor(inputName, inputParent, nbMaxInput=null) {
+    constructor(inputName, inputParent, nbMaxInput=null, icon=null) {
         this.inputName = inputName;
         this.inputParent = document.getElementById(inputParent);
         this.nbMaxInput = nbMaxInput;
+        this.icon = icon;
+
+        console.log(icon);
 
         this.nbInput = 0;
         this.inputList = new Array();
@@ -222,6 +226,31 @@ class implementInput {
      */
     deleteButton() { this.button.remove(); }
 
+    /**
+     * @function createDelete
+     * @description Function creating the delete button
+     * @returns {HTMLInputElement}
+     */
+    createDelete() {
+        const trash = document.createElement('button');
+        trash.type = 'button';
+
+        trash.addEventListener('click', () => {
+            const parent = trash.parentElement;
+            if (parent) {
+                parent.remove();
+            }
+        });
+
+        const img = document.createElement('img');
+        img.src = this.icon;
+        this.alt = "Supprimer";
+
+        trash.appendChild(img);
+
+        return trash;
+    }
+
 }
 /**
  * @class implementInputAutoComplete
@@ -236,9 +265,10 @@ class implementInputAutoComplete extends implementInput {
      * @param {Array<String>} suggestions The array containing the list of suggestions for the Autocomplete
      * @param {String} placeholder The string to write in the input placeholder
      * @param {Integer} nbMaxInput The maximum number of inputs allowed in the container
+     * @param {String} icon The path of the icon
      */
-    constructor(inputName, inputParent, suggestions=[], placeholder=null, nbMaxInput=null) {
-        super(inputName, inputParent, nbMaxInput);
+    constructor(inputName, inputParent, suggestions=[], placeholder=null, nbMaxInput=null, icon=null) {
+        super(inputName, inputParent, nbMaxInput, icon);
         this.placeholder = placeholder;
         this.suggestions = Array.from(suggestions);
     }
@@ -282,10 +312,12 @@ class implementInputList extends implementInput {
      * @param {HTMLElement} inputParent The input's HTML parent
      * @param {Array<String>} suggestions The array containing the list of suggestions for the Autocomplete
      * @param {Integer} nbMaxInput The maximum number of inputs allowed in the container
+     * @param {String} icon The path of the icon
      */
-    constructor(inputName, inputParent, suggestions=[], nbMaxInput=null) {
+    constructor(inputName, inputParent, suggestions=[], nbMaxInput=null, icon=null) {
         super(inputName, inputParent, nbMaxInput);
         this.suggestions = Array.from(suggestions);
+        this.icon = this.icon;
     }
 
     /**
@@ -349,8 +381,8 @@ class implementInputDate extends implementInput {
      * @param {HTMLElement} inputParent The input's HTML parent
      * @param {Integer} nbMaxInput The maximum number of inputs allowed in the container
      */
-    constructor(inputName, inputParent, nbMaxInput=null) {
-        super(inputName, inputParent, nbMaxInput);
+    constructor(inputName, inputParent, nbMaxInput=null, icon=null) {
+        super(inputName, inputParent, nbMaxInput, icon);
     }
 
     /**
@@ -381,9 +413,10 @@ class implementInputAutoCompleteDate extends implementInput {
      * @param {Array<String>} suggestions The array containing the list of suggestions for the Autocomplete
      * @param {String} placeholder The string to write in the input placeholder
      * @param {Integer} nbMaxInput The maximum number of inputs allowed in the container
+     * @param {String} icon The path of the icon
      */
-    constructor(inputName, inputParent, suggestions=[], placeholder=null, nbMaxInput=null) {
-        super(inputName, inputParent, nbMaxInput);
+    constructor(inputName, inputParent, suggestions=[], placeholder=null, nbMaxInput=null, icon=null) {
+        super(inputName, inputParent, nbMaxInput, icon);
         this.placeholder = placeholder;
         this.suggestions = Array.from(suggestions);
     }
@@ -399,6 +432,7 @@ class implementInputAutoCompleteDate extends implementInput {
 
         container.appendChild(this.createAutoComplete());
         container.appendChild(this.createDate());
+        container.appendChild(this.createDelete());
 
         return container;
     }
@@ -424,7 +458,6 @@ class implementInputAutoCompleteDate extends implementInput {
     
         const tab = [];
         this.suggestions.forEach(c => { tab.push(c.text); });
-        // this.inputElement = new AutoComplete(input, tab);
         this.inputElement = new AutoComplete(input, this.suggestions);
 
         return inputElement;

@@ -305,6 +305,9 @@ form .double-items {
   width: 100%;
   height: fit-content;
 }
+form .double-items button {
+  height: 100%;
+}
 form .double-items input:not([type="radio"], [type="checkbox"]),
 form .double-items .autocomplete,
 form .double-items .input-container {
