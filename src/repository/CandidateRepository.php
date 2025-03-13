@@ -44,8 +44,26 @@ class CandidateRepository extends Repository {
     }
 
     public function getEmployee(): array {
-        $request = "SELECT * 
-        
+        $request = "SELECT 
+
+        Candidates.Id, 
+        Candidates.Name, 
+        Candidates.Firstname, 
+        Candidates.Gender,
+        Candidates.Email, 
+        Candidates.Phone,
+        Candidates.Address,
+        Candidates.City, 
+        Candidates.PostCode,
+        Candidates.Availability, 
+        Candidates.MedicalVisit,
+        Candidates.Rating, 
+        Candidates.Description, 
+        Candidates.Is_delete,
+        Candidates.A, 
+        Candidates.B, 
+        Candidates.C
+
         FROM candidates 
         INNER JOIN Contracts on Candidates.Id = Contracts.Key_Candidates
         
@@ -71,7 +89,7 @@ class CandidateRepository extends Repository {
         $response = array_map(function($c) {
             return array(
                 "id"   => $c->getId(),
-                "text" => $c->getName() . " " . $c->getFirstname()
+                "text" => $c->getCompleteName()
             );
         }, $fetch);
 

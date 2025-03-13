@@ -19,11 +19,11 @@ class HaveTheRightToRepository extends Repository {
      * @return HaveTheRightTo
      */
     public function get(int $key_candidate, int $key_help): HaveTheRightTo {
-        $request = "SELECT * FROM have_the_right_to WHERE Candidate = :candidate AND Qualification = :qualification";
+        $request = "SELECT * FROM have_the_right_to WHERE Key_Candidates = :candidate AND Key_Helps = :help";
 
         $params = array(
             "candidate" => $key_candidate,
-            "qualification" => $key_help
+            "help"      => $key_help
         );
 
         $fetch = $this->get_request($request, $params, true, true);
@@ -51,7 +51,7 @@ class HaveTheRightToRepository extends Repository {
     }
 
     public function getListFromcandidate(int $key_candidate): ?array {
-        $request = "SELECT * FROM have_the_right_to WHERE Candidate = :candidate";
+        $request = "SELECT * FROM have_the_right_to WHERE Key_Candidates = :candidate";
 
         $params = array("candidate" => $key_candidate);
 
@@ -94,10 +94,10 @@ class HaveTheRightToRepository extends Repository {
      * @return void
      */
     public function delete(HaveTheRightTo &$have): void {
-        $request = "DELETE Have_the_right_to WHERE Key_Candidates = :candidate AND Key_Helps = :help";
+        $request = "DELETE FROM Have_the_right_to WHERE Key_Candidates = :candidate AND Key_Helps = :help";
 
         $params = array(
-            "candidate" => $have->getcandidate(),
+            "candidate" => $have->getCandidate(),
             "help" => $have->getHelp()
         );
 

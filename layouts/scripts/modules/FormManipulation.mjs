@@ -116,12 +116,10 @@ class cooptInput {
      * @description Function generating the suggestion window
      */
     createInput() {
-        // TODO : remplacer l'autocomplete input par une liste déroulante
-        // *  Autocomplete remanier pour renvoyer une clé primaire
-        // ! Utile de remanier cette méthode ? 
-
         this.elmt = document.createElement('select');
         this.elmt.name = this.inputName;
+        this.elmt.id = this.inputName;
+
         this.suggestions.forEach(c => {
             const option = document.createElement('option');
             option.value = c.id;
@@ -163,7 +161,9 @@ class implementInput {
         this.inputName = inputName;
         this.inputParent = document.getElementById(inputParent);
         this.nbMaxInput = nbMaxInput;
+
         this.nbInput = 0;
+        this.inputList = new Array();
 
         this.init();
     }
@@ -204,14 +204,17 @@ class implementInput {
      */
     addInput() {
         this.nbInput++;
-        if(this.nbMaxInput && this.nbMaxInput <= this.nbInput)
+        if(this.nbMaxInput && this.nbMaxInput <= this.nbInput) {
             this.deleteButton();
+        }
 
         const inputElement = this.createElement();
-
+        
         this.inputParent.appendChild(inputElement);
         const e = new CustomEvent('elementCreated', { detail: { element: inputElement }});
         document.dispatchEvent(e);
+
+        this.inputList.push(inputElement);
     }
     /**
      * @function deleteButton
@@ -303,6 +306,36 @@ class implementInputList extends implementInput {
 
         return inputElement;
     } 
+
+    isSearchvalue
+
+    /**
+     * @function setValue
+     * @description Function setting an option in a select
+     * @param {Integer} index The position of the input in the inputlist
+     * @param {Integer} value The option to select
+     * @return {Void}
+     */
+    setValue(index, value) {
+        if(this.nbInput <= index) {
+            throw new Error(`L'input demandé est invalide. Valeur maximale : ${this.nbInput} ; valeur demandée : ${index}.`);
+        }
+
+        let i = 0;
+        let valid = false;
+        while(!valid && i < this.inputList[index].options.lenght) {
+            if(this.inputList[index].options[i].value) {
+                valid = true;
+            }
+
+            i++;
+        }
+
+        this.inputList[index].value = value;
+
+        const event = new Event('change', { bubbles: true });
+        this.inputList[index].dispatchEvent(event);
+    }
 }
 /**
  * @class implementInputDate

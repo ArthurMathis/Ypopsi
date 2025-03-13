@@ -98,7 +98,7 @@ class HelpRepository extends Repository {
 
         $params = array("id" => $key_candidate);
 
-        $response = $this->get_request($request, $params);
+        $response = $this->get_request($request, $params, true, true);
 
         return $response['Id'];
     }

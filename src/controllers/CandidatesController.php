@@ -743,17 +743,20 @@ class CandidatesController extends Controller {
         }
 
         //// QUALIFICATIONS ////
+        $qua_repo = new QualificationRepository();
+        $qualifications = $qua_repo->getListFromCandidate($key_candidate);
+
         
 
         //// HELPS ////
         $have_repo = new HaveTheRightToRepository();
         $helps = $have_repo->getListFromcandidate($key_candidate);
 
-        if(count($helps) !== count($_POST["aide"])) {                                                   // Checking if data have changed
+        if(count($helps) !== count($_POST["helps"])) {                                                   // Checking if data have changed
             $changed = true;
-        } elseif(!empty($aide)) {
-            foreach($aide as $index => $obj) {
-                if($obj !== $helps["$index"]->getHelp()) {
+        } elseif(!empty($_POST["helps"])) {
+            foreach($_POST["helps"] as $index => $obj) {
+                if($obj !== $helps[$index]->getHelp()) {
                     $changed = true;
                 }
             }
@@ -765,7 +768,7 @@ class CandidatesController extends Controller {
             } 
             unset($helps);
 
-            foreach($_POST["aide"] as $obj) {
+            foreach($_POST["helps"] as $obj) {
                 $help = new HaveTheRightTo($key_candidate, $obj, $obj == 3 ? $_POST["employee"] : null);
                 $have_repo->inscript($help);
             }

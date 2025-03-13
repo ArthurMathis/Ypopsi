@@ -95,7 +95,6 @@ class CandidatesView extends View {
         ?candidate $employee = null
     ) {
         $this->generateCommonHeader("Ypopsi - {$title}", [ FORMS_STYLES.DS.'big-form.css' ]);
-
         $this->generateMenu(true, null);
 
         include FORMULAIRES.DS.'candidate.php';

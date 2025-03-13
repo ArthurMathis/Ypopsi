@@ -229,44 +229,6 @@
                     alt=""
                 >
                 </button>
-
-            <?php if(isset($users_helps)): ?>
-                <?php foreach($users_helps as $obj): ?>
-                    <select name="aide[]">
-                        <?php foreach($helps_list as $elmt): ?>
-                            <option
-                                value = "<?= $elmt->getId() ?>"
-
-                                <?php if($obj->getTitled() === $elmt->getTitled()): ?>
-                                    selected
-                                <?php endif ?>
-                            >
-                                <?= $obj->getTitled() ?>
-                            </option>
-                        <?php endforeach ?>    
-                    </select> 
-
-                    <?php if($obj->getTitled() === COOPTATION): ?>
-                        <select 
-                            id="employee" 
-                            name="employee"
-                        >
-
-                        <?php foreach($employee as $c): ?>
-                            <option 
-                                value="<?= $c->getId(); ?>" 
-                                
-                                <?php if($obj->getId() === $c->getId()): ?>
-                                    selected
-                                <?php endif ?>
-                            >
-                                <?= $c->getCompletedName() ?>
-                            </option>
-                        <?php endforeach ?>
-                        </select>
-                    <?php endif ?>
-                <?php endforeach ?>
-            <?php endif ?>
         </section>
 
         <section 
@@ -314,9 +276,11 @@
     import { AutoComplete } from "<?= APP_PATH  ?>\\layouts\\scripts\\modules/AutoComplete.mjs"; 
     import { formManipulation } from "<?= APP_PATH ?>\\layouts\\scripts\\modules/FormManipulation.mjs";
 
+    // Gestion de la saisie des coopteurs
     document.addEventListener('elementCreated', function(e) {
-        if(e.detail.element.parentNode === document.getElementById('helps-section')) {
-            const aideSection = document.getElementById('helps-section');
+        const aideSection = document.getElementById('helps-section');
+
+        if(e.detail.element.parentNode === aideSection) {
             const inputAide = aideSection.querySelectorAll('select');
             
             const obj = new formManipulation.cooptInput(
@@ -329,6 +293,7 @@
         }
     });
 
+    // Gestion de la saisie des aides et qualifications
     new formManipulation.implementInputAutoCompleteDate(
         'qualifications', 
         'qualifications-section', 
@@ -337,12 +302,25 @@
         <?= count($qualifications_list); ?>, 
         null
     ); 
-    new formManipulation.implementInputList(
+    const helps = new formManipulation.implementInputList(
         'helps', 
         'helps-section', 
         AutoComplete.arrayToSuggestions(<?= json_encode($helps_list) ?>), 
         <?= count($helps_list); ?>
     );
+
+    // Ajout des données du candidat
+    <?php if(isset($users_helps)): ?>
+        <?php foreach($users_helps as $index => $obj): ?>
+            helps.addInput();
+            helps.setValue(<?= $index ?>, <?= $obj->getId() ?>);
+        <?php endforeach ?>
+
+        <?php if(!empty($employee)): ?>
+            const employee_input = document.getElementById("employee");
+            employee_input.value = <?= $employee->getId() ?>;
+        <?php endif ?>
+    <?php endif ?>
 
     document.querySelector('form')
             .addEventListener('submit', (e) => formManipulation.manageSubmit(e));
