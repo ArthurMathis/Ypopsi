@@ -49,7 +49,7 @@ use App\Core\FormsManip;
             >
                 <p>Éditer</p>
                 <img 
-                    src="<?= APP_PATH ?>\layouts\assets\img\logo\white-edit.svg" 
+                    src="<?= APP_PATH ?>\layouts\assets\img\edit\white.svg" 
                     alt="modifier"
                 >
             </a>

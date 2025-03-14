@@ -90,7 +90,7 @@ use App\Core\Middleware\AuthMiddleware;
     <?php if(AuthMiddleware::isUserOrMore()): ?>
         <a class="action_button reverse_color add_button" href="<?= APP_PATH ?>/candidates/edit/rating/<?= $candidate->getId() ?>">
             <p>Noter</p>
-            <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-edit.svg" alt="">
+            <img src="<?= APP_PATH ?>\layouts\assets\img\edit\white.svg" alt="">
         </a>
     <?php endif ?>
 </section>

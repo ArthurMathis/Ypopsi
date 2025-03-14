@@ -5,7 +5,7 @@
     </div>
     <button id="action-button">
         <p>Accéder</p>
-        <img src="<?= APP_PATH ?>/layouts/assets/img/logo/blue/arrow.svg" alt="">
+        <img src="<?= APP_PATH ?>/layouts/assets/img/blue/arrow.svg" alt="">
     </button>
 </section>
 
@@ -50,7 +50,7 @@
             value="login"
         >
             <p>Se connecter</p>
-            <img src="<?= APP_PATH ?>/layouts/assets/img/logo/blue/arrow.svg" alt="">
+            <img src="<?= APP_PATH ?>/layouts/assets/img/blue/arrow.svg" alt="">
         </button>
     </div>
 </form>

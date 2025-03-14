@@ -6,7 +6,7 @@
     <title><?php if(isset($name) && !empty($name)) echo $name; else echo 'Diaconat - Ypopsi'; ?></title>
 
     <!-- On ajoute le logo de l'application -->
-    <link rel="icon" href="<?= APP_PATH ?>/layouts/assets/img/ypopsi.svg">
+    <link rel="icon" href="<?= APP_PATH ?>/layouts/assets/img/ypopsi/blue.svg">
 
     <!-- Inclusion des feuilles de style -->
     <link rel="stylesheet" href="<?= APP_PATH ?>/layouts/stylesheet/styles.css">
