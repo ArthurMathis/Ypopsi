@@ -42,6 +42,7 @@ use App\Core\Moment;
                 <label for="service">
                     Service *
                 </label>
+
                 <div class="autocomplete">
                     <input 
                         type="text" 
@@ -65,6 +66,7 @@ use App\Core\Moment;
                 <babel for="establishment">
                     Etablissement *
                 </babel>
+
                 <div class="autocomplete">
                     <input 
                         type="text" 
@@ -87,6 +89,7 @@ use App\Core\Moment;
                 <label for="type_of_contrat">
                     Type de contrat *
                 </label>
+
                 <div class="autocomplete">
                     <input 
                         type="text" 
@@ -113,6 +116,7 @@ use App\Core\Moment;
                 <label for="start_date">
                     Date de début *
                 </label>
+
                 <input 
                     type="date" 
                     name="start_date" 
@@ -140,6 +144,7 @@ use App\Core\Moment;
                 <label for="salary">
                     Rémunération
                 </label>
+                
                 <input 
                     id="salary" 
                     name="salary" 
@@ -193,7 +198,12 @@ use App\Core\Moment;
                 type="button"
                 onclick="window.history.back()"
             >
-                Annuler
+                <p>Annuler</p>
+
+                <img
+                    src="<?= APP_PATH ?>\layouts\assets\img\arrow\left\black.svg"
+                    alt="Annuler"
+                >
             </button>
             
             <button 
@@ -201,7 +211,12 @@ use App\Core\Moment;
                 type="submit" 
                 value="new_offer"
             >
-                Enregistrer
+                <p>Enregistrer</p>
+
+                <img
+                    src="<?= APP_PATH ?>\layouts\assets\img\save\white.svg"
+                    alt="Enregistrer"
+                >
             </button>
         </div>
     </div>

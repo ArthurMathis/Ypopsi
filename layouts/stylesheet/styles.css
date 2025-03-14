@@ -477,11 +477,13 @@ button,
 }
 button p,
 .action_button p {
+  font-family: inherit;
   color: var(--blue);
 }
 button img,
 .action_button img {
-  height: 25px;
+  /*height: 25px;*/
+  height: calc(var(--font-size-standart) * 1.2);
 }
 
 button.reverse_color,

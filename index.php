@@ -36,7 +36,7 @@ try {
     // * LOGIN * //
     $router->addRoute("/login/get", LoginController::class, "display");
     $router->addRoute("/login/set", LoginController::class, "login");
-    $router->addRoute("ut", LoginController::class, "logout");
+    $router->addRoute("/logout", LoginController::class, "logout");
 
     // * APPLICATIONS * //              
     $router->addRoute("/applications",  ApplicationsController::class, "display");              

@@ -1,11 +1,16 @@
-<section class='titled'>
+<section class='titled form-section'>
     <div>
         <p>Bienvenue sur</p>
         <h1>Ypopsi</h1>
     </div>
-    <button id="action-button">
-        <p>Accéder</p>
-        <img src="<?= APP_PATH ?>/layouts/assets/img/blue/arrow.svg" alt="">
+
+    <button 
+        id="action-button"
+        class="action_button reverse_color"
+        type="submit" 
+        value="login"
+    >
+        Accéder
     </button>
 </section>
 
@@ -46,11 +51,11 @@
 
     <div class="form-section">
         <button 
+            class="action_button reverse_color"
             type="submit" 
             value="login"
         >
-            <p>Se connecter</p>
-            <img src="<?= APP_PATH ?>/layouts/assets/img/blue/arrow.svg" alt="">
+            Se connecter
         </button>
     </div>
 </form>

@@ -131,7 +131,12 @@ $completed = !empty($candidate);
                 type="button"
                 onclick="window.history.back()"
             >
-                Annuler
+                <p>Annuler</p>
+
+                <img
+                    src="<?= APP_PATH ?>\layouts\assets\img\arrow\left\black.svg"
+                    alt="Annuler"
+                >
             </button>
 
             <button 
@@ -139,7 +144,12 @@ $completed = !empty($candidate);
                 class="action_button reverse_color"
                 value="new_user"
             >
-                Enregistrer
+                <p>Enregistrer</p>
+                
+                <img
+                    src="<?= APP_PATH ?>\layouts\assets\img\save\white.svg"
+                    alt="Enregistrer"
+                >
             </button>
         </div>
     </div>

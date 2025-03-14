@@ -191,7 +191,7 @@ use App\Core\Moment;
                 type="button"
             >
                 <img 
-                    src="<?= APP_PATH ?>\layouts\assets\img\logo\blue\add.svg" 
+                    src="<?= APP_PATH ?>\layouts\assets\img\add\blue.svg" 
                     alt=""
                 >
             </button>
@@ -210,7 +210,7 @@ use App\Core\Moment;
                 type="button"
             >
                 <img 
-                    src="<?= APP_PATH ?>\layouts\assets\img\logo\blue\add.svg" 
+                    src="<?= APP_PATH ?>\layouts\assets\img\add\blue.svg" 
                     alt=""
                 >
             </button>
@@ -243,23 +243,33 @@ use App\Core\Moment;
                 type="button"
                 onclick="window.history.back()"
             >
-                Annuler
+                <p>Annuler</p>
+
+                <img
+                    src="<?= APP_PATH ?>\layouts\assets\img\arrow\left\black.svg"
+                    alt="Annuler"
+                >
             </button>
 
             <button 
                 type="submit" 
-                class="submit_button" 
+                class="action_button reverse_color" 
                 value="<?= $action_value ?>"
             >
-                Enregistrer
+                <p>Enregistrer</p>
+
+                <img
+                    src="<?= APP_PATH ?>\layouts\assets\img\save\white.svg"
+                    alt="Enregistrer"
+                >
             </button>
         </div>
     </div> 
 </form>
 
 <script type="module">
-    import { AutoComplete } from "<?= APP_PATH  ?>\\layouts\\scripts\\modules/AutoComplete.mjs"; 
-    import { formManipulation } from "<?= APP_PATH ?>\\layouts\\scripts\\modules/FormManipulation.mjs";
+    import { AutoComplete } from "<?= APP_PATH  ?>\\layouts\\scripts\\modules\\AutoComplete.mjs"; 
+    import { formManipulation } from "<?= APP_PATH ?>\\layouts\\scripts\\modules\\FormManipulation.mjs";
 
     // Gestion de la saisie des coopteurs
     document.addEventListener('elementCreated', function(e) {
@@ -285,14 +295,14 @@ use App\Core\Moment;
         AutoComplete.arrayToSuggestions(<?= json_encode($qualifications_list) ?>), 
         'Licence', 
         <?= count($qualifications_list); ?>, 
-        "<?= APP_PATH ?>\\layouts\\assets\\img\\logo\\trash.svg"
+        "<?= APP_PATH ?>\\layouts\\assets\\img\\trash\\black.svg"
     ); 
     const helps = new formManipulation.implementInputList(
         'helps', 
         'helps-section', 
         AutoComplete.arrayToSuggestions(<?= json_encode($helps_list) ?>), 
         <?= count($helps_list); ?>,
-        "<?= APP_PATH ?>\\layouts\\assets\\img\\logo\\trash.svg"
+        "<?= APP_PATH ?>\\layouts\\assets\\img\\trash\\black.svg"
     );
 
     // Ajout des données du candidat

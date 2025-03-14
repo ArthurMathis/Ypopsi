@@ -43,14 +43,17 @@
         -->
     </section>
     <section>
-        <a href="<?= APP_PATH ?>/index.php?preferences=home" class="LignesHover <?php if($currentPage == PREFERENCES) echo 'selected'?>">
+        <a 
+            href="<?= APP_PATH ?>/index.php?preferences=home" 
+            class="LignesHover <?php if($currentPage == PREFERENCES) echo 'selected'?>"
+        >
             <?php if($form) : ?>
                 <img src="<?= APP_PATH ?>/layouts/assets/img/preferences/white.svg" alt="paramètres">
             <?php else : ?>
                 <img src="<?= APP_PATH ?>/layouts/assets/img/preferences/black.svg" alt="paramètres">
             <?php endif ?>
         </a>
-        <a href="<?= APP_PATH ?>ut" class="LignesHover">
+        <a href="<?= APP_PATH ?>/logout" class="LignesHover">
             <?php if($form) : ?>
                 <img src="<?= APP_PATH ?>/layouts/assets/img/disconnect/white.svg" alt="déconnexion">
             <?php else : ?>
