@@ -174,7 +174,7 @@ class CandidateRepository extends Repository {
             WHERE Id = :id";
 
         $params = $candidate->toSQL(true);
-        $params['id'] = $candidate->getId();
+        $params["id"] = $candidate->getId();
 
         $this->post_request($request, $params);
     }

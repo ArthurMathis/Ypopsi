@@ -647,7 +647,6 @@ class CandidatesController extends Controller {
             if($users_helps[$i]->getTitled() === COOPTATION) {                                                      // Searching if there is a coopter or not
                 $find = true;
             }
-
             $i++;
         }
 
@@ -744,9 +743,11 @@ class CandidatesController extends Controller {
 
         //// QUALIFICATIONS ////
         $get_repo = new GetQualificationRepository();
-        $qualifications = $get_repo->getListFromCandidate($key_candidate);
+        $qualifications = $get_repo->getListFromCandidate($key_candidate);  
 
-        if(count($qualifications) !== count($_POST["qualifications"])) {
+        $nb_qualifications = isset($_POST["qualifications"]) ? count($_POST["qualifications"]) : 0;
+
+        if(count($qualifications) !== $nb_qualifications) {
             $changed = true;
         } elseif(!empty($_POST["qualifications"])) {
             foreach($_POST["qualifications"] as $index => $obj) {
@@ -759,15 +760,20 @@ class CandidatesController extends Controller {
         if($changed) {
             $changed = false;
             foreach($qualifications as $obj) {
+                $id = $obj->getQualification();
                 $get_repo->delete($obj);
             }
 
-            foreach($_POST["qualifications"] as $index => $obj) {
-                $get = new GetQualification($key_candidate, $obj, $_POST["qualificationsDate"][$index]);
-                $get_repo->inscript($get);
+            if(isset($_POST["qualifications"])) {
+                foreach($_POST["qualifications"] as $index => $obj) {
+                    $get = new GetQualification($key_candidate, (int) $obj, (string) $_POST["qualificationsDate"][$index]);
+                    $get_repo->inscript($get);
+                }
             }
         }
         unset($qualifications);
+
+        exit;
 
         //// HELPS ////
         $have_repo = new HaveTheRightToRepository();

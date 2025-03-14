@@ -28,7 +28,7 @@ use App\Core\Moment;
                         name="recruiter" 
                         placeholder="Dupond Jean" 
                         autocomplete="off" 
-                        value="<?= $recruiter->getName() . ' ' . $recruiter->getFirstname(); ?>"
+                        value="<?= $recruiter->getCompleteName() ?>"
                         
                         <?php if(!$editable): ?>
                             readonly

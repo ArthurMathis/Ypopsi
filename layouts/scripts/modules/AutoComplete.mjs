@@ -68,7 +68,7 @@ class AutoComplete {
     }
 
     /**
-     *  Public method generating one suggestion list according to the user's input
+     * @description Public method generating one suggestion list according to the user's input
      * @param {HTMLElement} suggestionBox L'article contenant les suggestions
      */
     autoSuggest(suggestionBox) {

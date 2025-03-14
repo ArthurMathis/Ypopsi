@@ -1,3 +1,9 @@
+<?php
+
+use App\Core\Moment; 
+
+?>
+
 <form 
     class="big-form" 
     method="post" 
@@ -189,34 +195,6 @@
                     alt=""
                 >
             </button>
-
-            <?php if($completed && !empty($users_qualifications)): ?>
-                <?php foreach($users_qualifications as $index => $obj): ?>
-                    <div class="double-items">
-                        <input 
-                            type="text" 
-                            id="diplome-<?= $index+1; ?>" 
-                            name="diplome[]" 
-                            value="<?= $obj["qualification"]->getTitle(); ?>"
-                        >
-
-                        <input 
-                            type="date" 
-                            id="diplomeDate-<?= $index+1; ?>"
-                            name="diplomeDate[]" 
-                            max="<?= date('Y-m-d'); ?>" 
-                            value="<?= date('Y-m-d', strtotime($obj["get_qualification"]->getDate())); ?>"
-                        >
-
-                        <button>
-                            <img
-                                src="<?= APP_PATH ?>\layouts\assets\img\logo\trash.svg"
-                                alt=""
-                            >
-                        </button>
-                    </div>
-                <?php endforeach ?>
-            <?php endif ?>
         </section>
 
         <section 
@@ -235,7 +213,7 @@
                     src="<?= APP_PATH ?>\layouts\assets\img\logo\blue\add.svg" 
                     alt=""
                 >
-                </button>
+            </button>
         </section>
 
         <section 
@@ -293,7 +271,7 @@
             const obj = new formManipulation.cooptInput(
                 inputAide[inputAide.length - 1], 
                 'employee', 
-                3,                                                                                              // 3 -> Id 
+                3,
                 <?= json_encode($employee_list); ?>
             ); 
             obj.input.addEventListener('change', (e) => obj.react());
@@ -301,7 +279,7 @@
     });
 
     // Gestion de la saisie des aides et qualifications
-    new formManipulation.implementInputAutoCompleteDate(
+    const qualifications = new formManipulation.implementInputAutoCompleteDate(
         'qualifications', 
         'qualifications-section', 
         AutoComplete.arrayToSuggestions(<?= json_encode($qualifications_list) ?>), 
@@ -316,6 +294,14 @@
         <?= count($helps_list); ?>,
         "<?= APP_PATH ?>\layouts\assets\img\logo\trash.svg"
     );
+
+    // Ajout des données du candidat
+    <?php if(isset($users_qualifications)): ?>
+        <?php foreach($users_qualifications as $index => $obj): ?>
+            qualifications.addInput();
+            qualifications.setValue(<?= $index ?>, <?= $obj["qualification"]->getId() - 1?>, "<?= Moment::dayFromDate($obj["get_qualification"]->getDate()) ?>");
+        <?php endforeach ?>
+    <?php endif ?>
 
     // Ajout des données du candidat
     <?php if(isset($users_helps)): ?>

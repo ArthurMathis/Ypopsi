@@ -28,8 +28,9 @@ function setMinEndDate(startDateInput, endDateInput) {
 function manageSubmit(event) {
     event.preventDefault();
     event.target.querySelectorAll('input').forEach(elmt => {
-        if(elmt.value && elmt.parentElement.classList.contains('autocomplete')) 
+        if(elmt.value && elmt.parentElement.classList.contains('autocomplete')) {
             elmt.value = elmt.dataset.selectedPrimaryKey;
+        }
     });
     event.target.submit();
 }
@@ -164,8 +165,6 @@ class implementInput {
         this.nbMaxInput = nbMaxInput;
         this.icon = icon;
 
-        console.log(icon);
-
         this.nbInput = 0;
         this.inputList = new Array();
 
@@ -227,11 +226,11 @@ class implementInput {
     deleteButton() { this.button.remove(); }
 
     /**
-     * @function createDelete
+     * @function createTrash
      * @description Function creating the delete button
      * @returns {HTMLInputElement}
      */
-    createDelete() {
+    createTrash() {
         const trash = document.createElement('button');
         trash.type = 'button';
 
@@ -251,13 +250,51 @@ class implementInput {
         return trash;
     }
 
+    /**
+     * @function isValidIndex
+     * @description Function testing if an index correponds to an input
+     * @param {Integer} index The index 
+     * @returns {Boolean}
+     */
+    isValidIndex(index) {
+        return 0 <= index && index <= this.nbInput - 1;
+    }
+}
+/**
+ * @class implementInputSuggestions
+ * @classdesc Class representing an optionnal input that needs some suggestions
+ * @author Arthur MATHIS
+ */
+class implementInputSuggestions extends implementInput {
+    /**
+     * @constructor 
+     * @param {String} inputName The input's name 
+     * @param {HTMLInputElement} inputParent The container of inputs to generate
+     * @param {Array<String>} suggestions The array containing the list of suggestions for the Autocomplete
+     * @param {Integer} nbMaxInput The maximum number of inputs allowed in the container
+     * @param {String} icon The path of the icon
+     */
+    constructor(inputName, inputParent, suggestions=[], nbMaxInput=null, icon=null) {
+        super(inputName, inputParent, nbMaxInput, icon);
+        this.suggestions = Array.from(suggestions);
+    }
+
+    /**
+     * @function isAnOption
+     * @description Function testing is an index corresponds to an option
+     * @param {Integer} index The index to test
+     * @returns {Boolean}
+     */
+    isAnOption(index) {
+        return 0 <= index && index <= this.suggestions.length - 1;
+    }
 }
 /**
  * @class implementInputAutoComplete
  * @classdesc Class representing an optionnnal AutoComplete input 
  * @author Arthur MATHIS
  */
-class implementInputAutoComplete extends implementInput {
+class implementInputAutoComplete extends implementInputSuggestions {
     /**
      * @constructor
      * @param {String} inputName The input's name 
@@ -268,9 +305,8 @@ class implementInputAutoComplete extends implementInput {
      * @param {String} icon The path of the icon
      */
     constructor(inputName, inputParent, suggestions=[], placeholder=null, nbMaxInput=null, icon=null) {
-        super(inputName, inputParent, nbMaxInput, icon);
+        super(inputName, inputParent, suggestions, nbMaxInput, icon);
         this.placeholder = placeholder;
-        this.suggestions = Array.from(suggestions);
     }
 
     /**
@@ -279,33 +315,147 @@ class implementInputAutoComplete extends implementInput {
      * @returns {HTMLElement}
      */
     createElement() {
+        const container = document.createElement("div");
+        container.className = "double-items";
+
+        container.appendChild(this.createAutoComplete());
+        container.appendChild(this.createTrash());
+
+        return container;
+    }
+
+    /**
+     * @function createAutocomplete
+     * @description Function building and returning a new AutoComplete input
+     * @returns {HTMLElement}
+     */
+    createAutoComplete() {
         const inputElement = document.createElement('div');
         inputElement.className = "autocomplete";
-    
+
         const input = document.createElement('input');
-        input.type = 'text';
-        input.id = this.inputName + '-' + this.nbInput;
-        input.name = this.inputName + '[]';
-        input.autocomplete = 'off';
-        if(this.placeholder)
+        input.type = "text";
+        input.id = this.inputName + "-" + this.nbInput;
+        input.name = this.inputName + "[]";
+        input.autocomplete = "off";
+        if(this.placeholder) {
             input.placeholder = this.placeholder;
+        }
         
         inputElement.appendChild(input);
-        inputElement.appendChild(document.createElement('article'));
+        inputElement.appendChild(document.createElement("article"));
     
-        const tab = [];
-        this.suggestions.forEach(c => { tab.push(c.text); });
-        this.inputElement = new AutoComplete(input, tab);
+        this.inputElement = new AutoComplete(input, this.suggestions);
     
         return inputElement;
     }
+
+    /**
+     * @function setValue
+     * @description Function setting a value in an input
+     * @param {Integer} input The index of the input
+     * @param {Integer} value The index of the suggestion
+     */
+    setValue(input, value) {
+        if(!this.isValidIndex(input)) {
+            throw new Error(`Aucun input ne correspond à cette requête. Index demandé ${input}, index maximal : ${this.nbInput - 1}`);
+        } else if(!this.isAnOption(value)) {
+            throw new Error(`Aucune valeur ne correspond à cette requête. Index demandé ${value}, index maximal : ${this.suggestions - 1}`);
+        }
+
+        this.inputList[input].value = this.suggestions[value].text;
+        this.inputList[input].dataset.selectedPrimaryKey = this.suggestions[value].key;
+    }
+
+    /**
+     * @function setDataset
+     * @description unction setting a value in an autocomplete
+     * @param {Integer} input The index of the input in the list of inputs 
+     * @param {Integer} value The index of the value in the list of suggestions
+     */
+    setDataset(input, value) {
+        input.value = this.suggestions[value].text;
+        input.dataset.selectedPrimaryKey = this.suggestions[value].key;
+    }
 }
+
+/**
+ * @class implementInputAutoCompleteDate
+ * @classdesc Class representing optionnnal AutoComplete and date inputs
+ * @author Arthur MATHIS
+ */
+class implementInputAutoCompleteDate extends implementInputAutoComplete {
+    /**
+     * @constructor
+     * @param {String} inputName The input's name 
+     * @param {HTMLElement} inputParent The input's HTML parent
+     * @param {Array<String>} suggestions The array containing the list of suggestions for the Autocomplete
+     * @param {String} placeholder The string to write in the input placeholder
+     * @param {Integer} nbMaxInput The maximum number of inputs allowed in the container
+     * @param {String} icon The path of the icon
+     */
+    constructor(inputName, inputParent, suggestions=[], placeholder=null, nbMaxInput=null, icon=null) {
+        super(inputName, inputParent, suggestions, placeholder, nbMaxInput, icon);
+    }
+
+    /**
+     * @function createElement
+     * @description Function generating a date input
+     * @returns {HTMLInputElement}
+     */
+    createElement() {
+        const container = document.createElement('div');
+        container.className = 'double-items';
+
+        container.appendChild(this.createAutoComplete());
+        container.appendChild(this.createDate());
+        container.appendChild(this.createTrash());
+
+        return container;
+    }
+    /**
+     * @function createElement
+     * @description Function generating a date input
+     * @returns {HTMLInputElement}
+     */
+    createDate() {
+        const inputElement = document.createElement('input');
+        inputElement.type = 'date';
+        inputElement.name = this.inputName + 'Date[]';
+        inputElement.id =  this.inputName + 'Date-' + this.nbInput;
+        inputElement.placeholder = "Date d'obtention";
+        inputElement.max = new Date().toISOString().split("T")[0];
+
+        return inputElement;
+    }
+
+    /**
+     * @function setValue
+     * @description Function setting values in an input
+     * @param {Integer} input The index of the input in the list of inputs 
+     * @param {Integer} value The index of the value in the list of suggestions 
+     * @param {String} date The date to implente 
+     */
+    setValue(input, value, date) {
+        if(!this.isValidIndex(input)) {
+            throw new Error(`Aucun input ne correspond à cette requête. Index demandé ${input}, index maximal : ${this.nbInput - 1}`);
+        } else if(!this.isAnOption(value)) {
+            throw new Error(`Aucune valeur ne correspond à cette requête. Index demandé ${value}, index maximal : ${this.suggestions.length - 1}`);
+        }
+
+        const in_value = this.inputList[input].querySelector(".autocomplete input");
+        this.setDataset(in_value, value);
+        const in_date = this.inputList[input].querySelector("input[type=date]");
+        in_date.value = date;
+    }
+}
+
 /**
  * @class implementInputList
  * @classdesc Class representing an optionnnal AutoComplete input 
  * @author Arthur MATHIS
  */
-class implementInputList extends implementInput {
+class implementInputList extends implementInputSuggestions {
     /**
      * @constructor
      * @param {String} inputName The input's name 
@@ -315,9 +465,7 @@ class implementInputList extends implementInput {
      * @param {String} icon The path of the icon
      */
     constructor(inputName, inputParent, suggestions=[], nbMaxInput=null, icon=null) {
-        super(inputName, inputParent, nbMaxInput);
-        this.suggestions = Array.from(suggestions);
-        this.icon = this.icon;
+        super(inputName, inputParent, suggestions, nbMaxInput, icon);
     }
 
     /**
@@ -338,8 +486,6 @@ class implementInputList extends implementInput {
 
         return inputElement;
     } 
-
-    isSearchvalue
 
     /**
      * @function setValue
@@ -400,84 +546,7 @@ class implementInputDate extends implementInput {
         return inputElement;
     }
 }
-/**
- * @class implementInputAutoCompleteDate
- * @classdesc Class representing optionnnal AutoComplete and date inputs
- * @author Arthur MATHIS
- */
-class implementInputAutoCompleteDate extends implementInput {
-    /**
-     * @constructor
-     * @param {String} inputName The input's name 
-     * @param {HTMLElement} inputParent The input's HTML parent
-     * @param {Array<String>} suggestions The array containing the list of suggestions for the Autocomplete
-     * @param {String} placeholder The string to write in the input placeholder
-     * @param {Integer} nbMaxInput The maximum number of inputs allowed in the container
-     * @param {String} icon The path of the icon
-     */
-    constructor(inputName, inputParent, suggestions=[], placeholder=null, nbMaxInput=null, icon=null) {
-        super(inputName, inputParent, nbMaxInput, icon);
-        this.placeholder = placeholder;
-        this.suggestions = Array.from(suggestions);
-    }
 
-    /**
-     * @function createElement
-     * @description Function generating a date input
-     * @returns {HTMLInputElement}
-     */
-    createElement() {
-        const container = document.createElement('div');
-        container.className = 'double-items';
-
-        container.appendChild(this.createAutoComplete());
-        container.appendChild(this.createDate());
-        container.appendChild(this.createDelete());
-
-        return container;
-    }
-    /**
-     * @function createElement
-     * @description Function generating a suggestion window
-     * @returns {HTMLElement}
-     */
-    createAutoComplete() {
-        const inputElement = document.createElement('div');
-        inputElement.className = "autocomplete";
-    
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.id = this.inputName + '-' + this.nbInput;
-        input.name = this.inputName + '[]';
-        input.autocomplete = 'off';
-        if(this.placeholder)
-            input.placeholder = this.placeholder;
-        
-        inputElement.appendChild(input);
-        inputElement.appendChild(document.createElement('article'));
-    
-        const tab = [];
-        this.suggestions.forEach(c => { tab.push(c.text); });
-        this.inputElement = new AutoComplete(input, this.suggestions);
-
-        return inputElement;
-    }
-    /**
-     * @function createElement
-     * @description Function generating a date input
-     * @returns {HTMLInputElement}
-     */
-    createDate() {
-        const inputElement = document.createElement('input');
-        inputElement.type = 'date';
-        inputElement.name = this.inputName + 'Date[]';
-        inputElement.id =  this.inputName + 'Date-' + this.nbInput;
-        inputElement.placeholder = "Date d'obtention";
-        inputElement.max = new Date().toISOString().split("T")[0];
-
-        return inputElement;
-    }
-}
 
 export const formManipulation = { 
     setMinEndDate, 

@@ -29,7 +29,7 @@ class getQualification {
 
         // The primary key
         if($qualification <= 0) {
-            throw new GetQualificationExceptions("Clé primaire de la qualification invalide : {$candidate}. Clé attendue strictement positive.");
+            throw new GetQualificationExceptions("Clé primaire de la qualification invalide : {$qualification}. Clé attendue strictement positive.");
         }
     }
 

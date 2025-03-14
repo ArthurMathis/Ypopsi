@@ -64,6 +64,10 @@ class GetQualificationRepository extends Repository {
 
         $fetch = $this->get_request($request, $params);
 
+        if(empty($fetch)) {
+            return array();
+        }
+
         $response = array_map(function($c) {
             return GetQualification::fromArray($c);
         }, $fetch);
