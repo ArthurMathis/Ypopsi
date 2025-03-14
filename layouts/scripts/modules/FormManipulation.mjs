@@ -239,6 +239,8 @@ class implementInput {
             if (parent) {
                 parent.remove();
             }
+
+            this.nbInput--;
         });
 
         const img = document.createElement('img');
@@ -474,6 +476,21 @@ class implementInputList extends implementInputSuggestions {
      * @returns {HTMLElement}
      */
     createElement() {
+        const container = document.createElement("div");
+        container.className = "double-items";
+
+        container.appendChild(this.createList());
+        container.appendChild(this.createTrash());
+
+        return container;
+    } 
+
+    /**
+     * @function createList
+     * @description Function generating a select element
+     * @returns {HTMLElement}
+     */
+    createList() {
         const inputElement = document.createElement('select');
         inputElement.name = this.inputName + '[]';
         this.suggestions.forEach(c => {
@@ -484,35 +501,38 @@ class implementInputList extends implementInputSuggestions {
             inputElement.appendChild(option);
         });
 
+
         return inputElement;
-    } 
+    }
 
     /**
      * @function setValue
      * @description Function setting an option in a select
-     * @param {Integer} index The position of the input in the inputlist
+     * @param {Integer} input The position of the input in the inputlist
      * @param {Integer} value The option to select
      * @return {Void}
      */
-    setValue(index, value) {
-        if(this.nbInput <= index) {
-            throw new Error(`L'input demandé est invalide. Valeur maximale : ${this.nbInput} ; valeur demandée : ${index}.`);
+    setValue(input, value) {
+        if(!this.isValidIndex(input)) {
+            throw new Error(`Aucun input ne correspond à cette requête. Index demandé ${input}, index maximal : ${this.nbInput - 1}`);
         }
+
+        const in_helps = this.inputList[input].querySelector("select");
 
         let i = 0;
         let valid = false;
-        while(!valid && i < this.inputList[index].options.lenght) {
-            if(this.inputList[index].options[i].value) {
+        while(!valid && i < in_helps.options.length) {
+            if(in_helps.options[i].value) {
                 valid = true;
             }
 
             i++;
         }
 
-        this.inputList[index].value = value;
+        in_helps.value = value;
 
         const event = new Event('change', { bubbles: true });
-        this.inputList[index].dispatchEvent(event);
+        in_helps.dispatchEvent(event);
     }
 }
 /**

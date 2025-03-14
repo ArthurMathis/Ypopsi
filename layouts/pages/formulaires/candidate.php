@@ -292,7 +292,7 @@ use App\Core\Moment;
         'helps-section', 
         AutoComplete.arrayToSuggestions(<?= json_encode($helps_list) ?>), 
         <?= count($helps_list); ?>,
-        "<?= APP_PATH ?>\layouts\assets\img\logo\trash.svg"
+        "<?= APP_PATH ?>\\layouts\\assets\\img\\logo\\trash.svg"
     );
 
     // Ajout des données du candidat
