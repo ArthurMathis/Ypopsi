@@ -94,7 +94,7 @@ class CandidatesView extends View {
         ?array $users_helps = null,
         ?candidate $employee = null
     ) {
-        $this->generateCommonHeader("Ypopsi - {$title}", [ FORMS_STYLES.DS.'big-form.css' ]);
+        $this->generateCommonHeader($title, [ FORMS_STYLES.DS.'big-form.css' ]);
         $this->generateMenu(true, null);
 
         include FORMULAIRES.DS.'candidate.php';
@@ -126,7 +126,7 @@ class CandidatesView extends View {
         array $users_list, 
         array $establishments_list
     ) {
-        $this->generateCommonHeader("Ypopsi - {$title}", [ FORMS_STYLES.DS.'big-form.css' ]);
+        $this->generateCommonHeader($title, [ FORMS_STYLES.DS.'big-form.css' ]);
 
         $this->generateMenu(true, null);
 
@@ -180,7 +180,7 @@ class CandidatesView extends View {
         array $type_of_contracts_list, 
         array $sources_list
     ) {
-        $this->generateCommonHeader("Ypopsi - {$title}", [ FORMS_STYLES.DS.'big-form.css' ]);
+        $this->generateCommonHeader($title, [ FORMS_STYLES.DS.'big-form.css' ]);
 
         $this->generateMenu(true, null);
 
@@ -216,7 +216,7 @@ class CandidatesView extends View {
         ?Establishment $application_establishment = null,
         ?TypeOfContracts $application_type = null
     ) {
-        $this->generateCommonHeader("Ypopsi - {$title}", [FORMS_STYLES.DS.'big-form.css']);
+        $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
         
         include FORMULAIRES.DS.'offer.php';

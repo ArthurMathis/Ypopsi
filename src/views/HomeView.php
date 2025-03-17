@@ -17,7 +17,7 @@ class HomeView extends View {
      * @return Void
      */
     public function displayHomePage(array $items, array $dashboard) {
-        $this->generateCommonHeader('Ypopsi - Welcome', [PAGES_STYLES.DS.'index.css']);
+        $this->generateCommonHeader('Welcome', [PAGES_STYLES.DS.'index.css']);
         $this->generateMenu(false, HOME);
 
         echo "<content>";

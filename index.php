@@ -6,11 +6,13 @@ require_once('define.php');
 use App\Core\Router\Router;
 use App\Core\FormsManip;
 use App\Core\AlertsManipulation;
+use App\Core\Middleware\AuthMiddleware;
 use App\Controllers\HomeController;
 use App\Controllers\LoginController;
 use App\Controllers\ApplicationsController;
 use App\Controllers\CandidatesController;
-use App\Core\Middleware\AuthMiddleware;
+use App\Controllers\PreferencesController;
+use App\Views\PreferencesView;
 
 test_process();
 env_start();
@@ -48,7 +50,7 @@ try {
     $router->addRoute("/candidates/inscript", CandidatesController::class, "inscriptCandidate", AuthMiddleware::$USER);
     $router->addRoute("/candidates/{candidate}", CandidatesController::class, "displayCandidate");
     $router->addRoute("/candidates/edit/{candidate}", CandidatesController::class, "editCandidate", AuthMiddleware::$USER);                                 // todo
-    $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "updateCandidate", AuthMiddleware::$USER);                            // todo
+    $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "updateCandidate", AuthMiddleware::$USER);                             // todo
     $router->addRoute("/candidates/rating/edit/{candidate}", CandidatesController::class, "displayCandidate", AuthMiddleware::$USER);                       // todo
     $router->addRoute("/candidates/rating/update/{candidate}", CandidatesController::class, "displayCandidate", AuthMiddleware::$USER);                     // todo
 
@@ -78,6 +80,29 @@ try {
     $router->addRoute("/candidates/meeting/edit/{meeting}", CandidatesController::class, "editMeeting", AuthMiddleware::$USER);
     $router->addRoute("/candidates/meeting/update/{candidate}/{meeting}", CandidatesController::class, "updateMeeting", AuthMiddleware::$USER);
     $router->addRoute("/candidates/meeting/delete/{meeting}", CandidatesController::class, "deleteMeeting", AuthMiddleware::$USER);
+
+    // * PREFERENCES * //
+    //// PROFILE ////
+    $router->addRoute("/preferences/{user}", PreferencesController::class, "display");
+    // todo : add the edit and update users routes
+    $router->addRoute("/preferences/logs/{user}", PreferencesController::class, "displayUserLogs");
+    $router->addRoute("/preferences/logs/actions/{user}", PreferencesController::class, "displayUserLogsActions");
+
+    //// USERS ////
+    $router->addRoute("/preferences/users", PreferencesController::class, "displayUsers", AuthMiddleware::$ADMIN);
+    $router->addRoute("/preferences/users/new", PreferencesController::class, "displayNewUsers", AuthMiddleware::$ADMIN);
+    $router->addRoute("/prefrences/logs", PreferencesController::class, "displayLogs", AuthMiddleware::$ADMIN);
+    $router->addRoute("/prefrences/logs/actions", PreferencesController::class, "displayLogsActions", AuthMiddleware::$ADMIN);
+
+    //// RECRUITEMENT ////
+    $router->addRoute("/preferences/jobs", PreferencesController::class, "displayJobs");
+    $router->addRoute("/preferences/qualifications", PreferencesController::class, "displayQualifications");
+    $router->addRoute("preferences/sources", PreferencesController::class, "displaySources");
+
+    //// FOUNDATION ////
+    $router->addRoute("/preferences/services", PreferencesController::class, "displayServices");
+    $router->addRoute("/preferences/establishments", PreferencesController::class, "displayEstablishments");
+    $router->addRoute("/preferences/hubs", PreferencesController::class, "displayhubs");
 
     $router->dispatch($user_connected);
 

@@ -42,6 +42,8 @@ class View {
      * @return Void
      */
     public function getListItems(string $title, ?array $items = null, ?int $nb_items_max = null, ?string $id = null, ?string $class = null, ?string $direction = null) {
+        $title = "Ypopsi - {$title}";
+        
         if(!$nb_items_max)
             $nb_items_max = empty($items) ? 0 : count($items);
         include MY_ITEMS.DS.'list.php';

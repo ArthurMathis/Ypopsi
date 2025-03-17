@@ -773,8 +773,6 @@ class CandidatesController extends Controller {
         }
         unset($qualifications);
 
-        exit;
-
         //// HELPS ////
         $have_repo = new HaveTheRightToRepository();
         $helps = $have_repo->getListFromcandidate($key_candidate);
@@ -799,6 +797,12 @@ class CandidatesController extends Controller {
                 $have_repo->inscript($help);
             }
         }
+
+        AlertsManipulation::alert([
+            'title' => 'Candidat mise-à-jour',
+            'msg' => 'Le candidat a été mis-à-jour avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
     }
     /**
      * Public method updating one meeting

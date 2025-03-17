@@ -16,7 +16,7 @@ class LoginView extends View {
      */
     public function getContent() {
         $this->generateCommonHeader(
-            'Ypopsi - Connexion', 
+            'Connexion', 
             [
                 FORMS_STYLES.DS.'small-form.css',
                 FORMS_STYLES.DS.'connexion.css'

@@ -44,7 +44,7 @@
     </section>
     <section>
         <a 
-            href="<?= APP_PATH ?>/index.php?preferences=home" 
+            href="<?= APP_PATH ?>/preferences/<?= $_SESSION["user"]->getId() ?>" 
             class="LignesHover <?php if($currentPage == PREFERENCES) echo 'selected'?>"
         >
             <?php if($form) : ?>

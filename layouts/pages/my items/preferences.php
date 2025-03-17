@@ -7,42 +7,197 @@ use App\Core\Middleware\AuthMiddleware;
 <aside>
     <article>
         <header>
-            <h2>Votre compte</h2>
-            <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-profil.svg" alt="Logo de la section profil représentant une personne">
+            <h2>
+                Votre compte
+            </h2>
+
+            <img 
+                src="<?= APP_PATH ?>\layouts\assets\img\profile\white.svg" 
+                alt="Profil"
+            >
         </header>
+
         <content>
-            <a <?php if($_GET['preferences'] == "home") echo 'class="selected"'; ?> href="index.php?preferences=home">Consulter vos informations</a>
-            <a <?php if($_GET['preferences'] == "edit-password") echo 'class="selected"'; ?> href="index.php?preferences=edit-password">Modifier votre mot de passe</a>
+            <a 
+                href="<?= APP_PATH ?>/preferences/<?= $_SESSION["user"]->getId() ?>"
+
+                <?php if($tab === "home"): ?>
+                    class="selected"
+                <?php endif ?>
+            >
+                Vos informations
+            </a>
+            
+            <a
+                href="<?= APP_PATH ?>/preferences/logs/<?= $_SESSION["user"]->getId() ?>"
+
+                <?php if($tab === "user-connexions"): ?>
+                    class="selected"
+                <?php endif ?>
+            >
+                Historique de connexions
+            </a>
+
+            <a
+                href="<?= APP_PATH ?>/preferences/logs/actions/<?= $_SESSION["user"]->getId() ?>"
+
+                <?php if($tab === "user-actions"): ?>
+                    class="selected"
+                <?php endif ?>
+            >
+                Historique d'actions
+            </a>
         </content>
     </article>
+
     <?php if(AuthMiddleware::isAdminOrMore()): ?>
-    <article>
-        <header>
-            <h2>Utilisateurs</h2>
-            <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-utilisateurs.svg" alt="Logo de la section utilisateurs représentant un groupe de personne">
-        </header>
-        <content>
-            <a <?php if($_GET['preferences'] == "list-users") echo 'class="selected"'; ?> href="index.php?preferences=list-users">Liste des utilisateurs</a>
-            <a <?php if($_GET['preferences'] == "list-new-users") echo 'class="selected"'; ?> href="index.php?preferences=list-new-users">Nouveaux utilisateurs</a>
-            <a <?php if($_GET['preferences'] == "logs-history") echo 'class="selected"'; ?> href="index.php?preferences=logs-history">Historique de connexions</a>
-            <a <?php if($_GET['preferences'] == "actions-history") echo 'class="selected"'; ?> href="index.php?preferences=actions-history">Historique d'actions</a>
-        </content>
-    </article>
+        <article>
+            <header>
+                <h2>Utilisateurs</h2>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\users\white.svg" 
+                    alt="Utilisateurs"
+                >
+            </header>
+
+            <content>
+                <a 
+                    href="<?= APP_PATH ?>/preferences/users"
+                    
+                    <?php if($tab === "users"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    Liste des utilisateurs
+                </a>
+
+                <a 
+                    href="<?= APP_PATH ?>/preferences/users/new"
+                    
+                    <?php if($tab === "new-users"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    Nouveaux utilisateurs
+                </a>
+
+                <a 
+                    href="<?= APP_PATH ?>/prefrences/logs"
+                    
+                    <?php if($tab === "logs"): ?>
+                        class="selected"
+                    <?php endif ?> 
+                >
+                    Historique de connexions
+                </a>
+
+                <a 
+                    href="<?= APP_PATH ?>/prefrences/logs/actions"
+                    
+                    <?php if($tab === "logs-actions"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    Historique d'actions
+                </a>
+            </content>
+        </article>
     <?php endif ?>
+
     <?php if(AuthMiddleware::isUserOrMore()): ?>
-    <article>
-        <header>
-            <h2>Données</h2>
-            <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-data.svg" alt="Logo de la section données représentant un nuage">
-        </header>
-        <content>
-            <a <?php if($_GET['preferences'] == "list-services") echo 'class="selected"'; ?> href="index.php?preferences=list-services">Services</a>
-            <a <?php if($_GET['preferences'] == "list-establishments") echo 'class="selected"'; ?> href="index.php?preferences=list-establishments">Etablissements</a>
-            <a <?php if($_GET['preferences'] == "list-poles") echo 'class="selected"'; ?> href="index.php?preferences=list-poles">Pôles</a>
-            <a <?php if($_GET['preferences'] == "list-jobs") echo 'class="selected"'; ?> href="index.php?preferences=list-jobs">Postes</a>
-            <a <?php if($_GET['preferences'] == "list-qualifications") echo 'class="selected"'; ?> href="index.php?preferences=list-qualifications">Qualifications</a>
-            <!--<a <?php if($_GET['preferences'] == "autres") echo 'class="selected"'; ?> href="index.php?preferences=autres">Autres</a>-->
-        </content>
-    </article>
+        <article>
+            <header>
+                <h2>
+                    Recrutement
+                </h2>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\folder\white.svg" 
+                    alt="Données recruteur"
+                >
+            </header>
+            
+            <content>
+                <a 
+                    href="<?= APP_PATH ?>/prefrences/jobs"
+                    
+                    <?php if($tab === "jobs"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    Postes
+                </a>
+
+                <a 
+                    href="<?= APP_PATH ?>/preferences/qualifications"
+                    
+                    <?php if($tab === "qualifications"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    Qualifications
+                </a>
+
+                <a 
+                    href="<?= APP_PATH ?>/preferences/sources"
+                    
+                    <?php if($tab === "sources"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    Sources
+                </a>
+            </content>
+        </article>
+
+        <article>
+            <header>
+                <h2>
+                    Fondation
+                </h2>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\data\white.svg" 
+                    alt="Données fondation"
+                >
+            </header>
+            
+            <content>
+                <a 
+                    href="<?= APP_PATH ?>/preferences/services"
+                    
+                    <?php if($tab === "services"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    Services
+                </a>
+                
+                <a 
+                    href="<?= APP_PATH ?>/preferences/establishments"
+                    
+                    <?php if($tab === "establishments"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    Etablissements
+                </a>
+
+                <a 
+                    href="<?= APP_PATH ?>/preferences/hubs"
+                    
+                    <?php if($tab === "hubs"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    Pôles
+                </a>
+            </content>
+        </article>
     <?php endif ?>
+
+    <footer class="versionning">
+        version <?= getenv('APP_VERSION'); ?>
+    </footer>
 </aside>
