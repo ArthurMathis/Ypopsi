@@ -26,9 +26,9 @@ class FeatureMiddleware {
 
         foreach($key_features as $obj) {
             $feature = $feat_repo->get($obj);
-            
+
             if(!$feature->getEnable()) {
-                throw new FeatureExceptions("La fonctionnalité <b>" . $feature->getTitled() . " a été temporairement désactivée</b>. Veuillez réeassyer ultérieurement. <br>Si l'incident persiste, <b>contactez le support informatique</b>.");
+                throw new FeatureExceptions("La fonctionnalité <b>" . $feature->getTitled() . " a été temporairement désactivée</b>. Veuillez réessayer ultérieurement. <br>Si l'incident persiste, <b>contactez le support informatique</b>.");
             }
         }
     }
