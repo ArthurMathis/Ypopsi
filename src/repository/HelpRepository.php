@@ -94,7 +94,7 @@ class HelpRepository extends Repository {
 
     // * SEARCH * //
     public function searchCoopteurId(int $key_candidate): int {
-        $request = "SELECT Key_Employee AS Id From Have_the_right_to WHERE Key_Candidates = :id";
+        $request = "SELECT Key_Employee AS Id From Have_the_right_to WHERE Key_Candidates = :id AND Key_Employee IS NOT NULL";
 
         $params = array("id" => $key_candidate);
 
