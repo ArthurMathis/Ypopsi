@@ -63,7 +63,7 @@
                     <p>Refuser</p>
 
                     <img 
-                        src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" 
+                        src="<?= APP_PATH ?>\layouts\assets\img\close\black.svg" 
                         alt="Refuser"
                     >
                 </a>
@@ -76,7 +76,7 @@
                     <p>Accepter</p>
 
                     <img 
-                        src="<?= APP_PATH ?>\layouts\assets\img\logo\white-valider.svg" 
+                        src="<?= APP_PATH ?>\layouts\assets\img\valid\white.svg" 
                         alt="Accepter"
                     >
                 </a>
