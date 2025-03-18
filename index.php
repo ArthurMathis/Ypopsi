@@ -49,8 +49,8 @@ try {
     $router->addRoute("/candidates/input", CandidatesController::class, "inputCandidate", array(FeatureMiddleware::$INSCRIPT_CANDIDATE), AuthMiddleware::$USER);
     $router->addRoute("/candidates/inscript", CandidatesController::class, "inscriptCandidate", array(FeatureMiddleware::$INSCRIPT_CANDIDATE), AuthMiddleware::$USER);
     $router->addRoute("/candidates/{candidate}", CandidatesController::class, "displayCandidate");
-    $router->addRoute("/candidates/edit/{candidate}", CandidatesController::class, "editCandidate", array(FeatureMiddleware::$EDIT_CANDIDATE), AuthMiddleware::$USER);                                 // todo
-    $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "updateCandidate", array(FeatureMiddleware::$EDIT_CANDIDATE), AuthMiddleware::$USER);                             // todo
+    $router->addRoute("/candidates/edit/{candidate}", CandidatesController::class, "editCandidate", array(FeatureMiddleware::$EDIT_CANDIDATE), AuthMiddleware::$USER);
+    $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "updateCandidate", array(FeatureMiddleware::$EDIT_CANDIDATE), AuthMiddleware::$USER);
     $router->addRoute("/candidates/rating/edit/{candidate}", CandidatesController::class, "displayCandidate", array(FeatureMiddleware::$EDIT_RATING), AuthMiddleware::$USER);                          // todo
     $router->addRoute("/candidates/rating/update/{candidate}", CandidatesController::class, "displayCandidate", array(FeatureMiddleware::$EDIT_RATING), AuthMiddleware::$USER);                        // todo
 

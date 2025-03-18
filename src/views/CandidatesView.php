@@ -325,15 +325,13 @@ class CandidatesView extends View {
     }
     /**
      * Public method building the edit candidates'ratings HTML form 
-     * 
-     * todo : remake with Candidate::class
      *
-     * @param array $candidate The arrayu containing the candidate's data
+     * @param Candidate $candidate The arrayu containing the candidate's data
      * @return View The HTML page
      */
-    public function displayEditRatings(array $candidate) {
+    public function displayEditRatings(Candidate $candidate): void {
         $this->generateCommonHeader(
-            'Modification de la notation de ' . FormsManip::majusculeFormat($candidate['Name']) . ' ' . $candidate['Firstname'], 
+            'Modification de la notation de ' . $candidate->getCompletename(), 
             array(FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-rating.css')
         );
         $this->generateMenu(true, null);
@@ -384,7 +382,17 @@ class CandidatesView extends View {
      * @param ?Candidate $coopteur The employee that recommanded the candidate
      * @return View The HTML Page
      */
-    public function getDashboard(Candidate $candidate, array $applications, ?array $contracts, ?array $meetings, ?array $qualifications = null, ?array $helps = null, ?Candidate $coopteur = null) { include(MY_ITEMS.DS.'dashboard.php'); }
+    public function getDashboard(
+        Candidate $candidate, 
+        array $applications, 
+        ?array $contracts, 
+        ?array $meetings, 
+        ?array $qualifications = null, 
+        ?array $helps = null, 
+        ?Candidate $coopteur = null
+    ) { 
+        include(MY_ITEMS.DS.'dashboard.php'); 
+    }
     /**
      * Protected method generating the candidate's contracts tab
      *

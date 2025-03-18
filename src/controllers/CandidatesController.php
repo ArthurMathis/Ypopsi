@@ -667,6 +667,15 @@ class CandidatesController extends Controller {
         );
     }
     /**
+     * Public method displaying the edit candidate's rating HTML form
+     *
+     * @param int $key_candidate The candidate's primary key
+     * @return void
+     */
+    public function editRating(int $key_candidate): void {
+        $this->View->displayEditRatings((new CandidateRepository())->get($key_candidate));
+    }
+    /**
      * Public method displaying the edit meeting HTML form
      * 
      * @param int $key_meeting The primary key of the meeting
@@ -694,6 +703,12 @@ class CandidatesController extends Controller {
 
 
     // * UPDATE * //
+    /**
+     * Public method updating a candidate
+     *
+     * @param int $key_candidate The canddate's primary key
+     * @return void
+     */
     public function updateCandidate(int $key_candidate): void {
         //// CANDIDATE ////
         $can_repo = new CandidateRepository();

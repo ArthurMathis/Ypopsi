@@ -43,31 +43,35 @@ class CandidateRepository extends Repository {
         return $response;
     }
 
+    /**
+     * Public method returning the list of the employees
+     *
+     * @return array
+     */
     public function getEmployee(): array {
         $request = "SELECT 
+            Candidates.Id, 
+            Candidates.Name, 
+            Candidates.Firstname, 
+            Candidates.Gender,
+            Candidates.Email, 
+            Candidates.Phone,
+            Candidates.Address,
+            Candidates.City, 
+            Candidates.PostCode,
+            Candidates.Availability, 
+            Candidates.MedicalVisit,
+            Candidates.Rating, 
+            Candidates.Description, 
+            Candidates.Is_delete,
+            Candidates.A, 
+            Candidates.B, 
+            Candidates.C
 
-        Candidates.Id, 
-        Candidates.Name, 
-        Candidates.Firstname, 
-        Candidates.Gender,
-        Candidates.Email, 
-        Candidates.Phone,
-        Candidates.Address,
-        Candidates.City, 
-        Candidates.PostCode,
-        Candidates.Availability, 
-        Candidates.MedicalVisit,
-        Candidates.Rating, 
-        Candidates.Description, 
-        Candidates.Is_delete,
-        Candidates.A, 
-        Candidates.B, 
-        Candidates.C
-
-        FROM candidates 
-        INNER JOIN Contracts on Candidates.Id = Contracts.Key_Candidates
-        
-        WHERE Contracts.SignatureDate IS NOT NULL";
+            FROM candidates 
+            INNER JOIN Contracts on Candidates.Id = Contracts.Key_Candidates
+            
+            WHERE Contracts.SignatureDate IS NOT NULL";
 
         $response = $this->get_request($request);
 
