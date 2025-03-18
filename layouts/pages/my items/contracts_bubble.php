@@ -70,7 +70,7 @@ $date = Moment::currentMoment()->getDate();
                     <p>Démissioner</p>
 
                     <img 
-                        src="<?= APP_PATH ?>\layouts\assets\img\logo\white-close.svg" 
+                        src="<?= APP_PATH ?>\layouts\assets\img\close\white.svg" 
                         alt="Démission"
                     >
                 </a>
