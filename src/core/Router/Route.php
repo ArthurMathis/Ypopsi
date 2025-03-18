@@ -3,6 +3,8 @@
 namespace App\Core\Router;
 
 use App\Core\Middleware\AuthMiddleware;
+use App\Exceptions\FeatureExceptions;
+use App\Exceptions\RouterExceptions;
 
 /**
  * Class représenting a Route in the router
@@ -14,16 +16,21 @@ class Route {
      *
      * @param string $controller The controller of the functionnal
      * @param string $method The method of the functionnal
-     * @param ?int $middleware The required role to access at the route
+     * @param ?int $authentification The required role to access at the route
      * @throws AuthentificationExceptions If the role is invalid
      */
     public function __construct(
         protected string $controller, 
         protected string $method, 
-        protected ?int $middleware = null
+        protected ?int $authentification = null, 
+        protected ?int $feature = null
     ) {
-        if(!empty($middleware)) {
-            AuthMiddleware::isValidRole($middleware);
+        if(!empty($authentification)) {
+            AuthMiddleware::isValidRole($authentification);
+        }
+
+        if(!empty($feature) && $feature <= 0) {
+            throw new RouterExceptions("Génération de la route impossible, la fonctionnalité : {$feature} est invalide.");
         }
     }
 
@@ -43,7 +50,13 @@ class Route {
     /**
      * Public method returning the required role
      *
-     * @return string
+     * @return ?int
      */
-    public function getMiddleware(): ?int { return $this->middleware; }
+    public function getAuthentification(): ?int { return $this->authentification; }
+    /**
+     * Public method returning the feature's primary key
+     *
+     * @return ?int
+     */
+    public function getFeature(): ?int { return $this->feature; }
 }

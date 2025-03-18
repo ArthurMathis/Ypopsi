@@ -42,7 +42,7 @@ body > content > aside {
 body > content > aside article {
     display: flex;
     flex-direction: column;
-    gap: var(--very-big-radius);
+    gap: var(--radius);
 
     width: 100%;
     height: fit-content;

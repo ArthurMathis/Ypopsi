@@ -197,6 +197,33 @@ use App\Core\Middleware\AuthMiddleware;
         </article>
     <?php endif ?>
 
+    <?php if(AuthMiddleware::isOwnerOrMore()): ?>
+        <article>
+        <header>
+                <h2>
+                    Autre
+                </h2>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\console\white.svg" 
+                    alt="Données fondation"
+                >
+            </header>
+
+            <content>
+                <a 
+                    href="<?= APP_PATH ?>/preferences/features_toggle"
+                    
+                    <?php if($tab === "features_toggle"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    Fonctionnalités
+                </a>
+            </content>
+        </article>
+    <?php endif ?>
+
     <footer class="versionning">
         version <?= getenv('APP_VERSION'); ?>
     </footer>

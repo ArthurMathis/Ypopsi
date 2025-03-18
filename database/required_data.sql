@@ -1,3 +1,40 @@
+-- Features Toggle --
+INSERT INTO Features (Titled, Description) VALUES 
+    ("Connexion", "Fonctionnalité permettant la connexion et la déconnexion des utilisateurs."),
+
+    -- Candidates -- 
+    ("Inscription candidat", "Fonctionnalité permettant l'ajout de nouveaux candidats."),
+    ("Inscription contrat", "Fonctionnalité permettant l'ajout de nouveaux contrats."),
+    ("Inscription offre", "Fonctionnalité permettant l'ajout de nouvelles offres d'emplois."),
+    ("Inscription candidature", "Fonctionnalité permettant l'ajout de nouvelles candidatures."),
+    ("Inscription rendez-vous", "Fonctionnalité permettant l'ajout de nouveaux rendez-vous."),
+    ("Inscription document", "Fonctionnalité permettant l'ajout de nouveaux documents."),
+
+    ("Edition candidat", "Fonctionnalité permettant la mise à jour de candidats."),
+    ("Edition notation", "Fonctionnalité permettant la mise à jour de la notation des candidats."),
+    ("Edition contrat", "Fonctionnalité permettant la mise à jour de contrats."),
+    ("Edition offre", "Fonctionnalité permettant la mise à jour d'offres."),
+    ("Edition candidature", "Fonctionnalité permettant la mise à jour de candidatures."),
+    ("Edition rendez-vous", "Fonctionnalité permettant la mise à jour de rendez-vous."),
+    ("Edition documents", "Fonctionnalité permettant la mise à jour de documents."),
+
+    ("Suppression candidat", "Fonctionnalité permettant la suppression de candidats."),
+    ("Suppression rendez-vous", "Fonctionnalité permettant la suppression de rendez-vous."),
+    ("Suppression documents", "Fonctionnalité permettant la suppression de documents."),
+
+    ("Gestion contrat", "Fonctionnalité permettant l'acceptation et le refus de contrat."),
+    ("Gestion offre", "Fonctionnalité permettant l'acceptation et le refus d'offres."),
+    ("Gestion candidature", "Fonctionnalité permettant l'acceptation et le refus de candidature."),
+
+    -- Users --
+
+
+    -- Recruitement --
+
+
+    -- Foundation --
+;
+
 -- Fondation --
 INSERT INTO Poles (Titled, Description) VALUES 
     ("pspdsa", "Pole sud-Alsace"),

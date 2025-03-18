@@ -76,6 +76,13 @@ class AuthMiddleware {
 
     // * CHECK ROLE * // 
     /**
+     * Public statuc method testing if the user's role is superior or equal to OWNER
+     * 
+     * @throws AuthentificationExceptions If no user is connected
+     * @return bool
+     */
+    public static function isOwnerOrMore(): bool { return self::roleIsMore(self::$OWNER); }
+    /**
      * Public statuc method testing if the user's role is superior or equal to ADMIN
      * 
      * @throws AuthentificationExceptions If no user is connected

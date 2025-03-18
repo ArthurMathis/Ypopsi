@@ -1,3 +1,11 @@
+-- Features Toggle --
+CREATE TABLE Features (
+  Id INTEGER PRIMARY KEY AUTO_INCREMENT, 
+  Titled VARCHAR(64) NOT NULL,
+  Description VARCHAR(256) DEFAULT NULL, 
+  Enable BOOLEAN DEFAULT False
+);
+
 -- Fondation -- 
 CREATE TABLE Poles (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT, 

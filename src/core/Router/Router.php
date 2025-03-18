@@ -5,6 +5,7 @@ namespace App\Core\Router;
 use App\Core\Router\Route;
 use App\Exceptions\RouterExceptions;
 use App\Core\Middleware\AuthMiddleware;
+use App\Core\Middleware\FeatureMiddleware;
 
 /**
  * Class managing the url request in the application
@@ -39,11 +40,11 @@ class Router {
      * @param String $urlPattern The url of the request
      * @param String $controllerMethod The controller to handle the request
      * @param String $methodController The method to handle the request
-     * @param ?int $requiredMiddleware The required role to access at the functionnal
+     * @param ?int $authentification The required role to access at the functionnal
      * @throws RouterExceptions If the route is already defined 
      * @return Void
      */
-    public function addRoute(string $urlPattern, string $controllerClass, string $methodController, ?int $requiredMiddleware = null) { 
+    public function addRoute(string $urlPattern, string $controllerClass, string $methodController, ?int $feature = null, ?int $authentification = null) { 
         if(isset($this->routes[$urlPattern])) {
             throw new RouterExceptions("Erreur de routage, la route : " . $urlPattern . " est déjà attribuée à " 
                 . $this->routes[$urlPattern]->getController() . '::' . $this->routes[$urlPattern]->getMethod() . " !");
@@ -52,7 +53,8 @@ class Router {
         $this->routes[$urlPattern] = new Route(
             $controllerClass,
             $methodController,
-            $requiredMiddleware
+            $authentification, 
+            $feature
         );
     }
     /**
@@ -85,8 +87,12 @@ class Router {
                 if(class_exists($target->getController())) {                        // Instanciation du controller
                     $c = new ($target->getController())();
 
-                    if($target->getMiddleware()) {
-                        AuthMiddleware::handle($target->getMiddleware());
+                    if($target->getFeature()) {
+                        FeatureMiddleware::handle($target->getFeature());
+                    }
+
+                    if($target->getAuthentification()) {
+                        AuthMiddleware::handle($target->getAuthentification());
                     }
                 
                     if(method_exists($c, $target->getMethod())) {                   // Appel de la méthode
