@@ -14,17 +14,22 @@ class FeatureMiddleware {
     /**
      * Public static method handle a url request and checking if the feature is enable or not
      *
-     * @param ?int $key_feature The feature's primary key
+     * @param ?array $key_features The feature's primary key
      * @return void
      */
-    public static function handle(?int $key_feature = null): void {
-        if(is_null($key_feature)) { 
+    public static function handle(?array $key_features = null): void {
+        if(is_null($key_features) || empty($key_features)) { 
             return ;
         }
 
-        $feature = (new FeatureRepository())->get($key_feature);
-        if(!$feature->getEnable()) {
-            throw new FeatureExceptions("La fonctionnalité <b>" . $feature->getTitled() . " a été temporairement désactivée</b>. Veuillez réeassyer ultérieurement. <br>Si l'incident persiste, <b>contactez le support informatique</b>.");
+        $feat_repo = new FeatureRepository();
+
+        foreach($key_features as $obj) {
+            $feature = $feat_repo->get($obj);
+            
+            if(!$feature->getEnable()) {
+                throw new FeatureExceptions("La fonctionnalité <b>" . $feature->getTitled() . " a été temporairement désactivée</b>. Veuillez réeassyer ultérieurement. <br>Si l'incident persiste, <b>contactez le support informatique</b>.");
+            }
         }
     }
 

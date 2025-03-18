@@ -40,11 +40,12 @@ class Router {
      * @param String $urlPattern The url of the request
      * @param String $controllerMethod The controller to handle the request
      * @param String $methodController The method to handle the request
+     * @param ?array $features The list of feature's primary key
      * @param ?int $authentification The required role to access at the functionnal
      * @throws RouterExceptions If the route is already defined 
      * @return Void
      */
-    public function addRoute(string $urlPattern, string $controllerClass, string $methodController, ?int $feature = null, ?int $authentification = null) { 
+    public function addRoute(string $urlPattern, string $controllerClass, string $methodController, ?array $features = null, ?int $authentification = null) { 
         if(isset($this->routes[$urlPattern])) {
             throw new RouterExceptions("Erreur de routage, la route : " . $urlPattern . " est déjà attribuée à " 
                 . $this->routes[$urlPattern]->getController() . '::' . $this->routes[$urlPattern]->getMethod() . " !");
@@ -54,7 +55,7 @@ class Router {
             $controllerClass,
             $methodController,
             $authentification, 
-            $feature
+            $features
         );
     }
     /**
@@ -87,8 +88,8 @@ class Router {
                 if(class_exists($target->getController())) {                        // Instanciation du controller
                     $c = new ($target->getController())();
 
-                    if($target->getFeature()) {
-                        FeatureMiddleware::handle($target->getFeature());
+                    if($target->getFeatures()) {
+                        FeatureMiddleware::handle($target->getFeatures());
                     }
 
                     if($target->getAuthentification()) {
