@@ -186,7 +186,7 @@ use App\Core\Middleware\AuthMiddleware;
     <?php if(AuthMiddleware::isUserOrMore()): ?>
         <a 
             class="action_button reverse_color add_button" 
-            href="<?= APP_PATH ?>/candidates/edit/rating/<?= $candidate->getId() ?>"
+            href="<?= APP_PATH ?>/candidates/rating/edit/<?= $candidate->getId() ?>"
         >
             <p>
                 Noter

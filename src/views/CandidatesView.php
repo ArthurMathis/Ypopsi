@@ -336,7 +336,7 @@ class CandidatesView extends View {
         );
         $this->generateMenu(true, null);
 
-        include EDIT_FORM.DS.'rating.php';
+        include FORMULAIRES.DS.'rating.php';
 
         $this->generateCommonFooter();
     }
