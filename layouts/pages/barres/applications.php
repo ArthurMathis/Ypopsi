@@ -6,88 +6,251 @@ use App\Core\Middleware\AuthMiddleware;
 
 <nav class="options_barre">
     <article>
-        <a class="action_button reverse_color" href="<?= APP_PATH ?>/candidates">Liste des candidats</a>
+        <a 
+            class="action_button reverse_color" 
+            href="<?= APP_PATH ?>/candidates"
+        >
+            Liste des candidats
+        </a>
+
         <?php if(AuthMiddleware::isUserOrMore()): ?>
-            <a class="action_button" href="<?= APP_PATH ?>/candidates/input">Nouvelle candidature</a>
+            <a 
+                class="action_button" 
+                href="<?= APP_PATH ?>/candidates/input"
+            >
+                Nouvelle candidature
+            </a>
         <?php endif ?>    
     </article>
+
     <article>
-        <p class="action_button" id="filtrer-button">Filtrer</p>
-        <p class="action_button" id="rechercher-button">Rechercher</p>
+        <p 
+            class="action_button" 
+            id="filtrer-button"
+        >
+            Filtrer
+        </p>
+
+        <p 
+            class="action_button"
+            id="rechercher-button"
+        >
+            Rechercher
+        </p>
     </article>
 </nav>
-<div class="candidatures-menu" id="filtrer-menu">
-    <h2>Filtrer par</h2>
+
+<div 
+    class="candidatures-menu" 
+    id="filtrer-menu"
+>
+    <h2>
+        Filtrer par
+    </h2>
+
     <main>
         <content>
-            <section id="statut_input" class="small-section">
-                <p>Statuts</p>
+            <section 
+                id="statut_input" 
+                class="small-section"
+            >
+                <p>
+                    Statuts
+                </p>
+
                 <div class="container-statut">
-                    <input type="checkbox" name="Non-traitée" checked>
-                    <p>Non-traitée</p>
+                    <input 
+                        type="checkbox" 
+                        name="Non-traitée" 
+                        checked
+                    >
+
+                    <p>
+                        Non-traitée
+                    </p>
                 </div>
+                
                 <div class="container-statut">
-                    <input type="checkbox" name="Acceptée" checked>
-                    <p>Acceptée</p>
+                    <input 
+                        type="checkbox" 
+                        name="Acceptée" 
+                        checked
+                    >
+
+                    <p>
+                        Acceptée
+                    </p>
                 </div>
+
                 <div class="container-statut">
-                    <input type="checkbox" name="Refusée" checked>
-                    <p>Refusée</p>
+                    <input 
+                        type="checkbox" 
+                        name="Refusée" 
+                        checked
+                    >
+
+                    <p>
+                        Refusée
+                    </p>
                 </div>
             </section>
+
             <section>
-                <p>Postes et sources</p>
-                <input type="text" id="filtre-poste" placeholder="Poste">
-                <input type="text" id="filtre-source" placeholder="Source">
+                <p>
+                    Postes et sources
+                </p>
+
+                <input 
+                    type="text" 
+                    id="filtre-poste" 
+                    placeholder="Poste"
+                >
+
+                <input 
+                    type="text" 
+                    id="filtre-source" 
+                    placeholder="Source"
+                >
             </section>
+
             <section>
-                <p>Date minimale</p>
-                <input type="date" id="filtre-date-max" name="filre-data-max">
+                <p>
+                    Date minimale
+                </p>
+
+                <input 
+                    type="date" 
+                    id="filtre-date-max" 
+                    name="filre-data-max"
+                >
             </section>
+
             <section>
-                <p>Date maximale</p>
-                <input type="date" id="filtre-date-min" name="filre-data-min">
+                <p>
+                    Date maximale
+                </p>
+
+                <input 
+                    type="date" 
+                    id="filtre-date-min" 
+                    name="filre-data-min"
+                >
             </section>
         </content>
+
         <aside>
-            <button id="reinint-filtre" class="reinint_button LignesHover">
-                <p>Réinitialiser les filtres</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
+            <button 
+                id="reinint-filtre" 
+                class="reinint_button LignesHover"
+            >
+                <p>
+                    Réinitialiser les filtres
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\close\black.svg" 
+                    alt=""
+                >
             </button>
-            <button id="valider-filtre" class="reverse_color">
-                <p>Appliquer</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-filtre.svg" alt="">
+
+            <button 
+                id="valider-filtre" 
+                class="reverse_color"
+            >
+                <p>
+                    Appliquer
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\filter\white.svg" 
+                    alt=""
+                >
             </button>
         </aside>
     </main>
 </div>
-<div class="candidatures-menu" id="rechercher-menu">
-    <h2>Rechercher par</h2>
+
+<div 
+    class="candidatures-menu" 
+    id="rechercher-menu"
+>
+    <h2>
+        Rechercher par
+    </h2>
+
     <main>
         <content>
             <section>
-                <p>Informations personnelles</p>
-                <input type="text" id="recherche-nom"  placeholder="Nom">
-                <input type="text" id="recherche-prenom" placeholder="Prenom">
+                <p>
+                    Informations personnelles
+                </p>
+
+                <input 
+                    type="text" 
+                    id="recherche-nom"  
+                    placeholder="Nom"
+                >
+                
+                <input 
+                    type="text" 
+                    id="recherche-prenom" 
+                    placeholder="Prenom"
+                >
             </section>
+
             <section>
-                <p>Informations de communication</p>
-                <input type="text" id="recherche-email" placeholder="Email">
-                <input type="text" id="recherche-telephone" placeholder="Telephone">
+                <p>
+                    Informations de communication
+                </p>
+
+                <input 
+                    type="text"
+                    id="recherche-email" 
+                    placeholder="Email"
+                >
+
+                <input 
+                    type="text" 
+                    id="recherche-telephone" 
+                    placeholder="Telephone"
+                >
             </section>
         </content>
+
         <aside>
-            <button id="reinint-recherche" class="reinint_button LignesHover">
-                <p>Réinitialiser les filtres</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
+            <button 
+                id="reinint-recherche" 
+                class="reinint_button LignesHover"
+            >
+                <p>
+                    Réinitialiser les filtres
+
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\close\black.svg" 
+                    alt=""
+                >
             </button>
-            <button id="valider-recherche" class="reverse_color">
-                <p>Appliquer</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-recherche.svg" alt="">
+
+            <button 
+                id="valider-recherche" 
+                class="reverse_color"
+            >
+                <p>
+                    Appliquer
+
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\search\white.svg" 
+                    alt=""
+                >
             </button>
         </aside>
     </main>
 </div>
+
 <script type='module'>
     // * IMPORTS * //
     import { List } from "./layouts/scripts/modules/List.mjs"; 
@@ -102,20 +265,20 @@ use App\Core\Middleware\AuthMiddleware;
         const entete = Array.from(document.querySelector('.liste_items .table-wrapper table thead tr').cells);
         const sizes = [ 
             {
-                width: 1580,
-                indexs: [4]
+                width : 1580,
+                indexs: [ 4 ]
             },
             {
-                width: 1200,
-                indexs: [5]
+                width : 1200,
+                indexs: [ 5 ]
             },
             {
-                width: 1120,
-                indexs : [7]
+                width : 1120,
+                indexs: [ 7 ]
             },
             {
-                width: 920,
-                indexs: [6]
+                width : 920,
+                indexs: [ 6 ]
             }
         ];
         window.onresize = function() { listManipulation.responsive(window.innerWidth, entete, candidatures, sizes) };
@@ -124,34 +287,34 @@ use App\Core\Middleware\AuthMiddleware;
         // * CODES COULEURS * //
         listManipulation.setColor(candidatures, [
             {
-                content: 'Non-traitée', 
-                class: 'non-traitee'
+                content: 'Non-traitée',
+                class  : 'non-traitee'
             },
             {
-                content: 'Acceptée', 
-                class: 'acceptee'
+                content: 'Acceptée',
+                class  : 'acceptee'
             },
             {
-                content: 'Refusée', 
-                class: 'refusee'
+                content: 'Refusée',
+                class  : 'refusee'
             }
         ], 0);
         listManipulation.setColor(candidatures, [
             {
-                content: 'Email', 
-                class: 'email'
+                content: 'Email',
+                class  : 'email'
             },
             {
-                content: 'Hellowork', 
-                class: 'hellowork'
+                content: 'Hellowork',
+                class  : 'hellowork'
             },
             {
-                content: 'Hublo', 
-                class: 'hublo'
+                content: 'Hublo',
+                class  : 'hublo'
             },
             {
-                content: 'Téléphone', 
-                class: 'telephone'
+                content: 'Téléphone',
+                class  : 'telephone'
             }
         ], 6);
         listManipulation.setColorAvailability(candidatures, 7);

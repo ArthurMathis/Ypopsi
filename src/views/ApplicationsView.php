@@ -18,7 +18,7 @@ class ApplicationsView extends View {
      * @return void
      */
     public function displayApplicationsList(string $title, array $items, ?int $nb_items_max = null) {
-        $this->generateCommonHeader('Candidatures', [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'applications.css']);
+        $this->generateCommonHeader($title, [PAGES_STYLES.DS.'liste-page.css', PAGES_STYLES.DS.'applications.css']);
         $this->generateMenu(false, APPLICATIONS);
 
         include BARRES.DS.'applications.php';

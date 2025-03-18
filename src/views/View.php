@@ -14,7 +14,13 @@ class View {
      * @param Array<String>|Null $cssFiles The array containing the css files to include at the page
      * @return void
      */
-    public function generateCommonHeader(?string $name = null, ?array $cssFiles = null) { include COMMON.DS.'header.php'; }
+    public function generateCommonHeader(?string $name = null, ?array $cssFiles = null) { 
+        if(!empty($name)) {
+            $name = "Ypopsi - " . $name;
+        }
+        
+        include COMMON.DS.'header.php'; 
+    }
     /**
      * Public method generating the HTML footer tag of the page
      *
@@ -42,7 +48,7 @@ class View {
      * @return Void
      */
     public function getListItems(string $title, ?array $items = null, ?int $nb_items_max = null, ?string $id = null, ?string $class = null, ?string $direction = null) {
-        $title = "Ypopsi - {$title}";
+        $title = "$title";
         
         if(!$nb_items_max)
             $nb_items_max = empty($items) ? 0 : count($items);

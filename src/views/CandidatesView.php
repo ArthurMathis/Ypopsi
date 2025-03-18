@@ -26,7 +26,7 @@ class CandidatesView extends View {
      * @return View The HTML Page
      */
     public function displayCandidatesList(string $titre, array $items) {
-        $this->generateCommonHeader('Ypopsi - Candidatures', [PAGES_STYLES.DS.'liste-page.css']);
+        $this->generateCommonHeader('Candidatures', [PAGES_STYLES.DS.'liste-page.css']);
         $this->generateMenu(false, APPLICATIONS);
         include BARRES.DS.'candidates.php';
 
@@ -333,7 +333,7 @@ class CandidatesView extends View {
      */
     public function displayEditRatings(array $candidate) {
         $this->generateCommonHeader(
-            'Ypopsi - Modification de la notation de ' . FormsManip::majusculeFormat($candidate['Name']) . ' ' . $candidate['Firstname'], 
+            'Modification de la notation de ' . FormsManip::majusculeFormat($candidate['Name']) . ' ' . $candidate['Firstname'], 
             array(FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'edit-rating.css')
         );
         $this->generateMenu(true, null);
