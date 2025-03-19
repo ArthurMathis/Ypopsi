@@ -116,6 +116,11 @@ class ContractRepository extends Repository {
         $request = "INSERT INTO Contracts (StartDate, Key_Candidates, Key_Jobs, Key_Services, Key_Establishments, Key_Types_of_contracts";
         $values_request = " VALUES (:start_date, :candidate, :job, :service, :establishment, :type";
 
+        if(!empty($contract->getEndDate())) {
+            $request .= ", EndDate";
+            $values_request .= ", :end_date";
+        }
+
         if(!empty($contract->getSalary())) {
             $request .= ", Salary";
             $values_request .= ", :salary";

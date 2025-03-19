@@ -330,6 +330,10 @@ class Contract {
             "type"           => $this->getType()
         );
 
+        if(!empty($this->getEndDate())) {
+            $response["end_date"] = $this->getEndDate();
+        }
+
         if(!empty($this->getSalary())) {
             $response["salary"] = $this->getSalary();
         }
