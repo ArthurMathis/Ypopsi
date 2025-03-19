@@ -44,11 +44,11 @@ use App\Core\Middleware\AuthMiddleware;
         <?php if(AuthMiddleware::isUserOrMore()): ?>
             <a class="action_button grey_color" href="<?= APP_PATH ?>/candidates/applications/reject/<?= $key_candidate ?>/<?= $item['cle'] ?>">
                 <p>Refuser</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\close\black.svg" alt="">
             </a>
             <a class="action_button reverse_color" href="<?= APP_PATH ?>/candidates/offers/input/<?= $key_candidate ?>/<?= $item['cle'] ?>">
                 <p>Valider</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-valider.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\valid\white.svg" alt="">
             </a> 
         <?php endif ?>     
         </footer>
