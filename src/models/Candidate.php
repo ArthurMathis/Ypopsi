@@ -444,7 +444,7 @@ class Candidate {
             $response["visit"] = $this->getVisit();
         }
 
-        if($completed) { // Ajout des paramètres manquants pour éviter les erreurs
+        if($completed) {                                                                                        // Ajout des paramètres manquants pour éviter les erreurs
             $response['email']        = $response['email'] ?? '';
             $response['phone']        = $response['phone'] ?? '';
             $response['address']      = $response['address'] ?? '';

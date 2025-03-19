@@ -172,13 +172,16 @@ class CandidateRepository extends Repository {
             Postcode = NULLIF(:postcode, ''),
             Description = NULLIF(:description, ''),
             Rating = NULLIF(:rating, ''),
+            A = :a,
+            B = :b,
+            C = :c,
             Availability = NULLIF(:availability, ''),
-            MedicalVisit = NULLIF(:visit, '')
+            MedicalVisit = NULLIF(:visit, ''),
+            Is_delete = :deleted
 
             WHERE Id = :id";
 
-        $params = $candidate->toSQL(true);
-        $params["id"] = $candidate->getId();
+        $params = $candidate->toArray();
 
         $this->post_request($request, $params);
     }
