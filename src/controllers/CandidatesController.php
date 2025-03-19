@@ -820,6 +820,41 @@ class CandidatesController extends Controller {
         ]);
     }
     /**
+     * Public method updating a candidate'"s rating
+     *
+     * @param int $key_candidate The candidate's primary key
+     * @return void
+     */
+    public function updateRating(int $key_candidate): void {
+        $can_repo = new CandidateRepository();
+        $candidate = $can_repo->get($key_candidate);
+
+        $candidate->setRating(max($_POST["rating"]));
+        $candidate->setDescrption($_POST["description"]);
+        $candidate->setA(isset($_POST["a"]));
+        $candidate->setB(isset($_POST["b"]));
+        $candidate->setC(isset($_POST["c"]));
+
+        $can_repo->update($candidate);
+
+        $act_repo = new ActionRepository();                 
+        $type = $act_repo->searchType("Mise-à-jour notation"); 
+        $desc = "Mise-à-jour dla notation de " . $candidate->getCompleteName();
+
+        $act = Action::create(                                                              // Creating the action
+            $_SESSION['user']->getId(), 
+            $type->getId(),
+            $desc
+        );
+        $act_repo->writeLogs($act);                                                         // Registering the action in logs
+
+        AlertsManipulation::alert([
+            'title' => 'Rendez-vous notation',
+            'msg' => 'La notation a été mis-à-jour avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
+    /**
      * Public method updating one meeting
      * 
      * @param int $key_candidate The candidate's primary key
@@ -842,17 +877,13 @@ class CandidatesController extends Controller {
 
         $act_repo = new ActionRepository();                 
         $type = $act_repo->searchType("Mise-à-jour rendez-vous"); 
-        $desc = "Mise-à-jour du rendez-vous de " 
-                . strtoupper($candidate->getName()) . " " 
-                . FormsManip::nameFormat($candidate->getFirstname());
+        $desc = "Mise-à-jour du rendez-vous de " . $candidate->getCompleteName();
 
         $act = Action::create(                                                              // Creating the action
             $_SESSION['user']->getId(), 
             $type->getId(),
             $desc
         );          
-        
-
         $act_repo->writeLogs($act);                                                         // Registering the action in logs
 
         AlertsManipulation::alert([

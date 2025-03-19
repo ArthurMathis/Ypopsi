@@ -14,7 +14,7 @@
         <div class="etoile-container">
             <input 
                 type="checkbox" 
-                name="notation[]" 
+                name="rating[]" 
                 id="notation1" 
                 value="1" 
 
@@ -25,7 +25,7 @@
 
             <input 
                 type="checkbox" 
-                name="notation[]" 
+                name="rating[]" 
                 id="notation2" 
                 value="2" 
 
@@ -36,7 +36,7 @@
 
             <input 
                 type="checkbox" 
-                name="notation[]" 
+                name="rating[]" 
                 id="notation3" 
                 value="3" 
 
@@ -47,7 +47,7 @@
 
             <input 
                 type="checkbox" 
-                name="notation[]" 
+                name="rating[]" 
                 id="notation4" 
                 value="4" 
 
@@ -58,7 +58,7 @@
 
             <input 
                 type="checkbox" 
-                name="notation[]" 
+                name="rating[]" 
                 id="notation5" 
                 value="5" 
 

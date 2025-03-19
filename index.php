@@ -52,7 +52,7 @@ try {
     $router->addRoute("/candidates/edit/{candidate}", CandidatesController::class, "editCandidate", array(FeatureMiddleware::$EDIT_CANDIDATE), AuthMiddleware::$USER);
     $router->addRoute("/candidates/update/{candidate}", CandidatesController::class, "updateCandidate", array(FeatureMiddleware::$EDIT_CANDIDATE), AuthMiddleware::$USER);
     $router->addRoute("/candidates/rating/edit/{candidate}", CandidatesController::class, "editRating", array(FeatureMiddleware::$EDIT_RATING), AuthMiddleware::$USER);
-    $router->addRoute("/candidates/rating/update/{candidate}", CandidatesController::class, "displayCandidate", array(FeatureMiddleware::$EDIT_RATING), AuthMiddleware::$USER);                        // todo
+    $router->addRoute("/candidates/rating/update/{candidate}", CandidatesController::class, "updateRating", array(FeatureMiddleware::$EDIT_RATING), AuthMiddleware::$USER); 
 
     //// CONTRACTS ////
     $router->addRoute("/candidates/contracts/input/{candidate}", CandidatesController::class, "displayInputMeeting", array(FeatureMiddleware::$INSCRIPT_CONTRACT), AuthMiddleware::$USER);             // todo

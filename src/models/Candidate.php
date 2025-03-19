@@ -320,6 +320,30 @@ class Candidate {
         $this->postcode = $postcode;
     }
 
+    public function setRating(int $rate): void {
+        if($rate <= 0) {
+            throw new CandidateExceptions("La notation doit être strictement positive. La valeur : {$rate} est invalide.");
+        }
+
+        if(5 < $rate) {
+            throw new CandidateExceptions("La notation doit être inférieure ou égale à 5. La valeur : {$rate} est invalide.");
+        }
+
+        $this->rating = $rate;
+    }
+    public function setDescrption(?string $description): void {
+        $this->description = $description;
+    }
+    public function setA(bool $present): void {
+        $this->a = $present;
+    }
+    public function setB(bool $present): void {
+        $this->b = $present;
+    }
+    public function setC(bool $present): void {
+        $this->c = $present;
+    }
+
     // * CONVERT * //
     /**
      * Public static method returning an Candidate building from an array
