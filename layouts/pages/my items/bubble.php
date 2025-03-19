@@ -38,7 +38,7 @@
                         <span></span>
                     </div>
                 </div>
-            <?php endif; ?>
+            <?php endif ?>
         </div>
     <?php else : ?>
         <p>Aucun élément</p>

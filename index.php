@@ -55,8 +55,8 @@ try {
     $router->addRoute("/candidates/rating/update/{candidate}", CandidatesController::class, "updateRating", array(FeatureMiddleware::$EDIT_RATING), AuthMiddleware::$USER); 
 
     //// CONTRACTS ////
-    $router->addRoute("/candidates/contracts/input/{candidate}", CandidatesController::class, "displayInputMeeting", array(FeatureMiddleware::$INSCRIPT_CONTRACT), AuthMiddleware::$USER);             // todo
-    $router->addRoute("/candidates/contracts/inscript/{candidate}", CandidatesController::class, "displayInputMeeting", array(FeatureMiddleware::$INSCRIPT_CONTRACT), AuthMiddleware::$USER);          // todo
+    $router->addRoute("/candidates/contracts/input/{candidate}", CandidatesController::class, "inputContract", array(FeatureMiddleware::$INSCRIPT_CONTRACT), AuthMiddleware::$USER);             // todo
+    $router->addRoute("/candidates/contracts/inscript/{candidate}", CandidatesController::class, "inscriptContract", array(FeatureMiddleware::$INSCRIPT_CONTRACT), AuthMiddleware::$USER);          // todo
     $router->addRoute("/candidates/contracts/sign/{candidate}/{contract}", CandidatesController::class, "signContract", array(FeatureMiddleware::$INSCRIPT_CONTRACT, FeatureMiddleware::$MANAGE_OFFER), AuthMiddleware::$USER);
     $router->addRoute("/candidates/contracts/dismiss/{contract}", CandidatesController::class, "dismissContract", array(FeatureMiddleware::$MANAGE_CONTRACT), AuthMiddleware::$USER);
 
@@ -84,7 +84,6 @@ try {
     // * PREFERENCES * //
     //// PROFILE ////
     $router->addRoute("/preferences/{user}", PreferencesController::class, "display", );
-    // todo : add the edit and update users routes
     $router->addRoute("/preferences/logs/{user}", PreferencesController::class, "displayUserLogs");
     $router->addRoute("/preferences/logs/actions/{user}", PreferencesController::class, "displayUserLogsActions");
 

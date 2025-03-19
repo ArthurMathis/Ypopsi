@@ -7,11 +7,11 @@ use App\Core\Moment;
 <form 
     class="big-form" 
     method="post" 
-    action="<?= APP_PATH ?>/candidates/offers/inscript/<?= $candidate->getId() ?><?php if(!empty($key_application)): ?>/<?= $key_application ?><?php endif ?>"
+    action="<?= APP_PATH.$action.DS.$candidate->getId() ?><?php if(!empty($key_application)): ?><?= DS.$key_application ?><?php endif ?>"
 >
     <div class="form-container">
         <h3>
-            Nouvelle proposition
+            <?= $titled ?>
         </h3>
 
         <section>
@@ -209,7 +209,7 @@ use App\Core\Moment;
             <button 
                 class="action_button reverse_color"
                 type="submit" 
-                value="new_offer"
+                value="<?= $value ?>"
             >
                 <p>Enregistrer</p>
 
@@ -231,6 +231,8 @@ use App\Core\Moment;
     new AutoComplete(document.getElementById('establishment'), AutoComplete.arrayToSuggestions(<?= json_encode($establishments_list) ?>));
     new AutoComplete(document.getElementById('type_of_contrat'), AutoComplete.arrayToSuggestions(<?= json_encode($types_of_contracts_list) ?>));
 
+    formManipulation.setMinEndDate('start_date', 'end_date');
+
     const inputTypeContrat = document.getElementById('type_of_contrat');
     const inputDateFin = document.getElementById('end_date');
     const checkContratType = (input) => {
@@ -246,5 +248,6 @@ use App\Core\Moment;
     inputTypeContrat.addEventListener('AutoCompleteSelect', checkContratType);
     checkContratType();
 
-    document.querySelector('form').addEventListener('submit', (e) => formManipulation.manageSubmit(e));
+    document.querySelector('form')
+            .addEventListener('submit', (e) => formManipulation.manageSubmit(e));
 </script>

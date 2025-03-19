@@ -94,6 +94,7 @@ class Contract {
      * @param ?int $hourly_rate The hourly rate of the contract
      * @param bool $night_work If the contract contains night work
      * @param bool $wk_work If the contract contains week-end work
+     * @param ?string $signature The date of the signature
      * @return Contract The contract
      */
     public static function create(
@@ -107,14 +108,15 @@ class Contract {
         ?int $salary = null,
         ?int $hourly_rate = null,
         bool $night_work = false,
-        bool $wk_work = false
+        bool $wk_work = false,
+        ?string $signature = null
     ): Contract {
         return new Contract(
             null,
             $start_date,
             $end_date,
             null,
-            null,
+            $signature,
             null,
             false,
             $salary,

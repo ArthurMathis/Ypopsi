@@ -50,7 +50,7 @@
                     window.location.href = '<?= $direction; ?>' + links[index];
                 <?php else: ?>
                     window.location.href = "<?= APP_PATH ?>/candidates/"  + links[index];
-                <?php endif; ?>
+                <?php endif ?>
             });
         });
     </script>

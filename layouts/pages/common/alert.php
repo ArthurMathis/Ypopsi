@@ -28,7 +28,7 @@
                 window.location.href = '<?= $infos['back']; ?>';
             <?php else: ?>    
                 window.history.back();
-            <?php endif; ?>    
+            <?php endif ?>    
         });
     </script>
 <?php else: ?>
@@ -80,8 +80,8 @@
             <?php endif ?>    
         }, 1500);
     </script>
-    <?php endif; ?>
-<?php endif; ?>
+    <?php endif ?>
+<?php endif ?>
 
 <style>
     .custom-actions {

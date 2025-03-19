@@ -190,6 +190,8 @@ class CandidatesView extends View {
     }
     /**
      * Public function Returning the offers' html form 
+     * 
+     * ! remove
      *
      * @param string $title The HTML Page title
      * @param int $key_candidate The candidate's primary key
@@ -203,8 +205,50 @@ class CandidatesView extends View {
      * @param ?array $application_type The titled of the type of contract of the application
      * @return View The HTML Page
      */
-    public function displayInputOffer(
+    //// public function displayInputOffer(
+    ////     string $title, 
+    ////     Candidate $candidate, 
+    ////     array $jobs_list, 
+    ////     array $services_list, 
+    ////     array $establishments_list, 
+    ////     array $types_of_contracts_list, 
+    ////     ?int $key_application = null,
+    ////     ?Job $application_job = null, 
+    ////     ?Service $application_service = null, 
+    ////     ?Establishment $application_establishment = null,
+    ////     ?TypeOfContracts $application_type = null
+    //// ) {
+    ////     $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
+    ////     $this->generateMenu(true, null);
+    ////     
+    ////     include FORMULAIRES.DS.'offer.php';
+    //// 
+    ////     $this->generateCommonFooter();
+    //// }
+
+    /**
+     * Public function Returning the offers' html form 
+     *
+     * @param string $title The HTML Page title
+     * @param string $action The action of the submit
+     * @param string $value The value of the submit
+     * @param $titled The title of the HTML form
+     * @param Candidate $candidate The candidate
+     * @param array $jobs_list The array containing the jobs list
+     * @param array $services_list The array containing the services list
+     * @param array $establishments_list The array containing the establishments list
+     * @param array $types_of_contracts_list The array containing the tupes of contracts list
+     * @param ?Job $application_job The titled of the job of the application
+     * @param ?Service $application_service The titled of the service of the application
+     * @param ?Establishment $application_establishment The titled of the establishment of the application
+     * @param ?TypeOfContracts $application_type The titled of the type of contract of the application
+     * @return void The HTML Page
+     */
+    public function displayInputContract(
         string $title, 
+        string $action,
+        string $value,
+        string $titled, 
         Candidate $candidate, 
         array $jobs_list, 
         array $services_list, 
@@ -215,37 +259,11 @@ class CandidatesView extends View {
         ?Service $application_service = null, 
         ?Establishment $application_establishment = null,
         ?TypeOfContracts $application_type = null
-    ) {
+    ): void {
         $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
         $this->generateMenu(true, null);
         
-        include FORMULAIRES.DS.'offer.php';
-
-        $this->generateCommonFooter();
-    }
-    /**
-     * Public method returning the HTML form to register an contract
-     *
-     * @param string $title The HTML page's title
-     * @param int $key_candidate The candidate's primary key
-     * @param array $jobs The array containing the list of jobs
-     * @param array $services The array containing the list of services
-     * @param array $establishments The array containing the list of establishments
-     * @param array $types_of_contrats The array containing the list of types of contractss
-     * @return View The HTML Page
-     */
-    public function displayInputContracts(
-        string $title, 
-        int $key_candidate, 
-        array $jobs, 
-        array $services, 
-        array $establishments, 
-        array $types_of_contrats
-    ) {
-        $this->generateCommonHeader($title, [FORMS_STYLES.DS.'big-form.css']);
-        $this->generateMenu(true, null);
-
-        include INSCRIPT_FORM.DS.'contracts.php';
+        include FORMULAIRES.DS.'contract.php';
 
         $this->generateCommonFooter();
     }

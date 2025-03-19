@@ -2,9 +2,11 @@
 
 namespace App\Controllers;
 
+use Exception;
 use App\Controllers\Controller;
 use App\Core\AlertsManipulation;
 use App\Core\FormsManip;
+use App\Core\Moment;
 use App\Models\Action;
 use App\Models\Application;
 use App\Models\Candidate;
@@ -27,7 +29,6 @@ use App\Repository\ServiceRepository;
 use App\Repository\SourceRepository;
 use App\Repository\TypeOfContractsRepository;
 use App\Repository\UserRepository;
-use Exception;
 
 class CandidatesController extends Controller {
     /**
@@ -284,6 +285,87 @@ class CandidatesController extends Controller {
         );
     }
     /**
+     * Public method displaying the input contract's HTML form
+     *
+     * @param int $key_candidate The candidate's primary key
+     * @return void
+     */
+    public function inputContract(int $key_candidate): void {
+        $candidate = (new CandidateRepository())->get($key_candidate);
+
+        $jobs_list = (new JobRepository())->getAutoCompletion($candidate->getGender() ?? true);
+        $services_list = (new ServiceRepository())->getAutoCompletion();
+        $establishments_list = (new EstablishmentRepository())->getAutoCompletion();
+        $type_of_contracts_list = (new TypeOfContractsRepository())->getAutoCompletion();
+
+        $this->View->displayInputContract(
+            "Nouveau contrat", 
+            "/candidates/contracts/inscript",
+            "new_contract",
+            "Nouveau contrat",
+            $candidate,
+            $jobs_list,
+            $services_list,
+            $establishments_list,
+            $type_of_contracts_list
+        );
+    }
+    /**
+     * Public method returning the HTML form of inputing an offer
+     * 
+     * @param int $key_candidate The candidate's primary key
+     * @param ?int $key_application The primary key of the application
+     * @return void
+     */
+    public function inputOffer(int $key_candidate, ?int $key_application = null): void {
+        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
+
+        $application = null;
+        $job = null;
+        $service = null;
+        $establishment = null;
+        $type_of_contract = null;
+        if(!empty($key_application)) {
+            $application = (new ApplicationRepository())->get($key_application);                                // Fetching the application
+
+            $job = (new JobRepository())->get($application->getJob());                                          // Fetching the job
+
+            if(!empty($application->getService())) {
+                $service = (new ServiceRepository())->get($application->getService());                          // Fetching the service
+            }
+
+            if(!empty($application->getEstablishment())) {
+                $establishment = (new EstablishmentRepository())->get($application->getEstablishment());        // Fetching the establishment
+            }
+
+            if(!empty($application->getType())) {
+                $type_of_contract = (new TypeOfContractsRepository())->get($application->getType());            // Fetching the type of contract
+            }
+        }
+
+        $jobs_list = (new JobRepository())->getAutoCompletion($candidate->getGender() ?? true);
+        $services_list = (new ServiceRepository())->getAutoCompletion();
+        $establishments_list = (new EstablishmentRepository())->getAutoCompletion();
+        $type_of_contracts_list = (new TypeOfContractsRepository())->getAutoCompletion();
+
+        $this->View->displayInputContract(
+            "Nouvelle proposition", 
+            "/candidates/offers/inscript",
+            "new_offer",
+            "Nouvelle proposition",
+            $candidate,
+            $jobs_list,
+            $services_list,
+            $establishments_list,
+            $type_of_contracts_list,
+            $key_application,
+            $job,
+            $service,
+            $establishment,
+            $type_of_contract
+        );
+    }
+    /**
      * Public method returning the HTML form of inputing an application
      * 
      * @param ?int $key_candidate The candidate's primary key
@@ -318,59 +400,6 @@ class CandidatesController extends Controller {
         );
     }
     /**
-     * Public method returning the HTML form of inputing an offer
-     * 
-     * @param int $key_candidate The candidate's primary key
-     * @param ?int $key_application The primary key of the application
-     * @return void
-     */
-    public function inputOffer(int $key_candidate, ?int $key_application = null): void {
-        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
-
-        $application = null;
-        $job = null;
-        $service = null;
-        $establishment = null;
-        $type = null;
-        if(!empty($key_application)) {
-            $application = (new ApplicationRepository())->get($key_application);                                // Fetching the application
-
-            $job = (new JobRepository())->get($application->getJob());                                          // Fetching the job
-
-            if(!empty($application->getService())) {
-                $service = (new ServiceRepository())->get($application->getService());                          // Fetching the service
-            }
-
-            if(!empty($application->getEstablishment())) {
-                $establishment = (new EstablishmentRepository())->get($application->getEstablishment());        // Fetching the establishment
-            }
-
-            if(!empty($application->getType())) {
-                $type_of_contract = (new TypeOfContractsRepository())->get($application->getType());            // Fetching the type of contract
-            }
-        }
-
-        $jobs_list = (new JobRepository())->getAutoCompletion($candidate->getGender() ?? true);
-        $services_list = (new ServiceRepository())->getAutoCompletion();
-        $establishments_list = (new EstablishmentRepository())->getAutoCompletion();
-        $type_of_contracts_list = (new TypeOfContractsRepository())->getAutoCompletion();
-
-        $this->View->displayInputOffer(
-            "Nouvelle proposition", 
-            $candidate,
-            $jobs_list,
-            $services_list,
-            $establishments_list,
-            $type_of_contracts_list,
-            $key_application,
-            $job,
-            $service,
-            $establishment,
-            $type
-        );
-    }
-    
-    /**
      * Public method returning the HTML form of inputing a meeting
      *
      * @param int $key_candidate The candidate's primary ket
@@ -399,7 +428,8 @@ class CandidatesController extends Controller {
      *
      * @return void
      */
-    public function inscriptCandidate(): void {$_SESSION["candidate"] = Candidate::create(                                                                             // Creating the candidate
+    public function inscriptCandidate(): void {
+        $_SESSION["candidate"] = Candidate::create(                                                                             // Creating the candidate
             $_POST["name"], 
             $_POST["firstname"], 
             $_POST["gender"],
@@ -427,6 +457,106 @@ class CandidatesController extends Controller {
         }
 
         header("Location: " . APP_PATH . "/candidates/applications/input");                                                     // Redirecting to the application form
+    }
+    /**
+     * Public method registering a new contract in the database
+     * 
+     * @return void
+     */
+    public function inscriptContract(int $key_candidate): void {
+        $contract = Contract::create(                                                           // Creating the offer
+            $key_candidate, 
+            (int) $_POST["job"],
+            (int) $_POST["service"],
+            (int) $_POST["establishment"],
+            (int) $_POST["type_of_contrat"],
+            $_POST["start_date"],
+            $_POST["end_date"] ?? null,
+            (int) $_POST["salary"] ?? null,
+            (int) $_POST["hourly_rate"] ?? null,
+            (bool) !empty($_POST["night_work"]) ?? false,
+            (bool) !empty($_POST["wk_work"]) ?? false,
+            Moment::currentMoment()->getDate()
+        );
+
+        (new ContractRepository())->inscript($contract);                                        // Registering the offer
+
+        $candidate = (new CandidateRepository())->get($key_candidate);                          // Fetching the candidate
+
+        $job = (new JobRepository())->get($contract->getJob());
+        $job_titled = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+        $act_repo = new ActionRepository();
+        $type = $act_repo->searchType("Nouveau contrat");
+        $desc = "Nouveau contrat pour " . $candidate->getCompleteName()
+                . " au poste de " . $job_titled;
+
+        $act = Action::create(                                                                  // Creating the action
+            $_SESSION["user"]->getId(), 
+            $type->getId(),
+            $desc
+        );          
+        $act_repo->writeLogs($act);                                                             // Registering the action in logs
+
+        AlertsManipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'La contrat a été ajouté avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
+    /**
+     * Public method registering a new offre in the database
+     * 
+     * @param int $key_candidate The candidate's primary key
+     * @param ?int $key_application The primary key of the application
+     * @return void
+     */
+    public function inscriptOffer(int $key_candidate, ?int $key_application = null): void {
+        if(!empty($key_application)) {
+            $app_repo = new ApplicationRepository();
+            $app_repo->accept($key_application);                                            // Accepting the application
+        }
+
+        $offer = Contract::create(                                                          // Creating the offer
+            $key_candidate, 
+            (int) $_POST["job"],
+            (int) $_POST["service"],
+            (int) $_POST["establishment"],
+            (int) $_POST["type_of_contrat"],
+            $_POST["start_date"],
+            $_POST["end_date"] ?? null,
+            (int) $_POST["salary"] ?? null,
+            (int) $_POST["hourly_rate"] ?? null,
+            (bool) !empty($_POST["night_work"]) ?? false,
+            (bool) !empty($_POST["wk_work"]) ?? false
+        );
+
+        (new ContractRepository())->inscript($offer);                                       // Registering the offer
+
+        $candidate = (new CandidateRepository())->get($key_candidate);                      // Fetching the candidate
+
+        $job = (new JobRepository())->get($offer->getJob());
+        $job_titled = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+        $act_repo = new ActionRepository();
+        $type = $act_repo->searchType("Nouvelle proposition");
+        $desc = "Nouvelle proposition de contrat pour " . strtoupper($candidate->getName()) 
+                . " " . FormsManip::nameFormat($candidate->getFirstname()) 
+                . " au poste de " . $job_titled;
+
+        $act = Action::create(                                                              // Creating the action
+            $_SESSION["user"]->getId(), 
+            $type->getId(),
+            $desc
+        );          
+
+        $act_repo->writeLogs($act);                                                         // Registering the action in logs
+
+        AlertsManipulation::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'La proposition a été ajoutée avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
     }
     /**
      * Public method creating and registering a new application
@@ -510,60 +640,6 @@ class CandidatesController extends Controller {
             "title" => "Action enregistrée",
             "msg" => "La candidature a été ajoutée avec succès.",
             "direction" => APP_PATH . "/candidates/" . $key_candidate
-        ]);
-    }
-    /**
-     * Public method registering a new offre in the database
-     * 
-     * @param int $key_candidate The candidate's primary key
-     * @param ?int $key_application The primary key of the application
-     * @return void
-     */
-    public function inscriptOffer(int $key_candidate, ?int $key_application = null): void {
-        if(!empty($key_application)) {
-            $app_repo = new ApplicationRepository();
-            $app_repo->accept($key_application);                                            // Accepting the application
-        }
-
-        $offer = Contract::create(                                                          // Creating the offer
-            $key_candidate, 
-            (int) $_POST["job"],
-            (int) $_POST["service"],
-            (int) $_POST["establishment"],
-            (int) $_POST["type_of_contrat"],
-            $_POST["start_date"],
-            $_POST["end_date"] ?? null,
-            (int) $_POST["salary"] ?? null,
-            (int) $_POST["hourly_rate"] ?? null,
-            (bool) !empty($_POST["night_work"]) ?? false,
-            (bool) !empty($_POST["wk_work"]) ?? false
-        );
-
-        (new ContractRepository())->inscript($offer);                                       // Registering the offer
-
-        $candidate = (new CandidateRepository())->get($key_candidate);                      // Fetching the candidate
-
-        $job = (new JobRepository())->get($offer->getJob());
-        $job_titled = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
-
-        $act_repo = new ActionRepository();
-        $type = $act_repo->searchType("Nouvelle proposition");
-        $desc = "Nouvelle proposition de contrat pour " . strtoupper($candidate->getName()) 
-                . " " . FormsManip::nameFormat($candidate->getFirstname()) 
-                . " au poste de " . $job_titled;
-
-        $act = Action::create(                                                              // Creating the action
-            $_SESSION["user"]->getId(), 
-            $type->getId(),
-            $desc
-        );          
-
-        $act_repo->writeLogs($act);                                                         // Registering the action in logs
-
-        AlertsManipulation::alert([
-            'title' => 'Action enregistrée',
-            'msg' => 'La proposition a été ajoutée avec succès.',
-            'direction' => APP_PATH . "/candidates/" . $key_candidate
         ]);
     }
     /**
@@ -672,9 +748,7 @@ class CandidatesController extends Controller {
      * @param int $key_candidate The candidate's primary key
      * @return void
      */
-    public function editRating(int $key_candidate): void {
-        $this->View->displayEditRatings((new CandidateRepository())->get($key_candidate));
-    }
+    public function editRating(int $key_candidate): void { $this->View->displayEditRatings((new CandidateRepository())->get($key_candidate)); }
     /**
      * Public method displaying the edit meeting HTML form
      * 
