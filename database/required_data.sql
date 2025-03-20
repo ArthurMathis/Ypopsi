@@ -24,7 +24,7 @@ INSERT INTO Features (Titled, Description) VALUES
 
     ("Gestion contrat", "Fonctionnalité permettant l'acceptation et le refus de contrat."),
     ("Gestion offre", "Fonctionnalité permettant l'acceptation et le refus d'offres."),
-    ("Gestion candidature", "Fonctionnalité permettant l'acceptation et le refus de candidature."),
+    ("Gestion candidature", "Fonctionnalité permettant l'acceptation et le refus de candidature.")
 
     -- Users --
 
@@ -810,42 +810,48 @@ INSERT INTO Types_of_contracts (Titled, Description) VALUES
     ("Interim", "Mission réalisé par un prestatère"),
     ("vacation", "Mission réalisée par un vacataire")
 ;
-INSERT INTO sources (Titled) VALUES 
-    ("1termed"),
-    ("Adecco"),
-    ("Appel Médical"),
-    ("Camo Gémo"),
-    ("Contact Fondation"),
-    ("Crit"),
-    ("Domino RH"),
-    ("Duo Santé"),
-    ("Email"), 
-    ("Ergalis"),
-    ("France Travail"),
-    ("Indeed"),
-    ("Jobergroup"),
-    ("Job Dating"),
-    ("Job Fondation"),
-    ("Job Médical"),
-    ("JPL Interim"),
-    ("Harry Hope"),
-	("Hellowork"), 
-    ("Hublo"),
-    ("Les experts de l\emploi"),
-    ("LinkedIn"),
-    ("LHH Recruitment Solutions"),
-    ("Madeline Recrutement"),
-    ("Manpower"),
-    ("Menway"),
-    ("Profil Santé"),
-    ("Recommandée"),
-    ("Salon Emploi Formation"),
-    ("Satis TT"),
-    ("Sourcing"),
-    ("Spontanée"),
-    ("Talent Santé"),
-    ("Téléphone"),
-    ("Vitalis")
+INSERT INTO Types_of_sources (Titled) VALUEs 
+    ("Autre"),
+    ("Interne"),
+    ("Interim"),
+    ("Platerfome")
+;
+INSERT INTO Sources (Titled, Key_Types_of_sources) VALUES 
+    ("1termed", 3),
+    ("Adecco", 3),
+    ("Appel Médical", 3),
+    ("Camo Gémo", 3),
+    ("Contact Fondation", 2),
+    ("Crit", 3),
+    ("Domino RH", 3),
+    ("Duo Santé", 3),
+    ("Email", 1), 
+    ("Ergalis", 3),
+    ("France Travail", 4),
+    ("Indeed", 4),
+    ("Jobergroup", 3),
+    ("Job Dating", 4),
+    ("Job Fondation", 2),
+    ("Job Médical", 4),
+    ("JPL Interim", 3),
+    ("Harry Hope", 3),
+	("Hellowork", 2), 
+    ("Hublo", 2),
+    ("Les experts de l\emploi", 2),
+    ("LinkedIn",2 ),
+    ("LHH Recruitment Solutions", 3),
+    ("Madeline Recrutement", 3),
+    ("Manpower", 3),
+    ("Menway", 3),
+    ("Profil Santé", 3),
+    ("Recommandée", 1),
+    ("Salon Emploi Formation", 4),
+    ("Satis TT", 3),
+    ("Sourcing", 1),
+    ("Spontanée", 1),
+    ("Talent Santé", 3),
+    ("Téléphone", 1),
+    ("Vitalis", 3)
 ;   
 INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES 
     ("Aide soignant D.E.", TRUE, "A.S."),

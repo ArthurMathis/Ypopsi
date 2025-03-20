@@ -24,6 +24,8 @@ class ApplicationsView extends View {
         include BARRES.DS.'applications.php';
         $this->getListItems($title, $items, $nb_items_max ? $nb_items_max : null, 'main-liste');
 
+        // todo : ajout d'un array de critère : [ index de la colonne ; array du code couleu [ valeur de détection ; class du code couelur ] ]
+
         $this->generateCommonFooter();
     }
 }

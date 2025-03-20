@@ -1,11 +1,9 @@
 .liste_items .table-wrapper table th:first-of-type, 
-.liste_items .table-wrapper table th:nth-of-type(7), 
-.liste_items .table-wrapper table th:nth-of-type(8) {
+.liste_items .table-wrapper table th:nth-of-type(7) {
     padding-left: calc(var(--gap) +  4px);
 }
 .liste_items .table-wrapper table th:first-of-type::before, 
-.liste_items .table-wrapper table th:nth-of-type(7)::before, 
-.liste_items .table-wrapper table th:nth-of-type(8)::before {
+.liste_items .table-wrapper table th:nth-of-type(7)::before {
     content: "";
     position: absolute;
     left: var(--big-radius);
@@ -20,20 +18,18 @@
     transform: translateY(-50%);
 }
 .liste_items .table-wrapper table tbody tr.en-attente th:first-of-type::before, 
-.liste_items .table-wrapper table tbody tr.hublo th:nth-of-type(7)::before {
+.liste_items .table-wrapper table tbody tr.interim th:nth-of-type(7)::before {
     background-color: var(--color2);
 }
 .liste_items .table-wrapper table tbody tr.non-traitee th:first-of-type::before, 
-.liste_items .table-wrapper table tbody tr.hellowork th:nth-of-type(7)::before {
+.liste_items .table-wrapper table tbody tr.plateforme th:nth-of-type(7)::before {
     background-color: var(--color4);
 }
 .liste_items .table-wrapper table tbody tr.acceptee th:first-of-type::before, 
-.liste_items .table-wrapper table tbody tr.email th:nth-of-type(7)::before, 
-.liste_items .table-wrapper table tbody tr.date_future th:nth-of-type(8)::before {
+.liste_items .table-wrapper table tbody tr.other th:nth-of-type(7)::before {
     background-color: var(--color3);
 }
 .liste_items .table-wrapper table tbody tr.refusee th:first-of-type::before, 
-.liste_items .table-wrapper table tbody tr.telephone th:nth-of-type(7)::before, 
-.liste_items .table-wrapper table tbody tr th:nth-of-type(8)::before {
+.liste_items .table-wrapper table tbody tr.interned th:nth-of-type(7)::before {
     background-color: var(--color5);
 }

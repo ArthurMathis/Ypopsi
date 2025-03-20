@@ -83,7 +83,7 @@ try {
 
     // * PREFERENCES * //
     //// PROFILE ////
-    $router->addRoute("/preferences/{user}", PreferencesController::class, "display", );
+    $router->addRoute("/preferences/{user}", PreferencesController::class, "display");
     $router->addRoute("/preferences/logs/{user}", PreferencesController::class, "displayUserLogs");
     $router->addRoute("/preferences/logs/actions/{user}", PreferencesController::class, "displayUserLogsActions");
 

@@ -299,25 +299,116 @@ use App\Core\Middleware\AuthMiddleware;
                 class  : 'refusee'
             }
         ], 0);
+        // todo
         listManipulation.setColor(candidatures, [
             {
-                content: 'Email',
-                class  : 'email'
-            },
-            {
-                content: 'Hellowork',
-                class  : 'hellowork'
-            },
-            {
-                content: 'Hublo',
-                class  : 'hublo'
-            },
-            {
-                content: 'Téléphone',
-                class  : 'telephone'
+                content: "1termed",
+                class  : "interim"
+            },           
+            {   content : "Adecco",
+                class: "interim"
+            },            
+            {   content : "Appel Médical",
+                class: "interim"
+            },            
+            {   content : "Camo Gémo",
+                class: "interim"
+            },            
+            {   content : "Contact Fondation",
+                class: "interned"
+            },            
+            {   content : "Crit",
+                class: "interim"
+            },            
+            {   content : "Domino RH",
+                class: "interim"
+            },            
+            {   content : "Duo Santé",
+                class: "interim"
+            },            
+            {   content : "Email",
+                class: "other"
+            },            
+            {   content : "Ergalis",
+                class: "interim"
+            },            
+            {   content : "France Travail",
+                class: "plateforme"
+            },            
+            {   content : "Indeed",
+                class: "plateforme"
+            },            
+            {   content : "Jobergroup",
+                class: "interim"
+            },            
+            {   content : "Job Dating",
+                class: "plateforme"
+            },            
+            {   content : "Job Fondation",
+                class: "interned"
+            },            
+            {   content : "Job Médical",
+                class: "plateforme"
+            },            
+            {   content : "JPL Interim",
+                class: "interim"
+            },            
+            {   content : "Harry Hope",
+                class: "interim"
+            },            
+            {   content : "Hellowork",
+                class: "interned"
+            },            
+            {   content : "Hublo",
+                class: "interned"
+            },            
+            {   content : "Les experts de lemploi",
+                class: "interned"
+            },            
+            {   content : "LinkedIn",
+                class: "interned"
+            },            
+            {   content : "LHH Recruitment Solutions",
+                class: "interim"
+            },            
+            {   content : "Madeline Recrutement",
+                class: "interim"
+            },            
+            {   content : "Manpower",
+                class: "interim"
+            },            
+            {   content : "Menway",
+                class: "interim"
+            },            
+            {   content : "Profil Santé",
+                class: "interim"
+            },            
+            {   content : "Recommandée",
+                class: "other"
+            },            
+            {   content : "Salon Emploi Formation",
+                class: "plateforme"
+            },            
+            {   content : "Satis TT",
+                class: "interim"
+            },            
+            {   content : "Sourcing",
+                class: "other"
+            },            
+            {   content : "Spontanée",
+                class: "other"
+            },            
+            {   content : "Talent Santé",
+                class: "interim"
+            },            
+            {   content : "Téléphone",
+                class: "other"
+            },            
+            {   content : "Vitalis",
+                class: "interim"
             }
         ], 6);
-        listManipulation.setColorAvailability(candidatures, 7);
+        // listManipulation.setColorAvailability(candidatures, 7);
 
         // * MANIPULATION DE LA LISTE * //
         const rechercher = document.getElementById('rechercher-button');

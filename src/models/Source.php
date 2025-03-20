@@ -10,14 +10,20 @@ class Source {
      * 
      * @param ?int $id The primary key of the source
      * @param string $id The title of the source
+     * @param ?int $type The type of the source
      * @throws SourceExceptions If any piece of inforation is invalid
      */
     public function __construct(
         protected ?int $id, 
-        protected string $titled
+        protected string $titled,
+        protected ?int $type
     ) {
         if(!empty($id) && $id <= 0) {
             throw new SourceExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
+        }
+
+        if(!empty($type) && $type <= 0) {
+            throw new SourceExceptions("Clé primaire du type de sources invalide : {$type}. Clé attendue strictement positive.");
         }
     }
 
@@ -34,7 +40,12 @@ class Source {
      * @return string
      */
     public function getTitled(): string { return $this->titled; }
-
+    /**
+     * Public method returning the type of the source
+     *
+     * @return ?int
+     */
+    public function getType(): ?int { return $this->type; }
 
     // * CONVERT * //
     /**
@@ -51,7 +62,8 @@ class Source {
 
         return new Source(
             $data['Id'],
-            $data['Titled']
+            $data['Titled'],
+            $data['Types_of_sources']
         );
     }
 
@@ -62,8 +74,9 @@ class Source {
      */
     public function toArray(): array {
         return array(
-            'id'          => $this->getId(),
-            'title'       => $this->getTitled()
+            'id'    => $this->getId(),
+            'title' => $this->getTitled(),
+            'type'  => $this->getType()
         );
     }
 }

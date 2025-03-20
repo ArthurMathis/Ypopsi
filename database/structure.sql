@@ -218,10 +218,18 @@ CREATE TABLE Involve (
   PRIMARY KEY (Key_Needs, Key_Qualifications)
 );
 
--- applications 
-CREATE TABLE Sources (
+-- Applications --
+CREATE TABLE Types_of_sources (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
   Titled VARCHAR(64) NOT NULL
+);
+CREATE TABLE Sources (
+  Id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  Titled VARCHAR(64) NOT NULL,
+
+  Key_Types_of_sources INTEGER DEFAULT NULL, 
+
+  FOREIGN KEY (Key_Types_of_sources) REFERENCES Types_of_sources(Id)
 );
 CREATE TABLE Applications (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
