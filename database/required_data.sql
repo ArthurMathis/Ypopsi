@@ -1,38 +1,72 @@
 -- Features Toggle --
-INSERT INTO Features (Titled, Description) VALUES 
-    ("Connexion", "Fonctionnalité permettant la connexion et la déconnexion des utilisateurs."),
+INSERT INTO Features (Id, Titled, Description) VALUES 
+    (1, "Connexion", "Fonctionnalité permettant la connexion et la déconnexion des utilisateurs."),
 
     -- Candidates -- 
-    ("Inscription candidat", "Fonctionnalité permettant l'ajout de nouveaux candidats."),
-    ("Inscription contrat", "Fonctionnalité permettant l'ajout de nouveaux contrats."),
-    ("Inscription offre", "Fonctionnalité permettant l'ajout de nouvelles offres d'emplois."),
-    ("Inscription candidature", "Fonctionnalité permettant l'ajout de nouvelles candidatures."),
-    ("Inscription rendez-vous", "Fonctionnalité permettant l'ajout de nouveaux rendez-vous."),
-    ("Inscription document", "Fonctionnalité permettant l'ajout de nouveaux documents."),
+    (2, "Affichage candidat", "Fonctionnalités permettant la consultation des profils candidats."),                             -- new --
+    (3, "Affichage candidats", "Fonctionnalités permettant la consultation de la liste des candidats."),                        -- new --
+    (4, "Affichage candiatures", "Fonctionnalités permettant la consultation de la liste des candidatures."),                   -- new --
 
-    ("Edition candidat", "Fonctionnalité permettant la mise à jour de candidats."),
-    ("Edition notation", "Fonctionnalité permettant la mise à jour de la notation des candidats."),
-    ("Edition contrat", "Fonctionnalité permettant la mise à jour de contrats."),
-    ("Edition offre", "Fonctionnalité permettant la mise à jour d'offres."),
-    ("Edition candidature", "Fonctionnalité permettant la mise à jour de candidatures."),
-    ("Edition rendez-vous", "Fonctionnalité permettant la mise à jour de rendez-vous."),
-    ("Edition documents", "Fonctionnalité permettant la mise à jour de documents."),
+    (5, "Inscription candidat", "Fonctionnalité permettant l'ajout de nouveaux candidats."),
+    (6, "Inscription contrat", "Fonctionnalité permettant l'ajout de nouveaux contrats."),
+    (7, "Inscription offre", "Fonctionnalité permettant l'ajout de nouvelles offres d'emplois."),
+    (8, "Inscription candidature", "Fonctionnalité permettant l'ajout de nouvelles candidatures."),
+    (9, "Inscription rendez-vous", "Fonctionnalité permettant l'ajout de nouveaux rendez-vous."),
+    (10, "Inscription document", "Fonctionnalité permettant l'ajout de nouveaux documents."),
 
-    ("Suppression candidat", "Fonctionnalité permettant la suppression de candidats."),
-    ("Suppression rendez-vous", "Fonctionnalité permettant la suppression de rendez-vous."),
-    ("Suppression documents", "Fonctionnalité permettant la suppression de documents."),
+    (11, "Edition candidat", "Fonctionnalité permettant la mise à jour de candidats."),
+    (12 ,"Edition notation", "Fonctionnalité permettant la mise à jour de la notation des candidats."),
+    (13, "Edition contrat", "Fonctionnalité permettant la mise à jour de contrats."),
+    (14, "Edition offre", "Fonctionnalité permettant la mise à jour d'offres."),
+    (15, "Edition candidature", "Fonctionnalité permettant la mise à jour de candidatures."),
+    (16, "Edition rendez-vous", "Fonctionnalité permettant la mise à jour de rendez-vous."),
+    (17, "Edition documents", "Fonctionnalité permettant la mise à jour de documents."),
 
-    ("Gestion contrat", "Fonctionnalité permettant l'acceptation et le refus de contrat."),
-    ("Gestion offre", "Fonctionnalité permettant l'acceptation et le refus d'offres."),
-    ("Gestion candidature", "Fonctionnalité permettant l'acceptation et le refus de candidature.")
+    (18, "Suppression candidat", "Fonctionnalité permettant la suppression de candidats."),
+    (19, "Suppression rendez-vous", "Fonctionnalité permettant la suppression de rendez-vous."),
+    (20, "Suppression documents", "Fonctionnalité permettant la suppression de documents."),
+
+    (21, "Gestion contrat", "Fonctionnalité permettant l'acceptation et le refus de contrat."),
+    (22, "Gestion offre", "Fonctionnalité permettant l'acceptation et le refus d'offres."),
+    (23, "Gestion candidature", "Fonctionnalité permettant l'acceptation et le refus de candidature."),
 
     -- Users --
-
+    (24, "Affichage utilisateur", "Fonctionnalité permettant la consultation des profils utilisateur."),                        -- new --
+    (25, "Affichage utilisateurs", "Fonctionnalité permettant la consultation de la liste des utilisateur."),                   -- new --
+    (26, "Affiche journal connexions", "Fonctionnalité permettant la consultation des journaux de connexions."),                -- new --
+    (27, "Affiche journal actions", "Fonctionnalité permettant la consultation des journaux d'actions."),                       -- new --
+    
+    (28, "Inscription utilisateur", "Fonctionnalité permettant l'ajout de nouveaux utilisateurs."),                             -- new --
+    (29, "Edition utilisateur", "Fonctionnalité permettant la mise à jour des utilisateurs."),                                  -- new --
+    (30, "Suppression utilisateur", "Fonctionnalité permettant la suppression des utilisateurs."),                              -- new --
 
     -- Recruitement --
+    (31, "Affichage emplois", "Fonctionnalité permettant la consultation de la liste des emplois."),                            -- new --
+    (32, "Affichage qualifications", "Fonctionnalité permettant la consultation de la liste des qualifications."),              -- new --
+    (33, "Affichage sources", "Fonctionnalité permettant la consultation de la liste des sources"),                             -- new --
+    
+    (34, "Inscription emplois", "Fonctionnalité permettant l'ajout de nouveaux emplois."),                                      -- new --
+    (35, "Inscription qualifications", "Fonctionnalité l'ajout de nouvelles qualifications."),                                  -- new --
+    (36, "Inscription sources", "Fonctionnalité permettant l'ajout de nouvelles sources."),                                     -- new --
 
+    (37, "Edition emplois", "Fonctionnalité permettant la mise à jour d'emplois."),                                             -- new --
+    (38, "Edition qualifications", "Fonctionnalité permettant la mise à jour de qualifications."),                              -- new --
+    (39, "Edition sources", "Fonctionnalité permettant la mise à jour de sources."),                                            -- new --
 
     -- Foundation --
+    (40, "Affichage services", "Fonctionnalité permettant la consultation de la liste des services"),                           -- new --
+    (41, "Affichage étabmissements", "Fonctionnalité permettant la consultation de la liste des établissements"),               -- new --
+    (42, "Affichage pôles", "Fonctionnalité permettant la consultation de la liste des pôles."),                                -- new --
+
+    (43, "Inscription services", "Fonctionnalité permettant l'ajout de services."),                                             -- new --
+    (44, "Inscription établissement", "Fonctionnalité permettant l'ajout d'établissement."),                                    -- new --
+    (45, "Inscription pôles", "Fonctionnalité permettant l'ajout de pôles."),                                                   -- new --
+
+    (46, "Edition services", "Fonctionnalité permettant la mise à jour de services."),                                          -- new --
+    (47, "Edition établissements", "Fonctionnalité permettant la mise à jour d'établissements."),                               -- new --
+    (48, "Edition pôles", "Fonctionnalité permettant la mise à jour de pôles."),                                                -- new --
+
+    (49, "Insertion données", "Fonctionnalité permettant l'insertion de données dans la base de données.")                      -- new --
 ;
 
 -- Fondation --
@@ -910,7 +944,6 @@ INSERT INTO Qualifications (Titled, MedicalStaff, Abreviation) VALUES
     ("Diplôme d'Etat d'Ergothérapeute", TRUE, NULL),
     ("Mention Complétaire Aide à Domicile", FALSE, "M.C.A.D.")
 ;
-
 
 -- Users --
 INSERT INTO Roles (Titled) VALUES
