@@ -28,7 +28,8 @@ class FeatureMiddleware {
             $feature = $feat_repo->get($obj);
 
             if(!$feature->getEnable()) {
-                throw new FeatureExceptions("La fonctionnalité <b>" . $feature->getTitled() . " a été temporairement désactivée</b>. Veuillez réessayer ultérieurement. <br>Si l'incident persiste, <b>contactez le support informatique</b>.");
+                throw new FeatureExceptions("La fonctionnalité <b>" . $feature->getTitled() 
+                . " a été temporairement désactivée</b>. Veuillez réessayer ultérieurement. <br>Si l'incident persiste, <b>contactez le support informatique</b>.");
             }
         }
     }
@@ -83,7 +84,7 @@ class FeatureMiddleware {
      *
      * @var int
      */
-    public static int $INSCRIPT_USER = 28, $EDIT_USER = 29, $DELETE_USER = 30;
+    public static int $INSCRIPT_USER = 28, $EDIT_USER = 29, $DELETE_USER = 30, $EDIT_PASSWORD = 50, $RESET_PASSWORD = 51;
 
     /**
      * Public static attribute containing the display recruitment features' primary key
@@ -102,7 +103,7 @@ class FeatureMiddleware {
      *
      * @var int
      */
-    public static int $EDIT_JOBS = 37, $EDIT_QUALIFICATIONS = 38, $EIDT_SOURCES = 39;
+    public static int $EDIT_JOBS = 37, $EDIT_QUALIFICATIONS = 38, $EDIT_SOURCES = 39;
 
     /**
      * Public static attribute containing the display foundation features' primary key
@@ -115,7 +116,7 @@ class FeatureMiddleware {
      *
      * @var int
      */
-    public static int $INSCRIPT_SERVICES = 43, $INSCRIPT_ESTABLISHMENTS = 44, $INSCRIPT_HUS = 45;
+    public static int $INSCRIPT_SERVICES = 43, $INSCRIPT_ESTABLISHMENTS = 44, $INSCRIPT_HUBS = 45;
     /**
      * Public static attribute containing the edit foundation features' primary key
      *

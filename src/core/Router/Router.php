@@ -61,6 +61,7 @@ class Router {
     /**
      * Public method launching the process to answer to the request
      * 
+     * @param bool $user_connected A boolean indacting is the user is connected or not
      * @throws RouterExceptions If the controller or the method are not declared
      * @return Void
      */

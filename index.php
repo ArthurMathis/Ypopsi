@@ -13,6 +13,8 @@ use App\Controllers\ApplicationsController;
 use App\Controllers\CandidatesController;
 use App\Controllers\PreferencesController;
 use App\Core\Middleware\FeatureMiddleware;
+use App\Models\Feature;
+use App\Views\PreferencesView;
 
 test_process();
 env_start();
@@ -83,64 +85,75 @@ try {
 
     // * PREFERENCES * //
     //// USERS ////
-    $router->addRoute("/preferences", PreferencesController::class, "display");                                                                                                                     // todo
-    $router->addRoute("/preferences/user", PreferencesController::class, "displayUsers", array(FeatureMiddleware::$DISPLAY_USERS), AuthMiddleware::$ADMIN);                                         // todo
-    $router->addRoute("/preferences/user/input", PreferencesController::class, "inputUser", array(FeatureMiddleware::$INSCRIPT_USER), AuthMiddleware::$ADMIN);                                      // todo
-    $router->addRoute("/preferences/user/inscript", PreferencesController::class, "inscriptUser", array(FeatureMiddleware::$INSCRIPT_USER), AuthMiddleware::$ADMIN);                                // todo
-    $router->addRoute("/preferences/user/edit/{user}", PreferencesController::class, "editUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$ADMIN);                                     // todo
-    $router->addRoute("/preferences/user/update/{user}", PreferencesController::class, "updateUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$ADMIN);                                 // todo
-    $router->addRoute("/preferences/user/profile/edit/{user}",PreferencesController::class, "editUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$USER);                               // todo
-    $router->addRoute("/preferences/user/profile/update/{user}",PreferencesController::class, "updateUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$USER);                           // todo
-    $router->addRoute("/preferences/users/new", PreferencesController::class, "displayNewUsers", array(FeatureMiddleware::$DISPLAY_USERS), AuthMiddleware::$ADMIN);                                 // todo
+    $router->addRoute("/preferences", PreferencesController::class, "display");                                                                                                                                 // todo
+    $router->addRoute("/preferences/user", PreferencesController::class, "displayUser", array(FeatureMiddleware::$DISPLAY_USERS), AuthMiddleware::$ADMIN);                                                      // todo
+    $router->addRoute("/preferences/users/new", PreferencesController::class, "displayNewUser", array(FeatureMiddleware::$DISPLAY_USERS), AuthMiddleware::$ADMIN);                                              // todo
+    $router->addRoute("/preferences/user/input", PreferencesController::class, "inputUser", array(FeatureMiddleware::$INSCRIPT_USER), AuthMiddleware::$ADMIN);                                                  // todo
+    $router->addRoute("/preferences/user/inscript", PreferencesController::class, "inscriptUser", array(FeatureMiddleware::$INSCRIPT_USER), AuthMiddleware::$ADMIN);                                            // todo
+    $router->addRoute("/preferences/user/edit/{user}", PreferencesController::class, "editUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$ADMIN);                                                 // todo
+    $router->addRoute("/preferences/user/update/{user}", PreferencesController::class, "updateUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$ADMIN);                                             // todo
+    $router->addRoute("/preferences/user/reset_password/{user}", PreferencesController::class, "resetPassword", array(FeatureMiddleware::$RESET_PASSWORD), AuthMiddleware::$ADMIN);                             // todo
+
+    //// PROFILE ////
+    $router->addRoute("/preferences/user/profile/{user}", PreferencesController::class, "displayProfile", array(FeatureMiddleware::$DISPLAY_USER));                                                             // todo
+    $router->addRoute("/preferences/user/profile/edit/{user}", PreferencesController::class, "editUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$USER);                                          // todo
+    $router->addRoute("/preferences/user/profile/update/{user}", PreferencesController::class, "updateUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$USER);                                      // todo
+    $router->addRoute("/preferences/user/profile/password/edit/user", PreferencesController::class, "editPassword", array(FeatureMiddleware::$EDIT_PASSWORD));                                                  // todo
+    $router->addRoute("/preferences/user/profile/password/update/user", PreferencesController::class, "editPassword", array(FeatureMiddleware::$EDIT_PASSWORD));                                                // todo
     
     //// LOGS ////
-    $router->addRoute("/preferences/{user}", PreferencesController::class, "display");
-    $router->addRoute("/prefrences/logs", PreferencesController::class, "displayLogs", null, AuthMiddleware::$ADMIN);
-    $router->addRoute("/preferences/logs/{user}", PreferencesController::class, "displayUserLogs");
-    $router->addRoute("/prefrences/logs/actions", PreferencesController::class, "displayLogsActions", null, AuthMiddleware::$ADMIN);
-    $router->addRoute("/preferences/logs/actions/{user}", PreferencesController::class, "displayUserLogsActions");
+    $router->addRoute("/prefrences/logs", PreferencesController::class, "displayLog", array(FeatureMiddleware::$DISPLAY_CONNEXIONS), AuthMiddleware::$ADMIN);                                                   // todo
+    $router->addRoute("/preferences/logs/{user}", PreferencesController::class, "displayUserLog", array(FeatureMiddleware::$DISPLAY_CONNEXIONS));                                                               // todo
+    $router->addRoute("/prefrences/logs/actions", PreferencesController::class, "displayLogAction", array(FeatureMiddleware::$DISPLAY_ACTIONS), AuthMiddleware::$ADMIN);                                        // todo
+    $router->addRoute("/preferences/logs/actions/{user}", PreferencesController::class, "displayUserLogAction", array(FeatureMiddleware::$DISPLAY_ACTIONS));                                                    // todo
 
     //// JOBS ////
-    $router->addRoute("/preferences/jobs", PreferencesController::class, "displayJobs");
-    $router->addRoute("/preferences/jobs/input", PreferencesController::class, "inputJob");
-    $router->addRoute("/preferences/jobs/inscript", PreferencesController::class, "inscriptJob");
-    $router->addRoute("/preferences/jobs/edit/{job}", PreferencesController::class, "editJob");
-    $router->addRoute("/preferences/jobs/update/{job}", PreferencesController::class, "updateJob");
+    $router->addRoute("/preferences/jobs", PreferencesController::class, "displayJobs", array(FeatureMiddleware::$DISPLAY_JOBS), AuthMiddleware::$USER);                                                        // todo
+    $router->addRoute("/preferences/jobs/input", PreferencesController::class, "inputJob", array(FeatureMiddleware::$INSCRIPT_JOBS), AuthMiddleware::$MODERATOR);                                               // todo
+    $router->addRoute("/preferences/jobs/inscript", PreferencesController::class, "inscriptJob", array(FeatureMiddleware::$INSCRIPT_JOBS), AuthMiddleware::$MODERATOR);                                         // todo
+    $router->addRoute("/preferences/jobs/edit/{job}", PreferencesController::class, "editJob", array(FeatureMiddleware::$EDIT_JOBS), AuthMiddleware::$MODERATOR);                                               // todo
+    $router->addRoute("/preferences/jobs/update/{job}", PreferencesController::class, "updateJob", array(FeatureMiddleware::$EDIT_JOBS), AuthMiddleware::$MODERATOR);                                           // todo
 
     //// QUALIFICATIONS ////
-    $router->addRoute("/preferences/qualifications", PreferencesController::class, "displayQualifications");
-    $router->addRoute("/preferences/qualifications/input", PreferencesController::class, "inputQualification");
-    $router->addRoute("/preferences/qualifications/inscript", PreferencesController::class, "inscriptQualification");
-    $router->addRoute("/preferences/qualifications/edit/{qualification}", PreferencesController::class, "editQualification");
-    $router->addRoute("/preferences/qualifications/update/{qualification}", PreferencesController::class, "updateQualification");
+    $router->addRoute("/preferences/qualifications", PreferencesController::class, "displayQualifications", array(FeatureMiddleware::$DISPLAY_QUALIFICATIONS), AuthMiddleware::$USER);                          // todo
+    $router->addRoute("/preferences/qualifications/input", PreferencesController::class, "inputQualification", array(FeatureMiddleware::$INSCRIPT_QUALIFICATIONS), AuthMiddleware::$MODERATOR);                 // todo
+    $router->addRoute("/preferences/qualifications/inscript", PreferencesController::class, "inscriptQualification", array(FeatureMiddleware::$INSCRIPT_QUALIFICATIONS), AuthMiddleware::$MODERATOR);           // todo
+    $router->addRoute("/preferences/qualifications/edit/{qualification}", PreferencesController::class, "editQualification", array(FeatureMiddleware::$EDIT_QUALIFICATIONS), AuthMiddleware::$MODERATOR);       // todo
+    $router->addRoute("/preferences/qualifications/update/{qualification}", PreferencesController::class, "updateQualification", array(FeatureMiddleware::$EDIT_QUALIFICATIONS), AuthMiddleware::$MODERATOR);   // todo
 
     //// SOURCES ////
-    $router->addRoute("preferences/sources", PreferencesController::class, "displaySources");
-    $router->addRoute("preferences/sources/input", PreferencesController::class, "inputSource");
-    $router->addRoute("preferences/sources/inscript", PreferencesController::class, "inscriptSource");
-    $router->addRoute("preferences/sources/edit/{source}", PreferencesController::class, "editSource");
-    $router->addRoute("preferences/sources/update/{source}", PreferencesController::class, "updateSource");
+    $router->addRoute("preferences/sources", PreferencesController::class, "displaySources", array(FeatureMiddleware::$DISPLAY_SOURCES), AuthMiddleware::$USER);                                                // todo
+    $router->addRoute("preferences/sources/input", PreferencesController::class, "inputSource", array(FeatureMiddleware::$INSCRIPT_SOURCES), AuthMiddleware::$MODERATOR);                                       // todo
+    $router->addRoute("preferences/sources/inscript", PreferencesController::class, "inscriptSource", array(FeatureMiddleware::$INSCRIPT_SOURCES), AuthMiddleware::$MODERATOR);                                 // todo
+    $router->addRoute("preferences/sources/edit/{source}", PreferencesController::class, "editSource", array(FeatureMiddleware::$EDIT_SOURCES), AuthMiddleware::$MODERATOR);                                    // todo
+    $router->addRoute("preferences/sources/update/{source}", PreferencesController::class, "updateSource", array(FeatureMiddleware::$EDIT_SOURCES), AuthMiddleware::$MODERATOR);                                // todo
 
     //// SERVICES ////
-    $router->addRoute("/preferences/services", PreferencesController::class, "displayServices");
-    $router->addRoute("/preferences/services/input", PreferencesController::class, "inputService");
-    $router->addRoute("/preferences/services/inscript", PreferencesController::class, "inscriptService");
-    $router->addRoute("/preferences/services/edit/{service}", PreferencesController::class, "editService");
-    $router->addRoute("/preferences/services/update/{service}", PreferencesController::class, "updateService");
+    $router->addRoute("/preferences/services", PreferencesController::class, "displayServices", array(FeatureMiddleware::$DISPLAY_SERVICES), AuthMiddleware::$USER);                                            // todo
+    $router->addRoute("/preferences/services/input", PreferencesController::class, "inputService", array(FeatureMiddleware::$INSCRIPT_SERVICES), AuthMiddleware::$MODERATOR);                                   // todo
+    $router->addRoute("/preferences/services/inscript", PreferencesController::class, "inscriptService", array(FeatureMiddleware::$INSCRIPT_SERVICES), AuthMiddleware::$MODERATOR);                             // todo
+    $router->addRoute("/preferences/services/edit/{service}", PreferencesController::class, "editService", array(FeatureMiddleware::$EDIT_SERVICES), AuthMiddleware::$MODERATOR);                               // todo
+    $router->addRoute("/preferences/services/update/{service}", PreferencesController::class, "updateService", array(FeatureMiddleware::$EDIT_SERVICES), AuthMiddleware::$MODERATOR);                           // todo
 
     //// ESTABLISHMENTS ////
-    $router->addRoute("/preferences/establishments", PreferencesController::class, "displayEstablishments");
-    $router->addRoute("/preferences/esteblishments/input", PreferencesController::class, "inputEstablishment");
-    $router->addRoute("/preferences/establishments/inscript", PreferencesController::class, "inscriptEstablishment");
-    $router->addRoute("/preferences/establishments/edit/{establishment}", PreferencesController::class, "editEstablishment");
-    $router->addRoute("/preferences/establishments/update{establishment}", PreferencesController::class, "updateEstablishment");
+    $router->addRoute("/preferences/establishments", PreferencesController::class, "displayEstablishments", array(FeatureMiddleware::$DISPLAY_ESTABLISHMENTS), AuthMiddleware::$USER);                          // todo
+    $router->addRoute("/preferences/esteblishments/input", PreferencesController::class, "inputEstablishment", array(FeatureMiddleware::$INSCRIPT_ESTABLISHMENTS), AuthMiddleware::$MODERATOR);                 // todo
+    $router->addRoute("/preferences/establishments/inscript", PreferencesController::class, "inscriptEstablishment", array(FeatureMiddleware::$INSCRIPT_ESTABLISHMENTS), AuthMiddleware::$MODERATOR);           // todo
+    $router->addRoute("/preferences/establishments/edit/{establishment}", PreferencesController::class, "editEstablishment", array(FeatureMiddleware::$EDIT_ESTABLISHMENTS), AuthMiddleware::$MODERATOR);       // todo
+    $router->addRoute("/preferences/establishments/update{establishment}", PreferencesController::class, "updateEstablishment", array(FeatureMiddleware::$EDIT_ESTABLISHMENTS), AuthMiddleware::$MODERATOR);    // todo
 
     //// HUBS ////
-    $router->addRoute("/preferences/hubs", PreferencesController::class, "displayHubs");
-    $router->addRoute("/preferences/hubs/input", PreferencesController::class, "inputHub");
-    $router->addRoute("/preferences/hubs/inscript", PreferencesController::class, "inscriptHub");
-    $router->addRoute("/preferences/hubs/edit/{hub}", PreferencesController::class, "editHub");
-    $router->addRoute("/preferences/hubs/update/{hub}", PreferencesController::class, "updateHub");
+    $router->addRoute("/preferences/hubs", PreferencesController::class, "displayHubs", array(FeatureMiddleware::$DISPLAY_HUBS), AuthMiddleware::$USER);                                                        // todo
+    $router->addRoute("/preferences/hubs/input", PreferencesController::class, "inputHub", array(FeatureMiddleware::$INSCRIPT_HUBS), AuthMiddleware::$MODERATOR);                                               // todo
+    $router->addRoute("/preferences/hubs/inscript", PreferencesController::class, "inscriptHub", array(FeatureMiddleware::$INSCRIPT_HUBS), AuthMiddleware::$MODERATOR);                                         // todo
+    $router->addRoute("/preferences/hubs/edit/{hub}", PreferencesController::class, "editHub", array(FeatureMiddleware::$EDIT_HUBS), AuthMiddleware::$MODERATOR);                                               // todo
+    $router->addRoute("/preferences/hubs/update/{hub}", PreferencesController::class, "updateHub", array(FeatureMiddleware::$EDIT_HUBS), AuthMiddleware::$MODERATOR);                                           // todo
+
+    //// OTHERS ////
+    $router->addRoute("/preferences/xlsxLoader", PreferencesController::class, "dispalyXlsxLoader", null, AuthMiddleware::$OWNER);                                                                              // todo
+    $router->addRoute("/prefrences/xlsxLoader/run", PreferencesController::class, "insertData", null, AuthMiddleware::$OWNER);                                                                                  // todo
+    $router->addRoute("/preferences/features_toggles", PreferencesController::class, "displayFeaturesToggles", null, AuthMiddleware::$OWNER);                                                                   // todo
+    $router->addRoute("/preferences/features_toggles/update/{feature}", PreferencesController::class, "updateFeature", null, AuthMiddleware::$OWNER);                                                           // todo
 
     $router->dispatch($user_connected);
 

@@ -66,7 +66,10 @@ INSERT INTO Features (Id, Titled, Description) VALUES
     (47, "Edition établissements", "Fonctionnalité permettant la mise à jour d'établissements."),                               -- new --
     (48, "Edition pôles", "Fonctionnalité permettant la mise à jour de pôles."),                                                -- new --
 
-    (49, "Insertion données", "Fonctionnalité permettant l'insertion de données dans la base de données.")                      -- new --
+    (49, "Insertion données", "Fonctionnalité permettant l'insertion de données dans la base de données."),                     -- new --
+
+    (50, "Gestion mot de passe", "Fonctionnalité permettant aux utilisateurs de modifier leur mot de passe"),                   -- new --
+    (51, "Réinitialisation mot de passe", "Fonctionnalité permettant aux administrateurs de réinitialiser les mots de passes")  -- new --
 ;
 
 -- Fondation --
