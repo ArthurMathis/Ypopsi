@@ -18,7 +18,7 @@ class PreferencesController extends Controller {
      * @param int $key_user The user's primary key
      * @return void
      */
-    public function display(int $key_user): void {
+    public function display(): void {
         $this->View->display();
     }
 }

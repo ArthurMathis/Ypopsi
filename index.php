@@ -13,8 +13,7 @@ use App\Controllers\ApplicationsController;
 use App\Controllers\CandidatesController;
 use App\Controllers\PreferencesController;
 use App\Core\Middleware\FeatureMiddleware;
-use App\Models\Feature;
-use App\Views\PreferencesView;
+use App\Exceptions\FeatureExceptions;
 
 test_process();
 env_start();
@@ -157,9 +156,18 @@ try {
 
     $router->dispatch($user_connected);
 
+} catch(FeatureExceptions $fe) {
+    AlertsManipulation::alert([
+        "title"         => "Fonctionnalité indisponible",
+        "msg"           => $fe,
+        "confirm"       => true,
+        "confirmButton" => "Contacter le support",
+        "deleteButton"  => "Retour",
+        "direction"     => 'mailto:' . getenv("APP_SUPPORT")
+    ]);
 } catch(Exception $e) {
     FormsManip::error_alert([
-        'msg'       => $e,
-        'direction' => APP_PATH
+        "msg"       => $e,
+        "direction" => APP_PATH
     ]);
 }

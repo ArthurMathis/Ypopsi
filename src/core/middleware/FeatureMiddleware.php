@@ -10,7 +10,7 @@ use App\Repository\FeatureRepository;
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
 class FeatureMiddleware {
-        // * REQUEST * //
+    // * REQUEST * //
     /**
      * Public static method handle a url request and checking if the feature is enable or not
      *
@@ -27,7 +27,7 @@ class FeatureMiddleware {
         foreach($key_features as $obj) {
             $feature = $feat_repo->get($obj);
 
-            $error = "La fonctionnalité : '<b>" . $feature->getTitled() . "</b>' a été temporairement désactivée. Veuillez réessayer ultérieurement.<br>Si l'incident persiste, <b>contactez le support informatique</b> via l'adresse : <a href=\"mailto:" . getenv("APP_SUPPORT") . "\">" . getenv("APP_SUPPORT") . "</a>";
+            $error = "La fonctionnalité : '<b>" . $feature->getTitled() . "</b>' a été temporairement désactivée. Veuillez réessayer ultérieurement.";
 
             if(!$feature->getEnable()) {
                 throw new FeatureExceptions($error);

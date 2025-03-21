@@ -10,9 +10,7 @@ class PreferencesView extends View {
      *
      * @return void
      */
-    public function display(): void {
-        $tab = "home";
-
+    public function display(string $tab = null): void {
         $this->generateCommonHeader('Préférences', [PAGES_STYLES.DS.'preferences.css']);
         $this->generateMenu(false, PREFERENCES);
 

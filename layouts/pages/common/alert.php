@@ -65,6 +65,12 @@
 </script>
 
 <style>
+    .notification {
+        width: 560px;
+    }
+    .notification-actions {
+        margin: 1.25em auto;
+    }
     .custom-actions {
         display: flex;
         justify-content: center;
