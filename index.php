@@ -85,9 +85,9 @@ try {
 
     // * PREFERENCES * //
     //// USERS ////
-    $router->addRoute("/preferences", PreferencesController::class, "display");                                                                                                                                 // todo
+    $router->addRoute("/preferences", PreferencesController::class, "display");                                                                                                                                  // todo
     $router->addRoute("/preferences/users", PreferencesController::class, "displayUser", array(FeatureMiddleware::$DISPLAY_USERS), AuthMiddleware::$ADMIN);                                                      // todo
-    $router->addRoute("/preferences/users/new", PreferencesController::class, "displayNewUser", array(FeatureMiddleware::$DISPLAY_USERS), AuthMiddleware::$ADMIN);                                              // todo
+    $router->addRoute("/preferences/users/new", PreferencesController::class, "displayNewUser", array(FeatureMiddleware::$DISPLAY_USERS), AuthMiddleware::$ADMIN);                                               // todo
     $router->addRoute("/preferences/users/input", PreferencesController::class, "inputUser", array(FeatureMiddleware::$INSCRIPT_USER), AuthMiddleware::$ADMIN);                                                  // todo
     $router->addRoute("/preferences/users/inscript", PreferencesController::class, "inscriptUser", array(FeatureMiddleware::$INSCRIPT_USER), AuthMiddleware::$ADMIN);                                            // todo
     $router->addRoute("/preferences/users/edit/{user}", PreferencesController::class, "editUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$ADMIN);                                                 // todo
@@ -157,14 +157,6 @@ try {
 
     $router->dispatch($user_connected);
 
-} catch(LoginExceptions $le) {
-    AlertsManipulation::alert([
-        "title"         => "Erreur de connexion",
-        "msg"           => $le->getMessage(),
-        "icon"          => "error",
-        "button"        => true,
-        "direction"     => APP_PATH . "/login/get"
-    ]);
 } catch(FeatureExceptions $fe) {
     AlertsManipulation::alert([
         "title"         => "Fonctionnalité indisponible",

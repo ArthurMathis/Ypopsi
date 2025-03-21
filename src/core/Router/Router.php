@@ -2,6 +2,7 @@
 
 namespace App\Core\Router;
 
+use App\Controllers\LoginController;
 use App\Core\Router\Route;
 use App\Exceptions\RouterExceptions;
 use App\Core\Middleware\AuthMiddleware;
@@ -80,6 +81,10 @@ class Router {
             header("location: " . APP_PATH . "/login/get");
         }
 
+        if($user_connected) {
+            LoginController::updateConnectionTime();
+        }
+        
         foreach($this->routes as $route => $target) {
             $routePattern = preg_replace("/\{[^\}]+\}/", "([^/]+)", $route);
 

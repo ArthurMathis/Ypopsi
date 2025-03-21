@@ -19,7 +19,7 @@ use App\Core\Middleware\AuthMiddleware;
 
         <content>
             <a 
-                href="<?= APP_PATH ?>/preferences/user/profile/<?= $_SESSION["user"]->getId() ?>"
+                href="<?= APP_PATH ?>/preferences/users/profile/<?= $_SESSION["user"]->getId() ?>"
 
                 <?php if($tab === "home"): ?>
                     class="selected"

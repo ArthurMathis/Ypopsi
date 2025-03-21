@@ -7,6 +7,8 @@ use App\Repository\UserRepository;
 use App\Models\Action;
 use App\Repository\ActionRepository;
 use App\Repository\RoleRepository;
+use App\Core\Moment;
+use App\Exceptions\LoginExceptions;
 
 /**
  * Class representing the login controller
@@ -39,6 +41,8 @@ class LoginController extends Controller {
             $_POST['identifiant'], 
             $_POST['motdepasse']
         );
+
+        LoginController::initConnectionTime();
 
         $role_repo = new RoleRepository();
         $role = $role_repo->get($_SESSION['user']->getRole());
@@ -79,4 +83,27 @@ class LoginController extends Controller {
 
         header("Location: " . APP_PATH . "/login/get");
     }
+
+    // *  CONECTION TIME * //
+    public static function getConnectionTime(): int {
+        return $_SESSION["connection_timestamp"];
+    }
+    public static function setConnectionTime(int $time): void {
+        $_SESSION["connection_timestamp"] = $time;
+    }
+    public static function initConnectionTime(): void {
+        $extension = Moment::hourToTimsetamp(getenv("APP_SECURITY_DATA_TIME"));
+        $time = Moment::currentMoment()->getTimestamp() + $extension;
+        LoginController::setConnectionTime($time);
+    }
+    public static function updateConnectionTime(): void {
+        $delta = Moment::currentMoment()->getTimestamp() - LoginController::getConnectionTime();
+        if($delta <= 0) {
+            $extension = Moment::hourToTimsetamp(getenv("APP_SECURITY_DATA_INACTIVE_TIME"));
+            $time = LoginController::getConnectionTime() + $extension;
+            LoginController::setConnectionTime($time);
+        } else {
+            throw new LoginExceptions("Votre connexion a expirée. Veuillez vous reconnecter.");
+        }
+    } 
 }

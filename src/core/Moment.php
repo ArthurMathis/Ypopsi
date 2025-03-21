@@ -33,6 +33,10 @@ class Moment {
      */
     public function getTimestamp(): int { return strtotime($this->getDate());}
 
+    public static function hourToTimsetamp(int $hour): int {
+        return $hour * 60;
+    }
+
 
     
     // * STATIC * //
