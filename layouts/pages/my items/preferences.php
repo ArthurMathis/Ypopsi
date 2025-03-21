@@ -212,13 +212,23 @@ use App\Core\Middleware\AuthMiddleware;
 
             <content>
                 <a 
-                    href="<?= APP_PATH ?>/preferences/features_toggle"
+                    href="<?= APP_PATH ?>/preferences/features_toggles"
                     
                     <?php if($tab === "features_toggle"): ?>
                         class="selected"
                     <?php endif ?>
                 >
                     Fonctionnalités
+                </a>
+
+                <a 
+                    href="<?= APP_PATH ?>/preferences/xlsxLoader"
+                    
+                    <?php if($tab === "features_toggle"): ?>
+                        class="selected"
+                    <?php endif ?>
+                >
+                    XlsxLoader
                 </a>
             </content>
         </article>

@@ -31,6 +31,8 @@ class User {
         protected string $email, 
         protected string $password, 
         protected ?bool $password_temp, 
+        protected string $created,
+        protected bool $desactivated,
         protected int $role, 
         protected int $establishment
     ) {
@@ -123,6 +125,18 @@ class User {
      */
     public function getPasswordTemp(): ?bool { return $this->password_temp; }
     /**
+     * Public method returning when the user's account has be opened
+     *
+     * @return string
+     */
+    public function getCreated(): string { return $this->created; }
+    /**
+     * Public method returning if the user's account s activated or not
+     *
+     * @return boolean
+     */
+    public function getDesactivated(): bool { return $this->desactivated; }
+    /**
      * Public methog returning the user's role
      * 
      * @return int
@@ -157,6 +171,8 @@ class User {
             $data['Email'], 
             $data['Password'], 
             $data['PasswordTemp'], 
+            $data['Created'], 
+            $data['Desactivated'],
             $data['Key_Roles'],
             $data['Key_Establishments']
         );
@@ -176,6 +192,8 @@ class User {
             'email'          => $this->getEmail(),
             'password'       => $this->getPassword(),
             'password_temp'  => $this->getPasswordTemp(),
+            'created'        => $this->getCreated(),
+            'desactivated'   => $this->getDesactivated(),
             'role'           => $this->getRole(),
             'establishement' => $this->getEstablishment()
         );

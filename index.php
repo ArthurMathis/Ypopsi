@@ -14,6 +14,7 @@ use App\Controllers\CandidatesController;
 use App\Controllers\PreferencesController;
 use App\Core\Middleware\FeatureMiddleware;
 use App\Exceptions\FeatureExceptions;
+use App\Exceptions\LoginExceptions;
 
 test_process();
 env_start();
@@ -85,20 +86,20 @@ try {
     // * PREFERENCES * //
     //// USERS ////
     $router->addRoute("/preferences", PreferencesController::class, "display");                                                                                                                                 // todo
-    $router->addRoute("/preferences/user", PreferencesController::class, "displayUser", array(FeatureMiddleware::$DISPLAY_USERS), AuthMiddleware::$ADMIN);                                                      // todo
+    $router->addRoute("/preferences/users", PreferencesController::class, "displayUser", array(FeatureMiddleware::$DISPLAY_USERS), AuthMiddleware::$ADMIN);                                                      // todo
     $router->addRoute("/preferences/users/new", PreferencesController::class, "displayNewUser", array(FeatureMiddleware::$DISPLAY_USERS), AuthMiddleware::$ADMIN);                                              // todo
-    $router->addRoute("/preferences/user/input", PreferencesController::class, "inputUser", array(FeatureMiddleware::$INSCRIPT_USER), AuthMiddleware::$ADMIN);                                                  // todo
-    $router->addRoute("/preferences/user/inscript", PreferencesController::class, "inscriptUser", array(FeatureMiddleware::$INSCRIPT_USER), AuthMiddleware::$ADMIN);                                            // todo
-    $router->addRoute("/preferences/user/edit/{user}", PreferencesController::class, "editUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$ADMIN);                                                 // todo
-    $router->addRoute("/preferences/user/update/{user}", PreferencesController::class, "updateUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$ADMIN);                                             // todo
-    $router->addRoute("/preferences/user/reset_password/{user}", PreferencesController::class, "resetPassword", array(FeatureMiddleware::$RESET_PASSWORD), AuthMiddleware::$ADMIN);                             // todo
+    $router->addRoute("/preferences/users/input", PreferencesController::class, "inputUser", array(FeatureMiddleware::$INSCRIPT_USER), AuthMiddleware::$ADMIN);                                                  // todo
+    $router->addRoute("/preferences/users/inscript", PreferencesController::class, "inscriptUser", array(FeatureMiddleware::$INSCRIPT_USER), AuthMiddleware::$ADMIN);                                            // todo
+    $router->addRoute("/preferences/users/edit/{user}", PreferencesController::class, "editUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$ADMIN);                                                 // todo
+    $router->addRoute("/preferences/users/update/{user}", PreferencesController::class, "updateUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$ADMIN);                                             // todo
+    $router->addRoute("/preferences/users/reset_password/{user}", PreferencesController::class, "resetPassword", array(FeatureMiddleware::$RESET_PASSWORD), AuthMiddleware::$ADMIN);                             // todo
 
     //// PROFILE ////
-    $router->addRoute("/preferences/user/profile/{user}", PreferencesController::class, "displayProfile", array(FeatureMiddleware::$DISPLAY_USER));                                                             // todo
-    $router->addRoute("/preferences/user/profile/edit/{user}", PreferencesController::class, "editUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$USER);                                          // todo
-    $router->addRoute("/preferences/user/profile/update/{user}", PreferencesController::class, "updateUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$USER);                                      // todo
-    $router->addRoute("/preferences/user/profile/password/edit/user", PreferencesController::class, "editPassword", array(FeatureMiddleware::$EDIT_PASSWORD));                                                  // todo
-    $router->addRoute("/preferences/user/profile/password/update/user", PreferencesController::class, "editPassword", array(FeatureMiddleware::$EDIT_PASSWORD));                                                // todo
+    $router->addRoute("/preferences/users/profile/{user}", PreferencesController::class, "displayProfile", array(FeatureMiddleware::$DISPLAY_USER));                                                             // todo
+    $router->addRoute("/preferences/users/profile/edit/{user}", PreferencesController::class, "editUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$USER);                                          // todo
+    $router->addRoute("/preferences/users/profile/update/{user}", PreferencesController::class, "updateUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$USER);                                      // todo
+    $router->addRoute("/preferences/users/profile/password/edit/user", PreferencesController::class, "editPassword", array(FeatureMiddleware::$EDIT_PASSWORD));                                                  // todo
+    $router->addRoute("/preferences/users/profile/password/update/user", PreferencesController::class, "editPassword", array(FeatureMiddleware::$EDIT_PASSWORD));                                                // todo
     
     //// LOGS ////
     $router->addRoute("/prefrences/logs", PreferencesController::class, "displayLog", array(FeatureMiddleware::$DISPLAY_CONNEXIONS), AuthMiddleware::$ADMIN);                                                   // todo
@@ -121,11 +122,11 @@ try {
     $router->addRoute("/preferences/qualifications/update/{qualification}", PreferencesController::class, "updateQualification", array(FeatureMiddleware::$EDIT_QUALIFICATIONS), AuthMiddleware::$MODERATOR);   // todo
 
     //// SOURCES ////
-    $router->addRoute("preferences/sources", PreferencesController::class, "displaySources", array(FeatureMiddleware::$DISPLAY_SOURCES), AuthMiddleware::$USER);                                                // todo
-    $router->addRoute("preferences/sources/input", PreferencesController::class, "inputSource", array(FeatureMiddleware::$INSCRIPT_SOURCES), AuthMiddleware::$MODERATOR);                                       // todo
-    $router->addRoute("preferences/sources/inscript", PreferencesController::class, "inscriptSource", array(FeatureMiddleware::$INSCRIPT_SOURCES), AuthMiddleware::$MODERATOR);                                 // todo
-    $router->addRoute("preferences/sources/edit/{source}", PreferencesController::class, "editSource", array(FeatureMiddleware::$EDIT_SOURCES), AuthMiddleware::$MODERATOR);                                    // todo
-    $router->addRoute("preferences/sources/update/{source}", PreferencesController::class, "updateSource", array(FeatureMiddleware::$EDIT_SOURCES), AuthMiddleware::$MODERATOR);                                // todo
+    $router->addRoute("/preferences/sources", PreferencesController::class, "displaySources", array(FeatureMiddleware::$DISPLAY_SOURCES), AuthMiddleware::$USER);                                                // todo
+    $router->addRoute("/preferences/sources/input", PreferencesController::class, "inputSource", array(FeatureMiddleware::$INSCRIPT_SOURCES), AuthMiddleware::$MODERATOR);                                       // todo
+    $router->addRoute("/preferences/sources/inscript", PreferencesController::class, "inscriptSource", array(FeatureMiddleware::$INSCRIPT_SOURCES), AuthMiddleware::$MODERATOR);                                 // todo
+    $router->addRoute("/preferences/sources/edit/{source}", PreferencesController::class, "editSource", array(FeatureMiddleware::$EDIT_SOURCES), AuthMiddleware::$MODERATOR);                                    // todo
+    $router->addRoute("/preferences/sources/update/{source}", PreferencesController::class, "updateSource", array(FeatureMiddleware::$EDIT_SOURCES), AuthMiddleware::$MODERATOR);                                // todo
 
     //// SERVICES ////
     $router->addRoute("/preferences/services", PreferencesController::class, "displayServices", array(FeatureMiddleware::$DISPLAY_SERVICES), AuthMiddleware::$USER);                                            // todo
@@ -156,6 +157,14 @@ try {
 
     $router->dispatch($user_connected);
 
+} catch(LoginExceptions $le) {
+    AlertsManipulation::alert([
+        "title"         => "Erreur de connexion",
+        "msg"           => $le->getMessage(),
+        "icon"          => "error",
+        "button"        => true,
+        "direction"     => APP_PATH . "/login/get"
+    ]);
 } catch(FeatureExceptions $fe) {
     AlertsManipulation::alert([
         "title"         => "Fonctionnalité indisponible",

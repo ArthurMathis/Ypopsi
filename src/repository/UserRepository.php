@@ -94,6 +94,10 @@ class UserRepository extends Repository {
             if($users[$i]->getIdentifier() == $identifier && password_verify($password, $users[$i]->getPassword())) {
                 $find = true;
 
+                if($users[$i]->getDesactivated()) {
+                    throw new LoginExceptions("<b>Vos accès ont été désactivés</b>. <br>Contacter le support informatique via leur adresse incident pour plus de renseignements.");
+                }
+
                 $_SESSION['user'] = $users[$i];
 
                 break;

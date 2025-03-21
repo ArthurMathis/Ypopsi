@@ -10,7 +10,7 @@
             cancelButtonText : '<?= htmlspecialchars($infos['deleteButton'] ?? "Annuler") ?>',
             confirmButtonText: '<?= htmlspecialchars($infos['confirmButton'] ?? "Confirmer") ?>',
         <?php elseif(isset($infos['button'])): ?>
-            confirmButtonText: "<?= htmlspecialchars($infos['text button']) ?>",
+            confirmButtonText: "<?= htmlspecialchars($infos['text button'] ?? "Confirmer") ?>",
         <?php else: ?>
             showConfirmButton: false,
             timer            : 1500,
@@ -68,7 +68,7 @@
     .notification {
         width: 560px;
     }
-    .notification-actions {
+    .swal2-actions {
         margin: 1.25em auto;
     }
     .custom-actions {

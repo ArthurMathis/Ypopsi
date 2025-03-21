@@ -76,7 +76,7 @@ class Router {
             $path = '/';
         }
 
-        if(!$user_connected && $path != "/login/get") {
+        if(!$user_connected && strpos($path, "/login") !== 0) {
             header("location: " . APP_PATH . "/login/get");
         }
 
