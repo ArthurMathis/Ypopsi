@@ -165,7 +165,7 @@ use App\Core\Moment;
 
 <footer class="form-section add_button">
     <a 
-        href="<?= APP_PATH ?>/preferences/users/profile/password/edit/<?= $user->getId() ?>" 
+        href="<?= APP_PATH ?>\preferences\users\profile\password\edit\<?= $user->getId() ?>" 
         class="action_button"
     >
         <p>
@@ -179,7 +179,7 @@ use App\Core\Moment;
     </a>
 
     <a 
-        href="<?= APP_PATH ?>\preferences\user_profile\edit\<?= $user->getId() ?>" 
+        href="<?= APP_PATH ?>\preferences\users\profile\edit\<?= $user->getId() ?>" 
         class="action_button reverse_color"
     >
         <p>
