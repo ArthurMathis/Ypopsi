@@ -47,32 +47,24 @@ use App\Core\Moment;
     </content>
 </div>
 
-<div class="dashboard_bubble">
-    <h2>
+<div class="number_bubble">
+    <p>
         Connexions
-    </h2>
+    </p>
 
-    <content>
-        <article>
-            <p>
-                Première connexion : 
-            </p>
-    
-            <i>
-                <?= Moment::dayFromDate($first_log->getDate()) ?>
-            </i>
-        </article>
-    
-        <article>
-            <p>
-                Dernière connexion : 
-            </p>
-    
-            <i>
-                <?= Moment::dayFromDate($last_log->getDate()) ?>
-            </i>
-        </article>
-    </content>
+    <p class="number">
+        <?= $nb_connexions ?>
+    </p>
+</div>
+
+<div class="number_bubble">
+    <p>
+        Actions
+    </p>
+
+    <p class="number">
+        <?= $nb_actions ?>
+    </p>
 </div>
 
 <div class="dashboard_bubble">
@@ -103,19 +95,39 @@ use App\Core\Moment;
     </content>
 </div>
 
+<div class="number_bubble">
+    <p>
+        Candidatures traitées
+    </p>
+
+    <p class="number">
+        <?= $nb_applications ?>
+    </p>
+</div>
+
+<div class="number_bubble">
+    <p>
+        Offres traitées
+    </p>
+
+    <p class="number">
+        <?= $nb_offers ?>
+    </p>
+</div>
+
 <div class="dashboard_bubble">
     <h2>
-        Connexions
+        Mot de passe
     </h2>
 
     <content>
         <article>
             <p>
-                Première connexion : 
+                Premier chagement : 
             </p>
     
             <i>
-                <?= Moment::dayFromDate($first_log->getDate()) ?>
+                <?= $first_password_change ? Moment::dayFromDate($first_password_change->getDate()) : "Non réalisé" ?>
             </i>
         </article>
     
@@ -125,17 +137,35 @@ use App\Core\Moment;
             </p>
     
             <i>
-                <?= Moment::dayFromDate($last_log->getDate()) ?>
+                <?= $last_password_change ? Moment::dayFromDate($last_password_change->getDate()) : "Non réalisé" ?>
             </i>
         </article>
     </content>
 </div>
 
-<!-- todo : à compléter -->
+<div class="number_bubble">
+    <p>
+        Contrats traités
+    </p>
+
+    <p class="number">
+        <?= $nb_contracts ?>
+    </p>
+</div>
+
+<div class="number_bubble">
+    <p>
+        Rendez-vous
+    </p>
+
+    <p class="number">
+        <?= $nb_meetings ?>
+    </p>
+</div>
 
 <footer class="form-section add_button">
     <a 
-        href="<?php if(isset($link)) echo $link; ?>" 
+        href="<?= APP_PATH ?>/preferences/users/profile/password/edit/<?= $user->getId() ?>" 
         class="action_button"
     >
         <p>
@@ -149,7 +179,7 @@ use App\Core\Moment;
     </a>
 
     <a 
-        href="<?php if(isset($link)) echo $link; ?>" 
+        href="<?= APP_PATH ?>\preferences\user_profile\edit\<?= $user->getId() ?>" 
         class="action_button reverse_color"
     >
         <p>

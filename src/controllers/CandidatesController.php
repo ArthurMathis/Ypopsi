@@ -858,7 +858,7 @@ class CandidatesController extends Controller {
         }
 
         AlertsManipulation::alert([
-            'title' => 'Candidat mise-à-jour',
+            'title' => 'Candidat Mise à jour',
             'msg' => 'Le candidat a été mis-à-jour avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
         ]);
@@ -882,8 +882,8 @@ class CandidatesController extends Controller {
         $can_repo->update($candidate);
 
         $act_repo = new ActionRepository();                 
-        $type = $act_repo->searchType("Mise-à-jour notation"); 
-        $desc = "Mise-à-jour dla notation de " . $candidate->getCompleteName();
+        $type = $act_repo->searchType("Mise à jour notation"); 
+        $desc = "Mise à jour dla notation de " . $candidate->getCompleteName();
 
         $act = Action::create(                                                              // Creating the action
             $_SESSION['user']->getId(), 
@@ -920,8 +920,8 @@ class CandidatesController extends Controller {
         $candidate = (new CandidateRepository())->get($key_candidate);                      // Fetching the candidate 
 
         $act_repo = new ActionRepository();                 
-        $type = $act_repo->searchType("Mise-à-jour rendez-vous"); 
-        $desc = "Mise-à-jour du rendez-vous de " . $candidate->getCompleteName();
+        $type = $act_repo->searchType("Mise à jour rendez-vous"); 
+        $desc = "Mise à jour du rendez-vous de " . $candidate->getCompleteName();
 
         $act = Action::create(                                                              // Creating the action
             $_SESSION['user']->getId(), 
@@ -931,7 +931,7 @@ class CandidatesController extends Controller {
         $act_repo->writeLogs($act);                                                         // Registering the action in logs
 
         AlertsManipulation::alert([
-            'title' => 'Rendez-vous mise-à-jour',
+            'title' => 'Rendez-vous Mise à jour',
             'msg' => 'Le rendez-vous a été mis-à-jour avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
         ]);

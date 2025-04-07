@@ -20,16 +20,16 @@
                     <p>Nouveau rendez-vous</p>
                 </div>
                 <div class="container-statut">
-                    <input type="checkbox" name="Mise-à-jour candidat" checked>
+                    <input type="checkbox" name="Mise à jour candidat" checked>
                     <p>Mise-àjour candidat</p>
                 </div>
                 <div class="container-statut">
-                    <input type="checkbox" name="Mise-à-jour notation" checked>
-                    <p>Mise-à-jour notation</p>
+                    <input type="checkbox" name="Mise à jour notation" checked>
+                    <p>Mise à jour notation</p>
                 </div>
                 <div class="container-statut margin">
-                    <input type="checkbox" name="Mise-à-jour rendez-vous" checked>
-                    <p>Mise-à-jour rendez-vous</p>
+                    <input type="checkbox" name="Mise à jour rendez-vous" checked>
+                    <p>Mise à jour rendez-vous</p>
                 </div>
                 <div class="container-statut">
                     <input type="checkbox" name="Annulation rendez-vous" checked>
@@ -93,20 +93,20 @@
                     <p>Nouvel utilisateur</p>
                 </div>
                 <div class="container-statut">
-                    <input type="checkbox" name="Mise-à-jour utilisateur" checked>
-                    <p>Mise-à-jour utilisateur</p>
+                    <input type="checkbox" name="Mise à jour utilisateur" checked>
+                    <p>Mise à jour utilisateur</p>
                 </div>
                 <div class="container-statut">
-                    <input type="checkbox" name="Mise-à-jour mot de passe" checked>
-                    <p>Mise-à-jour mot de passe</p>
+                    <input type="checkbox" name="Mise à jour mot de passe" checked>
+                    <p>Mise à jour mot de passe</p>
                 </div>
                 <div class="container-statut">
                     <input type="checkbox" name="Réinitialisation mot de passe" checked>
                     <p>Réinitialisation mot de passe</p>
                 </div>
                 <div class="container-statut">
-                    <input type="checkbox" name="Mise-à-jour rôle" checked>
-                    <p>Mise-à-jour rôle</p>
+                    <input type="checkbox" name="Mise à jour rôle" checked>
+                    <p>Mise à jour rôle</p>
                 </div>
             </section>
         </content> 
@@ -172,11 +172,11 @@
                 class: 'utilisateur'
             },
             {
-                content: 'Mise-à-jour utilisateur', 
+                content: 'Mise à jour utilisateur', 
                 class: 'utilisateur'
             },
             {
-                content: 'Mise-à-jour mot de passe', 
+                content: 'Mise à jour mot de passe', 
                 class: 'utilisateur'
             },
             {
@@ -184,7 +184,7 @@
                 class: 'utilisateur'
             },
             {
-                content: 'Mise-à-jour rôle', 
+                content: 'Mise à jour rôle', 
                 class: 'utilisateur'
             },
             // Candidates //
@@ -201,15 +201,15 @@
                 class: 'candidat'
             },
             {
-                content: 'Mise-à-jour candidat', 
+                content: 'Mise à jour candidat', 
                 class: 'candidat'
             },
             {
-                content: 'Mise-à-jour notation', 
+                content: 'Mise à jour notation', 
                 class: 'candidat'
             },
             {
-                content: 'Mise-à-jour rendez-vous', 
+                content: 'Mise à jour rendez-vous', 
                 class: 'candidat'
             },
             // Applications //

@@ -963,18 +963,18 @@ INSERT INTO Types_of_actions (Titled) VALUES
 
     -- Users --
     ('Nouvel utilisateur'),
-    ('Mise-à-jour utilisateur'), 
-    ('Mise-à-jour mot de passe'), 
+    ('Mise à jour utilisateur'), 
+    ('Mise à jour mot de passe'), 
     ('Réinitialisation mot de passe'), 
-    ('Mise-à-jour rôle'), 
+    ('Mise à jour rôle'), 
 
     -- candidats --
     ('Nouveau candidat'),
     ('Nouveau rendez-vous'), 
     ('Annulation rendez-vous'), 
-    ('Mise-à-jour candidat'), 
-    ('Mise-à-jour notation'), 
-    ('Mise-à-jour rendez-vous'),
+    ('Mise à jour candidat'), 
+    ('Mise à jour notation'), 
+    ('Mise à jour rendez-vous'),
 
     -- Candidatures -- 
     ('Nouvelle candidature'), 

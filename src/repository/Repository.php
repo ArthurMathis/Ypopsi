@@ -69,16 +69,15 @@ class Repository {
      * @param boolean $present TRUE if if the waiting result can't be null, FALSE otherwise
      * @return ?array
      */
-    protected function get_request(string $request, ?array $params = [], bool $unique = false, bool $present = false): ?array { 
-        if(empty($unique) || empty($present)) {
-            $present = false;
-        }
-
+    protected function get_request(
+        string $request, 
+        ?array $params = [], 
+        bool $unique = false,
+        bool $present = false
+    ): ?array { 
         try {
             $query = $this->getConnection()->prepare($request);
-
             $query->execute($params);
-
             $result = $unique ? $query->fetch(PDO::FETCH_ASSOC) : $query->fetchAll(PDO::FETCH_ASSOC);
 
             if(empty($result) && $present) {
@@ -92,11 +91,7 @@ class Repository {
                 'title' => 'Erreur lors de la requête à la base de données',
                 'msg' => $e
             ]);
-        } catch(PDOException $e){
-            FormsManip::error_alert([
-                'title' => 'Erreur lors de la requête à la base de données',
-                'msg' => $e
-            ]);
+            return null;
         }
     }
     /**

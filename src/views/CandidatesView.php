@@ -324,7 +324,7 @@ class CandidatesView extends View {
         array $helps_list,
         array $employee_list
     ) {
-        $title = "Mise-à-jour des informations de " . $candidate->getCompleteName();
+        $title = "Mise à jour des informations de " . $candidate->getCompleteName();
         $action_method = "update/{$candidate->getId()}";
         $action_value = "update_candidate";
 
@@ -369,7 +369,7 @@ class CandidatesView extends View {
      * @return void
      */
     public function displayEditMeeting(Meeting $meeting, User $recruiter, Establishment $establishment, array $users_list, array $establishments_list) {
-        $title = "Mise-à-jour rendez-vous";
+        $title = "Mise à jour rendez-vous";
         $action_method = "update/{$meeting->getCandidate()}/{$meeting->getId()}";
         $action_value = "update_meeting";
         $editable = time() <= strtotime($meeting->getDate());

@@ -45,6 +45,10 @@
   --radius: 12px;
   --big-radius: 16px;
   --very-big-radius: 24px;
+  --extra-radius: 32px;
+
+  --very-small-gap: 12px;
+  --small-gap: 24px;
   --gap: 32px;
   
   --navbarre-size: 55px;
@@ -52,6 +56,10 @@
   --bulle-shadow: -1px 8px 15px 7px rgba(0, 0, 0, 0.05);
   --small-bulle-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.05);
   --button-shadow: 0 0 0 5px var(--light-blue);
+
+  --little-bubble-width: 208px;
+  --bubble-width: 432px;
+  --bublle-height: 186px;
 }
 
 * {
@@ -808,7 +816,7 @@ button.form_button:is(:hover, :focus),
 
   padding: var(--big-radius);
   
-  height: 186px;
+  height: var(--bublle-height);
 
   border-radius: var(--big-radius);
   border: 1px var(--grey) solid;
@@ -820,7 +828,10 @@ button.form_button:is(:hover, :focus),
   justify-content: start;
   align-items: start;
 
-  width: 432px;
+  width: var(--bubble-width);
+}
+.dashboard_bubble.small {
+  width: var(--little-bubble-width);
 }
 .dashboard_bubble header,
 .dashboard_bubble content {
@@ -853,7 +864,7 @@ button.form_button:is(:hover, :focus),
   flex-direction: column;
   justify-content: space-between;
 
-  width: 208px;
+  width: var(--little-bubble-width);
 }
 .number {
   text-align: right;

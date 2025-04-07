@@ -31,6 +31,14 @@ class PreferencesView extends View {
         Establishment &$establishment, 
         Action $first_log,
         Action $last_log,
+        int $nb_connexions,
+        int $nb_actions, 
+        int $nb_applications, 
+        int $nb_offers, 
+        int $nb_contracts, 
+        int $nb_meetings,
+        ?Action $first_password_change = null,
+        ?Action $last_password_change = null,
         string $tab = "null"
     ): void {
         $this->generateCommonHeader('Préférences', [PAGES_STYLES.DS.'preferences.css']);
