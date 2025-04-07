@@ -14,7 +14,6 @@ use App\Controllers\CandidatesController;
 use App\Controllers\PreferencesController;
 use App\Core\Middleware\FeatureMiddleware;
 use App\Exceptions\FeatureExceptions;
-use App\Exceptions\LoginExceptions;
 
 test_process();
 env_start();

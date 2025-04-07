@@ -3,10 +3,12 @@
 namespace App\Core\Router;
 
 use App\Controllers\LoginController;
+use App\Core\AlertsManipulation;
 use App\Core\Router\Route;
 use App\Exceptions\RouterExceptions;
 use App\Core\Middleware\AuthMiddleware;
 use App\Core\Middleware\FeatureMiddleware;
+use App\Exceptions\LoginExceptions;
 
 /**
  * Class managing the url request in the application
@@ -81,10 +83,21 @@ class Router {
             header("location: " . APP_PATH . "/login/get");
         }
 
-        if($user_connected) {
+        if($user_connected) try {
             LoginController::updateConnectionTime();
+        } catch(LoginExceptions $e) {
+            $destination = "/logout";
+            if($path !== $destination) {
+                AlertsManipulation::alert([
+                    'title' => "Connexion expirée !",
+                    'msg' => "<p>" . $e->getMessage() . "</p>",
+                    'icon' => 'warning',
+                    'direction' => APP_PATH  . $destination, 
+                    'button' => true
+                ]);
+            }
         }
-        
+
         foreach($this->routes as $route => $target) {
             $routePattern = preg_replace("/\{[^\}]+\}/", "([^/]+)", $route);
 
