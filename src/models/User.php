@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\PeopleInterface;
 use App\Exceptions\UserExceptions;
 
 /**
  * Class representing one user
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
-class User {
+class User implements PeopleInterface {
     /**
      * Constructor class
      * 
@@ -106,6 +107,15 @@ class User {
      * @return string
      */
     public function getFirstname(): string { return $this->firstname; }
+    /**
+     * Public method erturning the complete candidate's name 
+     *
+     * @return string
+     */
+    public function getCompleteName(): string {
+        $response = strtoupper($this->getname()) . " " . $this->getFirstname();
+        return $response;
+    }
     /**
      * Public methog returning the user's email
      * 

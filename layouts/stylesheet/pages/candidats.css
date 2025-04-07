@@ -4,7 +4,7 @@ body{
 
     overflow: hidden;
 
-    background: linear-gradient(175deg, var(--white), 75%, var(--light-blue));
+    /* background: linear-gradient(175deg, var(--white), 75%, var(--light-blue)); */
 }
 body > content {
     display: flex;
@@ -314,21 +314,14 @@ main section .candidatures_bulle article p.non-traitee::before {
     background-color: var(--color4);
 }
 
-.add_button {
-    position: fixed;
-    bottom: var(--very-big-radius);
-    right: var(--very-big-radius);
-
-    box-shadow: var(--liste-shadow);
-}
-.add_button:is(:hover, :focus) {
-    box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.85);
-}
-
 /* Gestion de la navigation intra onglets */
 .onglet {
     display: none;
 }
 .onglet.active {
     display: flex;
+}
+
+.add_button {
+    box-shadow: var(--liste-shadow);
 }

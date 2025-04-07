@@ -63,7 +63,7 @@ class Source {
         return new Source(
             $data['Id'],
             $data['Titled'],
-            $data['Types_of_sources']
+            $data['Types_of_sources'] ?? null
         );
     }
 

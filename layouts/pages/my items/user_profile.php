@@ -1,30 +1,164 @@
-<div>
+<?php 
+
+use App\Core\Moment;
+
+?>
+
+<div class="dashboard_bubble bold">
     <header>
-        <h2><?php echo strtoupper($items['user']['name']) . " " . FormsManip::nameFormat($items['user']['firstname']); ?></h2>
-        <p><?php echo FormsManip::nameFormat($items['user']['titled_role']);?></p>
+        <h2>
+            <?= $user->getCompleteName() ?>
+        </h2>
+        <p>
+            <?= $role->getTitled() ?>
+        </p>
     </header>
+
     <content>
-    <div class="container">
-            <p>Etablissement : </p>
-            <p><?= $items['user']['establishments']; ?></p>
-        </div>
-        <div class="container">
-            <p>Email :</p>
-            <p><?= $items['user']['email']; ?></p>
-        </div>
+        <article>
+            <p>
+                Email :
+            </p>
+
+            <p>
+                <?= $user->getEmail() ?>
+            </p>
+        </article>
+
+        <article>
+            <p>
+                Etablissement : 
+            </p>
+
+            <p>
+                <?= $establishment->getTitled() ?>
+            </p>
+        </article>
+        
+        <article>
+            <p>
+                Inscription :
+            </p>
+
+            <p>
+                <?= Moment::dayFromDate($user->getCreated()) ?> 
+            </p>
+        </article>
     </content>
-    <footer>
-        <?php if($items['user']['role'] > $_SESSION['user_key']): ?>
-            <a class="action_button grey_color" href="index.php?preferences=display-reset-password&user_key=<?= $items['user']['id']; ?>">
-                <p>Réinitialiser le mot de passe</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\reset.svg" alt="">
-            </a>
-        <?php endif ?>
-        <?php if($_SESSION['user_key'] <= ADMIN || $items['user']['id'] == $_SESSION['user_key']): ?>
-                <a class="action_button reverse_color" href="index.php?preferences=edit-users&user_key=<?= $items['user']['id']; ?>">
-                    <p>Modifier</p>
-                    <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white\edit.svg" alt="">
-                </a>
-            <?php endif ?>
-    </footer>
 </div>
+
+<div class="dashboard_bubble">
+    <h2>
+        Connexions
+    </h2>
+
+    <content>
+        <article>
+            <p>
+                Première connexion : 
+            </p>
+    
+            <i>
+                <?= Moment::dayFromDate($first_log->getDate()) ?>
+            </i>
+        </article>
+    
+        <article>
+            <p>
+                Dernière connexion : 
+            </p>
+    
+            <i>
+                <?= Moment::dayFromDate($last_log->getDate()) ?>
+            </i>
+        </article>
+    </content>
+</div>
+
+<div class="dashboard_bubble">
+    <h2>
+        Connexions
+    </h2>
+
+    <content>
+        <article>
+            <p>
+                Première connexion : 
+            </p>
+    
+            <i>
+                <?= Moment::dayFromDate($first_log->getDate()) ?>
+            </i>
+        </article>
+    
+        <article>
+            <p>
+                Dernière connexion : 
+            </p>
+    
+            <i>
+                <?= Moment::dayFromDate($last_log->getDate()) ?>
+            </i>
+        </article>
+    </content>
+</div>
+
+<div class="dashboard_bubble">
+    <h2>
+        Connexions
+    </h2>
+
+    <content>
+        <article>
+            <p>
+                Première connexion : 
+            </p>
+    
+            <i>
+                <?= Moment::dayFromDate($first_log->getDate()) ?>
+            </i>
+        </article>
+    
+        <article>
+            <p>
+                Dernière connexion : 
+            </p>
+    
+            <i>
+                <?= Moment::dayFromDate($last_log->getDate()) ?>
+            </i>
+        </article>
+    </content>
+</div>
+
+<!-- todo : à compléter -->
+
+<footer class="form-section add_button">
+    <a 
+        href="<?php if(isset($link)) echo $link; ?>" 
+        class="action_button"
+    >
+        <p>
+            Réinitialiser le mot de passe
+        </p>
+
+        <img 
+            src="<?= APP_PATH ?>\layouts\assets\img\reset\blue.svg" 
+            alt=""
+        >
+    </a>
+
+    <a 
+        href="<?php if(isset($link)) echo $link; ?>" 
+        class="action_button reverse_color"
+    >
+        <p>
+            Modifier
+        </p>
+
+        <img 
+            src="<?= APP_PATH ?>\layouts\assets\img\edit\white.svg" 
+            alt=""
+        >
+    </a>
+</footer>

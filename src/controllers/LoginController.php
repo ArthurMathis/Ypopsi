@@ -124,7 +124,7 @@ class LoginController extends Controller {
             $time = LoginController::getConnectionTime() + $extension;
             LoginController::setConnectionTime($time);
         } else {
-            throw new LoginExceptions("Votre connexion a expirée. Veuillez vous reconnecter.");
+            throw new LoginExceptions("Votre connexion a expiré. Veuillez vous reconnecter.");
         }
     } 
 }

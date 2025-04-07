@@ -2,8 +2,6 @@ body {
     width: 100dvw;
     height: 100vh;
     overflow: hidden;
-
-    background: linear-gradient(195deg, var(--white), 75%, var(--light-blue));
 }
 
 body > content {
@@ -81,60 +79,22 @@ body > content > aside content a:is(:hover, :focus) {
 }
 
 /******** Main ********/
-#profil-user {
+#user_profile {
     display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-wrap: wrap;
-    gap: var(--gap);
-
-    width: 100%;
-    height: 100%;
-
-    padding-left: var(--gap);
-    padding-top: var(--very-big-radius);
-
-    overflow-y: scroll;
-}
-#profil-user .left,
-#profil-user .right  {
-    width: calc(50% - var(--gap));
-    min-width: 540px;
-} 
-#profil-user .left {
-    height: fit-content;
-}
-#profil-user .right {
-    display: flex;
-    flex-direction: column;
-    gap: var(--very-big-radius);
-
-    height: auto;
-}
-#profil-user .left > div {
-    display: flex;
-    flex-direction: column;
     gap: var(--big-radius);
 
-    width: 100%; 
+    width: calc(100% - 340px);
     height: fit-content;
+    
+    padding-left: var(--gap);
+    padding-top: var(--very-big-radius);
+    padding-bottom: var(--very-big-radius);
 
-    padding: var(--big-radius);
-
-    border-radius: var(--big-radius);
-    box-shadow: var(--small-bulle-shadow);
-    background-color: var(--white);
-}
-#profil-user .left > div content div {
-    display: flex;
-    width: 100%;
-}
-#profil-user .left > div content div p:first-of-type {
-    width: 25%;
-}
-#profil-user .left > div footer {
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    gap: var(--radius);
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 body > content > main {

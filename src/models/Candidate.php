@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\PeopleInterface;
 use App\Exceptions\CandidateExceptions;
 
 /**
  * Class representing a candidate
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
-class Candidate {
+class Candidate implements PeopleInterface {
     /**
      * Constructor class
      * 

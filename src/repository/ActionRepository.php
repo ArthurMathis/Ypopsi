@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Repository\Repository;
 use App\Models\Action;
 use App\Models\TypeOfActions;
+use App\Models\User;
 
 /**
  * Class representing a repository of actions 
@@ -51,5 +52,49 @@ class ActionRepository extends Repository {
         $response = TypeOfActions::fromArray($fetch);
 
         return $response;
+    }
+
+    /**
+     * Public method searching the first connection of a user
+     *
+     * @param User $user The user to search
+     * @return ?Action
+     */
+    public function getUserFirstConnection(User &$user): ?Action {
+        $request = "SELECT * 
+        
+        FROM Actions 
+        WHERE Key_Users = :user AND Key_Types_of_actions = :type
+        ORDER BY Moment 
+        LIMIT 1";
+
+        $params = [
+            "user" => $user->getId(),
+            "type" => $this->searchType("Connexion")->getId()
+        ];
+
+        return Action::fromArray($this->get_request($request, $params, true));
+    }
+
+    /**
+     * Public method searching the last connection of a user
+     *
+     * @param User $user The user to search
+     * @return ?Action
+     */
+    public function getUserLastConnection(User &$user): ?Action {
+        $request = "SELECT * 
+        
+        FROM Actions 
+        WHERE Key_Users = :user AND Key_Types_of_actions = :type
+        ORDER BY Moment DESC
+        LIMIT 1";
+
+        $params = [
+            "user" => $user->getId(),
+            "type" => $this->searchType("Connexion")->getId()
+        ];
+
+        return Action::fromArray($this->get_request($request, $params, true));
     }
 }
