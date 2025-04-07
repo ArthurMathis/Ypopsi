@@ -97,8 +97,8 @@ try {
     $router->addRoute("/preferences/users/profile/{user}", PreferencesController::class, "displayProfile", array(FeatureMiddleware::$DISPLAY_USER));                                                             // todo
     $router->addRoute("/preferences/users/profile/edit/{user}", PreferencesController::class, "editUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$USER);                                          // todo
     $router->addRoute("/preferences/users/profile/update/{user}", PreferencesController::class, "updateUser", array(FeatureMiddleware::$EDIT_USER), AuthMiddleware::$USER);                                      // todo
-    $router->addRoute("/preferences/users/profile/password/edit/user", PreferencesController::class, "editPassword", array(FeatureMiddleware::$EDIT_PASSWORD));                                                  // todo
-    $router->addRoute("/preferences/users/profile/password/update/user", PreferencesController::class, "editPassword", array(FeatureMiddleware::$EDIT_PASSWORD));                                                // todo
+    $router->addRoute("/preferences/users/profile/password/edit/{user}", PreferencesController::class, "editPassword", array(FeatureMiddleware::$EDIT_PASSWORD));                                                  // todo
+    $router->addRoute("/preferences/users/profile/password/update/{user}", PreferencesController::class, "editPassword", array(FeatureMiddleware::$EDIT_PASSWORD));                                                // todo
     
     //// LOGS ////
     $router->addRoute("/prefrences/logs", PreferencesController::class, "displayLog", array(FeatureMiddleware::$DISPLAY_CONNEXIONS), AuthMiddleware::$ADMIN);                                                   // todo
