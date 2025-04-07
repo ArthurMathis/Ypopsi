@@ -85,17 +85,38 @@ class LoginController extends Controller {
     }
 
     // *  CONECTION TIME * //
+    /**
+     * Public static method returning the connection timestamp
+     *
+     * @return int The connection timestamp
+     */
     public static function getConnectionTime(): int {
         return $_SESSION["connection_timestamp"];
     }
+    /**
+     * Public static method setting the connection timestamp
+     *
+     * @param int $time The connection timestamp
+     * @return void
+     */
     public static function setConnectionTime(int $time): void {
         $_SESSION["connection_timestamp"] = $time;
     }
+    /**
+     * Public static method initializing the connection timestamp
+     *
+     * @return void
+     */
     public static function initConnectionTime(): void {
         $extension = Moment::hourToTimsetamp(getenv("APP_SECURITY_DATA_TIME"));
         $time = Moment::currentMoment()->getTimestamp() + $extension;
         LoginController::setConnectionTime($time);
     }
+    /**
+     * Public static method updating the connection timestamp and checking if the connexion is still valid or not
+     *
+     * @return void
+     */
     public static function updateConnectionTime(): void {
         $delta = Moment::currentMoment()->getTimestamp() - LoginController::getConnectionTime();
         if($delta <= 0) {

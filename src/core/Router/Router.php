@@ -72,8 +72,8 @@ class Router {
         $path = $_SERVER['REQUEST_URI'] ?? '/';                                     // Récupération de l'url 
         $path = str_replace($this->app_path, '', $path);                            // Suppression de l'adresse de base
         $path = strtok($path, '?');                                                 // Suppression des paramètres GET
-        $path = '/' . ltrim($path, '/');                                            // Suppression des / en début de chaine
-        $path = rtrim($path, '/');                                                  // Suppression des / en début de chaine
+        $path = '/' . ltrim($path, '/');                                            // Vérification des / en début de chaine
+        $path = rtrim($path, '/');                                                  // Suppression des / en fin de chaine
 
         if ($path === '') {
             $path = '/';
