@@ -164,28 +164,44 @@ use App\Core\Moment;
     </p>
 </div>
 
-<?php if($user->getId() === $_SESSION['user']->getId() || AuthMiddleware::isAdminOrMore()) : ?>
+<?php if(AuthMiddleware::isAdminOrMore()) : ?>
     <footer class="form-section add_button">
-        <a 
-            href="<?= APP_PATH ?>\preferences\users\profile\password\edit\<?= $user->getId() ?>" 
-            class="action_button"
-        >
-            <p>
-                Réinitialiser le mot de passe
-            </p>
-
-            <img 
-                src="<?= APP_PATH ?>\layouts\assets\img\reset\blue.svg" 
-                alt=""
+        <?php if($user->getId() === $_SESSION['user']->getId()): ?>
+            <a 
+                href="<?= APP_PATH ?>\preferences\users\profile\password\edit\<?= $user->getId() ?>" 
+                class="action_button"
             >
-        </a>
+                <p>
+                    Modifier le mot de passe
+                </p>
+    
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\reset\blue.svg" 
+                    alt=""
+                >
+            </a>
+        <?php else: ?>
+            <a 
+                href="<?= APP_PATH ?>\preferences\users\profile\password\edit\<?= $user->getId() ?>" 
+                class="action_button"
+            >
+                <p>
+                    Réinitialiser le mot de passe
+                </p>
+    
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\reset\blue.svg" 
+                    alt=""
+                >
+            </a>
+        <?php endif ?>
 
         <a 
             href="<?= APP_PATH ?>\preferences\users\profile\edit\<?= $user->getId() ?>" 
             class="action_button reverse_color"
         >
             <p>
-                Modifier
+                Modifier les informations
             </p>
 
             <img 
