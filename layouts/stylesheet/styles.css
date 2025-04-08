@@ -461,6 +461,22 @@ form .checkbox-item label {
 
 /******** STYLE DES LIENS ET BOUTONS ********/
 
+.add_button {
+  position: fixed;
+  bottom: var(--very-big-radius);
+  right: var(--very-big-radius);
+
+  width: fit-content;
+  height: fit-content;
+}
+.add_button > button,
+.add_button > a {
+  box-shadow: var(--bulle-shadow);
+}
+.add_button .action_button {
+  background-color: var(--white);
+}
+
 button,
 .action_button {
   display: flex;
@@ -548,19 +564,6 @@ button.form_button:is(:hover, :focus),
 .action_button.form_button:is(:hover, :focus) {
   background-color: var(--white);
   box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.25);
-}
-
-.add_button {
-  position: fixed;
-  bottom: var(--very-big-radius);
-  right: var(--very-big-radius);
-
-  width: fit-content;
-  height: fit-content;
-}
-.add_button > button,
-.add_button > a {
-  box-shadow: var(--bulle-shadow);
 }
 
 /******** Notifications ********/
