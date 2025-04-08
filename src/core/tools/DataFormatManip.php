@@ -1,39 +1,42 @@
 <?php
 
-namespace App\Core;
+namespace App\Core\Tools;
 
 use \InvalidArgumentException;
-use App\Core\AlertsManipulation;
-
 
 /**
- * Class manipulating the data submitted by a form
+ * Class manipulating the data's format and validity
  * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
  */
-class FormsManip {
-    // * ALERT * //
+class DataFormatManip {
+    // * IS VALID * //
     /**
-     * Public static methoc generating one error notification
+     * Public method checking if the given key is valid
      *
-     * @param Array $infos The error informations
-     * @return Void
+     * @param int $key
+     * @return boolean
      */
-    public static function error_alert(array $infos) {
-        if(!isset($infos['icon']) || empty($infos['icon']))
-            $infos['icon'] = "error";
-        if(!isset($infos['button']))
-            $infos['button'] =  true;
+    public static function isValidKey(int $key): bool { return 0 < $key; }
 
-        AlertsManipulation::alert($infos);
+    /**
+     * Public method checking if the given string is valid
+     *
+     * @param string $str
+     * @return boolean
+     */
+    public static function isValidName(string &$str): bool {
+        return true;
     }
 
-
-    // * IS FORMAT * //
-    public static function isNameFormat(string $str): bool {
-        // Todo : vérifier qu'un str est un Nom (pas de caractères spéciaux et pas de nombres)
-        return false;
+    /**
+     * Public method checking if the given string is valid
+     *
+     * @param string $str
+     * @return boolean
+     */
+    public static function isValidEmail(string &$str): bool {
+        return true;
     }
-
 
     // * FORMAT * //
     /**
