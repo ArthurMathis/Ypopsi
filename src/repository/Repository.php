@@ -116,6 +116,7 @@ class Repository {
                 'title' => 'Erreur lors de la requête à la base de données',
                 'msg' => $e
             ]);
+            return -1;
         }
     }
 }

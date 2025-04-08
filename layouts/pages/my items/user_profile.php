@@ -196,18 +196,20 @@ use App\Core\Moment;
             </a>
         <?php endif ?>
 
-        <a 
-            href="<?= APP_PATH ?>\preferences\users\profile\edit\<?= $user->getId() ?>" 
-            class="action_button reverse_color"
-        >
-            <p>
-                Modifier les informations
-            </p>
-
-            <img 
-                src="<?= APP_PATH ?>\layouts\assets\img\edit\white.svg" 
-                alt=""
+        <?php if(AuthMiddleware::roleIsMore($user->getId())): ?>
+            <a 
+                href="<?= APP_PATH ?>\preferences\users\profile\edit\<?= $user->getId() ?>" 
+                class="action_button reverse_color"
             >
-        </a>
+                <p>
+                    Modifier les informations
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\edit\white.svg" 
+                    alt=""
+                >
+            </a>
+        <?php endif ?>
     </footer>
 <?php endif?>

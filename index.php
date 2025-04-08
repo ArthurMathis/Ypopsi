@@ -94,7 +94,7 @@ try {
     $router->addRoute("/preferences/users/reset_password/{user}", PreferencesController::class, "resetPassword", [FeatureMiddleware::$RESET_PASSWORD], AuthMiddleware::$ADMIN);                                     // todo
 
     //// PROFILE ////
-    $router->addRoute("/preferences/users/profile/{user}", PreferencesController::class, "displayProfile", [FeatureMiddleware::$DISPLAY_USER]);                                                                     // todo
+    $router->addRoute("/preferences/users/profile/{user}", PreferencesController::class, "displayProfile", [FeatureMiddleware::$DISPLAY_USER]);
     $router->addRoute("/preferences/users/profile/edit/{user}", PreferencesController::class, "editUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$USER);                                                  // todo
     $router->addRoute("/preferences/users/profile/update/{user}", PreferencesController::class, "updateUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$USER);                                              // todo
     $router->addRoute("/preferences/users/profile/password/edit/{user}", PreferencesController::class, "editPassword", [FeatureMiddleware::$EDIT_PASSWORD]);                                                        // todo
@@ -167,7 +167,6 @@ try {
     ]);
 } catch(Exception $e) {
     FormsManip::error_alert([
-        "msg"       => $e,
-        "direction" => APP_PATH
+        "msg"       => $e
     ]);
 }

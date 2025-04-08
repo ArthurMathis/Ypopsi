@@ -66,4 +66,27 @@ class PreferencesController extends Controller {
             "home"
         );
     }
+
+    // * EDIT  * // 
+    /**
+     * Public method returning the user edit HTML form page
+     *
+     * @param int $key_user The user's primary key
+     * @return void
+     */
+    public function editUser(int $key_user): void {
+        $user = (new UserRepository())->get($key_user);
+        $establishment = (new EstablishmentRepository())->get($user->getEstablishment());
+
+        $role_repo = new RoleRepository();
+        $role = $role_repo->get($user->getRole());
+        $list_role = $role_repo->getList();
+
+        $this->View->displayEditUser(
+            $list_role,
+            $user,
+            $role,
+            $establishment
+        );
+    }
 }

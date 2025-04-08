@@ -25,4 +25,19 @@ class RoleRepository extends Repository {
 
         return Role::fromArray($response);
     }
+
+    /**
+     * Public method searching the list of roles
+     *
+     * @return array
+     */
+    public function getList(): array {
+        $request = "SELECT * FROM ROLES";
+
+        $fetch = $this->get_request($request);
+
+        return array_map(function($obj) {
+            return Role::fromArray($obj);
+        }, $fetch);
+    }
 }

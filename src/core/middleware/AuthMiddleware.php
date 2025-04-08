@@ -59,12 +59,12 @@ class AuthMiddleware {
         }
     }
     /**
-     * Protected static ùethod checking if a role is more, eaqual or less than a required role
+     * Public static method checking if a role is more, eaqual or less than a required role
      *
      * @param int $required_role The required role
      * @return bool
      */
-    protected static function roleIsMore(int $required_role): bool {
+    public static function roleIsMore(int $required_role): bool {
         if(empty($_SESSION["user"])) {
             throw new AuthentificationExceptions("Aucun utilisateur conecté.");
         }
