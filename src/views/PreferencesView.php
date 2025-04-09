@@ -86,8 +86,8 @@ class PreferencesView extends View {
      * @return void
      */
     public function displayUserForm(
-        array $establishments_list,
-        array $role_list,
+        array &$establishments_list,
+        array &$role_list,
         ?User $user =  null, 
         ?Role $role = null,
         ?Establishment $establishment = null
@@ -111,8 +111,8 @@ class PreferencesView extends View {
      * @return void
      */
     public function displayInputUser(
-        array $establishments_list,
-        array $role_list
+        array &$establishments_list,
+        array &$role_list
     ): void {
         $this->displayUserForm($establishments_list, $role_list);
     }  
@@ -129,12 +129,26 @@ class PreferencesView extends View {
      * @return void
      */
     public function displayEditUser(
-        array $establishments_list,
-        array $role_list,
+        array &$establishments_list,
+        array &$role_list,
         User $user, 
         Role $role,
         Establishment $establishment
     ): void {
         $this->displayUserForm($establishments_list, $role_list, $user, $role, $establishment);
+    }
+    /**
+     * Public function displaying the edit password HTML form page
+     *
+     * @param User $user The user
+     * @return void
+     */
+    public function displayEditPassword(User &$user): void {
+        $this->generateCommonHeader('Préférences', [FORMS_STYLES.DS.'small-form.css']);
+        $this->generateMenu(true, null);
+
+        include(FORMULAIRES.DS.'password.php');
+
+        $this->generateCommonFooter();
     }
 }

@@ -96,6 +96,17 @@ class PreferencesController extends Controller {
         );
     }
 
+    /**
+     * Public method returning the user edit password HTML form page
+     *
+     * @param int $key_user
+     * @return void
+     */
+    public function editPassword(int $key_user): void {
+        $user = (new UserRepository())->get($key_user);
+        $this->View->displayEditPassword($user);
+    }
+
     // * UPDATE * //
     /**
      * Public method updating the user in the database
