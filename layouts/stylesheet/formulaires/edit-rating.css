@@ -17,8 +17,8 @@ textarea {
 .etoile-container input[type="checkbox"] {
     position: relative;
 
-    width: var(--font-size-standart);
-    height: var(--font-size-standart);
+    width: var(--font-size-standard);
+    height: var(--font-size-standard);
     
     background-color: transparent;
 }

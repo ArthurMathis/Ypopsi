@@ -213,8 +213,8 @@ main section .candidatures_bulle article p::before {
     right: 0;
 
     display: block;
-    width: var(--font-size-standart);
-    height: var(--font-size-standart);
+    width: var(--font-size-standard);
+    height: var(--font-size-standard);
 
     border-radius: 50%;
 

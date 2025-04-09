@@ -37,7 +37,7 @@
 
   --font-size-big: 2.618rem;
   --font-size-medium: 1.618rem;
-  --font-size-standart: 1rem;
+  --font-size-standard: 1rem;
   --font-size-small: 0.618rem;
 
   --very-small-radius: 6px;
@@ -54,7 +54,7 @@
   --navbarre-size: 55px;
   --liste-shadow: 0 2px 24px 6px #0000003B;
   --bulle-shadow: -1px 8px 15px 7px rgba(0, 0, 0, 0.05);
-  --small-bulle-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.05);
+  --small-bulle-shadow: 0 4px 6px 2px rgba(0, 0, 0, 0.05);
   --button-shadow: 0 0 0 5px var(--light-blue);
 
   --little-bubble-width: 208px;
@@ -66,10 +66,10 @@
   margin: 0;
   padding: 0;
 
-  font-size: var(--font-size-standart);
+  font-size: var(--font-size-standard);
   font-family: "Roboto", sans-serif;
   font-weight: 200;
-  line-height: calc(var(--font-size-standart) * 1.3);
+  line-height: calc(var(--font-size-standard) * 1.3);
 
   text-decoration: none;
   box-sizing: border-box;
@@ -82,7 +82,7 @@ body {
 }
 
 /******** STYLE PAR DEFAULT ********/
-p {
+p, i, b {
   color: var(--black);
 }
 
@@ -134,8 +134,8 @@ input[type="checkbox"] {
   position: relative;
 
   display: block;
-  width: var(--font-size-standart);
-  height: var(--font-size-standart);
+  width: var(--font-size-standard);
+  height: var(--font-size-standard);
 
   padding: 0;
   background-color: transparent;
@@ -497,7 +497,11 @@ button,
 
   box-shadow: none;
   will-change: box-shadow;
-  transition: 150ms ease box-shadow;
+  transition: 150ms ease box-shadow, 150ms ease opacity;
+}
+button:active,
+a:active {
+  opacity: 90%;
 }
 button p,
 .action_button p {
@@ -507,7 +511,7 @@ button p,
 button img,
 .action_button img {
   /*height: 25px;*/
-  height: calc(var(--font-size-standart) * 1.2);
+  height: calc(var(--font-size-standard) * 1.2);
 }
 
 button.reverse_color,
@@ -546,13 +550,18 @@ button.grey_color:is(:hover, :focus),
 button.cancel_button,
 .action_button.cancel_button {
   color: var(--white);
-  border: var(--color5);
+  border: var(--color5) 2px solid;
   background-color: var(--color5);
+}
+button.cancel_button p,
+.action_button.cancel_button p {
+  color: var(--white);
 }
 button.cancel_button:is(:hover, :focus), 
 .action_button.cancel_button:is(:hover, :focus) {
   box-shadow: 0 0 0 5px rgba(254, 0, 0, 0.2);
 }
+
 
 button.form_button, 
 .action_button.form_button {
@@ -583,7 +592,7 @@ button.form_button:is(:hover, :focus),
   margin: 0;
 
   color: var(--black);
-  font-size: var(--font-size-standart);
+  font-size: var(--font-size-standard);
   font-family: "Roboto", sans-serif;
 }
 .notification-actions {
@@ -795,11 +804,11 @@ button.form_button:is(:hover, :focus),
   border-spacing: var(--radius);
 }
 .bulles .table-wrapper table thead th {
-  height: calc(var(--font-size-standart) * 1.8);
+  height: calc(var(--font-size-standard) * 1.8);
   color: var(--white);
 }
 .bulles .table-wrapper table tbody th {
-  height: calc(var(--font-size-standart) * 1.5);
+  height: calc(var(--font-size-standard) * 1.5);
   color: var(--white);
 }
 .bulles .table-wrapper table tr::before {
@@ -874,4 +883,13 @@ button.form_button:is(:hover, :focus),
   font-family: 'Roboto Bold';
   font-size: 67.75px;
   line-height: 50px;
+}
+
+.desactivated {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.desactivated img {
+  height: var(--font-size-standard);
 }

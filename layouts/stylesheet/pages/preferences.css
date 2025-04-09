@@ -91,8 +91,8 @@ body > content > aside content a:is(:hover, :focus) {
     max-height: 100%;
     
     padding-left: var(--gap);
-    padding-top: var(--very-big-radius);
     padding-bottom: var(--very-big-radius);
+    margin-top: var(--very-big-radius);
 
     overflow-x: hidden;
     overflow-y: scroll;
@@ -112,3 +112,63 @@ body > content > main .candidatures-menu {
 .liste_items {
     padding-bottom: var(--very-big-radius);
 }
+/*
+#burger_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: calc((var(--font-size-standard) + 2 * var(--small-radius)) * 1.3);
+    height: calc((var(--font-size-standard) + 2 * var(--small-radius)) * 1.3);
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    transition: transform 250ms ease;
+}
+#burger_button span {
+    position: relative;
+    width: 60%;
+}
+#burger_button span:before,
+#burger_button span:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+}
+#burger_button span, 
+#burger_button span:before,
+#burger_button span:after {
+    height: 2px;
+
+    border-radius: 2px;
+    background-color: var(--white);
+}
+#burger_button span:before, 
+#burger_button span:after {
+    transition: transform 250ms ease;
+}
+#burger_button span:before {
+    transform: translateY(-7px);
+}
+#burger_button:hover span:before {
+    transform: translateY(-6px);
+}
+#burger_button span:after {
+    transform: translateY(7px);
+}
+#burger_button:hover span:after {
+    transform: translateY(6px);
+}
+#burger_button.activated {
+    transform: rotate(-90deg);
+}
+
+footer .action_button.hidden {
+    display: none;
+}
+    */

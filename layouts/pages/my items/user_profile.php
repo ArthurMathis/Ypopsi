@@ -10,9 +10,23 @@ use App\Core\Moment;
         <h2>
             <?= $user->getCompleteName() ?>
         </h2>
+
         <p>
             <?= $role->getTitled() ?>
         </p>
+
+        <?php if($user->getDesactivated()): ?>
+            <div class="double-items desactivated">
+                <img
+                    src="<?= APP_PATH ?>\layouts\assets\img\close\black.svg"
+                    alt=""
+                >
+
+                <i>
+                    Compte désactivé
+                </i>
+            </div>
+        <?php endif ?>
     </header>
 
     <content>
@@ -80,7 +94,7 @@ use App\Core\Moment;
             </p>
     
             <i>
-                <?= Moment::dayFromDate($first_log->getDate()) ?>
+                <?= $first_log ? Moment::dayFromDate($first_log->getDate()) : 'Aucun connexion' ?>
             </i>
         </article>
     
@@ -90,7 +104,7 @@ use App\Core\Moment;
             </p>
     
             <i>
-                <?= Moment::dayFromDate($last_log->getDate()) ?>
+                <?= $last_log ? Moment::dayFromDate($last_log->getDate()) : 'Aucun connexion' ?>
             </i>
         </article>
     </content>
@@ -164,41 +178,53 @@ use App\Core\Moment;
     </p>
 </div>
 
-<?php if(AuthMiddleware::isAdminOrMore()) : ?>
-    <footer class="form-section add_button">
-        <?php if($user->getId() === $_SESSION['user']->getId()): ?>
-            <a 
-                href="<?= APP_PATH ?>\preferences\users\profile\password\edit\<?= $user->getId() ?>" 
-                class="action_button"
+<footer class="form-section add_button">
+    <?php if($user->getId() === $_SESSION['user']->getId()): ?>
+        <a 
+            href="<?= APP_PATH ?>\preferences\users\profile\password\edit\<?= $user->getId() ?>" 
+            class="action_button"
+        >
+            <p>
+                Modifier le mot de passe
+            </p>
+
+            <img 
+                src="<?= APP_PATH ?>\layouts\assets\img\reset\blue.svg" 
+                alt=""
             >
-                <p>
-                    Modifier le mot de passe
-                </p>
-    
-                <img 
-                    src="<?= APP_PATH ?>\layouts\assets\img\reset\blue.svg" 
-                    alt=""
-                >
-            </a>
-        <?php else: ?>
-            <a 
-                href="<?= APP_PATH ?>\preferences\users\profile\password\edit\<?= $user->getId() ?>" 
-                class="action_button"
+        </a>
+
+        <a 
+            href="<?= APP_PATH ?>\preferences\users\profile\edit\<?= $user->getId() ?>" 
+            class="action_button reverse_color"
+        >
+            <p>
+                Modifier les informations
+            </p>
+
+            <img 
+                src="<?= APP_PATH ?>\layouts\assets\img\edit\white.svg" 
+                alt=""
             >
-                <p>
-                    Réinitialiser le mot de passe
-                </p>
-    
-                <img 
-                    src="<?= APP_PATH ?>\layouts\assets\img\reset\blue.svg" 
-                    alt=""
-                >
-            </a>
-        <?php endif ?>
+        </a>
+    <?php elseif(AuthMiddleware::isAdminOrMore()): ?>
+        <a 
+            href="<?= APP_PATH ?>\preferences\users\profile\password\edit\<?= $user->getId() ?>" 
+            class="action_button"
+        >
+            <p>
+                Réinitialiser le mot de passe
+            </p>
+
+            <img 
+                src="<?= APP_PATH ?>\layouts\assets\img\reset\blue.svg" 
+                alt=""
+            >
+        </a>
 
         <?php if(AuthMiddleware::roleIsMore($user->getId())): ?>
             <a 
-                href="<?= APP_PATH ?>\preferences\users\profile\edit\<?= $user->getId() ?>" 
+                href="<?= APP_PATH ?>\preferences\users\edit\<?= $user->getId() ?>" 
                 class="action_button reverse_color"
             >
                 <p>
@@ -210,6 +236,38 @@ use App\Core\Moment;
                     alt=""
                 >
             </a>
-        <?php endif ?>
-    </footer>
-<?php endif?>
+
+            <?php if($user->getDesactivated()):?>
+                <a
+                    href="<?= APP_PATH ?>\preferences\users\activate\<?= $user->getId() ?>"
+                    class="action_button"
+                    onclick="return confirm('Êtes-vous sûr de vouloir réactiver ce compte ?')"
+                >
+                    <p>
+                        Réactiver le compte
+                    </p>
+
+                    <img
+                        src="<?= APP_PATH ?>\layouts\assets\img\reset\blue.svg"
+                        alt=""
+                    >
+                </a>
+            <?php else: ?>
+                <a 
+                    href="<?= APP_PATH ?>\preferences\users\profile\desactivate\<?= $user->getId() ?>" 
+                    class="action_button cancel_button"
+                    onclick="return confirm('Êtes-vous sûr de vouloir désactiver ce compte ?')"
+                >
+                    <p>
+                        Désactiver le compte
+                    </p>
+
+                    <img 
+                        src="<?= APP_PATH ?>\layouts\assets\img\close\white.svg" 
+                        alt=""
+                    >
+                </a>
+            <?php endif ?>
+        <?php endif?>
+    <?php endif ?>
+</footer>
