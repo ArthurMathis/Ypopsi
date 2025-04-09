@@ -99,7 +99,7 @@ try {
     $router->addRoute("/preferences/users/profile/edit/{user}", PreferencesController::class, "editUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$USER);
     $router->addRoute("/preferences/users/profile/update/{user}", PreferencesController::class, "updateUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$USER);
     $router->addRoute("/preferences/users/profile/password/edit/{user}", PreferencesController::class, "editPassword", [FeatureMiddleware::$EDIT_PASSWORD]);                                                        // todo
-    $router->addRoute("/preferences/users/profile/password/update/{user}", PreferencesController::class, "editPassword", [FeatureMiddleware::$EDIT_PASSWORD]);                                                      // todo
+    $router->addRoute("/preferences/users/profile/password/update/{user}", PreferencesController::class, "updatePassword", [FeatureMiddleware::$EDIT_PASSWORD]);                                                      // todo
     
     //// LOGS ////
     $router->addRoute("/prefrences/logs", PreferencesController::class, "displayLog", [FeatureMiddleware::$DISPLAY_CONNEXIONS], AuthMiddleware::$ADMIN);                                                            // todo

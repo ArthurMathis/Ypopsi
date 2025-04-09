@@ -28,6 +28,7 @@
   --light-blue: #E2E8F8;
   --blue-opacity: #0048fedd;
   --blue: #0046FE;
+  --error-color:rgb(255, 64, 0);
 
   --color1: #8A2BE2;
   --color2: #3BF3FF;
@@ -347,6 +348,13 @@ form .checkbox-item label {
   height: fit-content;
   
   text-wrap: nowrap;
+}
+
+input:invalid {
+  border: 2px solid var(--error-color) !important;
+}
+.error-message {
+  color: var(--error-color);
 }
 
 .autocomplete {

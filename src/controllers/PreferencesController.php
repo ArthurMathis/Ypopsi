@@ -9,6 +9,7 @@ use App\Repository\ActionRepository;
 use App\Repository\UserRepository;
 use App\Repository\RoleRepository;
 use App\Repository\EstablishmentRepository;
+use Exception;
 
 class PreferencesController extends Controller {
     /**
@@ -141,6 +142,44 @@ class PreferencesController extends Controller {
         AlertsManip::alert([
             'title' => 'Action enregistrée',
             'msg' => 'La mise a jour a été effectuée avec succès.',
+            'direction' => APP_PATH . "/preferences/users/profile/" . $key_user
+        ]);
+    }
+    /**
+     * Public method updating the user password in the database
+     *
+     * @param int $key_user The user's primary key
+     * @return void
+     */
+    public function updatePassword(int $key_user): void {
+        $password = $_POST['password'];                                                         // Getting the password
+        $new_password = $_POST['new-password']; 
+
+        $user_repo = new UserRepository();
+        $user = $user_repo->get($key_user);                                                     // Fetching the user
+
+        if(!password_verify($password, $user->getPassword())) {                                 // Verifying the password
+            throw new Exception("Le mot de passe est incorrect.");
+        }
+
+        $user->setPassword($new_password);                                                      // Updating the password
+        $user_repo->updatePassword($user); 
+
+        $act_repo = new ActionRepository();
+        $type = $act_repo->searchType("Mise à jour mot de passe");
+        $desc = "Mise à jour du mot de passe de  " . $user->getCompleteName();
+
+        $act = Action::create(                                                              // Creating the action
+            $_SESSION["user"]->getId(), 
+            $type->getId(),
+            $desc
+        );          
+
+        $act_repo->writeLogs($act);                                                         // Registering the action in logs
+
+        AlertsManip::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'La mot de passe a été mis à jour avec succès.',
             'direction' => APP_PATH . "/preferences/users/profile/" . $key_user
         ]);
     }

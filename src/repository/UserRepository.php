@@ -84,6 +84,22 @@ class UserRepository extends Repository {
             ":email"      => $user->getEmail(),
         ];
 
+        $this->post_request($request, $params); 
+    }
+    /**
+     * Public method updating the user's password in the database
+     *
+     * @param User $user The user to update
+     * @return void
+     */
+    public function updatePassword(User &$user): void {
+        $request = "UPDATE Users SET Password = :password, PasswordTemp = 0 WHERE Id = :id";
+
+        $params = [
+            "id"        => $user->getId(),
+            ":password" => password_hash($user->getPassword(), PASSWORD_DEFAULT),
+        ];
+
         $this->post_request($request, $params);
     }
 

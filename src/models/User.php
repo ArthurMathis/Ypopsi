@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Core\Tools\DataFormatManip;
 use App\Models\PeopleInterface;
+use App\Core\Tools\DataFormatManip;
+use App\Core\Tools\PasswordsManip;
 use App\Exceptions\UserExceptions;
 
 /**
@@ -195,6 +196,20 @@ class User implements PeopleInterface {
         }
         
         $this->email = $email; 
+    }
+    /**
+     * Public method setting the user's password
+     *
+     * @param string $password The user's password
+     * @throws UserExceptions If the password is invalid
+     * @return void
+     */
+    public function setPassword(string $password): void {
+        if(!PasswordsManip::isValidPassword($password)) {
+            throw new UserExceptions("Le mot de passe de l'utilisateur est invalide : {$password}.");
+        }
+
+        $this->password = $password; 
     }
     /**
      * Public method setting the user's password

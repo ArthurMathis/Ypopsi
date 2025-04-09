@@ -41,7 +41,11 @@ class PasswordsManip {
      * @return bool True if the password is valid, false otherwise
      */
     public static function isValidPassword(string $password): bool {
-        return preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/', $password);
+        return !(strlen($password) < 12 || 
+                !preg_match('/[a-z]/', $password) || 
+                !preg_match('/[A-Z]/', $password) || 
+                !preg_match('/\d/', $password) || 
+                !preg_match('/[@$!%*?&]/', $password));
     }
 
     /**
