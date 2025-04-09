@@ -5,7 +5,7 @@ namespace App\Repository;
 use \PDO;
 use \PDOException;
 use \Exception;
-use App\Core\FormsManip;
+use App\Core\Tools\AlertsManip;
 
 /**
  * Abstract class representing a basic repository
@@ -79,15 +79,19 @@ class Repository {
             $query = $this->getConnection()->prepare($request);
             $query->execute($params);
             $result = $unique ? $query->fetch(PDO::FETCH_ASSOC) : $query->fetchAll(PDO::FETCH_ASSOC);
+            $query->closeCursor();
 
-            if(empty($result) && $present) {
-                throw new Exception("Requête: " . $request ."\nAucun résultat correspondant");
+            if(!$result) {
+                if($present) {
+                    throw new Exception("Requête: " . $request ."\nAucun résultat correspondant");
+                } else {
+                    return [];
+                }
             } else {
                 return $result;
-            }
-    
+            }    
         } catch(Exception $e){
-            FormsManip::error_alert([
+            AlertsManip::error_alert([
                 'title' => 'Erreur lors de la requête à la base de données',
                 'msg' => $e
             ]);
@@ -112,7 +116,7 @@ class Repository {
             return $lastId;
     
         } catch(PDOException $e){
-            FormsManip::error_alert([
+            AlertsManip::error_alert([
                 'title' => 'Erreur lors de la requête à la base de données',
                 'msg' => $e
             ]);
