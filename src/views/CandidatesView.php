@@ -3,7 +3,7 @@
 namespace App\Views;
 
 use App\Views\View;
-use App\Core\FormsManip;
+use App\Core\Tools\FomsManip;
 use App\Models\Candidate;
 use App\Models\Establishment;
 use App\Models\Meeting;

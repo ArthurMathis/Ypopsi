@@ -20,12 +20,24 @@ class DataFormatManip {
 
     /**
      * Public method checking if the given string is valid
+     * 
+     * @param string $str
+     * @return boolean
+     */
+    public static function isValidIdentifier(string &$str): bool {
+        $pattern = '/^[a-z]+(\.[a-z]+)$/';
+        return (bool) preg_match($pattern, $str);
+    }
+
+    /**
+     * Public method checking if the given string is valid
      *
      * @param string $str
      * @return boolean
      */
     public static function isValidName(string &$str): bool {
-        return true;
+        $pattern = '/^[a-zA-Zà-ÿÀ-Ÿ\s\-]+$/u';
+        return (bool) preg_match($pattern, $str);
     }
 
     /**
@@ -35,7 +47,7 @@ class DataFormatManip {
      * @return boolean
      */
     public static function isValidEmail(string &$str): bool {
-        return true;
+        return filter_var($str, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     // * FORMAT * //

@@ -4,8 +4,7 @@ require_once("vendor/autoload.php");
 require_once('define.php'); 
 
 use App\Core\Router\Router;
-use App\Core\FormsManip;
-use App\Core\AlertsManipulation;
+use App\Core\Tools\AlertsManip;
 use App\Core\Middleware\AuthMiddleware;
 use App\Controllers\HomeController;
 use App\Controllers\LoginController;
@@ -22,7 +21,7 @@ session_start();
 $user_connected = !(!isset($_SESSION['user']) || empty($_SESSION['user']) || empty($_SESSION['user']->getId())); 
 
 if($user_connected && $_SESSION['user']->getPasswordTemp()) {
-    AlertsManipulation::alert([
+    AlertsManip::alert([
         'title' => "Information importante",
         'msg' => "<p>Bienvenue, c'est votre première connexion !</p><p>Vous devez <b>modifier votre mot de passe</b> au plus vite.</p>",
         'icon' => 'warning',
@@ -92,11 +91,13 @@ try {
     $router->addRoute("/preferences/users/edit/{user}", PreferencesController::class, "editUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$ADMIN);                                                         // todo
     $router->addRoute("/preferences/users/update/{user}", PreferencesController::class, "updateUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$ADMIN);                                                     // todo
     $router->addRoute("/preferences/users/reset_password/{user}", PreferencesController::class, "resetPassword", [FeatureMiddleware::$RESET_PASSWORD], AuthMiddleware::$ADMIN);                                     // todo
+    // $router->addRoute("/preferences/users/activate/{user}", PreferencesController::class, "activateUser", [FeatureMiddleware::$ACTIVATE_USER], AuthMiddleware::$ADMIN);                                             // todo
+    // $router->addRoute("/preferences/users/desactivate/{user}", PreferencesController::class, "desactivateUser", [FeatureMiddleware::$DESACTIVATE_USER], AuthMiddleware::$ADMIN);                                    // todo
 
     //// PROFILE ////
     $router->addRoute("/preferences/users/profile/{user}", PreferencesController::class, "displayProfile", [FeatureMiddleware::$DISPLAY_USER]);
-    $router->addRoute("/preferences/users/profile/edit/{user}", PreferencesController::class, "editUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$USER);                                                  // todo
-    $router->addRoute("/preferences/users/profile/update/{user}", PreferencesController::class, "updateUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$USER);                                              // todo
+    $router->addRoute("/preferences/users/profile/edit/{user}", PreferencesController::class, "editUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$USER);
+    $router->addRoute("/preferences/users/profile/update/{user}", PreferencesController::class, "updateUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$USER);
     $router->addRoute("/preferences/users/profile/password/edit/{user}", PreferencesController::class, "editPassword", [FeatureMiddleware::$EDIT_PASSWORD]);                                                        // todo
     $router->addRoute("/preferences/users/profile/password/update/{user}", PreferencesController::class, "editPassword", [FeatureMiddleware::$EDIT_PASSWORD]);                                                      // todo
     
@@ -157,7 +158,7 @@ try {
     $router->dispatch($user_connected);
 
 } catch(FeatureExceptions $fe) {
-    AlertsManipulation::alert([
+    AlertsManip::alert([
         "title"         => "Fonctionnalité indisponible",
         "msg"           => $fe,
         "confirm"       => true,
@@ -166,7 +167,7 @@ try {
         "direction"     => 'mailto:' . getenv("APP_SUPPORT")
     ]);
 } catch(Exception $e) {
-    FormsManip::error_alert([
+    AlertsManip::error_alert([
         "msg"       => $e
     ]);
 }

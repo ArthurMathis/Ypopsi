@@ -77,7 +77,9 @@ class ActionRepository extends Repository {
             "user" => $user->getId()
         ];
 
-        return Action::fromArray($this->get_request($request, $params, true));
+        $fetch = $this->get_request($request, $params, true);
+
+        return $fetch ? Action::fromArray($fetch) : null;
     }
 
     /**
@@ -102,7 +104,9 @@ class ActionRepository extends Repository {
             "user" => $user->getId()
         ];
 
-        return Action::fromArray($this->get_request($request, $params, true));
+        $fetch = $this->get_request($request, $params, true);
+
+        return $fetch ? Action::fromArray($fetch) : null;
     }
 
     /**

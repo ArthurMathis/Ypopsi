@@ -1,7 +1,7 @@
 <form
     class="small-form"
     method="post"
-    ation="<?= APP_PATH ?>\preferences\users\profile\update\<?= $user->getId() ?>"
+    action="<?= APP_PATH ?>/preferences/users/profile/update/<?= $user->getId() ?>"
 >
     <h3>
         <?php if(!$completed): ?>
@@ -96,7 +96,7 @@
             </label>
 
             <select id="role" name="role" required>
-                <?php foreach($list_role as $obj): ?>
+                <?php foreach($role_list as $obj): ?>
                     <option 
                         value="<?= $obj->getId() ?>"
                         <?php if($completed && $user->getRole() == $obj->getId()): ?>
@@ -138,3 +138,12 @@
         </button>
     </div>
 </form>
+
+<script type="module">
+    import { AutoComplete } from "<?= APP_PATH  ?>\\layouts\\scripts\\modules/AutoComplete.mjs"; 
+    import { formManipulation } from "<?= APP_PATH ?>\\layouts\\scripts\\modules/FormManipulation.mjs";
+
+    new AutoComplete(document.getElementById('establishment'), AutoComplete.arrayToSuggestions(<?= json_encode($establishments_list) ?>));
+    document.querySelector('form')
+            .addEventListener('submit', (e) => formManipulation.manageSubmit(e));
+</script>

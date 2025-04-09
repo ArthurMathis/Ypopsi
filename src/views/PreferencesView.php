@@ -31,14 +31,14 @@ class PreferencesView extends View {
      * @param User $user The user
      * @param Role $roleThe user's role
      * @param Establishment $establishment The user's establishment
-     * @param Action $first_log The first connection of the user
-     * @param Action $last_log The last connection of the user
      * @param int $nb_connexions The count of user's connections
      * @param int $nb_actions The count of user's actions
      * @param int $nb_applications The count of user's applications
      * @param int $nb_offers The count of user's offers
      * @param int $nb_contracts The count of user's contracts
      * @param int $nb_meetings The count of user's meetings
+     * @param ?Action $first_log The first connection of the user
+     * @param ?Action $last_log The last connection of the user
      * @param ?Action $first_password_change The first password change of the user
      * @param ?Action $last_password_change The last password change of the user
      * @param string $tab
@@ -48,14 +48,14 @@ class PreferencesView extends View {
         User &$user, 
         Role &$role, 
         Establishment &$establishment, 
-        Action $first_log,
-        Action $last_log,
         int $nb_connexions,
         int $nb_actions, 
         int $nb_applications, 
         int $nb_offers, 
         int $nb_contracts, 
         int $nb_meetings,
+        ?Action $first_log = null,
+        ?Action $last_log = null,
         ?Action $first_password_change = null,
         ?Action $last_password_change = null,
         string $tab = "null"
@@ -77,7 +77,8 @@ class PreferencesView extends View {
     /**
      * Public function displaying the user HTML form page
      *
-     * @param array $list_role The list of roles
+     * @param array $establishments_list The list of establishments
+     * @param array $role_list The list of roles
      * @param ?User $user The user
      * @param ?Role $role The user's role
      * @param ?Establishment $establishment Thue user's establishment
@@ -85,7 +86,8 @@ class PreferencesView extends View {
      * @return void
      */
     public function displayUserForm(
-        array $list_role,
+        array $establishments_list,
+        array $role_list,
         ?User $user =  null, 
         ?Role $role = null,
         ?Establishment $establishment = null
@@ -104,29 +106,35 @@ class PreferencesView extends View {
     /**
      * Public function displaying the input user HTML form page
      *
-     * @param array $list_role The list of roles
+     * @param array $establishments_list The list of establishments
+     * @param array $role_list The list of roles
      * @return void
      */
-    public function displayInputUser(array $list_role): void {
-        $this->displayUserForm($list_role);
+    public function displayInputUser(
+        array $establishments_list,
+        array $role_list
+    ): void {
+        $this->displayUserForm($establishments_list, $role_list);
     }  
 
     // * DISPLAY EDIT * //
     /**
      * Public function displaying the edit user HTML form page
      *
-     * @param array $list_role The list of roles
+     * @param array $establishments_list The list of establishments
+     * @param array $role_list The list of roles
      * @param User $user The user
      * @param Role $role The user's role
      * @param Establishment $establishment Thue user's establishment
      * @return void
      */
     public function displayEditUser(
-        array $list_role,
+        array $establishments_list,
+        array $role_list,
         User $user, 
         Role $role,
         Establishment $establishment
     ): void {
-        $this->displayUserForm($list_role, $user, $role, $establishment);
+        $this->displayUserForm($establishments_list, $role_list, $user, $role, $establishment);
     }
 }

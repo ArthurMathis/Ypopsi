@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Core\Tools\AlertsManip;
+use App\Models\Action;
 use App\Repository\ActionRepository;
 use App\Repository\UserRepository;
 use App\Repository\RoleRepository;
@@ -53,14 +55,14 @@ class PreferencesController extends Controller {
             $user,
             $role,
             $establishment, 
-            $first_log,
-            $last_log,
             $nb_connexions, 
             $nb_actions,
             $nb_applications,
             $nb_offers,
             $nb_contracts,
             $nb_meetings,
+            $first_log,
+            $last_log,
             $first_password_change,
             $last_password_change,
             "home"
@@ -76,17 +78,59 @@ class PreferencesController extends Controller {
      */
     public function editUser(int $key_user): void {
         $user = (new UserRepository())->get($key_user);
-        $establishment = (new EstablishmentRepository())->get($user->getEstablishment());
+
+        $esta_repo = new EstablishmentRepository();
+        $establishment = $esta_repo->get($user->getEstablishment());
+        $list_establishment = $esta_repo->getAutoCompletion();
 
         $role_repo = new RoleRepository();
         $role = $role_repo->get($user->getRole());
         $list_role = $role_repo->getList();
 
         $this->View->displayEditUser(
+            $list_establishment, 
             $list_role,
             $user,
             $role,
             $establishment
         );
+    }
+
+    // * UPDATE * //
+    /**
+     * Public method updating the user in the database
+     *
+     * @param int $key_user The user's primary key
+     * @return void
+     */
+    public function updateUser(int $key_user): void {
+        $user_repo = new UserRepository();                                                  // fFetching the user
+        $user = $user_repo->get($key_user);
+
+        $user->setName($_POST['name']);
+        $user->setFirstname($_POST['firstname']);
+        $user->setEmail($_POST['email']);
+        $user->setEstablishment($_POST['establishment']);
+        $user->setRole($_POST['role']);
+
+        $user_repo->update($user);                                                          // Updating the user 
+
+        $act_repo = new ActionRepository();
+        $type = $act_repo->searchType("Mise à jour utilisateur");
+        $desc = "Mise à jour utilisateur de  " . $user->getCompleteName();
+
+        $act = Action::create(                                                              // Creating the action
+            $_SESSION["user"]->getId(), 
+            $type->getId(),
+            $desc
+        );          
+
+        $act_repo->writeLogs($act);                                                         // Registering the action in logs
+
+        AlertsManip::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'La mise a jour a été effectuée avec succès.',
+            'direction' => APP_PATH . "/preferences/users/profile/" . $key_user
+        ]);
     }
 }

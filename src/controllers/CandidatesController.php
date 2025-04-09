@@ -4,8 +4,8 @@ namespace App\Controllers;
 
 use Exception;
 use App\Controllers\Controller;
-use App\Core\AlertsManipulation;
-use App\Core\FormsManip;
+use App\Core\Tools\AlertsManip;
+use App\Core\Tools\DataFormatManip;
 use App\Core\Moment;
 use App\Models\Action;
 use App\Models\Application;
@@ -155,7 +155,7 @@ class CandidatesController extends Controller {
         
         $act_repo->writeLogs($act);                                                                             // Registering the action in logs
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title'     => 'Action enregistrée',
             'msg'       => 'La signature a été enregistrée avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
@@ -190,7 +190,7 @@ class CandidatesController extends Controller {
         
         $act_repo->writeLogs($act);                                                                             // Registering the action in logs
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title'     => 'Action enregistrée',
             'msg'       => 'La démission a été enregistrée avec succès.',
             'direction' => APP_PATH . "/candidates/" . $candidate->getId()
@@ -225,7 +225,7 @@ class CandidatesController extends Controller {
         
         $act_repo->writeLogs($act);                                                                             // Registering the action in logs
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title'     => 'Action enregistrée',
             'msg'       => 'La candidature a été refusée avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
@@ -260,7 +260,7 @@ class CandidatesController extends Controller {
         
         $act_repo->writeLogs($act);                                                                         // Registering the action in logs
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title'     => 'Action enregistrée',
             'msg'       => 'La candidature a été refusée avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
@@ -498,7 +498,7 @@ class CandidatesController extends Controller {
         );          
         $act_repo->writeLogs($act);                                                             // Registering the action in logs
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title' => 'Action enregistrée',
             'msg' => 'La contrat a été ajouté avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
@@ -540,8 +540,7 @@ class CandidatesController extends Controller {
 
         $act_repo = new ActionRepository();
         $type = $act_repo->searchType("Nouvelle proposition");
-        $desc = "Nouvelle proposition de contrat pour " . strtoupper($candidate->getName()) 
-                . " " . FormsManip::nameFormat($candidate->getFirstname()) 
+        $desc = "Nouvelle proposition de contrat pour " . $candidate->getCompleteName() 
                 . " au poste de " . $job_titled;
 
         $act = Action::create(                                                              // Creating the action
@@ -552,7 +551,7 @@ class CandidatesController extends Controller {
 
         $act_repo->writeLogs($act);                                                         // Registering the action in logs
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title' => 'Action enregistrée',
             'msg' => 'La proposition a été ajoutée avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
@@ -627,7 +626,7 @@ class CandidatesController extends Controller {
 
         $type = $act_repo->searchType("Nouvelle candidature");
         $desc = "Nouvelle candidature de " . strtoupper($candidate->getName()) . " " 
-                . FormsManip::nameFormat($candidate->getFirstname()) . " au poste de {$job}.";
+                . DataFormatManip::nameFormat($candidate->getFirstname()) . " au poste de {$job}.";
         $action = Action::create(                                                                               // Creating the action
             $_SESSION["user"]->getId(),
             $type->getId(), 
@@ -636,7 +635,7 @@ class CandidatesController extends Controller {
 
         $act_repo->writeLogs($action);                                                                          // Registering the action
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             "title" => "Action enregistrée",
             "msg" => "La candidature a été ajoutée avec succès.",
             "direction" => APP_PATH . "/candidates/" . $key_candidate
@@ -667,7 +666,7 @@ class CandidatesController extends Controller {
         $type = $act_repo->searchType("Nouveau rendez-vous"); 
         $desc = "Nouveau rendez-vous avec " 
                 . strtoupper($candidate->getName()) . " " 
-                . FormsManip::nameFormat($candidate->getFirstname()) 
+                . DataFormatManip::nameFormat($candidate->getFirstname()) 
                 . ", le " . date('Y m d', strtotime($meeting->getDate()));
 
         $act = Action::create(                                                              // Creating the action
@@ -678,7 +677,7 @@ class CandidatesController extends Controller {
 
         $act_repo->writeLogs($act);                                                         // Registering the action in logs
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title' => 'Action enregistrée',
             'msg' => 'Le rendez-vous a été ajouté avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
@@ -857,7 +856,7 @@ class CandidatesController extends Controller {
             }
         }
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title' => 'Candidat Mise à jour',
             'msg' => 'Le candidat a été mis-à-jour avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
@@ -892,7 +891,7 @@ class CandidatesController extends Controller {
         );
         $act_repo->writeLogs($act);                                                         // Registering the action in logs
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title' => 'Rendez-vous notation',
             'msg' => 'La notation a été mis-à-jour avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
@@ -930,7 +929,7 @@ class CandidatesController extends Controller {
         );          
         $act_repo->writeLogs($act);                                                         // Registering the action in logs
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title' => 'Rendez-vous Mise à jour',
             'msg' => 'Le rendez-vous a été mis-à-jour avec succès.',
             'direction' => APP_PATH . "/candidates/" . $key_candidate
@@ -956,7 +955,7 @@ class CandidatesController extends Controller {
         $act_repo = new ActionRepository();                 
         $type = $act_repo->searchType("Annulation rendez-vous"); 
         $desc = strtoupper($candidate->getName()) . " " 
-                . FormsManip::nameFormat($candidate->getFirstname()) 
+                . DataFormatManip::nameFormat($candidate->getFirstname()) 
                 . " a annulé son rendez-vous du " 
                 . date('Y m d', strtotime($meeting->getDate()));
 
@@ -968,7 +967,7 @@ class CandidatesController extends Controller {
 
         $act_repo->writeLogs($act);                                                         // Writing logs
 
-        AlertsManipulation::alert([
+        AlertsManip::alert([
             'title' => 'Action enregistrée',
             'msg' => 'Vous avez annulé le rendez-vous.',
             'direction' => APP_PATH . "/candidates/" . $candidate->getId()

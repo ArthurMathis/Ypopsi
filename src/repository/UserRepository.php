@@ -21,7 +21,7 @@ class UserRepository extends Repository {
     public function get(int $key_user): User {
         $request = "SELECT * FROM Users WHERE Id = :id";
 
-        $params = array("id" => $key_user);
+        $params = ["id" => $key_user];
 
         $fetch = $this->get_request($request, $params, true, true);
 
@@ -67,6 +67,25 @@ class UserRepository extends Repository {
 
 
     // * UPDATE * //
+    /**
+     * Public method updating the user in the database
+     *
+     * @param User $user The user to update
+     * @return void
+     */
+    public function update(User &$user): void {
+        $request = "UPDATE Users SET Identifier = :identifier, Name = :name, Firstname = :firstname, Email = :email WHERE Id = :id";
+
+        $params = [
+            "id"          => $user->getId(),
+            ":identifier" => $user->getIdentifier(),
+            ":name"       => $user->getName(),
+            ":firstname"  => $user->getFirstname(),
+            ":email"      => $user->getEmail(),
+        ];
+
+        $this->post_request($request, $params);
+    }
 
 
     // * OTHER * // 

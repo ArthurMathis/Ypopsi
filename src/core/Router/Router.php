@@ -3,7 +3,7 @@
 namespace App\Core\Router;
 
 use App\Controllers\LoginController;
-use App\Core\AlertsManipulation;
+use App\Core\AlertsManip;
 use App\Core\Router\Route;
 use App\Exceptions\RouterExceptions;
 use App\Core\Middleware\AuthMiddleware;
@@ -88,7 +88,7 @@ class Router {
         } catch(LoginExceptions $e) {
             $destination = "/logout";
             if($path !== $destination) {
-                AlertsManipulation::alert([
+                AlertsManip::alert([
                     'title' => "Connexion expirée !",
                     'msg' => "<p>" . $e->getMessage() . "</p>",
                     'icon' => 'warning',

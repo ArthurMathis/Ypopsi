@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Tools\DataFormatManip;
 use App\Models\PeopleInterface;
 use App\Exceptions\UserExceptions;
 
@@ -38,46 +39,38 @@ class User implements PeopleInterface {
         protected int $establishment
     ) {
         // id
-        if(!empty($id) & $id <= 0) {
-            throw new UserExceptions("La clé primaire doit être positive. La valeur : {$id} est invalide.");
+        if(!empty($id) & !DataFormatManip::isValidKey($id)) {
+            throw new UserExceptions("La clé primaire : {$id} est invalide.");
         }
 
-        // identifier // todo : regex
-        if(empty($identifier)) {
-            throw new UserExceptions("L'identifiant d'un utilisateur ne peut être vide.");
-        } elseif(is_numeric($identifier)) {
-            throw new UserExceptions("L'identifiant d'un utilisateur doit être une chaine de caractères. La valeur : {$identifier} est invalide.");
+        // identifier 
+        if(!DataFormatManip::isValidIdentifier($identifier)) {
+            throw new UserExceptions("L'identifiant : {$identifier} est invalide.");
+        } 
+
+        // name 
+        if(!DataFormatManip::isValidName($name)) {
+            throw new UserExceptions("Le nom : {$name} est invalide.");
         }
 
-        // name  // todo : regex
-        if(empty($name)) {
-            throw new UserExceptions("Le nom d'un utilisateur ne peut être vide.");
-        } elseif(is_numeric($name)) {
-            throw new UserExceptions("Le nom d'un utilisateur doit être une chaine de caractères. La valeur : {$name} est invalide.");
+        // firstname
+        if(!DataFormatManip::isValidName($firstname)) {
+            throw new UserExceptions("Le prénom : {$firstname} est invalide.");
         }
 
-        // firstname // todo : regex
-        if(empty($firstname)) {
-            throw new UserExceptions("Le prénom d'un utilisateur ne peut être vide.");
-        } elseif(is_numeric($firstname)) {
-            throw new UserExceptions("Le prénom d'un utilisateur doit être une chaine de caractères. La valeur : {$firstname} est invalide.");
-        }
-
-        // email // todo : regex
-        if(empty($email)) {
-            throw new UserExceptions("L'email d'un utilisateur ne peut être vide !");
-        } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new UserExceptions("L'email doit contenir un nom, un @ et une adresse (ex: nom.prenom@diaconat-mulhouse.fr). La valeur : {$email} est invalide");
+        // email 
+        if(!DataFormatManip::isValidEmail($email)) {
+            throw new UserExceptions("L'email : {$email} est invalide.");
         }
 
         // role
-        if($role <= 0) {
-            throw new UserExceptions("La clé du rôle doit être positive. La valeur : {$role} est invalide.");
+        if(!DataFormatManip::isValidKey($role)) {
+            throw new UserExceptions("La clé du rôle : {$role} est invalide.");
         }
 
         // establishment
-        if($establishment <= 0) {
-            throw new UserExceptions("La clé due l'établissement doit être positive. La valeur : {$establishment} est invalide.");
+        if(!DataFormatManip::isValidKey($establishment)) {
+            throw new UserExceptions("La clé due l'établissement : {$establishment} est invalide.");
         }
     }
 
@@ -159,6 +152,78 @@ class User implements PeopleInterface {
      */
     public function getEstablishment(): int { return $this->establishment; }
 
+    // * SET * //
+    /**
+     * Public method setting the user's name
+     *
+     * @param string $name The user's name
+     * @throws UserExceptions If the name is invalid
+     * @return void
+     */
+    public function setName(string $name): void { 
+        $name = DataFormatManip::nameFormat($name);
+        if(!DataFormatManip::isValidName($name)) {
+            throw new UserExceptions("Le nom de l'utilisateur est invalide : {$name}.");
+        }
+
+        $this->name = $name;
+    }
+    /**
+     * Public method setting the user's firstname
+     *
+     * @param string $firstname The user's firstname
+     * @throws UserExceptions If the firstname is invalid
+     * @return void
+     */
+    public function setFirstname(string $firstname): void {
+        $firstname = DataFormatManip::nameFormat($firstname);
+        if(!DataFormatManip::isValidName($firstname)) {
+            throw new UserExceptions("Le prénom de l'utilisateur est invalide : {$firstname}.");
+        }
+        $this->firstname = $firstname; 
+    }
+    /**
+     * Public method setting the user's email
+     *
+     * @param string $email The user's email
+     * @throws UserExceptions If the email is invalid
+     * @return void
+     */
+    public function setEmail(string $email): void {
+        if(!DataFormatManip::isValidEmail($email)) {
+            throw new UserExceptions("L'adresse email de l'utilisateur est invalide : {$email}.");
+        }
+        
+        $this->email = $email; 
+    }
+    /**
+     * Public method setting the user's password
+     *
+     * @param int $password The user's password
+     * @throws UserExceptions If the password is invalid
+     * @return void
+     */
+    public function setRole(int $role): void {
+        if(!DataFormatManip::isValidKey($role)) {
+            throw new UserExceptions("Le role de l'utilisateur est invalide : {$role}.");
+        }
+
+        $this->role = $role; 
+    }
+    /**
+     * Public method setting the user's establishment
+     *
+     * @param int $establishment The user's establishment
+     * @throws UserExceptions If the establishment is invalid
+     * @return void
+     */
+    public function setEstablishment(int $establishment): void { 
+        if(!DataFormatManip::isValidKey($establishment)) {
+            throw new UserExceptions("L'établissement de l'utilisateur est invalide : {$establishment}.");
+        }
+        
+        $this->establishment = $establishment; 
+    }
     
     // * CONVERT * //
     /**

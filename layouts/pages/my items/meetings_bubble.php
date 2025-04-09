@@ -1,12 +1,12 @@
 <?php
 
-use App\Core\FormsManip;
+use App\Core\Tools\FomsManip;
 
 ?>
 
 <div class="meeting_bubble">
     <header>
-        <h2><?php echo FormsManip::majusculeFormat($item['nom']) . ' ' . $item['prenom']; ?></h2>
+        <h2><?php echo DataFormatManip::majusculeFormat($item['nom']) . ' ' . $item['prenom']; ?></h2>
         <p><?= $item['etablissement'] ?></p>
     </header>
     <content>
