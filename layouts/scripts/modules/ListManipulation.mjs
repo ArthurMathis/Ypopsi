@@ -207,7 +207,7 @@ function setColor(items=[], criteres=[], index) {
         throw new Error("Erreur lors de la détermination du code couleur. La liste de critères doit être de type Array !");
     if (index === null || !Number.isInteger(index) || index < 0) 
         throw new Error("Erreur lors de la détermination du code couleur. L'index doit être un nombre entier positif !");
-    if(!items[0].cells || items[0].cells.length === 0) {
+    if(!items[0].cells || items[0].cells.length === 1) {
         console.error('Aucun élément détecté...');
         return;
     }
@@ -232,8 +232,9 @@ function setColor(items=[], criteres=[], index) {
  * @author Arthur MATHIS
  */
 function setColorAvailability(items=[], index) {
-    if(!items.cells || items.cells.length === 0)
+    if(!items.cells || items.cells.length === 1) {
         return;
+    }
 
     const current_date = new Date();
 
@@ -255,8 +256,9 @@ function setColorAvailability(items=[], index) {
  * @author Arthur MATHIS
  */
 function recoverFields(fields=[], criteria=[]) { 
-    if(!Array.isArray(fields))
+    if(!Array.isArray(fields)) {
         throw new Error("Erreur lors de la récupération des critères. La liste de critères doit être de type Array !");
+    }
 
     for(let i = 0; i < fields.length; i++) {
         if(fields[i].champs.value !== '') {
@@ -265,8 +267,6 @@ function recoverFields(fields=[], criteria=[]) {
                 'critere': fields[i].champs.value,
                 'type'   : 'default'
             });
-
-            // fields[i].champs.value = null;
         }
     }
 }
@@ -278,21 +278,24 @@ function recoverFields(fields=[], criteria=[]) {
  * @author Arthur MATHIS
  */
 function recoverCheckbox(fields=[], criteria=[]) {
-    if (!Array.isArray(fields.champs)) 
+    if (!Array.isArray(fields.champs)) {
         throw new Error("Erreur lors de la récupération des critères. La liste de critères doit être de type Array !");
+    }
 
     let new_c = [];
     fields.champs.forEach(c => {
-        if(c.checked)
+        if(c.checked) {
             new_c.push(c.name);
+        }
     });
 
-    if(new_c.length !== fields.champs.length)
+    if(new_c.length !== fields.champs.length) {
         criteria.push({
             'index'   : fields.index,
             'criteres': new_c,
             'type'    : 'multi'
         });
+    }
 }
 /**
  * @function recoverFieldsDate
@@ -313,25 +316,23 @@ function recoverFieldsDate(fields=[], criteria=[]) {
             'type' : 'min',
             'value': new Date(champs.champs[0].value)
         });
-        // fields.champs[0].value = null;
     }
     if(fields.champs[1].value) {
         new_c.push({
             'type' : 'max',
             'value': new Date(fields.champs[1].value)
         });
-        // fields.champs[1].value = null;
     }
 
-    if(new_c.length > 0)
+    if(new_c.length > 0) {
         criteria.push({
             'index'   : fields.index,
             'criteres': new_c,
             'type'    : 'date'
         });
-
-    else 
+    } else {
         console.warn("Aucun critère ajouté");
+    }
 }
 /**
  * @function clearFields
@@ -394,13 +395,15 @@ function filterBy(item, index, criteria) {
  * @author Arthur MATHIS
  */
 function filterByCriteria(item, index, criteria=[]) {
-    if (index < 0 || item.cells.length <= index) 
+    if (index < 0 || item.cells.length <= index) {
         console.warn("Impossible d'appliquer le filtre. Indice de invalide !");
+    }
 
     let i = 0, find = false;
     while(find === false && i < criteria.length) {
-        if(item.cells[index].textContent.trim() === criteria[i]) 
+        if(item.cells[index].textContent.trim() === criteria[i]) {
             find = true;
+        }
         i++;
     }
 
@@ -417,8 +420,9 @@ function filterByCriteria(item, index, criteria=[]) {
  * @author Arthur MATHIS
  */
 function filterByDate(item, index, critere_date=[]) {
-    if(index < 0 || critere_date === null)
+    if(index < 0 || critere_date === null) {
         return; 
+    }
 
     const date = new Date(item.cells[index].textContent.trim());
     let i = 0, res = true;
@@ -450,10 +454,13 @@ function filterByDate(item, index, critere_date=[]) {
  * @author Arthur MATHIS
  */
 function multiFilter(items, criteria=[]) {
-    if(items === null)
+    if(items === null) {
         throw new Error("Une erreur s'est produite. Impossible d'effectuer de filtre ou de recherche sur un ensemble vide !");
-    if(criteria === null)
+    }
+
+    if(criteria === null) {
         return;
+    }
 
     let search = Array.from(items);
     let i = 0;
@@ -537,31 +544,46 @@ function sortByDate(item1=[], item2=[], index) {
  * @author Arthur MATHIS
  */
 function sortBy(items, index, croissant = true) {
-    if (!items) 
-        throw new Erreor('Tri impossible, items nul');
-    if (index === null) 
-        throw new Erreor('Tri impossible, index introuvable');
-    if (index < 0) 
-        throw new Erreor('Tri impossible, index négatif');
-    if (items.length === 0) 
-        throw new Erreor('Tri impossible, items vide');
-    if (items[0].cells.length <= index) 
-        throw new Erreor('Tri impossible, index supérieur à dimension items');
+    switch(true) {
+        case !items:
+            throw new Error('Tri impossible, items nul');
 
-    if (typeof croissant !== 'boolean') 
-        croissant = true;
+        case items.length === 0:
+            throw new Error('Tri impossible, items vide');
+
+        case index === null:
+            throw new Error('Tri impossible, index introuvable');
+
+        case index < 0:
+            throw new Error('Tri impossible, index négatif');
+
+        case items[0].cells.length <= index:
+            throw new Error('Tri impossible, index supérieur à dimension items');
+    }
 
     let search = Array.from(items);
     const item = items[0].cells[index].textContent.trim();
-    if (!isNaN(Date.parse(item))) 
-        search.sort((item1, item2) => sortByDate(item1, item2, index));
-    else if (!isNaN(parseInt(item))) 
-        search.sort((item1, item2) => sortByInteger(item1, item2, index));
-    else 
-        search.sort((item1, item2) => sortByString(item1, item2, index));
+    switch(true) {
+        case !isNaN(Date.parse(item)):
+            search.sort((item1, item2) => sortByDate(item1, item2, index));
+            break;
 
-    if (!croissant)
+        case !isNaN(parseInt(item)):
+            search.sort((item1, item2) => sortByInteger(item1, item2, index));
+            break;
+
+        default:
+            search.sort((item1, item2) => sortByString(item1, item2, index));
+            break;
+    }
+
+    if (typeof croissant !== 'boolean') {
+        croissant = true;
+    }
+
+    if (!croissant) {
         search.reverse();
+    }
 
     return search;
 }

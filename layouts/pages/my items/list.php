@@ -42,12 +42,12 @@
     ?>
     <script>
         const rows = document.querySelectorAll(".liste_items .table-wrapper table tbody tr");
-        const links = <?= json_encode($links); ?>;
+        const links = <?= json_encode($links) ?>;
 
         rows.forEach((obj, index) => {
             obj.addEventListener('click', () => {
                 <?php if(isset($direction)): ?>
-                    window.location.href = '<?= $direction; ?>' + links[index];
+                    window.location.href = '<?= $direction ?>' + links[index];
                 <?php else: ?>
                     window.location.href = "<?= APP_PATH ?>/candidates/"  + links[index];
                 <?php endif ?>

@@ -64,8 +64,8 @@
 </div>
 <script type='module'>
     // * IMPORTS * //
-    import { List } from "./layouts/scripts/modules/List.mjs"; 
-    import { listManipulation } from "./layouts/scripts/modules/ListManipulation.mjs";
+    import List from "<?= APP_PATH ?>\\layouts\\scripts\\modules\\List.mjs"; 
+    import { listManipulation } from "<?= APP_PATH ?>\\layouts\\scripts\\modules\\ListManipulation.mjs";
 
     document.addEventListener('DOMContentLoaded', () => {
         // * LISTE DYNAMIQUE * //
