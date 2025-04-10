@@ -350,13 +350,6 @@ form .checkbox-item label {
   text-wrap: nowrap;
 }
 
-input:invalid {
-  border: 2px solid var(--error-color) !important;
-}
-.error-message {
-  color: var(--error-color);
-}
-
 .autocomplete {
   position: relative;
   width: 100%;

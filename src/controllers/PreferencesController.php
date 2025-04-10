@@ -40,7 +40,7 @@ class PreferencesController extends Controller {
         $establishment = (new EstablishmentRepository())->get($user->getEstablishment());
 
         $act_repo = new ActionRepository();
-        $first_log = $act_repo->getUserFirstUserConnection($user);
+        $first_log = $act_repo->getUserFirstUserConnection($user); 
         $last_log = $act_repo->getUserLastUserConnection($user);
         $first_password_change = $act_repo->getUserFirstUserPasswordChange($user);
         $last_password_change = $act_repo->getUserLastUserPasswordChange($user);
@@ -50,7 +50,6 @@ class PreferencesController extends Controller {
         $nb_offers = $act_repo->getNumberOfUserOffers($user);
         $nb_contracts = $act_repo->getNumberOfUserContracts($user);
         $nb_meetings = $act_repo->getNumberOfUserMeetings($user);
-
 
         $this->View->displayProfile(
             $user,

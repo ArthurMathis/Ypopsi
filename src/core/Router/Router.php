@@ -3,7 +3,7 @@
 namespace App\Core\Router;
 
 use App\Controllers\LoginController;
-use App\Core\AlertsManip;
+use App\Core\Tools\AlertsManip;
 use App\Core\Router\Route;
 use App\Exceptions\RouterExceptions;
 use App\Core\Middleware\AuthMiddleware;

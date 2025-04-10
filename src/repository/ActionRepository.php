@@ -119,8 +119,8 @@ class ActionRepository extends Repository {
         $request = "SELECT * 
         
         FROM Actions 
-        WHERE Key_Users = :user AND Key_Types_of_actions  IN (
-            SELECT id
+        WHERE Key_Users = :user AND Key_Types_of_actions IN (
+            SELECT Id
             FROM Types_of_actions
             WHERE Titled IN ('Mise à jour mot de passe')
         ) 
@@ -131,7 +131,7 @@ class ActionRepository extends Repository {
             "user" => $user->getId()
         ];
 
-        $response = $this->get_request($request, $params);
+        $response = $this->get_request($request, $params, true);
         return $response ? Action::fromArray($response) : null;
     }
 
@@ -157,7 +157,7 @@ class ActionRepository extends Repository {
             "user" => $user->getId()
         ];
 
-        $response = $this->get_request($request, $params);
+        $response = $this->get_request($request, $params, true);
         return $response ? Action::fromArray($response) : null;
     }
     //// GET USER NUMBER //// 

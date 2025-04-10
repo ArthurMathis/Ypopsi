@@ -144,7 +144,7 @@ class PreferencesView extends View {
      * @return void
      */
     public function displayEditPassword(User &$user): void {
-        $this->generateCommonHeader('Préférences', [FORMS_STYLES.DS.'small-form.css']);
+        $this->generateCommonHeader('Préférences', [FORMS_STYLES.DS.'small-form.css', FORMS_STYLES.DS.'valid-input.css']);
         $this->generateMenu(true, null);
 
         include(FORMULAIRES.DS.'password.php');
