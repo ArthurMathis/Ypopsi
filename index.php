@@ -72,24 +72,24 @@ try {
 
     // * PREFERENCES * //
     //// USERS ////
-    $router->addRoute("/preferences", PreferencesController::class, "display");                                                                                                                                     // todo
+    $router->addRoute("/preferences", PreferencesController::class, "display"); 
     $router->addRoute("/preferences/users", PreferencesController::class, "displayUser", [FeatureMiddleware::$DISPLAY_USERS], AuthMiddleware::$ADMIN);                                                              // todo
     $router->addRoute("/preferences/users/new", PreferencesController::class, "displayNewUser", [FeatureMiddleware::$DISPLAY_USERS], AuthMiddleware::$ADMIN);                                                       // todo
     $router->addRoute("/preferences/users/input", PreferencesController::class, "inputUser", [FeatureMiddleware::$INSCRIPT_USER], AuthMiddleware::$ADMIN);                                                          // todo
     $router->addRoute("/preferences/users/inscript", PreferencesController::class, "inscriptUser", [FeatureMiddleware::$INSCRIPT_USER], AuthMiddleware::$ADMIN);                                                    // todo
     $router->addRoute("/preferences/users/edit/{user}", PreferencesController::class, "editUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$ADMIN);                                                         // todo
     $router->addRoute("/preferences/users/update/{user}", PreferencesController::class, "updateUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$ADMIN);                                                     // todo
-    $router->addRoute("/preferences/users/fetch_reset_password/{user}", PreferencesController::class, "fetchResetPassword", [FeatureMiddleware::$RESET_PASSWORD], AuthMiddleware::$ADMIN);                                     // todo
-    $router->addRoute("/preferences/users/reset_password/{user}", PreferencesController::class, "resetPassword", [FeatureMiddleware::$RESET_PASSWORD], AuthMiddleware::$ADMIN);                                     // todo
-    // $router->addRoute("/preferences/users/activate/{user}", PreferencesController::class, "activateUser", [FeatureMiddleware::$ACTIVATE_USER], AuthMiddleware::$ADMIN);                                             // todo
-    // $router->addRoute("/preferences/users/desactivate/{user}", PreferencesController::class, "desactivateUser", [FeatureMiddleware::$DESACTIVATE_USER], AuthMiddleware::$ADMIN);                                    // todo
+    $router->addRoute("/preferences/users/fetch_reset_password/{user}", PreferencesController::class, "fetchResetPassword", [FeatureMiddleware::$RESET_PASSWORD], AuthMiddleware::$ADMIN);
+    $router->addRoute("/preferences/users/reset_password/{user}", PreferencesController::class, "resetPassword", [FeatureMiddleware::$RESET_PASSWORD], AuthMiddleware::$ADMIN);
+    // $router->addRoute("/preferences/users/activate/{user}", PreferencesController::class, "activateUser", [FeatureMiddleware::$ACTIVATE_USER], AuthMiddleware::$ADMIN);                                           // todo
+    // $router->addRoute("/preferences/users/desactivate/{user}", PreferencesController::class, "desactivateUser", [FeatureMiddleware::$DESACTIVATE_USER], AuthMiddleware::$ADMIN);                                  // todo
 
     //// PROFILE ////
     $router->addRoute("/preferences/users/profile/{user}", PreferencesController::class, "displayProfile", [FeatureMiddleware::$DISPLAY_USER]);
     $router->addRoute("/preferences/users/profile/edit/{user}", PreferencesController::class, "editUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$USER);
     $router->addRoute("/preferences/users/profile/update/{user}", PreferencesController::class, "updateUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$USER);
-    $router->addRoute("/preferences/users/profile/password/edit/{user}", PreferencesController::class, "editPassword", [FeatureMiddleware::$EDIT_PASSWORD]);                                                        // todo
-    $router->addRoute("/preferences/users/profile/password/update/{user}", PreferencesController::class, "updatePassword", [FeatureMiddleware::$EDIT_PASSWORD]);                                                      // todo
+    $router->addRoute("/preferences/users/profile/password/edit/{user}", PreferencesController::class, "editPassword", [FeatureMiddleware::$EDIT_PASSWORD]);
+    $router->addRoute("/preferences/users/profile/password/update/{user}", PreferencesController::class, "updatePassword", [FeatureMiddleware::$EDIT_PASSWORD]);
     
     //// LOGS ////
     $router->addRoute("/prefrences/logs", PreferencesController::class, "displayLog", [FeatureMiddleware::$DISPLAY_CONNEXIONS], AuthMiddleware::$ADMIN);                                                            // todo

@@ -1,6 +1,6 @@
 -- User de test --
 INSERT INTO Users (Identifier, Name, Firstname, Email, Password, Key_Roles, Key_Establishments, PasswordTemp) VALUES 
-	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$vi//F5odmFYMcZeMh0cPzumgBCkMB33GZeldburkMJDgnudm6WqdG', 1, 1, 0),
+	('mathis.a', 'Mathis', 'Arthur', 'arthur.mathis@diaocnat-mulhouse.fr', '$2y$10$AHBmpr.tQCBiikKR0vx7g.QeQW9EoX5K7v.87CaYRfJCj25.mySVu', 1, 1, 0),
     ('test.py', 'Test', 'Python', 'python.test@diaconat-mulhouse.fr', '$2y$10$tlDdD8ZMnafyDhFrFHi3uuubfAYyudvHUOJuR8sxOcFiLw9emxkP2', 2, 1, 1)
 ;    
 
