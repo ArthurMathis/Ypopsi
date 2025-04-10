@@ -71,10 +71,22 @@ class PreferencesController extends Controller {
         );
     }
 
-    public function displayLogs(?int $key_user = null): void {
+    /**
+     * Public function displaying the connections' logs
+     *
+     * @param null $key_user
+     * @return void
+     */
+    public function displayLogs(): void {
         $act_repo = new ActionRepository();
         $logs = $act_repo->getConnectionList();
         $this->View->displayLogs($logs);
+    }
+
+    public function displayUserLogs(int $key_user): void {
+        $act_repo = new ActionRepository();
+        $logs = $act_repo->getUserConnectionList($key_user);
+        $this->View->DisplayProfileLogs($logs);
     }
 
     // * EDIT  * // 

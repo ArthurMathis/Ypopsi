@@ -31,6 +31,7 @@ class ActionRepository extends Repository {
         return $this->post_request($request, $params);
     }
 
+    // * GET * //
     /**
      * Public method returning the list of connections
      *
@@ -38,27 +39,55 @@ class ActionRepository extends Repository {
      */
     public function getConnectionList(): array {
         $request = "SELECT 
-        
-        act.Id AS Cle,
-        type.Titled AS Intitulé,
-        r.Titled AS Role,
-        CONCAT(UPPER(u.name), ' ', u.firstname) AS Utilisateur,
-        Date(act.Moment) AS Date,
-        Time(act.Moment) AS Heure
+            
+            act.Id AS Cle,
+            type.Titled AS Intitulé,
+            r.Titled AS Role,
+            CONCAT(UPPER(u.name), ' ', u.firstname) AS Utilisateur,
+            Date(act.Moment) AS Date,
+            Time(act.Moment) AS Heure
 
 
-        FROM Actions AS act
-        INNER JOIN Users AS u ON u.Id = act.Key_Users
-        INNER JOIN Roles AS r on r.Id = u.Key_Roles
-        INNER JOIN Types_of_actions AS type ON act.Key_Types_of_actions = type.Id
+            FROM Actions AS act
+            INNER JOIN Users AS u ON u.Id = act.Key_Users
+            INNER JOIN Roles AS r on r.Id = u.Key_Roles
+            INNER JOIN Types_of_actions AS type ON act.Key_Types_of_actions = type.Id
 
-        WHERE Key_Types_of_actions  IN (
-            SELECT id
-            FROM Types_of_actions
-            WHERE Titled IN ('Connexion', 'Déconnexion')
-        )";
+            WHERE Key_Types_of_actions  IN (
+                SELECT id
+                FROM Types_of_actions
+                WHERE Titled IN ('Connexion', 'Déconnexion')
+            )";
 
         return $this->get_request($request);
+    }
+    /**
+     * Public function returning the user's list of connections
+     *
+     * @param int $key_user The user's primary key
+     * @return ?array
+     */
+    public function getUserConnectionList(int $key_user): ?array {
+        $request = "SELECT 
+            act.Id AS Cle,
+            type.Titled AS Intitulé,
+            Date(act.Moment) AS Date,
+            Time(act.Moment) AS Heure
+            
+            FROM Actions AS act
+            INNER JOIN Types_of_actions AS type ON act.Key_Types_of_actions = type.Id
+
+            WHERE act.Key_Users = :user AND Key_Types_of_actions  IN (
+                SELECT id
+                FROM Types_of_actions
+                WHERE Titled IN ('Connexion', 'Déconnexion')
+            )";
+
+        $params = [
+            "user" => $key_user
+        ];
+
+        return $this->get_request($request, $params);
     }
 
     //// GET USER ////

@@ -314,7 +314,7 @@ function recoverFieldsDate(fields=[], criteria=[]) {
     if(fields.champs[0].value) {
         new_c.push({
             'type' : 'min',
-            'value': new Date(champs.champs[0].value)
+            'value': new Date(fields.champs[0].value)
         });
     }
     if(fields.champs[1].value) {

@@ -25,6 +25,7 @@ class PreferencesView extends View {
         $this->generateCommonFooter();
     }
 
+    //// PROFILE ////
     /**
      * Display the user profile in the preferences menu
      *
@@ -73,6 +74,28 @@ class PreferencesView extends View {
         $this->generateCommonFooter();
     }
 
+    public function displayProfileLogs(array &$logs, string $tab="user-connexions"): void {
+        $this->generateCommonHeader('Préférences', [
+            PAGES_STYLES.DS."preferences.css", 
+            PAGES_STYLES.DS."liste-page.css",
+            PAGES_STYLES.DS."log-history.css"
+        ]);
+        $this->generateMenu(false, PREFERENCES);
+
+        echo "<content>";
+        include(MY_ITEMS.DS.'preferences.php');
+        echo '<main id="historique">';
+        include BARRES.DS.'user-log-history.php';
+        $this->getListItems("Historique de connexions", $logs, null, "main-liste");
+        echo '</main>';
+        echo "</content>";
+
+        $this->generateCommonFooter();
+    }
+
+    //// USERS ////
+
+    //// LOGS //// 
     /**
      * Public function displaying the connexions' logs
      * 
