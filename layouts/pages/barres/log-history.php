@@ -61,74 +61,6 @@
                 </div>
             </section>
 
-            <!--
-            <section 
-                id="role_input" 
-                class="small-section"
-            >
-                <p>
-                    Rôles
-                </p>
-
-                <div class="container-statut">
-                    <input 
-                        type="checkbox" 
-                        name="Propriétaire" 
-                        checked
-                    >
-
-                    <p>
-                        Propriétaire
-                    </p>
-                </div>
-
-                <div class="container-statut">
-                    <input 
-                        type="checkbox" 
-                        name="Administrateur" 
-                        checked
-                    >
-
-                    <p>
-                        Administrateur
-                    </p>
-                </div>
-                <div class="container-statut">
-                    <input 
-                        type="checkbox" 
-                        name="Modérateur" 
-                        checked
-                    >
-
-                    <p>
-                        Modérateur
-                    </p>
-                </div>
-                <div class="container-statut">
-                    <input 
-                        type="checkbox" 
-                        name="Utilisateur" 
-                        checked
-                    >
-
-                    <p>
-                        Utilisateur
-                    </p>
-                </div>
-                <div class="container-statut">
-                    <input 
-                        type="checkbox" 
-                        name="Invité" 
-                        checked
-                    >
-
-                    <p>
-                        Invité
-                    </p>
-                </div>
-            </section>
--->
-
             <section>
                 <p>
                     Date
@@ -381,10 +313,6 @@
             champs: Array.from(document.getElementById('action_input').querySelectorAll('input')),
             index: 0
         };
-        // const champs_role = {
-        //     champs: Array.from(document.getElementById('role_input').querySelectorAll('input')),
-        //     index: 1
-        // };
         const champs_role = [
             {
                 champs : document.getElementById('recherche-role'),
@@ -469,10 +397,11 @@
 
         //// Réinitialisation des filtres ////
         function reinitFields() {
+            listManipulation.clearFields(champs_role);
             listManipulation.clearFields(champs_infos);
-            listManipulation.clearFieldsCheckbox(champs_action);
-            listManipulation.clearFieldsCheckbox(champs_role);
             listManipulation.clearFieldsDate(champs_date);
+            listManipulation.clearFieldsDate(champs_heure);
+            listManipulation.clearFieldsCheckbox(champs_action);
         }
         reinit_filtre.addEventListener('click', reinitFields);
         reinit_recherche.addEventListener('click', reinitFields);
