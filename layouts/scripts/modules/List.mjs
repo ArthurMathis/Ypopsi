@@ -1,11 +1,9 @@
-export { List };
-
 /**
  * @class
  * @classdesc Class representing an HTML table allowing the dynamic appearance and disappearance of its lines
  * @author Arthur MATHIS
  */
-class List {
+export default class List {
     /**
      * @constructor
      * @param {String} id The list's identifier

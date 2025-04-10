@@ -83,7 +83,7 @@ class Router {
             header("location: " . APP_PATH . "/login/get");
         }
 
-        if($_SESSION['user']->getPasswordTemp()                                     // Test du mot de passe (temporaire)
+        if(isset($_SESSION["user"]) && !empty($_SESSION["user"]) && $_SESSION['user']->getPasswordTemp()                                     // Test du mot de passe (temporaire)
             && strpos($path, "/preferences/users/profile/password/edit/") !== 0) 
         {
             $_SESSION["user"]->setPasswordTemp(false);

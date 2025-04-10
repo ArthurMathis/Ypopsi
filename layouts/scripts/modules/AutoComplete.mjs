@@ -1,10 +1,8 @@
-export { AutoComplete };
-
 /**
  * @class AutoComplete
  * @classdesc Classe permettant de créer un champ d'auto-complétion.
  */
-class AutoComplete {
+export default class AutoComplete {
     /**
      * @constructor
      * @param {HTMLElement} inputElement - L'élément input sur lequel appliquer l'auto-complétion.

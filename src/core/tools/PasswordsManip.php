@@ -31,7 +31,7 @@ class PasswordsManip {
      *
      * @var string The string
      */
-    static public $special = '!@-_?#=+%&*(){}[]:;,.^';
+    static public $special = '(){}[\]&#_@+!*?:;,.<>-';
 
     // * METHODS * //
     /**
@@ -45,7 +45,7 @@ class PasswordsManip {
                 !preg_match('/[a-z]/', $password) || 
                 !preg_match('/[A-Z]/', $password) || 
                 !preg_match('/\d/', $password) || 
-                !preg_match('/[@$!%*?&]/', $password));
+                !preg_match('/[(){}[\]&#_@+!*?:;,.<>-]/', $password));
     }
 
     /**
