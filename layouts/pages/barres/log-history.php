@@ -1,91 +1,286 @@
 <nav class="options_barre">
     <article></article>
+
     <article>
-        <p class="action_button" id="filtrer-button">Filtrer</p>
-        <p class="action_button" id="rechercher-button">Rechercher</p>
+        <p 
+            class="action_button" 
+            id="filtrer-button"
+        >
+        Filtrer
+        </p>
+
+        <p 
+            class="action_button" 
+            id="rechercher-button"
+        >
+            Rechercher
+        </p>
     </article>
 </nav>
-<div class="candidatures-menu" id="filtrer-menu">
-    <h2>Filtrer par</h2>
+
+<div 
+    class="candidatures-menu" 
+    id="filtrer-menu"
+>
+    <h2>
+        Filtrer par
+    </h2>
+
     <main>
         <content>
-            <section id="action_input" class="small-section">
-                <p>Actions</p>
+            <section 
+                id="action_input" 
+                class="small-section"
+            >
+                <p>
+                    Actions
+                </p>
+
                 <div class="container-statut">
-                    <input type="checkbox" name="connexion" checked>
-                    <p>Connexion</p>
+                    <input 
+                        type="checkbox" 
+                        name="connexion" 
+                        checked
+                    >
+
+                    <p>
+                        Connexion
+                    </p>
                 </div>
+
                 <div class="container-statut">
-                    <input type="checkbox" name="moderateur" checked>
-                    <p>Deconnexion</p>
-                </div>
-            </section>
-            <section id="role_input" class="small-section">
-                <p>Rôles</p>
-                <div class="container-statut">
-                    <input type="checkbox" name="Propriétaire" checked>
-                    <p>Propriétaire</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Administrateur" checked>
-                    <p>Administrateur</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Modérateur" checked>
-                    <p>Modérateur</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Utilisateur" checked>
-                    <p>Utilisateur</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Invité" checked>
-                    <p>Invité</p>
+                    <input 
+                        type="checkbox" 
+                        name="moderateur" 
+                        checked
+                    >
+
+                    <p>
+                        Deconnexion
+                    </p>
                 </div>
             </section>
+
+            <!--
+            <section 
+                id="role_input" 
+                class="small-section"
+            >
+                <p>
+                    Rôles
+                </p>
+
+                <div class="container-statut">
+                    <input 
+                        type="checkbox" 
+                        name="Propriétaire" 
+                        checked
+                    >
+
+                    <p>
+                        Propriétaire
+                    </p>
+                </div>
+
+                <div class="container-statut">
+                    <input 
+                        type="checkbox" 
+                        name="Administrateur" 
+                        checked
+                    >
+
+                    <p>
+                        Administrateur
+                    </p>
+                </div>
+                <div class="container-statut">
+                    <input 
+                        type="checkbox" 
+                        name="Modérateur" 
+                        checked
+                    >
+
+                    <p>
+                        Modérateur
+                    </p>
+                </div>
+                <div class="container-statut">
+                    <input 
+                        type="checkbox" 
+                        name="Utilisateur" 
+                        checked
+                    >
+
+                    <p>
+                        Utilisateur
+                    </p>
+                </div>
+                <div class="container-statut">
+                    <input 
+                        type="checkbox" 
+                        name="Invité" 
+                        checked
+                    >
+
+                    <p>
+                        Invité
+                    </p>
+                </div>
+            </section>
+-->
+
             <section>
-                <p>Date minimale</p>
-                <input type="date" id="filtre-date-max" name="filre-data-max">
+                <p>
+                    Date
+                </p>
+                
+                <label for="filtre-date-min">
+                    Minimale
+                </label>
+
+                <input 
+                    type="date" 
+                    id="filtre-date-min" 
+                    name="filre-date-min"
+                >
+
+                <label for="filre-data-max">
+                    Maximale
+                </label>
+
+                <input 
+                    type="date" 
+                    id="filtre-date-max" 
+                    name="filre-date-max"
+                >
             </section>
+
             <section>
-                <p>Date maximale</p>
-                <input type="date" id="filtre-date-min" name="filre-data-min">
+                <p>
+                    Date
+                </p>
+                
+                <label for="filtre-heure-min">
+                    Minimale
+                </label>
+
+                <input 
+                    type="time" 
+                    id="filtre-heure-min" 
+                    name="filre-heure-min"
+                >
+
+                <label for="filre-heure-max">
+                    Maximale
+                </label>
+
+                <input 
+                    type="time" 
+                    id="filtre-heure-max" 
+                    name="filre-heure-max"
+                >
             </section>
         </content> 
+
         <aside>
-            <button id="reinint-filtre" class="reinint_button LignesHover">
-                <p>Réinitialiser les filtres</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
+            <button 
+                id="reinint-filtre" 
+                class="reinint_button LignesHover"
+            >
+                <p>
+                    Réinitialiser les filtres
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\close\black.svg"
+                    alt=""
+                >
             </button>
-            <button id="valider-filtre" class="reverse_color">
-                <p>Appliquer</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-filtre.svg" alt="">
+
+            <button 
+                id="valider-filtre" 
+                class="reverse_color"
+            >
+                <p>
+                    Appliquer
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\filter\white.svg" 
+                    alt=""
+                >
             </button>
         </aside>
     </main>
 </div>
-<div class="candidatures-menu" id="rechercher-menu">
-    <h2>Rechercher selon</h2>
+
+<div 
+    class="candidatures-menu" 
+    id="rechercher-menu"
+>
+    <h2>
+        Rechercher selon
+    </h2>
+
     <main>
         <content>
+        <section>
+                <p>
+                    Role
+                </p>
+
+                <input 
+                    type="text" 
+                    id="recherche-role"  
+                    placeholder="Utilisateur"
+                >
+            </section>
+
             <section>
-                <p>Informations personnelles</p>
-                <input type="text" id="recherche-nom"  placeholder="Nom">
-                <input type="text" id="recherche-prenom" placeholder="Prenom">
+                <p>
+                    Utilisateur
+                </p>
+
+                <input 
+                    type="text" 
+                    id="recherche-user"  
+                    placeholder="DUPOND Jean"
+                >
             </section>
         </content>
+
         <aside>
-            <button id="reinint-recherche" class="reinint_button LignesHover">
-                <p>Réinitialiser les filtres</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
+            <button 
+                id="reinint-recherche" 
+                class="reinint_button LignesHover"
+            >
+                <p>
+                    Réinitialiser les filtres
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\close\black.svg" 
+                    alt=""
+                >
             </button>
-            <button id="valider-recherche" class="reverse_color">
-                <p>Appliquer</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-recherche.svg" alt="">
+
+            <button 
+                id="valider-recherche" 
+                class="reverse_color"
+            >
+                <p>
+                    Appliquer
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\search\white.svg" 
+                    alt=""
+                >
             </button>
         </aside>
     </main>
 </div>
+
 <script type='module'>
     // * IMPORTS * //
     import List from "<?= APP_PATH ?>\\layouts\\scripts\\modules\\List.mjs"; 
@@ -186,46 +381,59 @@
             champs: Array.from(document.getElementById('action_input').querySelectorAll('input')),
             index: 0
         };
-        const champs_role = {
-            champs: Array.from(document.getElementById('role_input').querySelectorAll('input')),
-            index: 1
-        };
+        // const champs_role = {
+        //     champs: Array.from(document.getElementById('role_input').querySelectorAll('input')),
+        //     index: 1
+        // };
+        const champs_role = [
+            {
+                champs : document.getElementById('recherche-role'),
+                index: 1
+            }
+        ]
         const champs_infos = [
             {
-                champs: document.getElementById('recherche-nom'),
+                champs: document.getElementById('recherche-user'),
                 index: 2
-            },
-            {
-                champs: document.getElementById('recherche-prenom'),
-                index: 3
             }
         ];
         const champs_date = {
-            index: 5,
+            index: 4,
             champs : [
                 document.getElementById('filtre-date-max'),
                 document.getElementById('filtre-date-min')
             ]
         };
+        const champs_heure = {
+            index: 5,
+            champs : [
+                document.getElementById('filtre-heure-max'),
+                document.getElementById('filtre-heure-min')
+            ]
+        }
 
         filtrer.addEventListener('click', () => {
             listManipulation.hideMenu(rechercher_menu);
             rechercherIsVisible = false;
 
-            if(filtrerIsVisible) 
+            if(filtrerIsVisible) {
                 listManipulation.hideMenu(filtrer_menu);
-            else 
+            } else {
                 listManipulation.showMenu(filtrer_menu);
+            } 
+
             filtrerIsVisible = !filtrerIsVisible;
         });
         rechercher.addEventListener('click', () => {
             listManipulation.hideMenu(filtrer_menu);
             filtrerIsVisible = false;
 
-            if(rechercherIsVisible) 
+            if(filtrerIsVisible) {
                 listManipulation.hideMenu(rechercher_menu);
-            else
+            } else {
                 listManipulation.showMenu(rechercher_menu);
+            }
+
             rechercherIsVisible = !rechercherIsVisible;
         });
 
@@ -233,9 +441,10 @@
         function filter() {
             let criteres = [];
             listManipulation.recoverCheckbox(champs_action, criteres);
-            listManipulation.recoverCheckbox(champs_role, criteres);
+            listManipulation.recoverFields(champs_role, criteres);
             listManipulation.recoverFields(champs_infos, criteres);
             listManipulation.recoverFieldsDate(champs_date, criteres);
+            listManipulation.recoverFieldsDate(champs_heure, criteres);
 
             // If empty, reset the list
             if(criteres.length === 0) {

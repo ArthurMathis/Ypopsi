@@ -30,6 +30,7 @@ class PreferencesController extends Controller {
     public function display(): void {
         $this->View->display();
     }
+
     /**
      * Undocumented function
      *
@@ -68,6 +69,12 @@ class PreferencesController extends Controller {
             $last_password_change,
             "home"
         );
+    }
+
+    public function displayLogs(?int $key_user = null): void {
+        $act_repo = new ActionRepository();
+        $logs = $act_repo->getConnectionList();
+        $this->View->displayLogs($logs);
     }
 
     // * EDIT  * // 

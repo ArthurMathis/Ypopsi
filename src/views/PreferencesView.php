@@ -73,6 +73,32 @@ class PreferencesView extends View {
         $this->generateCommonFooter();
     }
 
+    /**
+     * Public function displaying the connexions' logs
+     * 
+     * @param array $logs The array containing the connexions' logs
+     * @param string $tab The tab's name
+     * @return void
+     */
+    public function displayLogs(array &$logs, string $tab = "logs"): void {
+        $this->generateCommonHeader('Préférences', [
+            PAGES_STYLES.DS."preferences.css", 
+            PAGES_STYLES.DS."liste-page.css",
+            PAGES_STYLES.DS."log-history.css"
+        ]);
+        $this->generateMenu(false, PREFERENCES);
+
+        echo "<content>";
+        include(MY_ITEMS.DS.'preferences.php');
+        echo '<main id="historique">';
+        include BARRES.DS.'log-history.php';
+        $this->getListItems("Historique de connexions", $logs, null, "main-liste");
+        echo '</main>';
+        echo "</content>";
+
+        $this->generateCommonFooter();
+    }
+
     // * DISPLAY FORM * //
     /**
      * Public function displaying the user HTML form page

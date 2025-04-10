@@ -31,27 +31,34 @@ class ActionRepository extends Repository {
         return $this->post_request($request, $params);
     }
 
-    // * SEARCH * //
     /**
-     * Public method searching one type of action in the database
-     * 
-     * @param int|string $action The primary key og the type of action 
-     * @return TypeOfActions
+     * Public method returning the list of connections
+     *
+     * @return array Tist of connections
      */
-    Public function searchType(int|string $act): TypeOfActions {
-        if(is_int($act)) {
-            $request = "SELECT * FROM Types_of_actions WHERE Id = :action"; 
-        } else {
-            $request = "SELECT * FROM Types_of_actions WHERE Titled = :action";
-        }
+    public function getConnectionList(): array {
+        $request = "SELECT 
         
-        $params = array("action" => $act);
+        act.Id AS Cle,
+        type.Titled AS Intitulé,
+        r.Titled AS Role,
+        CONCAT(UPPER(u.name), ' ', u.firstname) AS Utilisateur,
+        Date(act.Moment) AS Date,
+        Time(act.Moment) AS Heure
 
-        $fetch = $this->get_request($request, $params, true, true);
 
-        $response = TypeOfActions::fromArray($fetch);
+        FROM Actions AS act
+        INNER JOIN Users AS u ON u.Id = act.Key_Users
+        INNER JOIN Roles AS r on r.Id = u.Key_Roles
+        INNER JOIN Types_of_actions AS type ON act.Key_Types_of_actions = type.Id
 
-        return $response;
+        WHERE Key_Types_of_actions  IN (
+            SELECT id
+            FROM Types_of_actions
+            WHERE Titled IN ('Connexion', 'Déconnexion')
+        )";
+
+        return $this->get_request($request);
     }
 
     //// GET USER ////
@@ -296,5 +303,28 @@ class ActionRepository extends Repository {
         $result = $this->get_request($request, $params, true);
 
         return (int) $result["Number_of_meetings"];
+    }
+
+    // * SEARCH * //
+    /**
+     * Public method searching one type of action in the database
+     * 
+     * @param int|string $action The primary key og the type of action 
+     * @return TypeOfActions
+     */
+    Public function searchType(int|string $act): TypeOfActions {
+        if(is_int($act)) {
+            $request = "SELECT * FROM Types_of_actions WHERE Id = :action"; 
+        } else {
+            $request = "SELECT * FROM Types_of_actions WHERE Titled = :action";
+        }
+        
+        $params = array("action" => $act);
+
+        $fetch = $this->get_request($request, $params, true, true);
+
+        $response = TypeOfActions::fromArray($fetch);
+
+        return $response;
     }
 }
