@@ -148,7 +148,7 @@ use App\Core\Moment;
     
         <article>
             <p>
-                Dernière connexion : 
+                Dernier changement : 
             </p>
     
             <i>
@@ -209,7 +209,7 @@ use App\Core\Moment;
         </a>
     <?php elseif(AuthMiddleware::isAdminOrMore()): ?>
         <a 
-            href="<?= APP_PATH ?>\preferences\users\profile\password\edit\<?= $user->getId() ?>" 
+            href="<?= APP_PATH ?>/preferences/users/fetch_reset_password/<?= $user->getId() ?>" 
             class="action_button"
         >
             <p>

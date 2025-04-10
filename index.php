@@ -20,16 +20,6 @@ session_start();
 
 $user_connected = !(!isset($_SESSION['user']) || empty($_SESSION['user']) || empty($_SESSION['user']->getId())); 
 
-if($user_connected && $_SESSION['user']->getPasswordTemp()) {
-    AlertsManip::alert([
-        'title' => "Information importante",
-        'msg' => "<p>Bienvenue, c'est votre première connexion !</p><p>Vous devez <b>modifier votre mot de passe</b> au plus vite.</p>",
-        'icon' => 'warning',
-        'direction' => APP_PATH  . "/preferences/user/edit_password", 
-        'button' => true
-    ]);
-}
-
 try {
     $router = new Router();
     
@@ -90,6 +80,7 @@ try {
     $router->addRoute("/preferences/users/inscript", PreferencesController::class, "inscriptUser", [FeatureMiddleware::$INSCRIPT_USER], AuthMiddleware::$ADMIN);                                                    // todo
     $router->addRoute("/preferences/users/edit/{user}", PreferencesController::class, "editUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$ADMIN);                                                         // todo
     $router->addRoute("/preferences/users/update/{user}", PreferencesController::class, "updateUser", [FeatureMiddleware::$EDIT_USER], AuthMiddleware::$ADMIN);                                                     // todo
+    $router->addRoute("/preferences/users/fetch_reset_password/{user}", PreferencesController::class, "fetchResetPassword", [FeatureMiddleware::$RESET_PASSWORD], AuthMiddleware::$ADMIN);                                     // todo
     $router->addRoute("/preferences/users/reset_password/{user}", PreferencesController::class, "resetPassword", [FeatureMiddleware::$RESET_PASSWORD], AuthMiddleware::$ADMIN);                                     // todo
     // $router->addRoute("/preferences/users/activate/{user}", PreferencesController::class, "activateUser", [FeatureMiddleware::$ACTIVATE_USER], AuthMiddleware::$ADMIN);                                             // todo
     // $router->addRoute("/preferences/users/desactivate/{user}", PreferencesController::class, "desactivateUser", [FeatureMiddleware::$DESACTIVATE_USER], AuthMiddleware::$ADMIN);                                    // todo

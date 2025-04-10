@@ -1,15 +1,3 @@
-<style>
-    :root {
-        --error-color:rgb(255, 64, 0);
-    }
-    input:invalid {
-        border: 2px solid var(--error-color) !important;
-    }
-
-    .error-message {
-        color: var(--error-color);
-    }
-</style>
 <form 
     class="small-form"
     method="post" 
@@ -213,9 +201,9 @@
      * @returns {boolean} True if the password is valid, false otherwise
      */
     function isValidPassword(str) {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return regex.test(str);
+        return !(str.length < 12 || !/[a-z]/.test(str) || !/[A-Z]/.test(str) || !/\d/.test(str) || !/[@$!%*?&]/.test(str));
     }
+    
 
     /**
      * @function handleInputPrec
@@ -329,7 +317,7 @@
         } while(index < arr.length && response.code === STR_EXIT.code);
 
         if(response.code === STR_EXIT.code) {
-            event.submit();
+            event.target.submit();
         }
     }
     

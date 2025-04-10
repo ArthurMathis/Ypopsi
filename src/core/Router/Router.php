@@ -69,18 +69,31 @@ class Router {
      * @return Void
      */
     public function dispatch(bool $user_connected) {
-        $path = $_SERVER['REQUEST_URI'] ?? '/';                                     // Récupération de l'url 
-        $path = str_replace($this->app_path, '', $path);                            // Suppression de l'adresse de base
-        $path = strtok($path, '?');                                                 // Suppression des paramètres GET
-        $path = '/' . ltrim($path, '/');                                            // Vérification des / en début de chaine
-        $path = rtrim($path, '/');                                                  // Suppression des / en fin de chaine
+        $path = $_SERVER['REQUEST_URI'] ?? '/';           // Récupération de l'url 
+        $path = str_replace($this->app_path, '', $path);  // Suppression de l'adresse de base
+        $path = strtok($path, '?');                       // Suppression des paramètres GET
+        $path = '/' . ltrim($path, '/');                  // Vérification des / en début de chaine
+        $path = rtrim($path, '/');                        // Suppression des / en fin de chaine
 
         if ($path === '') {
             $path = '/';
         }
 
-        if(!$user_connected && strpos($path, "/login") !== 0) {
+        if(!$user_connected && strpos($path, "/login") !== 0) {                     // Test de l'identification utilisateur
             header("location: " . APP_PATH . "/login/get");
+        }
+
+        if($_SESSION['user']->getPasswordTemp()                                     // Test du mot de passe (temporaire)
+            && strpos($path, "/preferences/users/profile/password/edit/") !== 0) 
+        {
+            $_SESSION["user"]->setPasswordTemp(false);
+            AlertsManip::alert([
+                "title"     => "Information importante",
+                "msg"       => "<p>Bienvenue, il semble que ce soit votre première connexion !</p><p>Vous devez <b>modifier votre mot de passe</b> au plus vite.</p>",
+                "icon"      => "warning",
+                "direction" => APP_PATH . "/preferences/users/profile/password/edit/" . $_SESSION["user"]->getId(),
+                "button"    => true
+            ]);
         }
 
         if($user_connected) try {
@@ -89,11 +102,11 @@ class Router {
             $destination = "/logout";
             if($path !== $destination) {
                 AlertsManip::alert([
-                    'title' => "Connexion expirée !",
-                    'msg' => "<p>" . $e->getMessage() . "</p>",
-                    'icon' => 'warning',
-                    'direction' => APP_PATH  . $destination, 
-                    'button' => true
+                    'title'     => "Connexion expirée !",
+                    'msg'       => "<p>" . $e->getMessage() . "</p>",
+                    'icon'      => 'warning',
+                    'direction' => APP_PATH  . $destination,
+                    'button'    => true
                 ]);
             }
         }

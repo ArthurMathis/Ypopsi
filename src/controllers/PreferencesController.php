@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\Controller;
 use App\Core\Tools\AlertsManip;
+use App\Core\Tools\PasswordsManip;
 use App\Models\Action;
 use App\Repository\ActionRepository;
 use App\Repository\UserRepository;
@@ -101,10 +102,29 @@ class PreferencesController extends Controller {
      *
      * @param int $key_user
      * @return void
-     */
+        */
     public function editPassword(int $key_user): void {
         $user = (new UserRepository())->get($key_user);
         $this->View->displayEditPassword($user);
+    }
+
+    /**
+     * Public method returning the reste user's password notification
+     *
+     * @param int $key_user The user's primary key
+     * @return void
+     */
+    public function fetchResetPassword(int $key_user): void {
+        $_SESSION["password"] = PasswordsManip::random_password();                             // Generating a new password
+        AlertsManip::alert([
+            "title"         => "Information importante",
+            "msg"           => "Le mot de passe va être réinitialisé et <b>il ne pourra plus être consulté</b>. Mémorisez-le avant de valider ou revenez en arrière.<br>"
+                                . "Le nouveau mot de passe est : <b> " . $_SESSION["password"]. "</b>",
+            "direction"     => APP_PATH . "/preferences/users/reset_password/" . $key_user,
+            "confirm"       => "Réinitialiser le mot de passe",
+            "confirmButton" => "Réinitialiser",
+            "deleteButton"  => "Annuler"
+        ]);
     }
 
     // * UPDATE * //
@@ -115,7 +135,7 @@ class PreferencesController extends Controller {
      * @return void
      */
     public function updateUser(int $key_user): void {
-        $user_repo = new UserRepository();                                                  // fFetching the user
+        $user_repo = new UserRepository();                                                  // Fetching the user
         $user = $user_repo->get($key_user);
 
         $user->setName($_POST['name']);
@@ -144,6 +164,7 @@ class PreferencesController extends Controller {
             'direction' => APP_PATH . "/preferences/users/profile/" . $key_user
         ]);
     }
+
     /**
      * Public method updating the user password in the database
      *
@@ -156,10 +177,6 @@ class PreferencesController extends Controller {
 
         $user_repo = new UserRepository();
         $user = $user_repo->get($key_user);                                                     // Fetching the user
-
-        if(!password_verify($password, $user->getPassword())) {                                 // Verifying the password
-            throw new Exception("Le mot de passe est incorrect.");
-        }
 
         $user->setPassword($new_password);                                                      // Updating the password
         $user_repo->updatePassword($user); 
@@ -179,6 +196,39 @@ class PreferencesController extends Controller {
         AlertsManip::alert([
             'title' => 'Action enregistrée',
             'msg' => 'La mot de passe a été mis à jour avec succès.',
+            'direction' => APP_PATH . "/preferences/users/profile/" . $key_user
+        ]);
+    }
+
+    /**
+     * Public method updating the user password in the database
+     *
+     * @param int $key_user The user's primary key
+     * @return void
+     */
+    public function resetPassword(int $key_user): void {
+        $user_repo = new UserRepository();                                                      // fFetching the user
+        $user = $user_repo->get($key_user);
+
+        $user->setPassword($_SESSION["password"]);                                              // Updating the password
+        $user_repo->updateResetPassword($user); 
+        unset($_SESSION["password"]);
+
+        $act_repo = new ActionRepository();
+        $type = $act_repo->searchType("Réinitialisation mot de passe");
+        $desc = "Réinitialisation du mot de passe de  " . $user->getCompleteName();
+
+        $act = Action::create(                                                                  // Creating the action
+            $_SESSION["user"]->getId(), 
+            $type->getId(),
+            $desc
+        );          
+
+        $act_repo->writeLogs($act);                                                             // Registering the action in logs
+
+        AlertsManip::alert([
+            'title' => 'Action enregistrée',
+            'msg' => 'La mot de passe a été réinitialisé avec succès.',
             'direction' => APP_PATH . "/preferences/users/profile/" . $key_user
         ]);
     }

@@ -239,6 +239,8 @@ class User implements PeopleInterface {
         
         $this->establishment = $establishment; 
     }
+
+    public function setPasswordTemp(bool $state): void { $this->password_temp = $state; }
     
     // * CONVERT * //
     /**
