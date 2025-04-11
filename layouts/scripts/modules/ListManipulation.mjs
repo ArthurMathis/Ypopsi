@@ -1,3 +1,5 @@
+import Time from "./TimeManipulation.mjs";
+
 export const listManipulation = {
     clearFields,
     clearFieldsCheckbox,
@@ -12,6 +14,7 @@ export const listManipulation = {
     recoverCheckbox,
     recoverFields,
     recoverFieldsDate,
+    recoverFieldsHour,
     responsive,
     resetLines,
     setColor,
@@ -19,7 +22,6 @@ export const listManipulation = {
     showMenu,
     sortBy
 };
-
 
 // * GRAPHICS * //
 /**
@@ -312,12 +314,14 @@ function recoverFieldsDate(fields=[], criteria=[]) {
         
     let new_c = [];
     if(fields.champs[0].value) {
+        console.log("Nouvelle valeur minimale : " + fields.champs[0].value);
         new_c.push({
             'type' : 'min',
             'value': new Date(fields.champs[0].value)
         });
     }
     if(fields.champs[1].value) {
+        console.log("Nouvelle valeur maximale : " + fields.champs[1].value);
         new_c.push({
             'type' : 'max',
             'value': new Date(fields.champs[1].value)
@@ -329,6 +333,43 @@ function recoverFieldsDate(fields=[], criteria=[]) {
             'index'   : fields.index,
             'criteres': new_c,
             'type'    : 'date'
+        });
+    } else {
+        console.warn("Aucun critère ajouté");
+    }
+}
+/**
+ * @function recoverFieldsHour
+ * @description Function to retrieve data entered in the form's hout selections
+ * @param {Array<Integer, String, Date>} fields The list of hours
+ * @param {Array} criteria The array containing the list of criteria
+ * @author Arthur MATHIS
+ */
+function recoverFieldsHour(fields=[], criteria=[]) {
+    if(fields.champs.length === 0 || 2 < fields.champs.length) {
+        console.warn('Le nombre de champs est invalide');
+        return; 
+    }
+        
+    let new_c = [];
+    if(fields.champs[0].value) {
+        new_c.push({
+            'type' : 'min',
+            'value': new Time(fields.champs[0].value)
+        });
+    }
+    if(fields.champs[1].value) {
+        new_c.push({
+            'type' : 'max',
+            'value': new Time(fields.champs[1].value)
+        });
+    }
+
+    if(new_c.length > 0) {
+        criteria.push({
+            'index'   : fields.index,
+            'criteres': new_c,
+            'type'    : 'hour'
         });
     } else {
         console.warn("Aucun critère ajouté");
@@ -414,30 +455,63 @@ function filterByCriteria(item, index, criteria=[]) {
  * @description Function to filter applications according to their availability date
  * @param {HTMLTableRowElement} item The application
  * @param {Integer} index The column in which the filter is performed
- * @param {Date} date_min The minimum date to be respected
- * @param {Date} date_max The maximum date to be respected
+ * @param {Array} criteria The array containing the min and the max date
  * @returns {Boolean}
  * @author Arthur MATHIS
  */
-function filterByDate(item, index, critere_date=[]) {
-    if(index < 0 || critere_date === null) {
+function filterByDate(item, index, criteria=[]) {
+    if(index < 0 || criteria === null) {
         return; 
     }
 
     const date = new Date(item.cells[index].textContent.trim());
     let i = 0, res = true;
-    while(res && i < critere_date.length) {
-        switch(critere_date[i].type) {
+    while(res && i < criteria.length) {
+        switch(criteria[i].type) {
             case 'min': 
-                res = res && critere_date[i].value <= date;
+                res = res && criteria[i].value <= date;
                 break;
 
             case 'max':
-                res = res && date <= critere_date[i].value;
+                res = res && date <= criteria[i].value;
                 break;   
 
             default: 
-                console.error(`Critère non reconnu ${critere_date[i]}`);
+                console.error(`Critère non reconnu ${criteria[i]}`);
+                break;
+        } 
+        i++;
+    }
+    
+    return res;
+}
+/**
+ * @function filterByHour
+ * @description Function returning if the array's cell is in the range of the criteria
+ * @param {HTMLTableElement} item The application
+ * @param {Integer} index The column in which the filter is performed
+ * @param {Array} criteria The array containing the min and the max hour
+ * @returns 
+ */
+function filterByHour(item, index, criteria) {
+    if(index < 0 || criteria === null) {
+        return; 
+    }
+    
+    const hour = new Time(item.cells[index].textContent.trim());
+    let i = 0, res = true;
+    while(res && i < criteria.length) {
+        switch(criteria[i].type) {
+            case 'min':
+                res = res && hour.isEarlyer(criteria[i].value); 
+                break;
+
+            case 'max':
+                res = res && (criteria[i].value).isEarlyer(hour);
+                break;   
+
+            default: 
+                console.error(`Critère non reconnu ${criteria[i]}`);
                 break;
         } 
         i++;
@@ -469,6 +543,10 @@ function multiFilter(items, criteria=[]) {
             case 'date':
                 search = search.filter(item => filterByDate(item, criteria[i].index, criteria[i].criteres));
                 break;
+
+            case 'hour': 
+                search = search.filter(item => filterByHour(item, criteria[i].index, criteria[i].criteres));
+                break;
         
             case 'multi':
                 search = search.filter(item => filterByCriteria(item, criteria[i].index, criteria[i].criteres));
@@ -483,7 +561,6 @@ function multiFilter(items, criteria=[]) {
         }
         i++;
     }
-
     return search;
 }
 
