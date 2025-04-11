@@ -314,14 +314,12 @@ function recoverFieldsDate(fields=[], criteria=[]) {
         
     let new_c = [];
     if(fields.champs[0].value) {
-        console.log("Nouvelle valeur minimale : " + fields.champs[0].value);
         new_c.push({
             'type' : 'min',
             'value': new Date(fields.champs[0].value)
         });
     }
     if(fields.champs[1].value) {
-        console.log("Nouvelle valeur maximale : " + fields.champs[1].value);
         new_c.push({
             'type' : 'max',
             'value': new Date(fields.champs[1].value)
@@ -442,12 +440,11 @@ function filterByCriteria(item, index, criteria=[]) {
 
     let i = 0, find = false;
     while(find === false && i < criteria.length) {
-        if(item.cells[index].textContent.trim() === criteria[i]) {
+        if(item.cells[index].textContent.toLowerCase().trim() === criteria[i].toLowerCase().trim()) {
             find = true;
         }
         i++;
     }
-
     return find;
 }
 /**
@@ -503,11 +500,11 @@ function filterByHour(item, index, criteria) {
     while(res && i < criteria.length) {
         switch(criteria[i].type) {
             case 'min':
-                res = res && hour.isEarlyer(criteria[i].value); 
+                res = res && (criteria[i].value).isEarlyer(hour);
                 break;
 
             case 'max':
-                res = res && (criteria[i].value).isEarlyer(hour);
+                res = res && hour.isEarlyer(criteria[i].value); 
                 break;   
 
             default: 
@@ -557,7 +554,7 @@ function multiFilter(items, criteria=[]) {
                 break;
 
             default: 
-                console.warn(`Critère invalide à l'index ${i}.`);
+                console.error(`Critère invalide à l'index ${i}.`);
         }
         i++;
     }

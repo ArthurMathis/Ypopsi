@@ -1,0 +1,23 @@
+.liste_items .table-wrapper table th:first-of-type {
+    padding-left: calc(var(--gap) +  4px);
+}
+.liste_items .table-wrapper table th:first-of-type::before {
+    content: "";
+    position: absolute;
+    left: var(--big-radius);
+    top: 50%;
+
+    display: block;
+    width: var(--font-size-small);
+    height: var(--font-size-small);
+    z-index: 0;
+    
+    border-radius: var(--font-size-small);
+    transform: translateY(-50%);
+}
+.liste_items .table-wrapper table tbody tr.deconnexion th:first-of-type::before {
+    background-color: var(--color4);
+}
+.liste_items .table-wrapper table tbody tr.connexion th:first-of-type::before {
+    background-color: var(--color2);
+}

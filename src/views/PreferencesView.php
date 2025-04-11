@@ -85,7 +85,7 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Préférences', [
             PAGES_STYLES.DS."preferences.css", 
             PAGES_STYLES.DS."liste-page.css",
-            PAGES_STYLES.DS."log-history.css"
+            PAGES_STYLES.DS."user-log-history.css"
         ]);
         $this->generateMenu(false, PREFERENCES);
 
@@ -111,14 +111,14 @@ class PreferencesView extends View {
         $this->generateCommonHeader('Préférences', [
             PAGES_STYLES.DS."preferences.css", 
             PAGES_STYLES.DS."liste-page.css",
-            PAGES_STYLES.DS."log-history.css"
+            PAGES_STYLES.DS."action-history.css"
         ]);
         $this->generateMenu(false, PREFERENCES);
 
         echo "<content>";
         include(MY_ITEMS.DS.'preferences.php');
         echo '<main id="historique">';
-        include BARRES.DS.'user-log-history.php';
+        include BARRES.DS.'user-action-history.php';
         $this->getListItems("Historique de connexions", $logs, null, "main-liste");
         echo '</main>';
         echo "</content>";
