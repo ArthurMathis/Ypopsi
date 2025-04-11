@@ -92,9 +92,9 @@ try {
     $router->addRoute("/preferences/users/profile/password/update/{user}", PreferencesController::class, "updatePassword", [FeatureMiddleware::$EDIT_PASSWORD]);
     
     //// LOGS ////
-    $router->addRoute("/prefrences/logs", PreferencesController::class, "displayLogs", [FeatureMiddleware::$DISPLAY_CONNEXIONS], AuthMiddleware::$ADMIN);                                                            // todo
-    $router->addRoute("/preferences/logs/{user}", PreferencesController::class, "displayUserLogs", [FeatureMiddleware::$DISPLAY_CONNEXIONS]);                                                                        // todo
-    $router->addRoute("/prefrences/logs/actions", PreferencesController::class, "displaysLogAction", [FeatureMiddleware::$DISPLAY_ACTIONS], AuthMiddleware::$ADMIN);                                                 // todo
+    $router->addRoute("/prefrences/logs", PreferencesController::class, "displayLogs", [FeatureMiddleware::$DISPLAY_CONNEXIONS], AuthMiddleware::$ADMIN);
+    $router->addRoute("/preferences/logs/actions", PreferencesController::class, "displaysLogAction", [FeatureMiddleware::$DISPLAY_ACTIONS], AuthMiddleware::$ADMIN);                                                 // todo
+    $router->addRoute("/preferences/logs/{user}", PreferencesController::class, "displayUserLogs", [FeatureMiddleware::$DISPLAY_CONNEXIONS]);
     $router->addRoute("/preferences/logs/actions/{user}", PreferencesController::class, "displaysUserLogAction", [FeatureMiddleware::$DISPLAY_ACTIONS]);                                                             // todo
 
     //// JOBS ////

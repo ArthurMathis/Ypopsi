@@ -24,11 +24,11 @@
         <aside>
             <button id="reinint-recherche" class="reinint_button LignesHover">
                 <p>Réinitialiser les filtres</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\close\black.svg"alt="">
             </button>
             <button id="valider-recherche" class="reverse_color">
                 <p>Appliquer</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-recherche.svg" alt="">
+                <img src="<?= APP_PATH ?>\layouts\assets\img\search\white.svg"  alt="">
             </button>
         </aside>
     </main>
