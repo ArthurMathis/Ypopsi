@@ -1,7 +1,9 @@
-.liste_items .table-wrapper table th:first-of-type {
+.liste_items .table-wrapper table th:first-of-type,
+.liste_items .table-wrapper table th:nth-of-type(2) {
     padding-left: calc(var(--gap) +  4px);
 }
-.liste_items .table-wrapper table th:first-of-type::before {
+.liste_items .table-wrapper table th:first-of-type::before,
+.liste_items .table-wrapper table th:nth-of-type(2)::before {
     content: "";
     position: absolute;
     left: var(--big-radius);
@@ -15,17 +17,24 @@
     border-radius: var(--font-size-small);
     transform: translateY(-50%);
 }
+.liste_items .table-wrapper table tbody tr.administrateur th:nth-of-type(2)::before,
 .liste_items .table-wrapper table tbody tr.candidat th:first-of-type::before {
     background-color: var(--color4);
 }
+.liste_items .table-wrapper table tbody tr.moderateur th:nth-of-type(2)::before,
 .liste_items .table-wrapper table tbody tr.utilisateur th:first-of-type::before {
     background-color: var(--color2);
 }
+.liste_items .table-wrapper table tbody tr.user th:nth-of-type(2)::before,
 .liste_items .table-wrapper table tbody tr.candidature th:first-of-type::before {
     background-color: var(--color3);
 }
-.liste_items .table-wrapper table tbody tr.fondation th:first-of-type::before{
+.liste_items .table-wrapper table tbody tr.invite th:nth-of-type(2)::before,
+.liste_items .table-wrapper table tbody tr.fondation th:first-of-type::before {
     background-color: var(--color5);
+}
+.liste_items .table-wrapper table tbody tr.proprietaire th:nth-of-type(2)::before {
+    background-color: var(--color1);
 }
 
 .candidatures-menu .small-section {

@@ -93,7 +93,7 @@ use App\Core\Middleware\AuthMiddleware;
                 </a>
 
                 <a 
-                    href="<?= APP_PATH ?>/prefrences/logs/actions"
+                    href="<?= APP_PATH ?>/preferences/logs/actions"
                     
                     <?php if($tab === "logs-actions"): ?>
                         class="selected"

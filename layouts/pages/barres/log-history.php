@@ -76,7 +76,7 @@
                     name="filre-date-min"
                 >
 
-                <label for="filre-data-max">
+                <label for="filre-date-max">
                     Maximale
                 </label>
 
@@ -89,7 +89,7 @@
 
             <section>
                 <p>
-                    Date
+                    Heure
                 </p>
                 
                 <label for="filtre-heure-min">
@@ -156,7 +156,7 @@
 
     <main>
         <content>
-        <section>
+            <section>
                 <p>
                     Role
                 </p>

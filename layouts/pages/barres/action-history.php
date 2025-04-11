@@ -1,152 +1,191 @@
 <nav class="options_barre">
     <article></article>
+
     <article>
-        <p class="action_button" id="filtrer-button">Filtrer</p>
-        <p class="action_button" id="rechercher-button">Rechercher</p>
+        <p 
+            class="action_button" 
+            id="filtrer-button"
+        >
+            Filtrer
+        </p>
+
+        <p 
+            class="action_button" 
+            id="rechercher-button"
+        >
+            Rechercher
+        </p>
     </article>
 </nav>
-<div class="candidatures-menu" id="filtrer-menu">
-    <h2>Filtrer par</h2>
+
+<div 
+    class="candidatures-menu" 
+    id="filtrer-menu"
+>
+    <h2>
+        Filtrer par
+    </h2>
+
     <main>
         <content>
-            <section class="action_statut small-section">
-                <p>Actions sur candidats</p>
-                <div class="container-statut">
-                    <input type="checkbox" name="Nouveau candidat" checked>
-                    <p>Nouveau candidat</p>
-                </div>
-                <div class="container-statut margin">
-                    <input type="checkbox" name="Nouveau rendez-vous" checked>
-                    <p>Nouveau rendez-vous</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Mise à jour candidat" checked>
-                    <p>Mise-àjour candidat</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Mise à jour notation" checked>
-                    <p>Mise à jour notation</p>
-                </div>
-                <div class="container-statut margin">
-                    <input type="checkbox" name="Mise à jour rendez-vous" checked>
-                    <p>Mise à jour rendez-vous</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Annulation rendez-vous" checked>
-                    <p>Annulation rendez-vous</p>
-                </div>
+            <section>
+                <p>
+                    Date
+                </p>
+                
+                <label for="filtre-date-min">
+                    Minimale
+                </label>
+
+                <input 
+                    type="date" 
+                    id="filtre-date-min" 
+                    name="filtre-date-min"
+                >
+
+                <label for="filtre-date-max">
+                    Maximale
+                </label>
+
+                <input 
+                    type="date" 
+                    id="filtre-date-max" 
+                    name="filre-date-max"
+                >
             </section>
-            <section class="action_statut small-section">
-                <p>Actions sur candidatures</p>
-                <div class="container-statut">
-                    <input type="checkbox" name="Nouvelle candidature" checked>
-                    <p>Nouvelle candidature</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Nouvelle proposition" checked>
-                    <p>Nouvelle proposition</p>
-                </div>
-                <div class="container-statut margin">
-                    <input type="checkbox" name="Nouveau contrat" checked>
-                    <p>Nouveau contrat</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Refus candidature" checked>
-                    <p>refus candidature</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Refus proposition" checked>
-                    <p>Refus proposition</p>
-                </div>
-                <div class="container-statut margin">
-                    <input type="checkbox" name="Démission" checked>
-                    <p>Démission</p>
-                </div>
-            </section>
-            <section class="action_statut small-section">
-                <p>Actions sur la fondation</p>
-                <div class="container-statut">
-                    <input type="checkbox" name="Nouveau poste" checked>
-                    <p>Nouveau poste</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Nouveau service" checked>
-                    <p>Nouveau service</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Nouvel établissement" checked>
-                    <p>Nouvel établissement</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Nouveau pôle" checked>
-                    <p>Nouveau pôle</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Nouvelle qualification" checked>
-                    <p>Nouvelle qualification</p>
-                </div>
-            </section>
-            <section class="action_statut small-section">
-                <p>Actions sur utilisateurs</p>
-                <div class="container-statut">
-                    <input type="checkbox" name="Nouvel utilisateur" checked>
-                    <p>Nouvel utilisateur</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Mise à jour utilisateur" checked>
-                    <p>Mise à jour utilisateur</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Mise à jour mot de passe" checked>
-                    <p>Mise à jour mot de passe</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Réinitialisation mot de passe" checked>
-                    <p>Réinitialisation mot de passe</p>
-                </div>
-                <div class="container-statut">
-                    <input type="checkbox" name="Mise à jour rôle" checked>
-                    <p>Mise à jour rôle</p>
-                </div>
+
+            <section>
+                <p>
+                    Heure
+                </p>
+                
+                <label for="filtre-heure-min">
+                    Minimale
+                </label>
+
+                <input 
+                    type="time" 
+                    id="filtre-heure-min" 
+                    name="filtre-heure-min"
+                >
+
+                <label for="filtre-heure-max">
+                    Maximale
+                </label>
+
+                <input 
+                    type="time" 
+                    id="filtre-heure-max" 
+                    name="filre-heure-max"
+                >
             </section>
         </content> 
+
         <aside>
-            <button id="reinint-filtre" class="reinint_button LignesHover">
-                <p>Réinitialiser les filtres</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
+            <button 
+                id="reinint-filtre" 
+                class="reinint_button LignesHover"
+            >
+                <p>
+                    Réinitialiser les filtres
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\close\black.svg"
+                    alt=""
+                >
             </button>
-            <button id="valider-filtre" class="reverse_color">
-                <p>Appliquer</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-filtre.svg" alt="">
+
+            <button 
+                id="valider-filtre" 
+                class="reverse_color"
+            >
+                <p>
+                    Appliquer
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\filter\white.svg" 
+                    alt=""
+                >
             </button>
         </aside>   
     </main>
 </div>
-<div class="candidatures-menu" id="rechercher-menu">
-    <h2>Rechercher selon</h2>
+<div 
+    class="candidatures-menu" 
+    id="rechercher-menu"
+>
+    <h2>
+        Rechercher selon
+    </h2>
+
     <main>
-        <content>
+    <content>
             <section>
-                <p>Informations personnelles</p>
-                <input type="text" id="recherche-utilisateur"  placeholder="Utilisateur">
+                <p>
+                    Role
+                </p>
+
+                <input 
+                    type="text" 
+                    id="recherche-role"  
+                    placeholder="Utilisateur"
+                >
             </section>
+
             <section>
-                <p>Date minimale</p>
-                <input type="date" id="filtre-date-max" name="filre-data-max">
+                <p>
+                    Utilisateur
+                </p>
+
+                <input 
+                    type="text" 
+                    id="recherche-user"  
+                    placeholder="DUPOND Jean"
+                >
             </section>
+        
             <section>
-                <p>Date maximale</p>
-                <input type="date" id="filtre-date-min" name="filre-data-min">
+                <p>
+                    Type d'actions
+                </p>
+
+                <input
+                    type="text"
+                    id="recherche-type"
+                    placeholder="Mise à jour utilisateur"
+                >
             </section>
         </content>
+
         <aside>
-            <button id="reinint-recherche" class="reinint_button LignesHover">
-                <p>Réinitialiser les filtres</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\close.svg" alt="">
+            <button 
+                id="reinint-recherche" 
+                class="reinint_button LignesHover"
+            >
+                <p>
+                    Réinitialiser les filtres
+                </p>
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\close\black.svg"
+                    alt=""
+                >
             </button>
-            <button id="valider-recherche" class="reverse_color">
-                <p>Appliquer</p>
-                <img src="<?= APP_PATH ?>\layouts\assets\img\logo\white-recherche.svg" alt="">
+
+            <button 
+                id="valider-recherche" 
+                class="reverse_color"
+            >
+                <p>
+                    Appliquer
+                </p>    
+
+                <img 
+                    src="<?= APP_PATH ?>\layouts\assets\img\search\white.svg" 
+                    alt=""
+                >
             </button>
         </aside>
     </main>
@@ -259,6 +298,27 @@
                 class: 'fondation'
             }    
         ], 0);
+        listManipulation.setColor(candidatures, [
+            {
+                content: 'Propriétaire',
+                class: 'proprietaire'
+            },
+            {
+                content: 'Administrateur', 
+                class: 'administrateur'
+            },
+            {
+                content: 'Modérateur', 
+                class: 'moderateur'
+            },
+            {
+                content: 'Utilisateur', 
+                class: 'user'
+            },{
+                content: 'Invité', 
+                class: 'invite'
+            }
+        ], 1);
 
         // * MANIPULATION DE LA LISTE * //
         const rechercher = document.getElementById('rechercher-button');
@@ -312,22 +372,37 @@
         let filtrerIsVisible = false;
         let rechercherIsVisible = false;
 
-        const champs_action = {
-            champs: Array.from(document.querySelectorAll('.action_statut input')),
-            index: 0
-        };
-        const champs_infos = [
+        const champs_type = [
             {
-                champs: document.getElementById('recherche-utilisateur'),
+                champs: document.getElementById('recherche-type'),
+                index: 0
+            }
+        ];
+        const champs_role = [
+            {
+                champs: document.getElementById('recherche-role'),
                 index: 1
             }
         ];
+        const champs_user = [
+            {
+                champs: document.getElementById('recherche-user'),
+                index: 2
+            }
+        ];
         const champs_date = {
-            index: 2,
             champs : [
-                document.getElementById('filtre-date-max'),
-                document.getElementById('filtre-date-min')
-            ]
+                document.getElementById('filtre-date-min'),
+                document.getElementById('filtre-date-max')
+            ],
+            index: 3
+        };
+        const champs_hour = {
+            champs : [
+                document.getElementById('filtre-heure-min'),
+                document.getElementById('filtre-heure-max')
+            ],
+            index: 4
         };
 
         filtrer.addEventListener('click', () => {
@@ -354,9 +429,11 @@
         //// Application des filtres ////
         function filter() {
             let criteres = [];
-            listManipulation.recoverFields(champs_infos, criteres);
-            listManipulation.recoverCheckbox(champs_action, criteres);
+            listManipulation.recoverFields(champs_user, criteres);
+            listManipulation.recoverFields(champs_role, criteres);
+            listManipulation.recoverFields(champs_type, criteres);
             listManipulation.recoverFieldsDate(champs_date, criteres);
+            listManipulation.recoverFieldsHour(champs_hour, criteres);
 
             // If empty, reset the list
             if(criteres.length === 0) {
@@ -381,9 +458,11 @@
 
         //// Réinitialisation des filtres ////
         function reinitFields() {
-            listManipulation.clearFields(champs_infos);
-            listManipulation.clearFieldsCheckbox(champs_action);
+            listManipulation.clearFields(champs_user);
+            listManipulation.clearFields(champs_role);
+            listManipulation.clearFields(champs_type);
             listManipulation.clearFieldsDate(champs_date);
+            listManipulation.clearFieldsDate(champs_hour);
         }
         reinit_filtre.addEventListener('click', reinitFields);
         reinit_recherche.addEventListener('click', reinitFields);

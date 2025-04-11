@@ -74,7 +74,40 @@ class PreferencesView extends View {
         $this->generateCommonFooter();
     }
 
+    /**
+     * Public method displaying the user's connexions logs
+     *
+     * @param array $logs The connexions logs
+     * @param string $tab 
+     * @return void
+     */
     public function displayProfileLogs(array &$logs, string $tab="user-connexions"): void {
+        $this->generateCommonHeader('Préférences', [
+            PAGES_STYLES.DS."preferences.css", 
+            PAGES_STYLES.DS."liste-page.css",
+            PAGES_STYLES.DS."log-history.css"
+        ]);
+        $this->generateMenu(false, PREFERENCES);
+
+        echo "<content>";
+        include(MY_ITEMS.DS.'preferences.php');
+        echo '<main id="historique">';
+        include BARRES.DS.'user-log-history.php';
+        $this->getListItems("Historique de connexions", $logs, null, "main-liste");
+        echo '</main>';
+        echo "</content>";
+
+        $this->generateCommonFooter();
+    }
+
+    /**
+     * Public method displaying the user's actions logs
+     *
+     * @param array $logs The actions logs
+     * @param string $tab 
+     * @return void
+     */
+    public function displayProfileActionLogs(array &$logs, string $tab="user-actions"): void {
         $this->generateCommonHeader('Préférences', [
             PAGES_STYLES.DS."preferences.css", 
             PAGES_STYLES.DS."liste-page.css",
@@ -99,7 +132,7 @@ class PreferencesView extends View {
     /**
      * Public function displaying the connexions' logs
      * 
-     * @param array $logs The array containing the connexions' logs
+     * @param array $logs The array containing the connection' logs
      * @param string $tab The tab's name
      * @return void
      */
@@ -116,6 +149,32 @@ class PreferencesView extends View {
         echo '<main id="historique">';
         include BARRES.DS.'log-history.php';
         $this->getListItems("Historique de connexions", $logs, null, "main-liste");
+        echo '</main>';
+        echo "</content>";
+
+        $this->generateCommonFooter();
+    }
+
+    /**
+     * Public method displaying the action's logs
+     *
+     * @param array $logs The array containing the actions' logs
+     * @param string $tab The tab's name
+     * @return void
+     */
+    public function displayActionLogs(array &$logs, string $tab = "logs-actions"): void {
+        $this->generateCommonHeader('Préférences', [
+            PAGES_STYLES.DS."preferences.css", 
+            PAGES_STYLES.DS."liste-page.css",
+            PAGES_STYLES.DS."action-history.css"
+        ]);
+        $this->generateMenu(false, PREFERENCES);
+
+        echo "<content>";
+        include(MY_ITEMS.DS.'preferences.php');
+        echo '<main id="historique">';
+        include BARRES.DS.'action-history.php';
+        $this->getListItems("Historique d'actions", $logs, null, "main-liste");
         echo '</main>';
         echo "</content>";
 

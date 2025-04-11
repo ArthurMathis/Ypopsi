@@ -22,9 +22,8 @@ class PreferencesController extends Controller {
 
     // * DISPLAY * //
     /**
-     * Undocumented function
+     * Public method displaying the preferences' page
      *
-     * @param int $key_user The user's primary key
      * @return void
      */
     public function display(): void {
@@ -32,7 +31,7 @@ class PreferencesController extends Controller {
     }
 
     /**
-     * Undocumented function
+     * Public method displaying the user's profile page
      *
      * @return void
      */
@@ -72,9 +71,8 @@ class PreferencesController extends Controller {
     }
 
     /**
-     * Public function displaying the connections' logs
+     * Public method displaying the connections logs
      *
-     * @param null $key_user
      * @return void
      */
     public function displayLogs(): void {
@@ -83,10 +81,39 @@ class PreferencesController extends Controller {
         $this->View->displayLogs($logs);
     }
 
+    /**
+     * Public method displaying the actions displayLogs
+     * 
+     * @return void
+     */
+    public function displaysLogAction(): void {
+        $act_repo = new ActionRepository();
+        $logs = $act_repo->getActionList();
+        $this->View->displayActionLogs($logs);
+    }
+
+    /**
+     * Public method displaying the the cuser's connections logs
+     *
+     * @param int $key_user The user's primary key
+     * @return void
+     */
     public function displayUserLogs(int $key_user): void {
         $act_repo = new ActionRepository();
         $logs = $act_repo->getUserConnectionList($key_user);
-        $this->View->DisplayProfileLogs($logs);
+        $this->View->displayProfileLogs($logs);
+    }
+
+    /**
+     * Public method displaying the the cuser's actions logs
+     *
+     * @param int $key_user The user's primary key
+     * @return void
+     */
+    public function displaysUserLogAction(int $key_user): void {
+        $act_repo = new ActionRepository();
+        $logs = $act_repo->getUserActionList($key_user);
+        $this->View->displayProfileActionLogs($logs);
     }
 
     // * EDIT  * // 
