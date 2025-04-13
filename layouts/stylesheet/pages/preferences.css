@@ -40,7 +40,7 @@ body > content > aside {
 body > content > aside article {
     display: flex;
     flex-direction: column;
-    gap: var(--radius);
+    gap: var(--very-small-radius);
 
     width: 100%;
     height: fit-content;
@@ -54,7 +54,7 @@ body > content > aside header {
     height: fit-content;
 }
 body > content > aside header img {
-    width: var(--font-size-medium);
+    width: 2.2rem;
 }
 body > content > aside header h2 {
     color: var(--white);
@@ -64,18 +64,20 @@ body > content > aside content {
     display: flex;
     flex-direction: column;
     justify-content: start;
-    gap: var(--radius);
+    gap: 4px;
 
     width: 100%;
     height: fit-content;
 }
 body > content > aside content a {
     color: var(--white);
-    font-family: "Roboto";
+    font-family: 'Roboto';
+    opacity: 0.35;
+    transition: opacity 150ms ease;
 }
 body > content > aside content a.selected,
 body > content > aside content a:is(:hover, :focus) {
-    font-family: "Roboto Bold";
+    opacity: 1;
 }
 
 /******** Main ********/

@@ -68,14 +68,13 @@ class LoginController extends Controller {
     public function logout() {
         if(isset($_SESSION['user']) && !empty($_SESSION['user']->getId())) {
             $act_repo = new ActionRepository();
-
-            $type = $act_repo->searchType("Déconnexion");
+            $type = $act_repo->searchType("Déconnexion"); 
 
             $act = Action::create(                                                      // Building the action
                 $_SESSION['user']->getId(), 
                 $type->getId()
             );
-            
+
             $act_repo->writeLogs($act);                                                 // Writing the logs   
         } 
 

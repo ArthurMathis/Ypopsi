@@ -97,7 +97,7 @@ class Router {
         }
 
         if($user_connected) try {
-            LoginController::updateConnectionTime();
+            // LoginController::updateConnectionTime();
         } catch(LoginExceptions $e) {
             $destination = "/logout";
             if($path !== $destination) {
