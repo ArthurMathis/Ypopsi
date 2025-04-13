@@ -156,7 +156,7 @@ $completed = !empty($candidate);
 </form>
 
 <script type="module">
-    import { AutoComplete } from "<?= APP_PATH  ?>\\layouts\\scripts\\modules/AutoComplete.mjs"; 
+    import AutoComplete from "<?= APP_PATH  ?>\\layouts\\scripts\\modules/AutoComplete.mjs"; 
     import { formManipulation } from "<?= APP_PATH ?>\\layouts\\scripts\\modules/FormManipulation.mjs";
 
     new AutoComplete(document.getElementById('job'), AutoComplete.arrayToSuggestions(<?= json_encode($jobs_list) ?>));
