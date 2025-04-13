@@ -12,7 +12,7 @@
 # Ignore pycache files
 __pycache__/
 /vendor/
-/database/xlsxLoader/vendor/
+.phpunit.result.cache
 
 # Ignore the Excel files
 *.xls

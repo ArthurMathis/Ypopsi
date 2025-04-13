@@ -47,7 +47,7 @@ class DataFormatManip {
      * @return boolean
      */
     public static function isValidEmail(string &$str): bool {
-        return (bool) filter_var($str, FILTER_VALIDATE_EMAIL) !== false;
+        return (bool) filter_var($str, FILTER_VALIDATE_EMAIL);
     }
 
     /**
@@ -58,7 +58,7 @@ class DataFormatManip {
      */
     public static function isValidPhoneNumber(string &$str): bool {
         $pattern = '/^\d{2}\.\d{2}\.\d{2}\.\d{2}\.\d{2}$/';
-        return (bool) preg_match($pattern, $str) === 1;
+        return (bool) preg_match($pattern, $str);
     }
 
     /**
@@ -69,7 +69,7 @@ class DataFormatManip {
      */
     public static function isValidPostCode(string &$str): bool {
         $pattern = '/^\d{5}$/';
-        return preg_match($pattern, $str) === 1;
+        return preg_match($pattern, $str);
     }
 
     // * FORMAT * //

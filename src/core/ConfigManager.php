@@ -15,7 +15,7 @@ class ConfigManager {
      * @author Clément STUTZ - clement.stutz@diaconat-mulhouse.fr
      */
     public static function envLoad(string $str = ".env"): void {
-        $env = parse_ini_file('.env');
+        $env = parse_ini_file($str);
         foreach ($env as $key => $value) {
             putenv("$key=$value");
         }
