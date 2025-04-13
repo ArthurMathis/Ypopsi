@@ -1,4 +1,4 @@
-import { AutoComplete } from "./AutoComplete.mjs";
+import AutoComplete from "./AutoComplete.mjs";
 
 /**
  * @function setMinEndDate

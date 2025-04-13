@@ -1,27 +1,13 @@
 <?php 
 
-$app_path = getenv('APP_PATH');
-if(empty($app_path)) {
-    $app_path = "/ypopsi";
-}
+use App\Core\ConfigManager;
 
-define('APP_PATH', $app_path);
+ConfigManager::errorSetting();
+ConfigManager::envLoad();
+session_start();
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ENV * //
-function env_start() {
-    $env = parse_ini_file('.env');
-    foreach ($env as $key => $value) {
-        putenv("$key=$value");
-    }
-}
+define('APP_PATH', getenv('APP_PATH'));
 
-// * PHP TESTS * //
-function test_process() {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * DIRECTORY * //

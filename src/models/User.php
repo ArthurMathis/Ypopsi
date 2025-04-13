@@ -39,12 +39,12 @@ class User implements PeopleInterface {
         protected int $role, 
         protected int $establishment
     ) {
-        // id
+        // The primary key
         if(!empty($id) & !DataFormatManip::isValidKey($id)) {
             throw new UserExceptions("La clé primaire : {$id} est invalide.");
         }
 
-        // identifier 
+        // The identifier 
         if(!DataFormatManip::isValidIdentifier($identifier)) {
             throw new UserExceptions("L'identifiant : {$identifier} est invalide.");
         } 

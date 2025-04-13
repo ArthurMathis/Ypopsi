@@ -47,7 +47,29 @@ class DataFormatManip {
      * @return boolean
      */
     public static function isValidEmail(string &$str): bool {
-        return filter_var($str, FILTER_VALIDATE_EMAIL) !== false;
+        return (bool) filter_var($str, FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    /**
+     * Public static method checking if the given string is valid 
+     * 
+     * @param string $str
+     * @return boolean
+     */
+    public static function isValidPhoneNumber(string &$str): bool {
+        $pattern = '/^\d{2}\.\d{2}\.\d{2}\.\d{2}\.\d{2}$/';
+        return (bool) preg_match($pattern, $str) === 1;
+    }
+
+    /**
+     * Public static method checking if the given string is valid 
+     * 
+     * @param string $str
+     * @return boolean
+     */
+    public static function isValidPostCode(string &$str): bool {
+        $pattern = '/^\d{5}$/';
+        return preg_match($pattern, $str) === 1;
     }
 
     // * FORMAT * //
@@ -78,7 +100,6 @@ class DataFormatManip {
      */
     public static function phoneNumberFormat(string $number): ?String {
         $number = preg_replace('/\D/', '', $number);
-    
         if (strlen($number) !== 0 && strlen($number) !== 10) {
             throw new InvalidArgumentException("Le numéro de téléphone incorrect.");   
         } 

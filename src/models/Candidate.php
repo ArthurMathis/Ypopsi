@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\PeopleInterface;
+use App\Core\Tools\DataFormatManip;
+use App\Core\Tools\PasswordsManip;
 use App\Exceptions\CandidateExceptions;
 
 /**
@@ -34,9 +36,9 @@ class Candidate implements PeopleInterface {
      */
     public function __construct(
         protected ?int $id, 
-        protected string $name, 
-        protected string $firstname, 
-        protected bool $gender, 
+        protected ?string $name, 
+        protected ?string $firstname, 
+        protected ?bool $gender, 
         protected ?string $email, 
         protected ?string $phone, 
         protected ?string $address, 
@@ -53,18 +55,40 @@ class Candidate implements PeopleInterface {
     )
     {
         // The primary key
-        if(!empty($id) && $id <= 0) {
-            throw new CandidateExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
+        if(!empty($id) & !DataFormatManip::isValidKey($id)) {
+            throw new CandidateExceptions("La clé primaire : {$id} est invalide.");
         }
 
-        // todo : vérification du nom
-        // todo : vérification du prénom
-        // todo : vérification de l'email
-        // todo : vérification de l'email
-        // todo : vérification du numéro de téléphone 
-        // todo : vérification de l'adresse
-        // todo : vérification de la ville
-        // todo : vérification du code postal
+        // The name 
+        if(!empty($name) && !DataFormatManip::isValidName($name)) {
+            throw new CandidateExceptions("Le nom : {$name} est invalide.");
+        }
+
+        // The firstname 
+        if(!empty($firstname) && !DataFormatManip::isValidName($firstname)) {
+            throw new CandidateExceptions("Le prénom : {$firstname} est invalide.");
+        }
+
+        if(empty($anme) && empty($firstname)) {
+            throw new CandidateExceptions("Impossible de générer un candidat sans nom et sans prénom.");
+        }
+
+        // The email
+        if(!empty($email) && !DataFormatManip::isValidEmail($email)) {
+            throw new CandidateExceptions("L'email : {$email} est invalide.");
+        }
+
+        if(!empty($phone) && !DataFormatManip::isValidPhoneNumber($phone)) {
+            throw new CandidateExceptions("Le numéro de téléphone : {$phone} est invalide.");
+        }
+
+        if(!empty($city) && !DataFormatManip::isValidName($city)) {
+            throw new CandidateExceptions("La ville : {$city} est invalide.");
+        }
+
+        if(!empty($postcode) && !DataFormatManip::isValidPostCode($postcode)) {
+            throw new CandidateExceptions("Le code postal : {$postcode} est invalide.");
+        }
     }
 
     /**
