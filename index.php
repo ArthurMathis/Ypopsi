@@ -14,10 +14,6 @@ use App\Controllers\PreferencesController;
 use App\Core\Middleware\FeatureMiddleware;
 use App\Exceptions\FeatureExceptions;
 
-test_process();
-env_start();
-session_start();
-
 $user_connected = !(!isset($_SESSION['user']) || empty($_SESSION['user']) || empty($_SESSION['user']->getId())); 
 
 try {
@@ -154,7 +150,7 @@ try {
         "confirm"       => true,
         "confirmButton" => "Contacter le support",
         "deleteButton"  => "Retour",
-        "direction"     => 'mailto:' . getenv("APP_SUPPORT")
+        "direction"     => getenv("APP_SUPPORT")
     ]);
 } catch(Exception $e) {
     AlertsManip::error_alert([
