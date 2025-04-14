@@ -40,7 +40,7 @@ class User implements PeopleInterface {
         protected int $establishment
     ) {
         // The primary key
-        if(!empty($id) & !DataFormatManip::isValidKey($id)) {
+        if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
             throw new UserExceptions("La clé primaire : {$id} est invalide.");
         }
 

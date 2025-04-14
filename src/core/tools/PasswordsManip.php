@@ -45,7 +45,7 @@ class PasswordsManip {
                 !preg_match('/[a-z]/', $password) || 
                 !preg_match('/[A-Z]/', $password) || 
                 !preg_match('/\d/', $password) || 
-                !preg_match('/[(){}[\]&#_@+!*?:;,.<>-]/', $password));
+                !preg_match('/[(){}[\]%&#_@+!*?:;,.<>-]/', $password));
     }
 
     /**
