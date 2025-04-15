@@ -785,7 +785,7 @@ class UserModelTest extends TestCase {
     }
 
     /**
-     * Test the fromArray method with empty data
+     * Public function testing User::fromArray
      */
     public function testFromArrayWithEmptyData(): void {
         $this->expectException(UserExceptions::class);
@@ -795,7 +795,7 @@ class UserModelTest extends TestCase {
     }
 
     /**
-     * Test the toArray method
+     * Public function testing User::toArray
      */
     public function testToArray(): void {
         $user = new User(
