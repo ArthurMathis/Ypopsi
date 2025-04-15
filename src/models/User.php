@@ -71,7 +71,7 @@ class User implements PeopleInterface {
 
         // establishment
         if(!DataFormatManip::isValidKey($establishment)) {
-            throw new UserExceptions("La clé due l'établissement : {$establishment} est invalide.");
+            throw new UserExceptions("La clé de l'établissement : {$establishment} est invalide.");
         }
     }
 
@@ -287,7 +287,7 @@ class User implements PeopleInterface {
             'created'        => $this->getCreated(),
             'desactivated'   => $this->getDesactivated(),
             'role'           => $this->getRole(),
-            'establishement' => $this->getEstablishment()
+            'establishment' => $this->getEstablishment()
         );
     }
 }

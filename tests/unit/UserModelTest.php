@@ -12,9 +12,9 @@ use App\Core\Tools\testErrorManager;
 class UserModelTest extends TestCase {
     // * CONSTRUCTOR * //
     /**
-     * Test the constructor with valid data
+     * Public function testing User::__constructor
      */
-    public function testConstructorWithValidData() {
+    public function testConstructor(): void {
         $user = new User(
             getenv("VALID_KEY_1"),
             getenv("USER_1_IDENTIFIER"),
@@ -43,10 +43,44 @@ class UserModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getEstablishment()));
     }
 
+    //// NULL PARAMETERS ////
     /**
-     * Test the constructor with invalid id
+     * Public function testing User::__constructor
      */
-    public function testConstructorWithInvalidId() {
+    public function testConstructorWitoutId(): void {
+        $user = new User(
+            null,
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals(null, $user->getId(), testErrorManager::cerr_eq("vide", $user->getId() ?? "vide"));
+        $this->assertEquals(getenv("USER_1_IDENTIFIER"), $user->getIdentifier(), testErrorManager::cerr_eq(getenv("USER_1_IDENTIFIER"), $user->getIdentifier()));
+        $this->assertEquals(getenv("PEOPLE_1_NAME"), $user->getName(), testErrorManager::cerr_eq(getenv("PEOPLE_1_NAME"), $user->getName()));
+        $this->assertEquals(getenv("PEOPLE_1_FIRSTNAME"), $user->getFirstname(), testErrorManager::cerr_eq(getenv("PEOPLE_1_FIRSTNAME"), $user->getFirstname()));
+        $this->assertEquals(getenv("PEOPLE_1_EMAIL"), $user->getEmail(), testErrorManager::cerr_eq(getenv("PEOPLE_1_EMAIL"), $user->getEmail()));
+        $this->assertEquals(getenv("USER_PASSWORD_1"), $user->getPassword(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getPassword()));
+        $this->assertTrue($user->getPasswordTemp(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getPasswordTemp()));
+        $this->assertEquals(getenv("USER_DATE"), $user->getCreated(), testErrorManager::cerr_eq(getenv("USER_DATE"), $user->getCreated()));
+        $this->assertFalse($user->getDesactivated(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getDesactivated()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $user->getRole(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getRole()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $user->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getEstablishment()));
+    }
+
+    //// INVALID ID ////
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidId(): void {
         $key = getenv("INVALID_KEY_1");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("La clé primaire : {$key} est invalide.");
@@ -65,491 +99,733 @@ class UserModelTest extends TestCase {
             getenv("VALID_KEY_1")
         );
     }
-// 
-    // /**
-    //  * Test the constructor with invalid identifier
-    //  */
-    // public function testConstructorWithInvalidIdentifier() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("L'identifiant : invalid_identifier est invalide.");
-// 
-    //     new User(
-    //         1,
-    //         'invalid_identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-    // }
-// 
-    // /**
-    //  * Test the constructor with invalid name
-    //  */
-    // public function testConstructorWithInvalidName() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("Le nom : InvalidName est invalide.");
-// 
-    //     new User(
-    //         1,
-    //         'identifier',
-    //         'InvalidName',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-    // }
-// 
-    // /**
-    //  * Test the constructor with invalid firstname
-    //  */
-    // public function testConstructorWithInvalidFirstname() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("Le prénom : InvalidFirstname est invalide.");
-// 
-    //     new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'InvalidFirstname',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-    // }
-// 
-    // /**
-    //  * Test the constructor with invalid email
-    //  */
-    // public function testConstructorWithInvalidEmail() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("L'email : invalid_email est invalide.");
-// 
-    //     new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'invalid_email',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-    // }
-// 
-    // /**
-    //  * Test the constructor with invalid role
-    //  */
-    // public function testConstructorWithInvalidRole() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("La clé du rôle : 0 est invalide.");
-// 
-    //     new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         0,
-    //         1
-    //     );
-    // }
-// 
-    // /**
-    //  * Test the constructor with invalid establishment
-    //  */
-    // public function testConstructorWithInvalidEstablishment() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("La clé de l'établissement : 0 est invalide.");
-// 
-    //     new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         0
-    //     );
-    // }
-// 
-    // /**
-    //  * Test the setName method with valid name
-    //  */
-    // public function testSetNameWithValidName() {
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setName('NewName');
-    //     $this->assertEquals('Newname', $user->getName());
-    // }
-// 
-    // /**
-    //  * Test the setName method with invalid name
-    //  */
-    // public function testSetNameWithInvalidName() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("Le nom de l'utilisateur est invalide : InvalidName.");
-// 
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setName('InvalidName');
-    // }
-// 
-    // /**
-    //  * Test the setFirstname method with valid firstname
-    //  */
-    // public function testSetFirstnameWithValidFirstname() {
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setFirstname('NewFirstname');
-    //     $this->assertEquals('Newfirstname', $user->getFirstname());
-    // }
-// 
-    // /**
-    //  * Test the setFirstname method with invalid firstname
-    //  */
-    // public function testSetFirstnameWithInvalidFirstname() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("Le prénom de l'utilisateur est invalide : InvalidFirstname.");
-// 
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setFirstname('InvalidFirstname');
-    // }
-// 
-    // /**
-    //  * Test the setEmail method with valid email
-    //  */
-    // public function testSetEmailWithValidEmail() {
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setEmail('new.email@example.com');
-    //     $this->assertEquals('new.email@example.com', $user->getEmail());
-    // }
-// 
-    // /**
-    //  * Test the setEmail method with invalid email
-    //  */
-    // public function testSetEmailWithInvalidEmail() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("L'adresse email de l'utilisateur est invalide : invalid_email.");
-// 
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setEmail('invalid_email');
-    // }
-// 
-    // /**
-    //  * Test the setPassword method with valid password
-    //  */
-    // public function testSetPasswordWithValidPassword() {
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setPassword('newPassword123');
-    //     $this->assertEquals('newPassword123', $user->getPassword());
-    // }
-// 
-    // /**
-    //  * Test the setPassword method with invalid password
-    //  */
-    // public function testSetPasswordWithInvalidPassword() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("Le mot de passe de l'utilisateur est invalide : invalid_password.");
-// 
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setPassword('invalid_password');
-    // }
-// 
-    // /**
-    //  * Test the setRole method with valid role
-    //  */
-    // public function testSetRoleWithValidRole() {
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setRole(2);
-    //     $this->assertEquals(2, $user->getRole());
-    // }
-// 
-    // /**
-    //  * Test the setRole method with invalid role
-    //  */
-    // public function testSetRoleWithInvalidRole() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("Le role de l'utilisateur est invalide : 0.");
-// 
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setRole(0);
-    // }
-// 
-    // /**
-    //  * Test the setEstablishment method with valid establishment
-    //  */
-    // public function testSetEstablishmentWithValidEstablishment() {
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setEstablishment(2);
-    //     $this->assertEquals(2, $user->getEstablishment());
-    // }
-// 
-    // /**
-    //  * Test the setEstablishment method with invalid establishment
-    //  */
-    // public function testSetEstablishmentWithInvalidEstablishment() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("L'établissement de l'utilisateur est invalide : 0.");
-// 
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $user->setEstablishment(0);
-    // }
-// 
-    // /**
-    //  * Test the fromArray method with valid data
-    //  */
-    // public function testFromArrayWithValidData() {
-    //     $data = [
-    //         'Id' => 1,
-    //         'Identifier' => 'identifier',
-    //         'Name' => 'Dupond',
-    //         'Firstname' => 'Jean',
-    //         'Email' => 'jean.dupond@example.com',
-    //         'Password' => 'password123',
-    //         'PasswordTemp' => true,
-    //         'Created' => '2023-01-01',
-    //         'Desactivated' => false,
-    //         'Key_Roles' => 1,
-    //         'Key_Establishments' => 1
-    //     ];
-// 
-    //     $user = User::fromArray($data);
-// 
-    //     $this->assertInstanceOf(User::class, $user);
-    //     $this->assertEquals(1, $user->getId());
-    //     $this->assertEquals('identifier', $user->getIdentifier());
-    //     $this->assertEquals('Dupond', $user->getName());
-    //     $this->assertEquals('Jean', $user->getFirstname());
-    //     $this->assertEquals('jean.dupond@example.com', $user->getEmail());
-    //     $this->assertEquals('password123', $user->getPassword());
-    //     $this->assertTrue($user->getPasswordTemp());
-    //     $this->assertEquals('2023-01-01', $user->getCreated());
-    //     $this->assertFalse($user->getDesactivated());
-    //     $this->assertEquals(1, $user->getRole());
-    //     $this->assertEquals(1, $user->getEstablishment());
-    // }
-// 
-    // /**
-    //  * Test the fromArray method with empty data
-    //  */
-    // public function testFromArrayWithEmptyData() {
-    //     $this->expectException(UserExceptions::class);
-    //     $this->expectExceptionMessage("Erreur lors de la génération de l'utilisateur. Tableau de données absent.");
-// 
-    //     User::fromArray([]);
-    // }
-// 
-    // /**
-    //  * Test the toArray method
-    //  */
-    // public function testToArray() {
-    //     $user = new User(
-    //         1,
-    //         'identifier',
-    //         'Dupond',
-    //         'Jean',
-    //         'jean.dupond@example.com',
-    //         'password123',
-    //         true,
-    //         '2023-01-01',
-    //         false,
-    //         1,
-    //         1
-    //     );
-// 
-    //     $expectedArray = [
-    //         'id' => 1,
-    //         'identifier' => 'identifier',
-    //         'name' => 'Dupond',
-    //         'firstname' => 'Jean',
-    //         'email' => 'jean.dupond@example.com',
-    //         'password' => 'password123',
-    //         'password_temp' => true,
-    //         'created' => '2023-01-01',
-    //         'desactivated' => false,
-    //         'role' => 1,
-    //         'establishment' => 1
-    //     ];
-// 
-    //     $this->assertEquals($expectedArray, $user->toArray());
-    // }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidIdentifier2(): void {
+        $identifier = getenv("USER_WRONG_IDENTIFIER_2");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'identifiant : {$identifier} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            $identifier,
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidIdentifier3(): void {
+        $identifier = getenv("USER_WRONG_IDENTIFIER_3");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'identifiant : {$identifier} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            $identifier,
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidIdentifier4(): void {
+        $identifier = getenv("USER_WRONG_IDENTIFIER_4");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'identifiant : {$identifier} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            $identifier,
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    //// INVALID NAME ////
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidName1(): void {
+        $name = getenv("PEOPLE_WRONG_NAME_1");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Le nom : {$name} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            $name,
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidName2(): void {
+        $name = getenv("PEOPLE_WRONG_NAME_2");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Le nom : {$name} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            $name,
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidName3(): void {
+        $name = getenv("PEOPLE_WRONG_NAME_3");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Le nom : {$name} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            $name,
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidName4(): void {
+        $name = getenv("PEOPLE_WRONG_NAME_4");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Le nom : {$name} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            $name,
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidName5(): void {
+        $name = getenv("PEOPLE_WRONG_NAME_5");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Le nom : {$name} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            $name,
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    //// INVALID FIRSTNAME //// 
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidFirstname1(): void {
+        $firstname = getenv("PEOPLE_WRONG_NAME_1");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Le prénom : {$firstname} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            $firstname,
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidFirstname2(): void {
+        $firstname = getenv("PEOPLE_WRONG_NAME_2");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Le prénom : {$firstname} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            $firstname,
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidFirstname3(): void {
+        $firstname = getenv("PEOPLE_WRONG_NAME_3");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Le prénom : {$firstname} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            $firstname,
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidFirstname4(): void {
+        $firstname = getenv("PEOPLE_WRONG_NAME_4");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Le prénom : {$firstname} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            $firstname,
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidFirstname5(): void {
+        $firstname = getenv("PEOPLE_WRONG_NAME_5");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Le prénom : {$firstname} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            $firstname,
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    //// INVALID EMAIL //// 
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail1(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_1");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail2(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_2");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail3(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_3");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail4(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_4");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail5(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_4");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail6(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_6");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail7(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_7");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail8(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_8");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail9(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_9");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail10(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_10");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEmail11(): void {
+        $email = getenv("PEOPLE_WRONG_EMAIL_11");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("L'email : {$email} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            $email,
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    //// INVALID ROLE ////
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidRole1(): void {
+        $role = getenv("INVALID_KEY_1");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("La clé du rôle : {$role} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            $role,
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidRole2(): void {
+        $role = getenv("INVALID_KEY_2");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("La clé du rôle : {$role} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            $role,
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    // INVALID ESTABLISHMENT ////
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEstablishment1(): void {
+        $establishment = getenv("INVALID_KEY_1");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("La clé de l'établissement : {$establishment} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            $establishment
+        );
+    }
+
+    /**
+     * Public function testing User::__constructor
+     */
+    public function testConstructorWithInvalidEstablishment2(): void {
+        $establishment = getenv("INVALID_KEY_2");
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("La clé de l'établissement : {$establishment} est invalide.");
+
+        new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            $establishment
+        );
+    }
+
+    // * CONVERT * //
+    /**
+     * Public function testing User::fromArray
+     */
+    public function testFromArrayWithValidData(): void {
+        $data = [
+            "Id"                 => getenv("VALID_KEY_1"),
+            "Identifier"         => getenv("USER_1_IDENTIFIER"),
+            "Name"               => getenv("PEOPLE_1_NAME"),
+            "Firstname"          => getenv("PEOPLE_1_FIRSTNAME"),
+            "Email"              => getenv("PEOPLE_1_EMAIL"),
+            "Password"           => getenv("USER_PASSWORD_1"),
+            "PasswordTemp"       => true,
+            "Created"            => getenv("USER_DATE"),
+            "Desactivated"       => false,
+            "Key_Roles"          => getenv("VALID_KEY_1"),
+            "Key_Establishments" => getenv("VALID_KEY_1")
+        ];
+
+        $user = User::fromArray($data);
+
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals(getenv("VALID_KEY_1"), $user->getId());
+        $this->assertEquals(getenv("USER_1_IDENTIFIER"), $user->getIdentifier());
+        $this->assertEquals(getenv("PEOPLE_1_NAME"), $user->getName());
+        $this->assertEquals(getenv("PEOPLE_1_FIRSTNAME"), $user->getFirstname());
+        $this->assertEquals(getenv("PEOPLE_1_EMAIL"), $user->getEmail());
+        $this->assertEquals(getenv("USER_PASSWORD_1"), $user->getPassword());
+        $this->assertTrue($user->getPasswordTemp());
+        $this->assertEquals(getenv("USER_DATE"), $user->getCreated());
+        $this->assertFalse($user->getDesactivated());
+        $this->assertEquals(getenv("VALID_KEY_1"), $user->getRole());
+        $this->assertEquals(getenv("VALID_KEY_1"), $user->getEstablishment());
+    }
+
+    /**
+     * Test the fromArray method with empty data
+     */
+    public function testFromArrayWithEmptyData(): void {
+        $this->expectException(UserExceptions::class);
+        $this->expectExceptionMessage("Erreur lors de la génération de l'utilisateur. Tableau de données absent.");
+
+        User::fromArray([]);
+    }
+
+    /**
+     * Test the toArray method
+     */
+    public function testToArray(): void {
+        $user = new User(
+            getenv("VALID_KEY_1"),
+            getenv("USER_1_IDENTIFIER"),
+            getenv("PEOPLE_1_NAME"),
+            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("PEOPLE_1_EMAIL"),
+            getenv("USER_PASSWORD_1"),
+            true,
+            getenv("USER_DATE"),
+            false,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+
+        $expectedArray = [
+            "id"            => getenv("VALID_KEY_1"),
+            "identifier"    => getenv("USER_1_IDENTIFIER"),
+            "name"          => getenv("PEOPLE_1_NAME"),
+            "firstname"     => getenv("PEOPLE_1_FIRSTNAME"),
+            "email"         => getenv("PEOPLE_1_EMAIL"),
+            "password"      => getenv("USER_PASSWORD_1"),
+            "password_temp" => true,
+            "created"       => getenv("USER_DATE"),
+            "desactivated"  => false,
+            "role"          => getenv("VALID_KEY_1"),
+            "establishment" => getenv("VALID_KEY_1")
+        ];
+
+        $this->assertEquals($expectedArray, $user->toArray());
+    }
 }

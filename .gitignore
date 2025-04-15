@@ -12,6 +12,7 @@
 # Ignore pycache files
 __pycache__/
 /vendor/
+.phpunit.cache
 .phpunit.result.cache
 
 # Ignore the Excel files
