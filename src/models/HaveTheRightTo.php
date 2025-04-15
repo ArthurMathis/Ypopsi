@@ -77,7 +77,7 @@ class HaveTheRightTo {
      */
     public static function fromArray(array $data): ?HaveTheRightTo {
         if(empty($data)) {
-            throw new HaveTheRightToExceptions("Erreur lors de la génération du candidat. Tableau de données absent.");
+            throw new HaveTheRightToExceptions("Erreur lors de la génération du droit à l'aide. Tableau de données absent.");
         }
 
         return new HaveTheRightTo(

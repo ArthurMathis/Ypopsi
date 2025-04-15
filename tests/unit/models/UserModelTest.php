@@ -63,7 +63,7 @@ class UserModelTest extends TestCase {
         );
 
         $this->assertInstanceOf(User::class, $user);
-        $this->assertEquals(null, $user->getId(), testErrorManager::cerr_eq("vide", $user->getId() ?? "vide"));
+        $this->assertEquals(null, $user->getId(), testErrorManager::cerr_eq(null, $user->getId()));
         $this->assertEquals(getenv("USER_1_IDENTIFIER"), $user->getIdentifier(), testErrorManager::cerr_eq(getenv("USER_1_IDENTIFIER"), $user->getIdentifier()));
         $this->assertEquals(getenv("PEOPLE_1_NAME"), $user->getName(), testErrorManager::cerr_eq(getenv("PEOPLE_1_NAME"), $user->getName()));
         $this->assertEquals(getenv("PEOPLE_1_FIRSTNAME"), $user->getFirstname(), testErrorManager::cerr_eq(getenv("PEOPLE_1_FIRSTNAME"), $user->getFirstname()));

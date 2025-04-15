@@ -38,7 +38,7 @@ class HelpModelTest extends TestCase {
         );
 
         $this->assertInstanceOf(Help::class, $help);
-        $this->assertEquals(null, $help->getId(), testErrorManager::cerr_eq("vide", $help->getId() ?? "vide"));
+        $this->assertEquals(null, $help->getId(), testErrorManager::cerr_eq(null, $help->getId()));
         $this->assertEquals(getenv("HELP_TITLED"), $help->getTitled(), testErrorManager::cerr_eq(getenv("HELP_TITLED"), $help->getTitled()));
         $this->assertEquals(getenv("HELP_DESCRIPTION"), $help->getDescription(), testErrorManager::cerr_eq(getenv("HELP_DESCRIPTION"), $help->getDescription()));
     }
@@ -56,7 +56,7 @@ class HelpModelTest extends TestCase {
         $this->assertInstanceOf(Help::class, $help);
         $this->assertEquals(getenv("VALID_KEY_1"), $help->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $help->getId()));
         $this->assertEquals(getenv("HELP_TITLED"), $help->getTitled(), testErrorManager::cerr_eq(getenv("HELP_TITLED"), $help->getTitled()));
-        $this->assertEquals(null, $help->getDescription(), testErrorManager::cerr_eq("vide", $help->getDescription() ?? "vide"));
+        $this->assertEquals(null, $help->getDescription(), testErrorManager::cerr_eq(null, $help->getDescription()));
     }
 
     // * CONVERT * //
@@ -92,7 +92,7 @@ class HelpModelTest extends TestCase {
      * Public function testing Help::toArray
      */
     public function testToArray(): void {
-        $user = new Help(
+        $help = new Help(
             getenv("VALID_KEY_1"),
             getenv("HELP_TITLED"),
             getenv("HELP_DESCRIPTION")
@@ -104,6 +104,6 @@ class HelpModelTest extends TestCase {
             "description" => getenv("HELP_DESCRIPTION")
         ];
 
-        $this->assertEquals($expectedArray, $user->toArray());
+        $this->assertEquals($expectedArray, $help->toArray());
     }
 }

@@ -1,11 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="HelpModelTest" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" tests="6" assertions="19" errors="0" failures="0" skipped="0" time="0.004926">
-    <testcase name="testConstructor" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="17" class="HelpModelTest" classname="HelpModelTest" assertions="4" time="0.002809"/>
-    <testcase name="testConstructorWithoutId" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="33" class="HelpModelTest" classname="HelpModelTest" assertions="4" time="0.000245"/>
-    <testcase name="testConstructorWithoutDescription" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="49" class="HelpModelTest" classname="HelpModelTest" assertions="4" time="0.000106"/>
-    <testcase name="testFromArrayWithValidData" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="66" class="HelpModelTest" classname="HelpModelTest" assertions="4" time="0.000071"/>
-    <testcase name="testFromArrayWithEmptyData" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="84" class="HelpModelTest" classname="HelpModelTest" assertions="2" time="0.000711"/>
-    <testcase name="testToArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="94" class="HelpModelTest" classname="HelpModelTest" assertions="1" time="0.000984"/>
+  <testsuite name="C:\xampp\htdocs\ypopsi\phpunit.xml" tests="63" assertions="238" errors="0" failures="0" skipped="0" time="0.014979">
+    <testsuite name="Application Test Suite" tests="63" assertions="238" errors="0" failures="0" skipped="0" time="0.014979">
+      <testsuite name="HaveTheRightToModelTest" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HaveTheRightToModelTest.php" tests="6" assertions="19" errors="0" failures="0" skipped="0" time="0.004437">
+        <testcase name="testConstructor" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HaveTheRightToModelTest.php" line="17" class="HaveTheRightToModelTest" classname="HaveTheRightToModelTest" assertions="4" time="0.002501"/>
+        <testcase name="testConstructorWithourCandidate" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HaveTheRightToModelTest.php" line="33" class="HaveTheRightToModelTest" classname="HaveTheRightToModelTest" assertions="4" time="0.000102"/>
+        <testcase name="testConstructorWithout" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HaveTheRightToModelTest.php" line="49" class="HaveTheRightToModelTest" classname="HaveTheRightToModelTest" assertions="4" time="0.000075"/>
+        <testcase name="testFromArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HaveTheRightToModelTest.php" line="66" class="HaveTheRightToModelTest" classname="HaveTheRightToModelTest" assertions="4" time="0.000080"/>
+        <testcase name="testFromArrayWithEmptyData" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HaveTheRightToModelTest.php" line="84" class="HaveTheRightToModelTest" classname="HaveTheRightToModelTest" assertions="2" time="0.000698"/>
+        <testcase name="testToArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HaveTheRightToModelTest.php" line="94" class="HaveTheRightToModelTest" classname="HaveTheRightToModelTest" assertions="1" time="0.000981"/>
+      </testsuite>
+      <testsuite name="HelpModelTest" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" tests="6" assertions="19" errors="0" failures="0" skipped="0" time="0.001136">
+        <testcase name="testConstructor" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="17" class="HelpModelTest" classname="HelpModelTest" assertions="4" time="0.000241"/>
+        <testcase name="testConstructorWithoutId" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="33" class="HelpModelTest" classname="HelpModelTest" assertions="4" time="0.000276"/>
+        <testcase name="testConstructorWithoutDescription" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="49" class="HelpModelTest" classname="HelpModelTest" assertions="4" time="0.000098"/>
+        <testcase name="testFromArrayWithValidData" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="66" class="HelpModelTest" classname="HelpModelTest" assertions="4" time="0.000215"/>
+        <testcase name="testFromArrayWithEmptyData" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="84" class="HelpModelTest" classname="HelpModelTest" assertions="2" time="0.000192"/>
+        <testcase name="testToArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\HelpModelTest.php" line="94" class="HelpModelTest" classname="HelpModelTest" assertions="1" time="0.000114"/>
+      </testsuite>
+      <testsuite name="QualificationModelTest" file="C:\xampp\htdocs\ypopsi\tests\unit\models\QualificationModelTest.php" tests="6" assertions="23" errors="0" failures="0" skipped="0" time="0.001666">
+        <testcase name="testConstructor" file="C:\xampp\htdocs\ypopsi\tests\unit\models\QualificationModelTest.php" line="17" class="QualificationModelTest" classname="QualificationModelTest" assertions="5" time="0.000262"/>
+        <testcase name="testConstructorWithoutId" file="C:\xampp\htdocs\ypopsi\tests\unit\models\QualificationModelTest.php" line="35" class="QualificationModelTest" classname="QualificationModelTest" assertions="5" time="0.000420"/>
+        <testcase name="testConstructorWithoutAbreviation" file="C:\xampp\htdocs\ypopsi\tests\unit\models\QualificationModelTest.php" line="53" class="QualificationModelTest" classname="QualificationModelTest" assertions="5" time="0.000324"/>
+        <testcase name="testFromArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\QualificationModelTest.php" line="72" class="QualificationModelTest" classname="QualificationModelTest" assertions="5" time="0.000172"/>
+        <testcase name="testFromArrayWithEmptyData" file="C:\xampp\htdocs\ypopsi\tests\unit\models\QualificationModelTest.php" line="92" class="QualificationModelTest" classname="QualificationModelTest" assertions="2" time="0.000304"/>
+        <testcase name="testToArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\QualificationModelTest.php" line="102" class="QualificationModelTest" classname="QualificationModelTest" assertions="1" time="0.000185"/>
+      </testsuite>
+      <testsuite name="UserModelTest" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" tests="34" assertions="97" errors="0" failures="0" skipped="0" time="0.006365">
+        <testcase name="testConstructor" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="17" class="UserModelTest" classname="UserModelTest" assertions="12" time="0.002481"/>
+        <testcase name="testConstructorWitoutId" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="50" class="UserModelTest" classname="UserModelTest" assertions="12" time="0.000130"/>
+        <testcase name="testConstructorWithInvalidId" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="83" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000306"/>
+        <testcase name="testConstructorWithInvalidIdentifier2" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="106" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000087"/>
+        <testcase name="testConstructorWithInvalidIdentifier3" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="129" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000071"/>
+        <testcase name="testConstructorWithInvalidIdentifier4" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="152" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000068"/>
+        <testcase name="testConstructorWithInvalidName1" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="176" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000062"/>
+        <testcase name="testConstructorWithInvalidName2" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="199" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000061"/>
+        <testcase name="testConstructorWithInvalidName3" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="222" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000064"/>
+        <testcase name="testConstructorWithInvalidName4" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="245" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000061"/>
+        <testcase name="testConstructorWithInvalidName5" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="268" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000062"/>
+        <testcase name="testConstructorWithInvalidFirstname1" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="292" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000062"/>
+        <testcase name="testConstructorWithInvalidFirstname2" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="315" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000061"/>
+        <testcase name="testConstructorWithInvalidFirstname3" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="338" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000072"/>
+        <testcase name="testConstructorWithInvalidFirstname4" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="361" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000124"/>
+        <testcase name="testConstructorWithInvalidFirstname5" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="384" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000073"/>
+        <testcase name="testConstructorWithInvalidEmail1" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="408" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000131"/>
+        <testcase name="testConstructorWithInvalidEmail2" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="431" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000396"/>
+        <testcase name="testConstructorWithInvalidEmail3" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="454" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000222"/>
+        <testcase name="testConstructorWithInvalidEmail4" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="477" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000081"/>
+        <testcase name="testConstructorWithInvalidEmail5" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="500" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000067"/>
+        <testcase name="testConstructorWithInvalidEmail6" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="523" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000066"/>
+        <testcase name="testConstructorWithInvalidEmail7" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="546" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000064"/>
+        <testcase name="testConstructorWithInvalidEmail8" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="569" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000094"/>
+        <testcase name="testConstructorWithInvalidEmail9" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="592" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000087"/>
+        <testcase name="testConstructorWithInvalidEmail10" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="615" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000135"/>
+        <testcase name="testConstructorWithInvalidEmail11" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="638" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000073"/>
+        <testcase name="testConstructorWithInvalidRole1" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="662" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000243"/>
+        <testcase name="testConstructorWithInvalidRole2" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="685" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000106"/>
+        <testcase name="testConstructorWithInvalidEstablishment1" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="709" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000090"/>
+        <testcase name="testConstructorWithInvalidEstablishment2" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="732" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000381"/>
+        <testcase name="testFromArrayWithValidData" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="756" class="UserModelTest" classname="UserModelTest" assertions="12" time="0.000112"/>
+        <testcase name="testFromArrayWithEmptyData" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="790" class="UserModelTest" classname="UserModelTest" assertions="2" time="0.000050"/>
+        <testcase name="testToArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\UserModelTest.php" line="800" class="UserModelTest" classname="UserModelTest" assertions="1" time="0.000125"/>
+      </testsuite>
+      <testsuite name="DataFormatManipTest" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\DataFormatManipTest.php" tests="9" assertions="59" errors="0" failures="0" skipped="0" time="0.000665">
+        <testcase name="testIsValidKey" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\DataFormatManipTest.php" line="16" class="DataFormatManipTest" classname="DataFormatManipTest" assertions="5" time="0.000076"/>
+        <testcase name="testIsValidIdentifier" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\DataFormatManipTest.php" line="30" class="DataFormatManipTest" classname="DataFormatManipTest" assertions="5" time="0.000067"/>
+        <testcase name="testIsValidName" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\DataFormatManipTest.php" line="49" class="DataFormatManipTest" classname="DataFormatManipTest" assertions="8" time="0.000052"/>
+        <testcase name="testIsValidEmail" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\DataFormatManipTest.php" line="74" class="DataFormatManipTest" classname="DataFormatManipTest" assertions="17" time="0.000096"/>
+        <testcase name="testIsValidPhoneNumber" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\DataFormatManipTest.php" line="117" class="DataFormatManipTest" classname="DataFormatManipTest" assertions="9" time="0.000103"/>
+        <testcase name="testIsValidPostCode" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\DataFormatManipTest.php" line="144" class="DataFormatManipTest" classname="DataFormatManipTest" assertions="9" time="0.000080"/>
+        <testcase name="testNameFormat" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\DataFormatManipTest.php" line="172" class="DataFormatManipTest" classname="DataFormatManipTest" assertions="2" time="0.000073"/>
+        <testcase name="testMajusculeFormat" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\DataFormatManipTest.php" line="183" class="DataFormatManipTest" classname="DataFormatManipTest" assertions="2" time="0.000043"/>
+        <testcase name="testPhoneNumberFormat" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\DataFormatManipTest.php" line="194" class="DataFormatManipTest" classname="DataFormatManipTest" assertions="2" time="0.000075"/>
+      </testsuite>
+      <testsuite name="PasswordsManipTest" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\PasswordsManipTest.php" tests="2" assertions="21" errors="0" failures="0" skipped="0" time="0.000711">
+        <testcase name="testIsValidPassword" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\PasswordsManipTest.php" line="15" class="PasswordsManipTest" classname="PasswordsManipTest" assertions="15" time="0.000463"/>
+        <testcase name="testRandomPassword" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\PasswordsManipTest.php" line="39" class="PasswordsManipTest" classname="PasswordsManipTest" assertions="6" time="0.000247"/>
+      </testsuite>
+    </testsuite>
   </testsuite>
 </testsuites>
