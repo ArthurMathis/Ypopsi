@@ -126,7 +126,6 @@ CREATE TABLE Qualifications (
 CREATE TABLE Get_qualifications (
   Key_Candidates INTEGER NOT NULL,
   Key_Qualifications INTEGER NOT NULL,
-
   Date TIMESTAMP NOT NULL, 
 
   FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id),

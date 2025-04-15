@@ -23,7 +23,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -37,7 +37,7 @@ class UserModelTest extends TestCase {
         $this->assertEquals(getenv("PEOPLE_1_EMAIL"), $user->getEmail(), testErrorManager::cerr_eq(getenv("PEOPLE_1_EMAIL"), $user->getEmail()));
         $this->assertEquals(getenv("USER_PASSWORD_1"), $user->getPassword(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getPassword()));
         $this->assertTrue($user->getPasswordTemp(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getPasswordTemp()));
-        $this->assertEquals(getenv("USER_DATE"), $user->getCreated(), testErrorManager::cerr_eq(getenv("USER_DATE"), $user->getCreated()));
+        $this->assertEquals(getenv("VALID_DATE"), $user->getCreated(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $user->getCreated()));
         $this->assertFalse($user->getDesactivated(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getDesactivated()));
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getRole(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getRole()));
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getEstablishment()));
@@ -56,7 +56,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -70,7 +70,7 @@ class UserModelTest extends TestCase {
         $this->assertEquals(getenv("PEOPLE_1_EMAIL"), $user->getEmail(), testErrorManager::cerr_eq(getenv("PEOPLE_1_EMAIL"), $user->getEmail()));
         $this->assertEquals(getenv("USER_PASSWORD_1"), $user->getPassword(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getPassword()));
         $this->assertTrue($user->getPasswordTemp(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getPasswordTemp()));
-        $this->assertEquals(getenv("USER_DATE"), $user->getCreated(), testErrorManager::cerr_eq(getenv("USER_DATE"), $user->getCreated()));
+        $this->assertEquals(getenv("VALID_DATE"), $user->getCreated(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $user->getCreated()));
         $this->assertFalse($user->getDesactivated(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getDesactivated()));
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getRole(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getRole()));
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getEstablishment()));
@@ -93,7 +93,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -116,7 +116,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -139,7 +139,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -162,7 +162,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -186,7 +186,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -209,7 +209,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -232,7 +232,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -255,7 +255,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -278,7 +278,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -302,7 +302,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -325,7 +325,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -348,7 +348,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -371,7 +371,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -394,7 +394,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -418,7 +418,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -441,7 +441,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -464,7 +464,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -487,7 +487,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -510,7 +510,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -533,7 +533,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -556,7 +556,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -579,7 +579,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -602,7 +602,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -625,7 +625,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -648,7 +648,7 @@ class UserModelTest extends TestCase {
             $email,
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -672,7 +672,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             $role,
             getenv("VALID_KEY_1")
@@ -695,7 +695,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             $role,
             getenv("VALID_KEY_1")
@@ -719,7 +719,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             $establishment
@@ -742,7 +742,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             $establishment
@@ -762,7 +762,7 @@ class UserModelTest extends TestCase {
             "Email"              => getenv("PEOPLE_1_EMAIL"),
             "Password"           => getenv("USER_PASSWORD_1"),
             "PasswordTemp"       => true,
-            "Created"            => getenv("USER_DATE"),
+            "Created"            => getenv("VALID_DATE"),
             "Desactivated"       => false,
             "Key_Roles"          => getenv("VALID_KEY_1"),
             "Key_Establishments" => getenv("VALID_KEY_1")
@@ -778,7 +778,7 @@ class UserModelTest extends TestCase {
         $this->assertEquals(getenv("PEOPLE_1_EMAIL"), $user->getEmail());
         $this->assertEquals(getenv("USER_PASSWORD_1"), $user->getPassword());
         $this->assertTrue($user->getPasswordTemp());
-        $this->assertEquals(getenv("USER_DATE"), $user->getCreated());
+        $this->assertEquals(getenv("VALID_DATE"), $user->getCreated());
         $this->assertFalse($user->getDesactivated());
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getRole());
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getEstablishment());
@@ -806,7 +806,7 @@ class UserModelTest extends TestCase {
             getenv("PEOPLE_1_EMAIL"),
             getenv("USER_PASSWORD_1"),
             true,
-            getenv("USER_DATE"),
+            getenv("VALID_DATE"),
             false,
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1")
@@ -820,7 +820,7 @@ class UserModelTest extends TestCase {
             "email"         => getenv("PEOPLE_1_EMAIL"),
             "password"      => getenv("USER_PASSWORD_1"),
             "password_temp" => true,
-            "created"       => getenv("USER_DATE"),
+            "created"       => getenv("VALID_DATE"),
             "desactivated"  => false,
             "role"          => getenv("VALID_KEY_1"),
             "establishment" => getenv("VALID_KEY_1")
