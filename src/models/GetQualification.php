@@ -68,7 +68,7 @@ class getQualification {
      * @return void 
      */
     public function setCandidate(int $candidate): void { 
-        if($candidate <= 0) {
+        if(!DataFormatManip::isValidKey($candidate)) {
             throw new GetQualificationExceptions("Clé primaire du candidat invalide : {$candidate}. Clé attendue strictement positive.");
         }
 

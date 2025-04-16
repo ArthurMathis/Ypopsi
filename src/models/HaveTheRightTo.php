@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Tools\DataFormatManip;
 use App\Exceptions\HaveTheRightToExceptions;
 
 class HaveTheRightTo {
@@ -18,15 +19,15 @@ class HaveTheRightTo {
         protected int $help,
         protected ?int $employee
     ) {
-        if(!empty($candidate) && $candidate <= 0) {
+        if(!is_null($candidate) && !DataFormatManip::isValidKey($candidate)) {
             throw new HaveTheRightToExceptions("Clé primaire du candidat invalide : {$candidate}. Clé attendue strictement positive.");
         }
 
-        if($help <= 0) {
+        if(!DataFormatManip::isValidKey($help)) {
             throw new HaveTheRightToExceptions("Clé primaire de l'aide invalide : {$help}. Clé attendue strictement positive.");
         }
 
-        if(!empty($employee) && $employee <= 0) {
+        if(!is_null($employee) && !DataFormatManip::isValidKey($employee)) {
             throw new HaveTheRightToExceptions("Clé primaire de l'employé invalide : {$employee}. Clé attendue strictement positive.");
         }
     }
@@ -60,7 +61,7 @@ class HaveTheRightTo {
      * @return void
      */
     public function setCandidate(int $candidate): void {
-        if($candidate <= 0) {
+        if(!DataFormatManip::isValidKey($candidate)) {
             throw new HaveTheRightToExceptions("Clé primaire du candidat invalide : {$candidate}. Clé attendue strictement positive.");
         }
 

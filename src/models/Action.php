@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Tools\DataFormatManip;
 use App\Exceptions\ActionExceptions;
 
 /**
@@ -27,17 +28,17 @@ class Action {
         protected int $type_key 
     ) {
         // The primary key
-        if(!empty($id) && $id <= 0) {
+        if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
             throw new ActionExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
         // The user's primary key
-        if($user_key <= 0) {
+        if(!DataFormatManip::isValidKey($user_key)) {
             throw new ActionExceptions("Clé primaire de l'utilisateur invalide : {$user_key}. Clé attendue strictement positive.");
         }
         
         // The candidate's primary key
-        if($type_key <= 0) {
+        if(!DataFormatManip::isValidKey($type_key)) {
             throw new ActionExceptions("Clé primaire du type d'action invalide : {$type_key}. Clé attendue strictement positive.");
         }
     }

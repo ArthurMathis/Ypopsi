@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\MeetingExceptions;
+use App\Core\Tools\DataFormatManip;
 
 /**
  * Class representing a meeting
@@ -28,17 +29,17 @@ class Meeting {
         protected int $establishment_key
     ) {
         // The primary key
-        if(!empty($id) & $id <= 0) {
+        if(!is_null($id) & !DataFormatManip::isValidKey($id)) {
             throw new MeetingExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
         // The user's primary key
-        if($user_key <= 0) {
+        if(!DataFormatManip::isValidKey($user_key)) {
             throw new MeetingExceptions("Clé primaire de l'utilisateur invalide : {$user_key}. Clé attendue strictement positive.");
         }
         
         // The candidate's primary key
-        if($candidate_key <= 0) {
+        if(!DataFormatManip::isValidKey($candidate_key)) {
             throw new MeetingExceptions("Clé primaire du candidat invalide : {$candidate_key}. Clé attendue strictement positive.");
         }
     }
