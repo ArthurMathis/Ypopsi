@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Tools\DataFormatManip;
 use App\Exceptions\EstablishmentExceptions;
 
 /**
@@ -31,12 +32,12 @@ class Establishment {
         protected ?int $pole
     ) {
         // Primary key
-        if(!empty($id) && $id <= 0) {
+        if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
             throw new EstablishmentExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
         // Key pole
-        if(!empty($pole) && $pole <= 0) {
+        if(!is_null($pole) && !DataFormatManip::isValidKey($pole)) {
             throw new EstablishmentExceptions("Clé de pôle invalide : {$pole}. Clé attendue strictement positive.");
         }
     }
@@ -77,7 +78,7 @@ class Establishment {
      * 
      * @return string
      */
-    public function getDescription(): string { return $this->description; }
+    public function getDescription(): ?string { return $this->description; }
     /**
      * Public ethod returning the primary key of the hub of the establishment
      * 
