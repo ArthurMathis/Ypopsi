@@ -25,6 +25,9 @@ class TypesOfActionsModelTest extends TestCase {
         $this->assertEquals(getenv("TYPES_OF_ACTIONS_TITLED"), $type->getTitled(), testErrorManager::cerr_eq(getenv("TYPES_OF_ACTIONS_TITLED"), $type->getTitled()));
     }
 
+    /**
+     * Public function testing TypesOfActions::__constructor
+     */
     public function testCOnstructorWithoutId(): void {
         $type = new TypeOfActions(
             null,
