@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Tools\DataFormatManip;
 use App\Exceptions\TypeOfActionsExceptions;
 
 /**
@@ -20,7 +21,7 @@ class TypeOfActions {
         protected ?int $id, 
         protected string $titled
     ) {
-        if(!empty($id) && $id <= 0) {
+        if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
             throw new TypeOfActionsExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
     }
