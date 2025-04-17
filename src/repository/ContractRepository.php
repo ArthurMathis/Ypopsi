@@ -7,7 +7,8 @@ use App\Models\Contract;
 
 /**
  * Class representing a repository of contracts 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class ContractRepository extends Repository {
     // * GET * //

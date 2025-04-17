@@ -7,7 +7,8 @@ use App\Repository\Repository;
 
 /**
  * Class representing a repository of HaveTheRightTo
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class HaveTheRightToRepository extends Repository {
     // * GET * //

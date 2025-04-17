@@ -12,7 +12,8 @@ use App\Exceptions\LoginExceptions;
 
 /**
  * Class representing the login controller
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class LoginController extends Controller {
     /**

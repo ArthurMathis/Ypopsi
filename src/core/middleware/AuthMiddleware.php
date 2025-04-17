@@ -6,7 +6,8 @@ use App\Exceptions\AuthentificationExceptions;
 
 /**
  * Class checking the user's access rights 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class AuthMiddleware {
     // * ATTRIBUTES * //

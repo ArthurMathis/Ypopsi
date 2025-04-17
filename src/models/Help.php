@@ -7,7 +7,8 @@ use App\Core\Tools\DataFormatManip;
 
 /**
  * Class representing a recruitement help for candidates
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class Help {
     /**

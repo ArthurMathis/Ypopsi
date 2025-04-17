@@ -7,7 +7,8 @@ use App\Models\Service;
 
 /**
  * Class representing a repository of services 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class ServiceRepository extends Repository {
     // * GET * //

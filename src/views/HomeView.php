@@ -6,7 +6,8 @@ use App\Views\View;
 
 /**
  * Class representing the home page view
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class HomeView extends View {
     /**

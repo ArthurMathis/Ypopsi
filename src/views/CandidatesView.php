@@ -14,7 +14,8 @@ use App\Models\TypeOfContracts;
 
 /**
  * Class representing the candidates' pages view
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class CandidatesView extends View {
     // * DISPLAY * //

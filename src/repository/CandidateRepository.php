@@ -7,7 +7,8 @@ use App\Models\Candidate;
 
 /**
  * Class representing a repository of candidates 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class CandidateRepository extends Repository {
     // * GET * //

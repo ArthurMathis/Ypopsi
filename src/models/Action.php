@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Core\Tools\DataFormatManip;
+use App\Core\Tools\Moment;
 use App\Exceptions\ActionExceptions;
 
 /**
  * Class representing an action
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class Action {
     /**
@@ -30,6 +32,11 @@ class Action {
         // The primary key
         if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
             throw new ActionExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
+        }
+
+        // The date
+        if(!is_null($date) && !Moment::isDate($date)) {
+            throw new ActionExceptions("La date invalide : {$date}.");
         }
 
         // The user's primary key

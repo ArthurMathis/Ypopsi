@@ -6,7 +6,8 @@ use App\Exceptions\ContractExceptions;
 
 /**
  * The contract class
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class Contract {
     /**

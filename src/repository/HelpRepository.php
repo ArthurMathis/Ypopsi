@@ -8,7 +8,8 @@ use App\Models\Help;
 
 /**
  * Class representing a repository of helps 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class HelpRepository extends Repository {
     // * GET * //

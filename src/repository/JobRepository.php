@@ -7,7 +7,8 @@ use App\Models\Job;
 
 /**
  * Class representing a repository of jobs 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class JobRepository extends Repository {
     // * GET * //

@@ -4,7 +4,8 @@ namespace App\Core\Tools;
 
 /**
  * Class creating random password
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class PasswordsManip {
     // * ATTRIBUTES * //

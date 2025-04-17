@@ -9,7 +9,8 @@ use App\Exceptions\CandidateExceptions;
 
 /**
  * Class representing a candidate
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class Candidate implements PeopleInterface {
     /**

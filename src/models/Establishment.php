@@ -7,7 +7,8 @@ use App\Exceptions\EstablishmentExceptions;
 
 /**
  * Class represeting an establishment
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class Establishment {
     /**

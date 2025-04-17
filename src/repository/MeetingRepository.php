@@ -7,7 +7,8 @@ use App\Models\Meeting;
 
 /**
  * Class representing a repository of meetings 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class MeetingRepository extends Repository {
     // * GET * //

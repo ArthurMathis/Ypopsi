@@ -6,7 +6,8 @@ use App\Views\View;
 
 /**
  * Class representing the applications' pages view
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class ApplicationsView extends View {
     /**

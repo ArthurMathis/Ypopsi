@@ -9,7 +9,8 @@ use App\Core\Tools\AlertsManip;
 
 /**
  * Abstract class representing a basic repository
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class Repository {
     /**

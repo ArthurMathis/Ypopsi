@@ -7,7 +7,8 @@ use App\Repository\FeatureRepository;
 
 /**
  * Class checking the feature availability
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class FeatureMiddleware {
     // * REQUEST * //

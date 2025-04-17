@@ -9,7 +9,8 @@ use App\Models\User;
 
 /**
  * Class representing a repository of actions 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class ActionRepository extends Repository {
     // * LOGS * //

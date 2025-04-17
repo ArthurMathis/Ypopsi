@@ -4,7 +4,8 @@ namespace App\Models;
 
 /**
  * Interface representing a people
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 interface PeopleInterface {
     /**

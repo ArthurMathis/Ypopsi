@@ -7,7 +7,8 @@ use App\Exceptions\FeatureExceptions;
 
 /**
  * Class represeting an feature
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class Feature {
     /**

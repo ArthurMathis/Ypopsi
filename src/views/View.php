@@ -4,7 +4,8 @@ namespace App\Views;
 
 /**
  * Class representing a view
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class View {
     /**

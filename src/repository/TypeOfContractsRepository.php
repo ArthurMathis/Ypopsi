@@ -7,7 +7,8 @@ use App\Repository\Repository;
 
 /**
  * Class representing a repository of type of contracts 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class TypeOfContractsRepository extends Repository {
     // * GET * //

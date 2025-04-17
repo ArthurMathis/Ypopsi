@@ -6,7 +6,8 @@ use App\Exceptions\TypeOfContractsExceptions;
 
 /**
  * Class representing a type of contracts
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class TypeOfContracts {
     /**

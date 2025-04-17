@@ -8,7 +8,8 @@ use App\Exceptions\RouterExceptions;
 
 /**
  * Class représenting a Route in the router
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class Route {
     /**

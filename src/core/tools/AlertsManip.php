@@ -6,7 +6,8 @@ use \Exception;
 
 /**
  * Class manipulating notification
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class AlertsManip {
     /**

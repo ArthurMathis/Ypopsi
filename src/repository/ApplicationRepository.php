@@ -7,7 +7,8 @@ use App\Models\Application;
 
 /**
  * Class representing a repository of applications 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class ApplicationRepository extends Repository {
     // * GET * //

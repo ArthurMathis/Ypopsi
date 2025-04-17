@@ -9,7 +9,8 @@ use App\Repository\MeetingRepository;
 
 /**
  * Class representing the home page controller
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class HomeController extends Controller {
     /**

@@ -7,7 +7,8 @@ use App\Models\Role;
 
 /**
  * Class representing a repository of roles 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class RoleRepository extends Repository {
     /**

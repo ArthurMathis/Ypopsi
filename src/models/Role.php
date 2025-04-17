@@ -6,7 +6,8 @@ use App\Exceptions\RoleExceptions;
 
 /**
  * Class representing a meeting
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class Role {
     /**

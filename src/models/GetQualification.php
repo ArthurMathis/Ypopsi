@@ -8,7 +8,8 @@ use App\Core\Tools\Moment;
 
 /**
  * Class representing a getQualification
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class getQualification {
     /**

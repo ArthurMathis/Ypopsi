@@ -8,7 +8,8 @@ use App\Exceptions\LoginExceptions;
 
 /**
  * Class representing a repository of users 
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class UserRepository extends Repository {
     // * GET * //

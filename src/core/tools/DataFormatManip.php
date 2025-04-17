@@ -6,7 +6,8 @@ use \InvalidArgumentException;
 
 /**
  * Class manipulating the data's format and validity
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class DataFormatManip {
     // * IS VALID * //

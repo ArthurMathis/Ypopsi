@@ -8,7 +8,8 @@ use App\Exceptions\GetQualificationExceptions;
 
 /**
  * Class representing a repository of GetQualification
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class GetQualificationRepository extends Repository {
     // * GET * //

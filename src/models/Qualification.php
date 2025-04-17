@@ -6,7 +6,8 @@ use App\Exceptions\QualificationExceptions;
 
 /**
  * Class representing a qualification
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class Qualification {
     /**
