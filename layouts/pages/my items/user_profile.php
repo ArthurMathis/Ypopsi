@@ -1,7 +1,7 @@
 <?php
 
 use App\Core\Middleware\AuthMiddleware;
-use App\Core\Moment;
+use App\Core\Tools\Moment;
 
 ?>
 

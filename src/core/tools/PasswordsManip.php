@@ -13,13 +13,13 @@ class PasswordsManip {
      *
      * @var string The string
      */
-    static public $majuscule = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    static public $majuscules = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     /**
      * Public static string with lowercase letters of the alphabet
      *
      * @var string The string
      */
-    static public $minuscule = 'abcdefghijklmnopqrstuvwxyz';
+    static public $minuscules = 'abcdefghijklmnopqrstuvwxyz';
     /**
      * Public static string with numbers
      *
@@ -31,7 +31,7 @@ class PasswordsManip {
      *
      * @var string The string
      */
-    static public $special = '(){}[\]&#_@+!*?:;,.<>-';
+    static public $specials = '(){}[\]&#_@+!*?:;,.%<>-';
 
     // * METHODS * //
     /**
@@ -42,10 +42,11 @@ class PasswordsManip {
      */
     public static function isValidPassword(string $password): bool {
         return !(strlen($password) < 12 || 
-                !preg_match('/[a-z]/', $password) || 
-                !preg_match('/[A-Z]/', $password) || 
-                !preg_match('/\d/', $password) || 
-                !preg_match('/[(){}[\]%&#_@+!*?:;,.<>-]/', $password));
+                !(bool) strpbrk($password, PasswordsManip::$minuscules) || 
+                !(bool) strpbrk($password, PasswordsManip::$majuscules) || 
+                !(bool) strpbrk($password, PasswordsManip::$chiffres)   || 
+                !(bool) strpbrk($password, PasswordsManip::$specials)
+            );
     }
 
     /**
@@ -55,12 +56,12 @@ class PasswordsManip {
      */
     public static function random_password(): String {
         $password = '';
-        $password .= PasswordsManip::$majuscule[rand(0, strlen(PasswordsManip::$majuscule) - 1)];
-        $password .= PasswordsManip::$minuscule[rand(0, strlen(PasswordsManip::$minuscule) - 1)];
+        $password .= PasswordsManip::$majuscules[rand(0, strlen(PasswordsManip::$majuscules) - 1)];
+        $password .= PasswordsManip::$minuscules[rand(0, strlen(PasswordsManip::$minuscules) - 1)];
         $password .= PasswordsManip::$chiffres[rand(0, strlen(PasswordsManip::$chiffres) - 1)];
-        $password .= PasswordsManip::$special[rand(0, strlen(PasswordsManip::$special) - 1)];
+        $password .= PasswordsManip::$specials[rand(0, strlen(PasswordsManip::$specials) - 1)];
 
-        $all = PasswordsManip::$majuscule . PasswordsManip::$minuscule . PasswordsManip::$chiffres;
+        $all = PasswordsManip::$majuscules . PasswordsManip::$minuscules . PasswordsManip::$chiffres;
         for ($i = 4; $i < 12; $i++) {
             $password .= $all[rand(0, strlen($all) - 1)];
         }

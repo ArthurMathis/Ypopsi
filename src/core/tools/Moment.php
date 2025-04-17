@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core;
+namespace App\Core\Tools;
 
 use \DateTime;
 use \DateTimeZone;
@@ -8,7 +8,6 @@ use App\Exceptions\MomentExceptions;
 
 /**
  * Class representing a moment (time)
- * 
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
 class Moment {
@@ -17,7 +16,11 @@ class Moment {
      * @param string $date The date at the format (Y-m-d h:m:s)
      * @throws MomentExceptions If the date is invalid
      */
-    public function __construct(protected string $date) {}
+    public function __construct(protected string $date) {
+        if(!Moment::isFullDate($date)) {
+            throw new MomentExceptions("La date : {$date} est invalide.");
+        }
+    }
 
     // * GET * //
     /**

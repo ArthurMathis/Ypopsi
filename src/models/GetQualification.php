@@ -4,7 +4,7 @@ namespace App\models;
 
 use App\Core\Tools\DataFormatManip;
 use App\Exceptions\GetQualificationExceptions;
-use App\Core\Moment;
+use App\Core\Tools\Moment;
 
 /**
  * Class representing a getQualification

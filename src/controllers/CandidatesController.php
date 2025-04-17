@@ -6,7 +6,7 @@ use Exception;
 use App\Controllers\Controller;
 use App\Core\Tools\AlertsManip;
 use App\Core\Tools\DataFormatManip;
-use App\Core\Moment;
+use App\Core\Tools\Moment;
 use App\Models\Action;
 use App\Models\Application;
 use App\Models\Candidate;

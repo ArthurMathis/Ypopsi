@@ -7,7 +7,7 @@ use App\Repository\UserRepository;
 use App\Models\Action;
 use App\Repository\ActionRepository;
 use App\Repository\RoleRepository;
-use App\Core\Moment;
+use App\Core\Tools\Moment;
 use App\Exceptions\LoginExceptions;
 
 /**
