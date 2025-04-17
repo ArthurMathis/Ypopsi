@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Core\Tools\DataFormatManip;
+use App\Core\Tools\DataFormatManager;
 use App\Exceptions\EstablishmentExceptions;
 
 /**
@@ -33,12 +33,17 @@ class Establishment {
         protected ?int $pole
     ) {
         // Primary key
-        if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new EstablishmentExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
+        // Post code
+        if(!DataFormatManager::isValidPostCode($postcode)) {
+            throw new EstablishmentExceptions("Le code postal : {$postcode} est invalide.");
+        }
+
         // Key pole
-        if(!is_null($pole) && !DataFormatManip::isValidKey($pole)) {
+        if(!is_null($pole) && !DataFormatManager::isValidKey($pole)) {
             throw new EstablishmentExceptions("Clé de pôle invalide : {$pole}. Clé attendue strictement positive.");
         }
     }

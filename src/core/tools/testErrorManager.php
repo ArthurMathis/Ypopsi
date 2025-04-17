@@ -35,18 +35,18 @@ class testErrorManager {
      * @return string
      */
     public static function cerr_eq(?string $str1 = null, ?string $str2 = null): string {
-        $str1 = $str1 ? $str1 : "vide";
-        $str2 = $str2 ? $str2 : "vide";
+        $str1 = $str1 ? $str1 : "'vide'";
+        $str2 = $str2 ? $str2 : "'vide'";
         return testErrorManager::error() . "{$str1} is equals to {$str2}.";
     }
 
     /**
      * Public static method returning the error's message for null tests
      *
-     * @param string $str
+     * @param string $str The value
      * @return string
      */
-    public static function cerr_null(string &$str): string {
+    public static function cerr_null(?string $str): string {
         return testErrorManager::error() . "{$str} should be null.";
     }
 }

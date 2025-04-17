@@ -7,7 +7,7 @@ namespace App\Core\Tools;
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
-class PasswordsManip {
+class PasswordManager {
     // * ATTRIBUTES * //
     /**
      * Public static string with uppercase letters of the alphabet
@@ -43,10 +43,10 @@ class PasswordsManip {
      */
     public static function isValidPassword(string $password): bool {
         return !(strlen($password) < 12 || 
-                !(bool) strpbrk($password, PasswordsManip::$minuscules) || 
-                !(bool) strpbrk($password, PasswordsManip::$majuscules) || 
-                !(bool) strpbrk($password, PasswordsManip::$chiffres)   || 
-                !(bool) strpbrk($password, PasswordsManip::$specials)
+                !(bool) strpbrk($password, PasswordManager::$minuscules) || 
+                !(bool) strpbrk($password, PasswordManager::$majuscules) || 
+                !(bool) strpbrk($password, PasswordManager::$chiffres)   || 
+                !(bool) strpbrk($password, PasswordManager::$specials)
             );
     }
 
@@ -57,12 +57,12 @@ class PasswordsManip {
      */
     public static function random_password(): String {
         $password = '';
-        $password .= PasswordsManip::$majuscules[rand(0, strlen(PasswordsManip::$majuscules) - 1)];
-        $password .= PasswordsManip::$minuscules[rand(0, strlen(PasswordsManip::$minuscules) - 1)];
-        $password .= PasswordsManip::$chiffres[rand(0, strlen(PasswordsManip::$chiffres) - 1)];
-        $password .= PasswordsManip::$specials[rand(0, strlen(PasswordsManip::$specials) - 1)];
+        $password .= PasswordManager::$majuscules[rand(0, strlen(PasswordManager::$majuscules) - 1)];
+        $password .= PasswordManager::$minuscules[rand(0, strlen(PasswordManager::$minuscules) - 1)];
+        $password .= PasswordManager::$chiffres[rand(0, strlen(PasswordManager::$chiffres) - 1)];
+        $password .= PasswordManager::$specials[rand(0, strlen(PasswordManager::$specials) - 1)];
 
-        $all = PasswordsManip::$majuscules . PasswordsManip::$minuscules . PasswordsManip::$chiffres;
+        $all = PasswordManager::$majuscules . PasswordManager::$minuscules . PasswordManager::$chiffres;
         for ($i = 4; $i < 12; $i++) {
             $password .= $all[rand(0, strlen($all) - 1)];
         }

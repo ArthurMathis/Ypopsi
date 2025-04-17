@@ -9,7 +9,7 @@ use \InvalidArgumentException;
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
-class DataFormatManip {
+class DataFormatManager {
     // * IS VALID * //
     /**
      * Public method checking if the given key is valid

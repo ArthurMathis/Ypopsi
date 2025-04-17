@@ -2,9 +2,9 @@
 
 namespace App\models;
 
-use App\Core\Tools\DataFormatManip;
+use App\Core\Tools\DataFormatManager;
 use App\Exceptions\GetQualificationExceptions;
-use App\Core\Tools\Moment;
+use App\Core\Tools\TimeManager;
 
 /**
  * Class representing a getQualification
@@ -26,16 +26,16 @@ class getQualification {
         protected string $date 
     ) {
         // The primary key
-        if(!is_null($candidate) && !DataFormatManip::isValidKey($candidate)) {
+        if(!is_null($candidate) && !DataFormatManager::isValidKey($candidate)) {
             throw new GetQualificationExceptions("Clé primaire du candidat invalide : {$candidate}. Clé attendue strictement positive.");
         }
 
         // The primary key
-        if(!DataFormatManip::isValidKey($qualification)) {
+        if(!DataFormatManager::isValidKey($qualification)) {
             throw new GetQualificationExceptions("Clé primaire de la qualification invalide : {$qualification}. Clé attendue strictement positive.");
         }
 
-        if(!Moment::isDate($date)) {
+        if(!TimeManager::isDate($date)) {
             throw new GetQualificationExceptions("Date de la qualification invalide : {$qualification}.");
         }
     }
@@ -69,7 +69,7 @@ class getQualification {
      * @return void 
      */
     public function setCandidate(int $candidate): void { 
-        if(!DataFormatManip::isValidKey($candidate)) {
+        if(!DataFormatManager::isValidKey($candidate)) {
             throw new GetQualificationExceptions("Clé primaire du candidat invalide : {$candidate}. Clé attendue strictement positive.");
         }
 

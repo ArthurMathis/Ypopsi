@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\Controller;
 use App\Core\Tools\AlertsManip;
-use App\Core\Tools\PasswordsManip;
+use App\Core\Tools\PasswordManager;
 use App\Models\Action;
 use App\Repository\ActionRepository;
 use App\Repository\UserRepository;
@@ -161,7 +161,7 @@ class PreferencesController extends Controller {
      * @return void
      */
     public function fetchResetPassword(int $key_user): void {
-        $_SESSION["password"] = PasswordsManip::random_password();                             // Generating a new password
+        $_SESSION["password"] = PasswordManager::random_password();                             // Generating a new password
         AlertsManip::alert([
             "title"         => "Information importante",
             "msg"           => "Le mot de passe va être réinitialisé et <b>il ne pourra plus être consulté</b>. Mémorisez-le avant de valider ou revenez en arrière.<br>"

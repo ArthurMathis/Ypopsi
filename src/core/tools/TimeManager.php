@@ -4,21 +4,21 @@ namespace App\Core\Tools;
 
 use \DateTime;
 use \DateTimeZone;
-use App\Exceptions\MomentExceptions;
+use App\Exceptions\TimeManagerExceptions;
 
 /**
- * Class representing a moment (time)
+ * Class representing a TimeManager (time)
  * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
  */
-class Moment {
+class TimeManager {
     /**
      *  Class constructor
      * @param string $date The date at the format (Y-m-d h:m:s)
-     * @throws MomentExceptions If the date is invalid
+     * @throws TimeManagerExceptions If the date is invalid
      */
     public function __construct(protected string $date) {
-        if(!Moment::isFullDate($date)) {
-            throw new MomentExceptions("La date : {$date} est invalide.");
+        if(!TimeManager::isFullDate($date)) {
+            throw new TimeManagerExceptions("La date : {$date} est invalide.");
         }
     }
 
@@ -30,9 +30,9 @@ class Moment {
      */
     public function getDate(): String { return $this->date; }
     /**
-     * Public method calculing and returning the moment's timestamp
+     * Public method calculing and returning the TimeManager's timestamp
      * 
-     * @return int The moment's timestamp
+     * @return int The TimeManager's timestamp
      */
     public function getTimestamp(): int { return strtotime($this->getDate());}
 
@@ -44,13 +44,13 @@ class Moment {
     
     // * STATIC * //
     /**
-     *  Public static method creating the current moment
-     * @return Moment The current moment
+     *  Public static method creating the current TimeManager
+     * @return TimeManager The current TimeManager
      */
-    public static function currentMoment(): Moment {
+    public static function currentTimeManager(): TimeManager {
         $dateTime = new DateTime('now', new DateTimeZone('Europe/Paris'));
 
-        return new Moment($dateTime->format('Y-m-d H:i:s'));
+        return new TimeManager($dateTime->format('Y-m-d H:i:s'));
     }
 
     //// IS ////
@@ -72,7 +72,7 @@ class Moment {
      * @return bool TRUE - if the string is a date ; FALSE - if not
      */
     public static function isFullDate($dateString): bool {
-        return Moment::isDate($dateString, "Y-m-d H:i:s");
+        return TimeManager::isDate($dateString, "Y-m-d H:i:s");
     }
     /**
      *  Public static method returning if a string represents an hour or not
@@ -95,12 +95,12 @@ class Moment {
      * Public static method converting a date into a day (Y-m-d)
      * 
      * @param string $date The date (Y-m-d h:m:s)
-     * @throws MomentExceptions If the date is invalid
+     * @throws TimeManagerExceptions If the date is invalid
      * @return string The date at the day format
      */
     public static function dayFromDate(string $date): string {
-        if(!Moment::isFullDate($date)) {
-            throw new MomentExceptions("La date : {$date} est invalide.");
+        if(!TimeManager::isFullDate($date)) {
+            throw new TimeManagerExceptions("La date : {$date} est invalide.");
         }
 
         return (new DateTime($date))->format("Y-m-d");
@@ -109,12 +109,12 @@ class Moment {
      * Public static method converting a date into an hour (h:m:s)
      * 
      * @param string $date The date (Y-m-d h:m:s)
-     * @throws MomentExceptions If the date is invalid
+     * @throws TimeManagerExceptions If the date is invalid
      * @return string The date at the hour format
      */
     public static function hourFromDate(string $date): string {
-        if(!Moment::isFullDate($date)) {
-            throw new MomentExceptions("La date : {$date} est invalide.");
+        if(!TimeManager::isFullDate($date)) {
+            throw new TimeManagerExceptions("La date : {$date} est invalide.");
         }
 
         return (new DateTime($date))->format("H:i:s");

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Core\Tools\DataFormatManip;
+use App\Core\Tools\DataFormatManager;
 use App\Exceptions\FeatureExceptions;
 
 /**
@@ -26,7 +26,7 @@ class Feature {
         protected string $description, 
         protected bool $enable
     ) {
-        if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new FeatureExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
     }

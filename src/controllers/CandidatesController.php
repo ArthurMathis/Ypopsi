@@ -5,8 +5,8 @@ namespace App\Controllers;
 use Exception;
 use App\Controllers\Controller;
 use App\Core\Tools\AlertsManip;
-use App\Core\Tools\DataFormatManip;
-use App\Core\Tools\Moment;
+use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\TimeManager;
 use App\Models\Action;
 use App\Models\Application;
 use App\Models\Candidate;
@@ -476,7 +476,7 @@ class CandidatesController extends Controller {
             (int) $_POST["hourly_rate"] ?? null,
             (bool) !empty($_POST["night_work"]) ?? false,
             (bool) !empty($_POST["wk_work"]) ?? false,
-            Moment::currentMoment()->getDate()
+            TimeManager::currentTimeManager()->getDate()
         );
 
         (new ContractRepository())->inscript($contract);                                        // Registering the offer
@@ -626,7 +626,7 @@ class CandidatesController extends Controller {
 
         $type = $act_repo->searchType("Nouvelle candidature");
         $desc = "Nouvelle candidature de " . strtoupper($candidate->getName()) . " " 
-                . DataFormatManip::nameFormat($candidate->getFirstname()) . " au poste de {$job}.";
+                . DataFormatManager::nameFormat($candidate->getFirstname()) . " au poste de {$job}.";
         $action = Action::create(                                                                               // Creating the action
             $_SESSION["user"]->getId(),
             $type->getId(), 
@@ -666,7 +666,7 @@ class CandidatesController extends Controller {
         $type = $act_repo->searchType("Nouveau rendez-vous"); 
         $desc = "Nouveau rendez-vous avec " 
                 . strtoupper($candidate->getName()) . " " 
-                . DataFormatManip::nameFormat($candidate->getFirstname()) 
+                . DataFormatManager::nameFormat($candidate->getFirstname()) 
                 . ", le " . date('Y m d', strtotime($meeting->getDate()));
 
         $act = Action::create(                                                              // Creating the action
@@ -955,7 +955,7 @@ class CandidatesController extends Controller {
         $act_repo = new ActionRepository();                 
         $type = $act_repo->searchType("Annulation rendez-vous"); 
         $desc = strtoupper($candidate->getName()) . " " 
-                . DataFormatManip::nameFormat($candidate->getFirstname()) 
+                . DataFormatManager::nameFormat($candidate->getFirstname()) 
                 . " a annulé son rendez-vous du " 
                 . date('Y m d', strtotime($meeting->getDate()));
 

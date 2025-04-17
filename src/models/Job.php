@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\JobExceptions;
-use App\Core\Tools\DataFormatManip;
+use App\Core\Tools\DataFormatManager;
 
 /**
  * Class representing a recruitement job
@@ -24,7 +24,7 @@ class Job {
         protected string $titled, 
         protected string $titled_feminin
     ) {
-        if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new JobExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
     }

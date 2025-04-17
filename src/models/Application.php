@@ -188,7 +188,7 @@ class Application {
             $data["Id"],
             $data["IsAccepted"],
             $data["IsRefused"],
-            $data["Moment"],
+            $data["TimeManager"],
             $data["Key_Candidates"],
             $data["Key_Jobs"],
             $data["Key_Types_of_contracts"],

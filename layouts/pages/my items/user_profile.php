@@ -1,7 +1,7 @@
 <?php
 
 use App\Core\Middleware\AuthMiddleware;
-use App\Core\Tools\Moment;
+use App\Core\Tools\TimeManager;
 
 ?>
 
@@ -56,7 +56,7 @@ use App\Core\Tools\Moment;
             </p>
 
             <p>
-                <?= Moment::dayFromDate($user->getCreated()) ?> 
+                <?= TimeManager::dayFromDate($user->getCreated()) ?> 
             </p>
         </article>
     </content>
@@ -94,7 +94,7 @@ use App\Core\Tools\Moment;
             </p>
     
             <i>
-                <?= $first_log ? Moment::dayFromDate($first_log->getDate()) : 'Aucun connexion' ?>
+                <?= $first_log ? TimeManager::dayFromDate($first_log->getDate()) : 'Aucun connexion' ?>
             </i>
         </article>
     
@@ -104,7 +104,7 @@ use App\Core\Tools\Moment;
             </p>
     
             <i>
-                <?= $last_log ? Moment::dayFromDate($last_log->getDate()) : 'Aucun connexion' ?>
+                <?= $last_log ? TimeManager::dayFromDate($last_log->getDate()) : 'Aucun connexion' ?>
             </i>
         </article>
     </content>
@@ -142,7 +142,7 @@ use App\Core\Tools\Moment;
             </p>
     
             <i>
-                <?= $first_password_change ? Moment::dayFromDate($first_password_change->getDate()) : "Non réalisé" ?>
+                <?= $first_password_change ? TimeManager::dayFromDate($first_password_change->getDate()) : "Non réalisé" ?>
             </i>
         </article>
     
@@ -152,7 +152,7 @@ use App\Core\Tools\Moment;
             </p>
     
             <i>
-                <?= $last_password_change ? Moment::dayFromDate($last_password_change->getDate()) : "Non réalisé" ?>
+                <?= $last_password_change ? TimeManager::dayFromDate($last_password_change->getDate()) : "Non réalisé" ?>
             </i>
         </article>
     </content>

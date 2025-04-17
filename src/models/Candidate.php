@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\PeopleInterface;
-use App\Core\Tools\DataFormatManip;
-use App\Core\Tools\PasswordsManip;
+use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\PasswordManager;
 use App\Exceptions\CandidateExceptions;
 
 /**
@@ -56,17 +56,17 @@ class Candidate implements PeopleInterface {
     )
     {
         // The primary key
-        if(!is_null($id) & !DataFormatManip::isValidKey($id)) {
+        if(!is_null($id) & !DataFormatManager::isValidKey($id)) {
             throw new CandidateExceptions("La clé primaire : {$id} est invalide.");
         }
 
         // The name 
-        if(!is_null($name) && !DataFormatManip::isValidName($name)) {
+        if(!is_null($name) && !DataFormatManager::isValidName($name)) {
             throw new CandidateExceptions("Le nom : {$name} est invalide.");
         }
 
         // The firstname 
-        if(!is_null($firstname) && !DataFormatManip::isValidName($firstname)) {
+        if(!is_null($firstname) && !DataFormatManager::isValidName($firstname)) {
             throw new CandidateExceptions("Le prénom : {$firstname} est invalide.");
         }
 
@@ -75,19 +75,19 @@ class Candidate implements PeopleInterface {
         }
 
         // The email
-        if(!is_null($email) && !DataFormatManip::isValidEmail($email)) {
+        if(!is_null($email) && !DataFormatManager::isValidEmail($email)) {
             throw new CandidateExceptions("L'email : {$email} est invalide.");
         }
 
-        if(!is_null($phone) && !DataFormatManip::isValidPhoneNumber($phone)) {
+        if(!is_null($phone) && !DataFormatManager::isValidPhoneNumber($phone)) {
             throw new CandidateExceptions("Le numéro de téléphone : {$phone} est invalide.");
         }
 
-        if(!is_null($city) && !DataFormatManip::isValidName($city)) {
+        if(!is_null($city) && !DataFormatManager::isValidName($city)) {
             throw new CandidateExceptions("La ville : {$city} est invalide.");
         }
 
-        if(!is_null($postcode) && !DataFormatManip::isValidPostCode($postcode)) {
+        if(!is_null($postcode) && !DataFormatManager::isValidPostCode($postcode)) {
             throw new CandidateExceptions("Le code postal : {$postcode} est invalide.");
         }
     }

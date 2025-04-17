@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\HelpExceptions;
-use App\Core\Tools\DataFormatManip;
+use App\Core\Tools\DataFormatManager;
 
 /**
  * Class representing a recruitement help for candidates
@@ -24,7 +24,7 @@ class Help {
         protected string $titled, 
         protected ?string $description
     ) {
-        if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new HelpExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
     }

@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\PeopleInterface;
-use App\Core\Tools\DataFormatManip;
-use App\Core\Tools\PasswordsManip;
+use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\PasswordManager;
 use App\Exceptions\UserExceptions;
 
 /**
@@ -40,37 +40,37 @@ class User implements PeopleInterface {
         protected int $establishment
     ) {
         // The primary key
-        if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new UserExceptions("La clé primaire : {$id} est invalide.");
         }
 
         // The identifier 
-        if(!DataFormatManip::isValidIdentifier($identifier)) {
+        if(!DataFormatManager::isValidIdentifier($identifier)) {
             throw new UserExceptions("L'identifiant : {$identifier} est invalide.");
         } 
 
         // name 
-        if(!DataFormatManip::isValidName($name)) {
+        if(!DataFormatManager::isValidName($name)) {
             throw new UserExceptions("Le nom : {$name} est invalide.");
         }
 
         // firstname
-        if(!DataFormatManip::isValidName($firstname)) {
+        if(!DataFormatManager::isValidName($firstname)) {
             throw new UserExceptions("Le prénom : {$firstname} est invalide.");
         }
 
         // email 
-        if(!DataFormatManip::isValidEmail($email)) {
+        if(!DataFormatManager::isValidEmail($email)) {
             throw new UserExceptions("L'email : {$email} est invalide.");
         }
 
         // role
-        if(!DataFormatManip::isValidKey($role)) {
+        if(!DataFormatManager::isValidKey($role)) {
             throw new UserExceptions("La clé du rôle : {$role} est invalide.");
         }
 
         // establishment
-        if(!DataFormatManip::isValidKey($establishment)) {
+        if(!DataFormatManager::isValidKey($establishment)) {
             throw new UserExceptions("La clé de l'établissement : {$establishment} est invalide.");
         }
     }
@@ -162,8 +162,8 @@ class User implements PeopleInterface {
      * @return void
      */
     public function setName(string $name): void { 
-        $name = DataFormatManip::nameFormat($name);
-        if(!DataFormatManip::isValidName($name)) {
+        $name = DataFormatManager::nameFormat($name);
+        if(!DataFormatManager::isValidName($name)) {
             throw new UserExceptions("Le nom de l'utilisateur est invalide : {$name}.");
         }
 
@@ -177,8 +177,8 @@ class User implements PeopleInterface {
      * @return void
      */
     public function setFirstname(string $firstname): void {
-        $firstname = DataFormatManip::nameFormat($firstname);
-        if(!DataFormatManip::isValidName($firstname)) {
+        $firstname = DataFormatManager::nameFormat($firstname);
+        if(!DataFormatManager::isValidName($firstname)) {
             throw new UserExceptions("Le prénom de l'utilisateur est invalide : {$firstname}.");
         }
         $this->firstname = $firstname; 
@@ -191,7 +191,7 @@ class User implements PeopleInterface {
      * @return void
      */
     public function setEmail(string $email): void {
-        if(!DataFormatManip::isValidEmail($email)) {
+        if(!DataFormatManager::isValidEmail($email)) {
             throw new UserExceptions("L'adresse email de l'utilisateur est invalide : {$email}.");
         }
         
@@ -205,7 +205,7 @@ class User implements PeopleInterface {
      * @return void
      */
     public function setPassword(string $password): void {
-        if(!PasswordsManip::isValidPassword($password)) {
+        if(!PasswordManager::isValidPassword($password)) {
             throw new UserExceptions("Le mot de passe de l'utilisateur est invalide : {$password}.");
         }
 
@@ -219,7 +219,7 @@ class User implements PeopleInterface {
      * @return void
      */
     public function setRole(int $role): void {
-        if(!DataFormatManip::isValidKey($role)) {
+        if(!DataFormatManager::isValidKey($role)) {
             throw new UserExceptions("Le role de l'utilisateur est invalide : {$role}.");
         }
 
@@ -233,7 +233,7 @@ class User implements PeopleInterface {
      * @return void
      */
     public function setEstablishment(int $establishment): void { 
-        if(!DataFormatManip::isValidKey($establishment)) {
+        if(!DataFormatManager::isValidKey($establishment)) {
             throw new UserExceptions("L'établissement de l'utilisateur est invalide : {$establishment}.");
         }
         

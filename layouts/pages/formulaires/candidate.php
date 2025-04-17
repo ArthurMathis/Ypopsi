@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Tools\Moment; 
+use App\Core\Tools\TimeManager; 
 
 ?>
 
@@ -309,7 +309,7 @@ use App\Core\Tools\Moment;
     <?php if(isset($users_qualifications)): ?>
         <?php foreach($users_qualifications as $index => $obj): ?>
             qualifications.addInput();
-            qualifications.setValue(<?= $index ?>, <?= $obj["qualification"]->getId() - 1?>, "<?= Moment::dayFromDate($obj["get_qualification"]->getDate()) ?>");
+            qualifications.setValue(<?= $index ?>, <?= $obj["qualification"]->getId() - 1?>, "<?= TimeManager::dayFromDate($obj["get_qualification"]->getDate()) ?>");
         <?php endforeach ?>
     <?php endif ?>
 

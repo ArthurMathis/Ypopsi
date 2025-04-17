@@ -7,7 +7,7 @@ use App\Repository\UserRepository;
 use App\Models\Action;
 use App\Repository\ActionRepository;
 use App\Repository\RoleRepository;
-use App\Core\Tools\Moment;
+use App\Core\Tools\TimeManager;
 use App\Exceptions\LoginExceptions;
 
 /**
@@ -108,8 +108,8 @@ class LoginController extends Controller {
      * @return void
      */
     public static function initConnectionTime(): void {
-        $extension = Moment::hourToTimsetamp(getenv("APP_SECURITY_DATA_TIME"));
-        $time = Moment::currentMoment()->getTimestamp() + $extension;
+        $extension = TimeManager::hourToTimsetamp(getenv("APP_SECURITY_DATA_TIME"));
+        $time = TimeManager::currentTimeManager()->getTimestamp() + $extension;
         LoginController::setConnectionTime($time);
     }
     /**
@@ -118,9 +118,9 @@ class LoginController extends Controller {
      * @return void
      */
     public static function updateConnectionTime(): void {
-        $delta = Moment::currentMoment()->getTimestamp() - LoginController::getConnectionTime();
+        $delta = TimeManager::currentTimeManager()->getTimestamp() - LoginController::getConnectionTime();
         if($delta <= 0) {
-            $extension = Moment::hourToTimsetamp(getenv("APP_SECURITY_DATA_INACTIVE_TIME"));
+            $extension = TimeManager::hourToTimsetamp(getenv("APP_SECURITY_DATA_INACTIVE_TIME"));
             $time = LoginController::getConnectionTime() + $extension;
             LoginController::setConnectionTime($time);
         } else {

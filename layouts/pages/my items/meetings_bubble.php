@@ -6,7 +6,7 @@ use App\Core\Tools\FomsManip;
 
 <div class="meeting_bubble">
     <header>
-        <h2><?php echo DataFormatManip::majusculeFormat($item['nom']) . ' ' . $item['prenom']; ?></h2>
+        <h2><?php echo DataFormatManager::majusculeFormat($item['nom']) . ' ' . $item['prenom']; ?></h2>
         <p><?= $item['etablissement'] ?></p>
     </header>
     <content>
@@ -24,7 +24,7 @@ use App\Core\Tools\FomsManip;
             <p>Compte rendu</p>
         </div>
         <?php if(empty($item['description'])): ?>
-            <p style="color: var(--grey)">Aucun compte rendu saisi pour le moment.</p>
+            <p style="color: var(--grey)">Aucun compte rendu saisi pour le TimeManager.</p>
         <?php else: ?>
             <p><?= $item['description']; ?></p>    
         <?php endif?>    

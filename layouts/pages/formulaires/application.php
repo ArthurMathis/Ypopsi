@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Tools\Moment;
+use App\Core\Tools\TimeManager;
 
 $completed = !empty($candidate);
 
@@ -101,7 +101,7 @@ $completed = !empty($candidate);
                     type="Date" 
                     id="availability" 
                     name="availability" 
-                    min="<?php echo Moment::currentMoment()->getDate(); ?>"
+                    min="<?php echo TimeManager::currentTimeManager()->getDate(); ?>"
                 >
             </div>
 

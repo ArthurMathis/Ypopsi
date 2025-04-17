@@ -1,6 +1,6 @@
 <?php 
 
-use App\Core\Tools\Moment; 
+use App\Core\Tools\TimeManager; 
 
 ?>
 
@@ -79,11 +79,11 @@ use App\Core\Tools\Moment;
                     id="date" 
 
                     <?php if(!empty($meeting)): ?>
-                        value="<?= Moment::dayFromDate($meeting->getDate()) ?>" 
+                        value="<?= TimeManager::dayFromDate($meeting->getDate()) ?>" 
                     <?php endif ?>
 
                     <?php if($editable): ?>
-                        min="<?= Moment::dayFromDate(Moment::currentMoment()->getDate()) ?>"
+                        min="<?= TimeManager::dayFromDate(TimeManager::currentTimeManager()->getDate()) ?>"
                     <?php else: ?>
                         readonly
                     <?php endif ?>
@@ -100,7 +100,7 @@ use App\Core\Tools\Moment;
                     id="time"
 
                     <?php if(!empty($meeting)): ?>
-                        value="<?= Moment::hourFromDate($meeting->getDate(), "h:m") ?>" 
+                        value="<?= TimeManager::hourFromDate($meeting->getDate(), "h:m") ?>" 
                     <?php endif ?>
 
                     <?php if(!$editable): ?>

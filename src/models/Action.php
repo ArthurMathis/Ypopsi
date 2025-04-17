@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Core\Tools\DataFormatManip;
-use App\Core\Tools\Moment;
+use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\TimeManager;
 use App\Exceptions\ActionExceptions;
 
 /**
@@ -30,22 +30,22 @@ class Action {
         protected int $type_key 
     ) {
         // The primary key
-        if(!is_null($id) && !DataFormatManip::isValidKey($id)) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new ActionExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
         // The date
-        if(!is_null($date) && !Moment::isDate($date)) {
+        if(!is_null($date) && !TimeManager::isDate($date)) {
             throw new ActionExceptions("La date invalide : {$date}.");
         }
 
         // The user's primary key
-        if(!DataFormatManip::isValidKey($user_key)) {
+        if(!DataFormatManager::isValidKey($user_key)) {
             throw new ActionExceptions("Clé primaire de l'utilisateur invalide : {$user_key}. Clé attendue strictement positive.");
         }
         
         // The candidate's primary key
-        if(!DataFormatManip::isValidKey($type_key)) {
+        if(!DataFormatManager::isValidKey($type_key)) {
             throw new ActionExceptions("Clé primaire du type d'action invalide : {$type_key}. Clé attendue strictement positive.");
         }
     }
@@ -117,7 +117,7 @@ class Action {
         return new Action(
             $data['Id'],
             $data['Description'], 
-            $data['Moment'], 
+            $data['TimeManager'], 
             $data['Key_Users'], 
             $data['Key_Types_of_actions']
         );

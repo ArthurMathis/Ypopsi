@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Exceptions\MeetingExceptions;
-use App\Core\Tools\DataFormatManip;
-use App\Core\Tools\Moment;
+use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\TimeManager;
 
 /**
  * Class representing a meeting
@@ -31,27 +31,27 @@ class Meeting {
         protected int $establishment_key
     ) {
         // The primary key
-        if(!is_null($id) & !DataFormatManip::isValidKey($id)) {
+        if(!is_null($id) & !DataFormatManager::isValidKey($id)) {
             throw new MeetingExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
         // The date 
-        if(!Moment::isDate($date)) {
+        if(!TimeManager::isDate($date)) {
             throw new MeetingExceptions("Date invalide : {$date}.");
         }
 
         // The user's primary key
-        if(!DataFormatManip::isValidKey($user_key)) {
+        if(!DataFormatManager::isValidKey($user_key)) {
             throw new MeetingExceptions("Clé primaire de l'utilisateur invalide : {$user_key}. Clé attendue strictement positive.");
         }
         
         // The candidate's primary key
-        if(!DataFormatManip::isValidKey($candidate_key)) {
+        if(!DataFormatManager::isValidKey($candidate_key)) {
             throw new MeetingExceptions("Clé primaire du candidat invalide : {$candidate_key}. Clé attendue strictement positive.");
         }
 
         // The establishment's primary key
-        if(!DataFormatManip::isValidKey($establishment_key)) {
+        if(!DataFormatManager::isValidKey($establishment_key)) {
             throw new MeetingExceptions("Clé primaire de l'établissement invalide : {$establishment_key}. Clé attendue strictement positive.");
         }
     }

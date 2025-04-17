@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Tools\Moment;
+use App\Core\Tools\TimeManager;
 
 ?>
 
@@ -121,7 +121,7 @@ use App\Core\Tools\Moment;
                     type="date" 
                     name="start_date" 
                     id="start_date" 
-                    min="<?= Moment::dayFromDate(Moment::currentMoment()->getDate()) ?>"
+                    min="<?= TimeManager::dayFromDate(TimeManager::currentTimeManager()->getDate()) ?>"
                     required
                 >
             </div>
