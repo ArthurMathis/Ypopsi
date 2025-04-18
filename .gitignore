@@ -1,22 +1,22 @@
 # * .gitignore * #
 
-# Ignore the .vscode document
+# IDE FILES
 .vscode
-
-# Ignore the .ideas document
 .ideas
-
-# Ignore the .DS_Store document
 .DS_Store
 
-# Ignore pycache files
-__pycache__/
+# PHP files
 /vendor/
-.phpunit.cache
+.phpunit.cache/
+.phpunit.cache/test-results
 .phpunit.result.cache
+phpunit.xml.bak
 test-results
 
-# Ignore the Excel files
+# PYTHON files
+__pycache__/
+
+# EXCEL files
 *.xls
 *.xlsx
 *.xlsm
