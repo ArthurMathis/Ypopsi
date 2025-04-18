@@ -36,12 +36,17 @@ class TimeManager {
      */
     public function getTimestamp(): int { return strtotime($this->getDate());}
 
+    /**
+     * Public method returning of one hour in timestamp
+     *
+     * @param int $hour
+     * @return int
+     */
     public static function hourToTimsetamp(int $hour): int {
         return $hour * 60;
     }
 
 
-    
     // * STATIC * //
     /**
      *  Public static method creating the current TimeManager
@@ -49,7 +54,6 @@ class TimeManager {
      */
     public static function currentTimeManager(): TimeManager {
         $dateTime = new DateTime('now', new DateTimeZone('Europe/Paris'));
-
         return new TimeManager($dateTime->format('Y-m-d H:i:s'));
     }
 
@@ -62,7 +66,6 @@ class TimeManager {
      */
     public static function isDate($dateString, $format = 'Y-m-d'): bool {
         $dateTime = DateTime::createFromFormat($format, $dateString);
-
         return $dateTime && $dateTime->format($format) === $dateString;
     }
     /**
@@ -86,7 +89,6 @@ class TimeManager {
         }
 
         $dateTime = DateTime::createFromFormat($format, $hourString);
-
         return $dateTime && $dateTime->format($format) === $hourString;
     } 
 
