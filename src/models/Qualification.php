@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Tools\DataFormatManager;
 use App\Exceptions\QualificationExceptions;
 
 /**
@@ -26,7 +27,7 @@ class Qualification {
         protected ?string $abreviation
     ) {
         // The primary key
-        if(!empty($id) && $id <= 0) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new QualificationExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
     }

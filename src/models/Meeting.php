@@ -31,7 +31,7 @@ class Meeting {
         protected int $establishment_key
     ) {
         // The primary key
-        if(!is_null($id) & !DataFormatManager::isValidKey($id)) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new MeetingExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
@@ -66,7 +66,13 @@ class Meeting {
      * @param ?string $description The description of the meeting
      * @return Meeting The new meeting
      */
-    public static function create(string $date, int $user, int $candidate, int $establishment, ?string $description = null): Meeting {
+    public static function create(
+        string $date, 
+        int $user, 
+        int $candidate, 
+        int $establishment, 
+        ?string $description = null
+    ): Meeting {
         return new Meeting(
             null,
             $date, 
@@ -151,7 +157,7 @@ class Meeting {
             'description'   => $this->getDescription(),
             'user'          => $this->getUser(),
             'candidate'     => $this->getCandidate(),
-            'establishment' => $this->getDescription()
+            'establishment' => $this->getEstablishment()
         );
     }
 }

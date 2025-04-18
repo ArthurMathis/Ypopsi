@@ -7,12 +7,15 @@ use App\Core\Tools\testErrorManager;
 
 /**
  * Suite case for the GetQualification model class
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class GetQualificationModelTest extends TestCase {
     // * CONSTRUCTOR * //
     /**
      * Public function testing GetQualification::__constructor
+     *
+     * @return void
      */
     public function testConstructor(): void {
         $get = new GetQualification(
@@ -27,8 +30,11 @@ class GetQualificationModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_DATE"), $get->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $get->getDate()));
     }
 
+    //// WITHOUT ////
     /**
      * Public function testing GetQualification::__constructor
+     *
+     * @return void
      */
     public function testConstructorWithoutId(): void {
         $get = new GetQualification(
@@ -38,14 +44,74 @@ class GetQualificationModelTest extends TestCase {
         );
 
         $this->assertInstanceOf(GetQualification::class, $get);
-        $this->assertEquals(null, $get->getCandidate(), testErrorManager::cerr_eq(null, $get->getCandidate()));
+        $this->assertNull($get->getCandidate(), testErrorManager::cerr_null($get->getCandidate()));
         $this->assertEquals(getenv("VALID_KEY_1"), $get->getQualification(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $get->getQualification()));
+        $this->assertEquals(getenv("VALID_DATE"), $get->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $get->getDate()));
+    }
+
+    //// WITH INVALID ////
+    /**
+     * Public function testing GetQualification::__constructor with invalid candidate ID
+     *
+     * @return void
+     */
+    public function testConstructorWithInvalidId(): void {
+        $candidate = getenv("WRONG_KEY_1");
+        $this->expectException(GetQualificationExceptions::class);
+        $this->expectExceptionMessage("Clé primaire du candidat invalide : {$candidate}. Clé attendue strictement positive.");
+
+        new GetQualification(
+            $candidate,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_DATE")
+        );
+    }
+
+    // * GET * //
+    /**
+     * Public function testing GetQualification::getCandidate
+     */
+    public function testGetCandidate(): void {
+        $get = new GetQualification(
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_DATE")
+        );
+
+        $this->assertEquals(getenv("VALID_KEY_1"), $get->getCandidate(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $get->getCandidate()));
+    }
+
+    /**
+     * Public function testing GetQualification::getQualification
+     */
+    public function testGetQualification(): void {
+        $get = new GetQualification(
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_DATE")
+        );
+
+        $this->assertEquals(getenv("VALID_KEY_2"), $get->getQualification(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $get->getQualification()));
+    }
+
+    /**
+     * Public function testing GetQualification::getDate
+     */
+    public function testGetDate(): void {
+        $get = new GetQualification(
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_DATE")
+        );
+
         $this->assertEquals(getenv("VALID_DATE"), $get->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $get->getDate()));
     }
 
     // * CONVERT * //
     /**
      * Public function testing GetQualification::fromArray
+     *
+     * @return void
      */
     public function testFromArray() : void {
         $data = [
@@ -64,6 +130,8 @@ class GetQualificationModelTest extends TestCase {
 
     /**
      * Public function testing GetQualification::fromArray
+     *
+     * @return void
      */
     public function testFromArrayWithEmptyData(): void {
         $this->expectException(GetQualificationExceptions::class);
@@ -74,6 +142,8 @@ class GetQualificationModelTest extends TestCase {
 
     /**
      * Public function testing GetQualification::toArray
+     *
+     * @return void
      */
     public function testToArray(): void {
         $have = new GetQualification(

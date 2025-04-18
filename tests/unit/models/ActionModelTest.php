@@ -7,11 +7,15 @@ use App\Core\Tools\testErrorManager;
 
 /**
  * Suite case for the Action model class
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class ActionModelTest extends TestCase {
     // * CONSTRUCTOR * //
     /**
      * Public function testing Action::__constructor
+     * 
+     * @return void
      */
     public function testConstructor(): void {
         $action = new Action(
@@ -30,44 +34,15 @@ class ActionModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_3"), $action->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $action->getType()));
     }
 
+    //// WITHOUT ////
     /**
-     * Public function testing Action::__constructor with invalid user key
-     */
-    public function testConstructorWithInvalidUserKey(): void {
-        $this->expectException(ActionExceptions::class);
-        $this->expectExceptionMessage("Clé primaire de l'utilisateur invalide : 0. Clé attendue strictement positive.");
-
-        new Action(
-            getenv("VALID_KEY_1"),
-            getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
-            getenv("INVALID_KEY_1"),
-            getenv("VALID_KEY_3")
-        );
-    }
-
-    /**
-     * Public function testing Action::__constructor with invalid type key
-     */
-    public function testConstructorWithInvalidTypeKey(): void {
-        $this->expectException(ActionExceptions::class);
-        $this->expectExceptionMessage("Clé primaire du type d'action invalide : 0. Clé attendue strictement positive.");
-
-        new Action(
-            getenv("VALID_KEY_1"),
-            getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
-            getenv("VALID_KEY_2"),
-            getenv("INVALID_KEY_1")
-        );
-    }
-
-    /**
-     * Public function testing Action::__constructor without ID
+     * Public function testing Action::__constructor with null Id
+     *
+     * @return void
      */
     public function testConstructorWithoutId(): void {
         $action = new Action(
-            null,
+            null, 
             getenv("ACTION_DESCRIPTION"),
             getenv("VALID_DATE"),
             getenv("VALID_KEY_2"),
@@ -75,7 +50,7 @@ class ActionModelTest extends TestCase {
         );
 
         $this->assertInstanceOf(Action::class, $action);
-        $this->assertEquals(null, $action->getId(), testErrorManager::cerr_eq(null, $action->getId()));
+        $this->assertNull($action->getId(), testErrorManager::cerr_null($action->getId()));
         $this->assertEquals(getenv("ACTION_DESCRIPTION"), $action->getDescription(), testErrorManager::cerr_eq(getenv("ACTION_DESCRIPTION"), $action->getDescription()));
         $this->assertEquals(getenv("VALID_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $action->getDate()));
         $this->assertEquals(getenv("VALID_KEY_2"), $action->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $action->getUser()));
@@ -83,7 +58,9 @@ class ActionModelTest extends TestCase {
     }
 
     /**
-     * Public function testing Action::__constructor without description
+     * Public function testing Action::__constructor with null Description
+     * 
+     * @return void
      */
     public function testConstructorWithoutDescription(): void {
         $action = new Action(
@@ -96,14 +73,16 @@ class ActionModelTest extends TestCase {
 
         $this->assertInstanceOf(Action::class, $action);
         $this->assertEquals(getenv("VALID_KEY_1"), $action->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $action->getId()));
-        $this->assertEquals(null, $action->getDescription(), testErrorManager::cerr_eq(null, $action->getDescription()));
+        $this->assertNull($action->getDescription(), testErrorManager::cerr_null($action->getDescription()));
         $this->assertEquals(getenv("VALID_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $action->getDate()));
         $this->assertEquals(getenv("VALID_KEY_2"), $action->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $action->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $action->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $action->getType()));
     }
 
     /**
-     * Public function testing Action::__constructor without date
+     * Public function testing Action::__constructor with null date
+     * 
+     * @return void
      */
     public function testConstructorWithoutDate(): void {
         $action = new Action(
@@ -117,14 +96,170 @@ class ActionModelTest extends TestCase {
         $this->assertInstanceOf(Action::class, $action);
         $this->assertEquals(getenv("VALID_KEY_1"), $action->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $action->getId()));
         $this->assertEquals(getenv("ACTION_DESCRIPTION"), $action->getDescription(), testErrorManager::cerr_eq(getenv("ACTION_DESCRIPTION"), $action->getDescription()));
-        $this->assertEquals(null, $action->getDate(), testErrorManager::cerr_eq(null, $action->getDate()));
+        $this->assertNull($action->getDate(), testErrorManager::cerr_null($action->getDate()));
         $this->assertEquals(getenv("VALID_KEY_2"), $action->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $action->getUser()));
+        $this->assertEquals(getenv("VALID_KEY_3"), $action->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $action->getType()));
+    }
+
+    //// WITH INVALID ////
+
+    /**
+     * Public function testing Action::__constructor with invalid Id
+     *
+     * @return void
+     */
+    public function testConstructorWithInvalidId(): void {
+        $id = getenv("WRONG_KEY_1");
+        $this->expectException(ActionExceptions::class);
+        $this->expectExceptionMessage("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
+
+        new Action(
+            $id,
+            getenv("ACTION_DESCRIPTION"),
+            getenv("VALID_DATE"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3")
+        );
+    }
+
+    /**
+     * Public function testing Action::__constructor with invalid Date
+     * 
+     * @return void
+     */
+    public function testConstructorWithInvalidDate(): void {
+        $date = getenv("WRONG_DATE_1");
+        $this->expectException(ActionExceptions::class);
+        $this->expectExceptionMessage("La date invalide : {$date}.");
+
+        new Action(
+            getenv("VALID_KEY_1"),
+            getenv("ACTION_DESCRIPTION"),
+            $date,
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3")
+        );
+    }
+
+    /**
+     * Public function testing Action::__constructor with invalid User
+     * 
+     * @return void
+     */
+    public function testConstructorWithInvalidUser(): void {
+        $key = getenv("WRONG_KEY_1");
+        $this->expectException(ActionExceptions::class);
+        $this->expectExceptionMessage("Clé primaire de l'utilisateur invalide : {$key}. Clé attendue strictement positive.");
+
+        new Action(
+            getenv("VALID_KEY_1"),
+            getenv("ACTION_DESCRIPTION"),
+            getenv("VALID_DATE"),
+            $key,
+            getenv("VALID_KEY_3")
+        );
+    }
+
+    /**
+     * Public function testing Action::__constructor with invalid type key
+     * 
+     * @return void
+     */
+    public function testConstructorWithInvalidType(): void {
+        $key = getenv("WRONG_KEY_1");
+        $this->expectException(ActionExceptions::class);
+        $this->expectExceptionMessage("Clé primaire du type d'action invalide : {$key}. Clé attendue strictement positive.");
+
+        new Action(
+            getenv("VALID_KEY_1"),
+            getenv("ACTION_DESCRIPTION"),
+            getenv("VALID_DATE"),
+            getenv("VALID_KEY_2"),
+            $key
+        );
+    }
+
+    // * GET * //
+    /**
+     * Public function testing Action::getId
+     */
+    public function testGetId(): void {
+        $action = new Action(
+            getenv("VALID_KEY_1"),
+            getenv("ACTION_DESCRIPTION"),
+            getenv("VALID_DATE"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3")
+        );
+
+        $this->assertEquals(getenv("VALID_KEY_1"), $action->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $action->getId()));
+    }
+
+    /**
+     * Public function testing Action::getDescription
+     */
+    public function testGetDescription(): void {
+        $action = new Action(
+            getenv("VALID_KEY_1"),
+            getenv("ACTION_DESCRIPTION"),
+            getenv("VALID_DATE"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3")
+        );
+
+        $this->assertEquals(getenv("ACTION_DESCRIPTION"), $action->getDescription(), testErrorManager::cerr_eq(getenv("ACTION_DESCRIPTION"), $action->getDescription()));
+    }
+
+    /**
+     * Public function testing Action::getDate
+     */
+    public function testGetDate(): void {
+        $action = new Action(
+            getenv("VALID_KEY_1"),
+            getenv("ACTION_DESCRIPTION"),
+            getenv("VALID_DATE"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3")
+        );
+
+        $this->assertEquals(getenv("VALID_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $action->getDate()));
+    }
+
+    /**
+     * Public function testing Action::getUser
+     */
+    public function testGetUser(): void {
+        $action = new Action(
+            getenv("VALID_KEY_1"),
+            getenv("ACTION_DESCRIPTION"),
+            getenv("VALID_DATE"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3")
+        );
+
+        $this->assertEquals(getenv("VALID_KEY_2"), $action->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $action->getUser()));
+    }
+
+    /**
+     * Public function testing Action::getType
+     */
+    public function testGetType(): void {
+        $action = new Action(
+            getenv("VALID_KEY_1"),
+            getenv("ACTION_DESCRIPTION"),
+            getenv("VALID_DATE"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3")
+        );
+
         $this->assertEquals(getenv("VALID_KEY_3"), $action->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $action->getType()));
     }
 
     // * CREATE * //
     /**
      * Public function testing Action::create
+     * 
+     * @return void
      */
     public function testCreate(): void {
         $action = Action::create(
@@ -134,9 +269,29 @@ class ActionModelTest extends TestCase {
         );
 
         $this->assertInstanceOf(Action::class, $action);
-        $this->assertNull($action->getId(), testErrorManager::cerr_eq(null, $action->getId()));
+        $this->assertNull($action->getId(), testErrorManager::cerr_null($action->getId()));
         $this->assertEquals(getenv("ACTION_DESCRIPTION"), $action->getDescription(), testErrorManager::cerr_eq(getenv("ACTION_DESCRIPTION"), $action->getDescription()));
-        $this->assertNull($action->getDate(), testErrorManager::cerr_eq(null, $action->getDate()));
+        $this->assertNull($action->getDate(), testErrorManager::cerr_null($action->getDate()));
+        $this->assertEquals(getenv("VALID_KEY_2"), $action->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $action->getUser()));
+        $this->assertEquals(getenv("VALID_KEY_3"), $action->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $action->getType()));
+    }
+
+    /**
+     * Public function testing Action::create without Description
+     * 
+     * @return void
+     */
+    public function testCreateWithoutDescritpion(): void {
+        $action = Action::create(
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3"),
+            null
+        );
+
+        $this->assertInstanceOf(Action::class, $action);
+        $this->assertNull($action->getId(), testErrorManager::cerr_null($action->getId()));
+        $this->assertNull($action->getDescription(), testErrorManager::cerr_null($action->getDescription()));
+        $this->assertNull($action->getDate(), testErrorManager::cerr_null($action->getDate()));
         $this->assertEquals(getenv("VALID_KEY_2"), $action->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $action->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $action->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $action->getType()));
     }
@@ -144,12 +299,14 @@ class ActionModelTest extends TestCase {
     // * CONVERT * //
     /**
      * Public function testing Action::fromArray
+     * 
+     * @return void
      */
     public function testFromArray(): void {
         $data = [
             "Id"                  => getenv("VALID_KEY_1"),
             "Description"         => getenv("ACTION_DESCRIPTION"),
-            "Moment"              => getenv("VALID_DATE"),
+            "TimeManager"              => getenv("VALID_DATE"),
             "Key_Users"           => getenv("VALID_KEY_2"),
             "Key_Types_of_actions"=> getenv("VALID_KEY_3")
         ];
@@ -166,6 +323,8 @@ class ActionModelTest extends TestCase {
 
     /**
      * Public function testing Action::fromArray with empty data
+     * 
+     * @return void
      */
     public function testFromArrayWithEmptyData(): void {
         $this->expectException(ActionExceptions::class);
@@ -176,6 +335,8 @@ class ActionModelTest extends TestCase {
 
     /**
      * Public function testing Action::toArray
+     * 
+     * @return void
      */
     public function testToArray(): void {
         $action = new Action(

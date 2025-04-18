@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\SourceExceptions;
+use App\Core\Tools\DataFormatManager;
 
 class Source {
     /**
@@ -18,11 +19,11 @@ class Source {
         protected string $titled,
         protected ?int $type
     ) {
-        if(!empty($id) && $id <= 0) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new SourceExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
-        if(!empty($type) && $type <= 0) {
+        if(!is_null($type) && !DataFormatManager::isValidKey($type)) {
             throw new SourceExceptions("Clé primaire du type de sources invalide : {$type}. Clé attendue strictement positive.");
         }
     }

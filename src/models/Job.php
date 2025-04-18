@@ -16,7 +16,7 @@ class Job {
      * 
      * @param ?int $id The primary key of the job
      * @param string $titled The title of the job
-     * @param string $titled The title for women of the job
+     * @param string $titled_feminin The title for women of the job
      * @throws JobExceptions If any piece of information is invalid
      */
     public function __construct(

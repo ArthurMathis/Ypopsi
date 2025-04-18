@@ -7,7 +7,8 @@ use App\Core\Tools\testErrorManager;
 
 /**
  * Suite case for the User model class
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class UserModelTest extends TestCase {
     // * CONSTRUCTOR * //
@@ -17,11 +18,11 @@ class UserModelTest extends TestCase {
     public function testConstructor(): void {
         $user = new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -31,14 +32,14 @@ class UserModelTest extends TestCase {
 
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getId()));
-        $this->assertEquals(getenv("USER_1_IDENTIFIER"), $user->getIdentifier(), testErrorManager::cerr_eq(getenv("USER_1_IDENTIFIER"), $user->getIdentifier()));
-        $this->assertEquals(getenv("PEOPLE_1_NAME"), $user->getName(), testErrorManager::cerr_eq(getenv("PEOPLE_1_NAME"), $user->getName()));
-        $this->assertEquals(getenv("PEOPLE_1_FIRSTNAME"), $user->getFirstname(), testErrorManager::cerr_eq(getenv("PEOPLE_1_FIRSTNAME"), $user->getFirstname()));
-        $this->assertEquals(getenv("PEOPLE_1_EMAIL"), $user->getEmail(), testErrorManager::cerr_eq(getenv("PEOPLE_1_EMAIL"), $user->getEmail()));
-        $this->assertEquals(getenv("USER_PASSWORD_1"), $user->getPassword(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getPassword()));
-        $this->assertTrue($user->getPasswordTemp(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getPasswordTemp()));
+        $this->assertEquals(getenv("VALID_IDENTIFIER"), $user->getIdentifier(), testErrorManager::cerr_eq(getenv("VALID_IDENTIFIER"), $user->getIdentifier()));
+        $this->assertEquals(getenv("1_NAME"), $user->getName(), testErrorManager::cerr_eq(getenv("1_NAME"), $user->getName()));
+        $this->assertEquals(getenv("FIRSTNAME_1"), $user->getFirstname(), testErrorManager::cerr_eq(getenv("FIRSTNAME_1"), $user->getFirstname()));
+        $this->assertEquals(getenv("1_EMAIL"), $user->getEmail(), testErrorManager::cerr_eq(getenv("1_EMAIL"), $user->getEmail()));
+        $this->assertEquals(getenv("VALID_PASSWORD_1"), $user->getPassword(), testErrorManager::cerr_eq(getenv("VALID_PASSWORD_1"), $user->getPassword()));
+        $this->assertTrue($user->getPasswordTemp(), testErrorManager::cerr_eq(getenv("VALID_PASSWORD_1"), $user->getPasswordTemp()));
         $this->assertEquals(getenv("VALID_DATE"), $user->getCreated(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $user->getCreated()));
-        $this->assertFalse($user->getDesactivated(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getDesactivated()));
+        $this->assertFalse($user->getDesactivated(), testErrorManager::cerr_eq(getenv("VALID_PASSWORD_1"), $user->getDesactivated()));
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getRole(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getRole()));
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getEstablishment()));
     }
@@ -50,11 +51,11 @@ class UserModelTest extends TestCase {
     public function testConstructorWitoutId(): void {
         $user = new User(
             null,
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -63,15 +64,15 @@ class UserModelTest extends TestCase {
         );
 
         $this->assertInstanceOf(User::class, $user);
-        $this->assertEquals(null, $user->getId(), testErrorManager::cerr_eq(null, $user->getId()));
-        $this->assertEquals(getenv("USER_1_IDENTIFIER"), $user->getIdentifier(), testErrorManager::cerr_eq(getenv("USER_1_IDENTIFIER"), $user->getIdentifier()));
-        $this->assertEquals(getenv("PEOPLE_1_NAME"), $user->getName(), testErrorManager::cerr_eq(getenv("PEOPLE_1_NAME"), $user->getName()));
-        $this->assertEquals(getenv("PEOPLE_1_FIRSTNAME"), $user->getFirstname(), testErrorManager::cerr_eq(getenv("PEOPLE_1_FIRSTNAME"), $user->getFirstname()));
-        $this->assertEquals(getenv("PEOPLE_1_EMAIL"), $user->getEmail(), testErrorManager::cerr_eq(getenv("PEOPLE_1_EMAIL"), $user->getEmail()));
-        $this->assertEquals(getenv("USER_PASSWORD_1"), $user->getPassword(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getPassword()));
-        $this->assertTrue($user->getPasswordTemp(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getPasswordTemp()));
+        $this->assertNull($user->getId(), testErrorManager::cerr_null($user->getId()));
+        $this->assertEquals(getenv("VALID_IDENTIFIER"), $user->getIdentifier(), testErrorManager::cerr_eq(getenv("VALID_IDENTIFIER"), $user->getIdentifier()));
+        $this->assertEquals(getenv("1_NAME"), $user->getName(), testErrorManager::cerr_eq(getenv("1_NAME"), $user->getName()));
+        $this->assertEquals(getenv("FIRSTNAME_1"), $user->getFirstname(), testErrorManager::cerr_eq(getenv("FIRSTNAME_1"), $user->getFirstname()));
+        $this->assertEquals(getenv("1_EMAIL"), $user->getEmail(), testErrorManager::cerr_eq(getenv("1_EMAIL"), $user->getEmail()));
+        $this->assertEquals(getenv("VALID_PASSWORD_1"), $user->getPassword(), testErrorManager::cerr_eq(getenv("VALID_PASSWORD_1"), $user->getPassword()));
+        $this->assertTrue($user->getPasswordTemp(), testErrorManager::cerr_eq(getenv("VALID_PASSWORD_1"), $user->getPasswordTemp()));
         $this->assertEquals(getenv("VALID_DATE"), $user->getCreated(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $user->getCreated()));
-        $this->assertFalse($user->getDesactivated(), testErrorManager::cerr_eq(getenv("USER_PASSWORD_1"), $user->getDesactivated()));
+        $this->assertFalse($user->getDesactivated(), testErrorManager::cerr_eq(getenv("VALID_PASSWORD_1"), $user->getDesactivated()));
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getRole(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getRole()));
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $user->getEstablishment()));
     }
@@ -81,17 +82,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidId(): void {
-        $key = getenv("INVALID_KEY_1");
+        $key = getenv("WRONG_KEY_1");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("La clé primaire : {$key} est invalide.");
 
         new User(
             $key,
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -104,17 +105,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidIdentifier2(): void {
-        $identifier = getenv("USER_WRONG_IDENTIFIER_2");
+        $identifier = getenv("WRONG_IDENTIFIER_2");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'identifiant : {$identifier} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
             $identifier,
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -127,17 +128,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidIdentifier3(): void {
-        $identifier = getenv("USER_WRONG_IDENTIFIER_3");
+        $identifier = getenv("WRONG_IDENTIFIER_3");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'identifiant : {$identifier} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
             $identifier,
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -150,17 +151,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidIdentifier4(): void {
-        $identifier = getenv("USER_WRONG_IDENTIFIER_4");
+        $identifier = getenv("WRONG_IDENTIFIER_4");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'identifiant : {$identifier} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
             $identifier,
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -174,17 +175,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidName1(): void {
-        $name = getenv("PEOPLE_WRONG_NAME_1");
+        $name = getenv("WRONG_NAME_1");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("Le nom : {$name} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
+            getenv("VALID_IDENTIFIER"),
             $name,
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -197,17 +198,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidName2(): void {
-        $name = getenv("PEOPLE_WRONG_NAME_2");
+        $name = getenv("WRONG_NAME_2");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("Le nom : {$name} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
+            getenv("VALID_IDENTIFIER"),
             $name,
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -220,17 +221,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidName3(): void {
-        $name = getenv("PEOPLE_WRONG_NAME_3");
+        $name = getenv("WRONG_NAME_3");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("Le nom : {$name} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
+            getenv("VALID_IDENTIFIER"),
             $name,
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -243,17 +244,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidName4(): void {
-        $name = getenv("PEOPLE_WRONG_NAME_4");
+        $name = getenv("WRONG_NAME_4");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("Le nom : {$name} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
+            getenv("VALID_IDENTIFIER"),
             $name,
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -266,17 +267,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidName5(): void {
-        $name = getenv("PEOPLE_WRONG_NAME_5");
+        $name = getenv("WRONG_NAME_5");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("Le nom : {$name} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
+            getenv("VALID_IDENTIFIER"),
             $name,
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -290,17 +291,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidFirstname1(): void {
-        $firstname = getenv("PEOPLE_WRONG_NAME_1");
+        $firstname = getenv("WRONG_NAME_1");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("Le prénom : {$firstname} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
             $firstname,
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -313,17 +314,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidFirstname2(): void {
-        $firstname = getenv("PEOPLE_WRONG_NAME_2");
+        $firstname = getenv("WRONG_NAME_2");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("Le prénom : {$firstname} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
             $firstname,
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -336,17 +337,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidFirstname3(): void {
-        $firstname = getenv("PEOPLE_WRONG_NAME_3");
+        $firstname = getenv("WRONG_NAME_3");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("Le prénom : {$firstname} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
             $firstname,
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -359,17 +360,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidFirstname4(): void {
-        $firstname = getenv("PEOPLE_WRONG_NAME_4");
+        $firstname = getenv("WRONG_NAME_4");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("Le prénom : {$firstname} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
             $firstname,
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -382,17 +383,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidFirstname5(): void {
-        $firstname = getenv("PEOPLE_WRONG_NAME_5");
+        $firstname = getenv("WRONG_NAME_5");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("Le prénom : {$firstname} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
             $firstname,
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -406,17 +407,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail1(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_1");
+        $email = getenv("WRONG_EMAIL_1");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -429,17 +430,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail2(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_2");
+        $email = getenv("WRONG_EMAIL_2");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -452,17 +453,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail3(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_3");
+        $email = getenv("WRONG_EMAIL_3");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -475,17 +476,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail4(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_4");
+        $email = getenv("WRONG_EMAIL_4");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -498,17 +499,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail5(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_4");
+        $email = getenv("WRONG_EMAIL_4");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -521,17 +522,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail6(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_6");
+        $email = getenv("WRONG_EMAIL_6");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -544,17 +545,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail7(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_7");
+        $email = getenv("WRONG_EMAIL_7");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -567,17 +568,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail8(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_8");
+        $email = getenv("WRONG_EMAIL_8");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -590,17 +591,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail9(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_9");
+        $email = getenv("WRONG_EMAIL_9");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -613,17 +614,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail10(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_10");
+        $email = getenv("WRONG_EMAIL_10");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -636,17 +637,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEmail11(): void {
-        $email = getenv("PEOPLE_WRONG_EMAIL_11");
+        $email = getenv("WRONG_EMAIL_11");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("L'email : {$email} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
             $email,
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -660,17 +661,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidRole1(): void {
-        $role = getenv("INVALID_KEY_1");
+        $role = getenv("WRONG_KEY_1");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("La clé du rôle : {$role} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -683,17 +684,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidRole2(): void {
-        $role = getenv("INVALID_KEY_2");
+        $role = getenv("WRONG_KEY_2");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("La clé du rôle : {$role} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -707,17 +708,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEstablishment1(): void {
-        $establishment = getenv("INVALID_KEY_1");
+        $establishment = getenv("WRONG_KEY_1");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("La clé de l'établissement : {$establishment} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -730,17 +731,17 @@ class UserModelTest extends TestCase {
      * Public function testing User::__constructor
      */
     public function testConstructorWithInvalidEstablishment2(): void {
-        $establishment = getenv("INVALID_KEY_2");
+        $establishment = getenv("WRONG_KEY_2");
         $this->expectException(UserExceptions::class);
         $this->expectExceptionMessage("La clé de l'établissement : {$establishment} est invalide.");
 
         new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -756,11 +757,11 @@ class UserModelTest extends TestCase {
     public function testFromArrayWithValidData(): void {
         $data = [
             "Id"                 => getenv("VALID_KEY_1"),
-            "Identifier"         => getenv("USER_1_IDENTIFIER"),
-            "Name"               => getenv("PEOPLE_1_NAME"),
-            "Firstname"          => getenv("PEOPLE_1_FIRSTNAME"),
-            "Email"              => getenv("PEOPLE_1_EMAIL"),
-            "Password"           => getenv("USER_PASSWORD_1"),
+            "Identifier"         => getenv("VALID_IDENTIFIER"),
+            "Name"               => getenv("1_NAME"),
+            "Firstname"          => getenv("FIRSTNAME_1"),
+            "Email"              => getenv("1_EMAIL"),
+            "Password"           => getenv("VALID_PASSWORD_1"),
             "PasswordTemp"       => true,
             "Created"            => getenv("VALID_DATE"),
             "Desactivated"       => false,
@@ -772,11 +773,11 @@ class UserModelTest extends TestCase {
 
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals(getenv("VALID_KEY_1"), $user->getId());
-        $this->assertEquals(getenv("USER_1_IDENTIFIER"), $user->getIdentifier());
-        $this->assertEquals(getenv("PEOPLE_1_NAME"), $user->getName());
-        $this->assertEquals(getenv("PEOPLE_1_FIRSTNAME"), $user->getFirstname());
-        $this->assertEquals(getenv("PEOPLE_1_EMAIL"), $user->getEmail());
-        $this->assertEquals(getenv("USER_PASSWORD_1"), $user->getPassword());
+        $this->assertEquals(getenv("VALID_IDENTIFIER"), $user->getIdentifier());
+        $this->assertEquals(getenv("1_NAME"), $user->getName());
+        $this->assertEquals(getenv("FIRSTNAME_1"), $user->getFirstname());
+        $this->assertEquals(getenv("1_EMAIL"), $user->getEmail());
+        $this->assertEquals(getenv("VALID_PASSWORD_1"), $user->getPassword());
         $this->assertTrue($user->getPasswordTemp());
         $this->assertEquals(getenv("VALID_DATE"), $user->getCreated());
         $this->assertFalse($user->getDesactivated());
@@ -800,11 +801,11 @@ class UserModelTest extends TestCase {
     public function testToArray(): void {
         $user = new User(
             getenv("VALID_KEY_1"),
-            getenv("USER_1_IDENTIFIER"),
-            getenv("PEOPLE_1_NAME"),
-            getenv("PEOPLE_1_FIRSTNAME"),
-            getenv("PEOPLE_1_EMAIL"),
-            getenv("USER_PASSWORD_1"),
+            getenv("VALID_IDENTIFIER"),
+            getenv("1_NAME"),
+            getenv("FIRSTNAME_1"),
+            getenv("1_EMAIL"),
+            getenv("VALID_PASSWORD_1"),
             true,
             getenv("VALID_DATE"),
             false,
@@ -814,11 +815,11 @@ class UserModelTest extends TestCase {
 
         $expectedArray = [
             "id"            => getenv("VALID_KEY_1"),
-            "identifier"    => getenv("USER_1_IDENTIFIER"),
-            "name"          => getenv("PEOPLE_1_NAME"),
-            "firstname"     => getenv("PEOPLE_1_FIRSTNAME"),
-            "email"         => getenv("PEOPLE_1_EMAIL"),
-            "password"      => getenv("USER_PASSWORD_1"),
+            "identifier"    => getenv("VALID_IDENTIFIER"),
+            "name"          => getenv("1_NAME"),
+            "firstname"     => getenv("FIRSTNAME_1"),
+            "email"         => getenv("1_EMAIL"),
+            "password"      => getenv("VALID_PASSWORD_1"),
             "password_temp" => true,
             "created"       => getenv("VALID_DATE"),
             "desactivated"  => false,

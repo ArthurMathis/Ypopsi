@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="TimeManagerTest" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\TimeManagerTest.php" tests="4" assertions="6" errors="0" failures="0" skipped="0" time="0.003468">
-    <testcase name="testConstructorWithValidDate" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\TimeManagerTest.php" line="13" class="TimeManagerTest" classname="TimeManagerTest" assertions="2" time="0.002366"/>
-    <testcase name="testConstructorWithInvalidDate" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\TimeManagerTest.php" line="24" class="TimeManagerTest" classname="TimeManagerTest" assertions="2" time="0.000766"/>
-    <testcase name="testGetDate" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\TimeManagerTest.php" line="53" class="TimeManagerTest" classname="TimeManagerTest" assertions="1" time="0.000239"/>
-    <testcase name="testGetTimestamp" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\TimeManagerTest.php" line="63" class="TimeManagerTest" classname="TimeManagerTest" assertions="1" time="0.000096"/>
+  <testsuite name="TypeOfContractsModelTest" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" tests="10" assertions="24" errors="0" failures="0" skipped="0" time="0.005453">
+    <testcase name="testConstructor" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" line="20" class="TypeOfContractsModelTest" classname="TypeOfContractsModelTest" assertions="4" time="0.002590"/>
+    <testcase name="testConstructorWithoutId" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" line="39" class="TypeOfContractsModelTest" classname="TypeOfContractsModelTest" assertions="4" time="0.000268"/>
+    <testcase name="testConstructorWithoutDescription" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" line="57" class="TypeOfContractsModelTest" classname="TypeOfContractsModelTest" assertions="4" time="0.000356"/>
+    <testcase name="testConstructorWithInvalidId" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" line="77" class="TypeOfContractsModelTest" classname="TypeOfContractsModelTest" assertions="2" time="0.000680"/>
+    <testcase name="testGetId" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" line="95" class="TypeOfContractsModelTest" classname="TypeOfContractsModelTest" assertions="1" time="0.000086"/>
+    <testcase name="testGetTitled" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" line="110" class="TypeOfContractsModelTest" classname="TypeOfContractsModelTest" assertions="1" time="0.000079"/>
+    <testcase name="testGetDescription" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" line="125" class="TypeOfContractsModelTest" classname="TypeOfContractsModelTest" assertions="1" time="0.000078"/>
+    <testcase name="testFromArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" line="141" class="TypeOfContractsModelTest" classname="TypeOfContractsModelTest" assertions="4" time="0.000378"/>
+    <testcase name="testFromArrayWithEmptyData" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" line="161" class="TypeOfContractsModelTest" classname="TypeOfContractsModelTest" assertions="2" time="0.000141"/>
+    <testcase name="testToArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\TypeOfContractsModelTest.php" line="173" class="TypeOfContractsModelTest" classname="TypeOfContractsModelTest" assertions="1" time="0.000796"/>
   </testsuite>
 </testsuites>

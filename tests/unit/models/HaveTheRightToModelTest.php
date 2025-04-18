@@ -7,12 +7,15 @@ use App\Core\Tools\testErrorManager;
 
 /**
  * Suite case for the HaveTheRightTo model class
- * @author Arthur MATHIS - arthur.mathis@diaconat-mulhouse.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class HaveTheRightToModelTest extends TestCase {
     // * CONSTRUCTOR * //
     /**
      * Public function testing HaveTheRightTo::__constructor
+     *
+     * @return void
      */
     public function testConstructor(): void {
         $have = new HaveTheRightTo(
@@ -27,10 +30,13 @@ class HaveTheRightToModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_1"), $have->getEmployee(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $have->getEmployee()));
     }
 
+    //// WITHOUT ////
     /**
      * Public function testing HaveTheRightTo::__constructor
+     *
+     * @return void
      */
-    public function testConstructorWithourCandidate(): void {
+    public function testConstructorWithoutCandidate(): void {
         $have = new HaveTheRightTo(
             null,
             getenv("VALID_KEY_1"),
@@ -38,15 +44,17 @@ class HaveTheRightToModelTest extends TestCase {
         );
 
         $this->assertInstanceOf(HaveTheRightTo::class, $have);
-        $this->assertEquals(null, $have->getCandidate(), testErrorManager::cerr_eq(null, $have->getCandidate()));
+        $this->assertNull($have->getCandidate(), testErrorManager::cerr_null($have->getCandidate()));
         $this->assertEquals(getenv("VALID_KEY_1"), $have->getHelp(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $have->getHelp()));
         $this->assertEquals(getenv("VALID_KEY_1"), $have->getEmployee(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $have->getEmployee()));
     }
 
     /**
      * Public function testing HaveTheRightTo::__constructor
+     *
+     * @return void
      */
-    public function testConstructorWithout(): void {
+    public function testConstructorWithoutEmployee(): void {
         $have = new HaveTheRightTo(
             getenv("VALID_KEY_1"),
             getenv("VALID_KEY_1"),
@@ -56,12 +64,89 @@ class HaveTheRightToModelTest extends TestCase {
         $this->assertInstanceOf(HaveTheRightTo::class, $have);
         $this->assertEquals(getenv("VALID_KEY_1"), $have->getCandidate(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $have->getCandidate()));
         $this->assertEquals(getenv("VALID_KEY_1"), $have->getHelp(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $have->getHelp()));
-        $this->assertEquals(null, $have->getEmployee(), testErrorManager::cerr_eq(null, $have->getEmployee()));
+        $this->assertNull($have->getEmployee(), testErrorManager::cerr_null($have->getEmployee()));
+    }
+
+    //// WITH INVALID ////
+    /**
+     * Public function testing HaveTheRightTo::__constructor with invalid candidate
+     *
+     * @return void
+     */
+    public function testConstructorWithInvalidCandidate(): void {
+        $candidate = getenv("WRONG_KEY_1");
+        $this->expectException(HaveTheRightToExceptions::class);
+        $this->expectExceptionMessage("Clé primaire du candidat invalide : {$candidate}. Clé attendue strictement positive.");
+
+        new HaveTheRightTo(
+            $candidate,
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1")
+        );
+    }
+
+    /**
+     * Public function testing HaveTheRightTo::__constructor with invalid employee
+     *
+     * @return void
+     */
+    public function testConstructorWithInvalidEmployee(): void {
+        $employee = getenv("WRONG_KEY_1");
+        $this->expectException(HaveTheRightToExceptions::class);
+        $this->expectExceptionMessage("Clé primaire de l'employé invalide : {$employee}. Clé attendue strictement positive.");
+
+        new HaveTheRightTo(
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1"),
+            $employee
+        );
+    }
+
+    // * GET * //
+    /**
+     * Public function testing HaveTheRightTo::getCandidate
+     */
+    public function testGetCandidate(): void {
+        $have = new HaveTheRightTo(
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3")
+        );
+
+        $this->assertEquals(getenv("VALID_KEY_1"), $have->getCandidate(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $have->getCandidate()));
+    }
+
+    /**
+     * Public function testing HaveTheRightTo::getHelp
+     */
+    public function testGetHelp(): void {
+        $have = new HaveTheRightTo(
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3")
+        );
+
+        $this->assertEquals(getenv("VALID_KEY_2"), $have->getHelp(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $have->getHelp()));
+    }
+
+    /**
+     * Public function testing HaveTheRightTo::getEmployee
+     */
+    public function testGetEmployee(): void {
+        $have = new HaveTheRightTo(
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_2"),
+            getenv("VALID_KEY_3")
+        );
+
+        $this->assertEquals(getenv("VALID_KEY_3"), $have->getEmployee(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $have->getEmployee()));
     }
 
     // * CONVERT * //
     /**
      * Public function testing HaveTheRightTo::fromArray
+     *
+     * @return void
      */
     public function testFromArray() : void {
         $data = [
@@ -80,6 +165,8 @@ class HaveTheRightToModelTest extends TestCase {
 
     /**
      * Public function testing HaveTheRightTo::fromArray
+     *
+     * @return void
      */
     public function testFromArrayWithEmptyData(): void {
         $this->expectException(HaveTheRightToExceptions::class);
@@ -90,6 +177,8 @@ class HaveTheRightToModelTest extends TestCase {
 
     /**
      * Public function testing HaveTheRightTo::toArray
+     *
+     * @return void
      */
     public function testToArray(): void {
         $have = new HaveTheRightTo(

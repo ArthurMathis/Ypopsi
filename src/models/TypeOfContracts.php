@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\TypeOfContractsExceptions;
+use App\Core\Tools\DataFormatManager;
 
 /**
  * Class representing a type of contracts
@@ -10,6 +11,7 @@ use App\Exceptions\TypeOfContractsExceptions;
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class TypeOfContracts {
+    // * CONSTRUCTOR * //
     /**
      * Constructor class
      * 
@@ -23,7 +25,7 @@ class TypeOfContracts {
         protected string $titled, 
         protected ?string $description
     ) {
-        if(!empty($id) && $id <= 0) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new TypeOfContractsExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
     }
@@ -46,8 +48,7 @@ class TypeOfContracts {
      * 
      * @return ?string
      */
-    public function getDescription(): string { return $this->description; }
-
+    public function getDescription(): ?string { return $this->description; }
 
     // * CONVERT * //
     /**

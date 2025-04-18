@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\RoleExceptions;
+use App\Core\Tools\DataFormatManager;
 
 /**
  * Class representing a meeting
@@ -21,7 +22,8 @@ class Role {
         protected int $id, 
         protected string $titled
     ) {
-        if(!empty($id) && $id <= 0) {
+        // The primary key
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new RoleExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
     }

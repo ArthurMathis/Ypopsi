@@ -3,7 +3,13 @@
 namespace App\Models;
 
 use App\Exceptions\ServiceExceptions;
+use App\Core\Tools\DataFormatManager;
 
+/**
+ * Class representing a foundation's service
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
+ */
 class Service {
     /**
      * Constructor class
@@ -18,7 +24,8 @@ class Service {
         protected string $titled, 
         protected ?string $description
     ) {
-        if(!empty($id) && $id <= 0) {
+        // The primary key
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new ServiceExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
     }
