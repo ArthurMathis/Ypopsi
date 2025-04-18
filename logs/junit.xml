@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="ActionModelTest" file="C:\xampp\htdocs\ypopsi\tests\unit\models\ActionModelTest.php" tests="5" assertions="21" errors="0" failures="0" skipped="0" time="0.019281">
-    <testcase name="testConstructor" file="C:\xampp\htdocs\ypopsi\tests\unit\models\ActionModelTest.php" line="16" class="ActionModelTest" classname="ActionModelTest" assertions="6" time="0.003012"/>
-    <testcase name="testCreate" file="C:\xampp\htdocs\ypopsi\tests\unit\models\ActionModelTest.php" line="37" class="ActionModelTest" classname="ActionModelTest" assertions="6" time="0.005627"/>
-    <testcase name="testFromArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\ActionModelTest.php" line="56" class="ActionModelTest" classname="ActionModelTest" assertions="6" time="0.000559"/>
-    <testcase name="testFromArrayWithEmptyData" file="C:\xampp\htdocs\ypopsi\tests\unit\models\ActionModelTest.php" line="78" class="ActionModelTest" classname="ActionModelTest" assertions="2" time="0.009545"/>
-    <testcase name="testToArray" file="C:\xampp\htdocs\ypopsi\tests\unit\models\ActionModelTest.php" line="88" class="ActionModelTest" classname="ActionModelTest" assertions="1" time="0.000538"/>
+  <testsuite name="TimeManagerTest" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\TimeManagerTest.php" tests="4" assertions="6" errors="0" failures="0" skipped="0" time="0.003468">
+    <testcase name="testConstructorWithValidDate" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\TimeManagerTest.php" line="13" class="TimeManagerTest" classname="TimeManagerTest" assertions="2" time="0.002366"/>
+    <testcase name="testConstructorWithInvalidDate" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\TimeManagerTest.php" line="24" class="TimeManagerTest" classname="TimeManagerTest" assertions="2" time="0.000766"/>
+    <testcase name="testGetDate" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\TimeManagerTest.php" line="53" class="TimeManagerTest" classname="TimeManagerTest" assertions="1" time="0.000239"/>
+    <testcase name="testGetTimestamp" file="C:\xampp\htdocs\ypopsi\tests\unit\tools\TimeManagerTest.php" line="63" class="TimeManagerTest" classname="TimeManagerTest" assertions="1" time="0.000096"/>
   </testsuite>
 </testsuites>
