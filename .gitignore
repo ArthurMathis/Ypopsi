@@ -7,11 +7,9 @@
 
 # PHP files
 /vendor/
-.phpunit.cache/
-.phpunit.cache/test-results
+/.phpunit.cache/
 .phpunit.result.cache
-phpunit.xml.bak
-test-results
+*.bak
 
 # PYTHON files
 __pycache__/
