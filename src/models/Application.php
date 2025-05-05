@@ -3,7 +3,14 @@
 namespace App\Models;
 
 use App\Exceptions\ApplicationExceptions;
+use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\TimeManager;
 
+/**
+ * Class representing an application
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
+ */
 class Application {
     /**
      * Constructor class
@@ -14,7 +21,7 @@ class Application {
      * @param string date
      * @param int $candidate_key
      * @param int job_key
-     * @param ?int $type_of_contract_key
+     * @param ?int $type_key
      * @param int $source
      * @param ?int $need_key
      * @param ?int $establishment_key 
@@ -28,49 +35,54 @@ class Application {
         protected ?string $date, 
         protected int $candidate_key, 
         protected int $job_key, 
-        protected ?int $type_of_contract_key, 
+        protected ?int $type_key, 
         protected int $source_key, 
         protected ?int $need_key, 
         protected ?int $establishment_key, 
         protected ?int $service_key
     ) {
         // The primary key
-        if(!empty($id) && $id <= 0) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new ApplicationExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
+        // The date
+        if(!is_null($date) && !TimeManager::isFullDate($date)) {
+            throw new ApplicationExceptions("Date invalide : {$date}.");
+        }
+
         // The candidate's primary key
-        if($candidate_key <= 0) {
+        if(!DataFormatManager::isValidKey($candidate_key)) {
             throw new ApplicationExceptions("Clé primaire du candidat invalide : {$candidate_key}. Clé attendue strictement positive.");
         }
 
         // The job's primary key
-        if($job_key <= 0) {
+        if(!DataFormatManager::isValidKey($job_key)) {
             throw new ApplicationExceptions("Clé primaire du poste invalide : {$job_key}. Clé attendue strictement positive.");
         }
 
         // The type of contract's primary key
-        if(!empty($type_of_contract_key) && $type_of_contract_key <= 0) {
-            throw new ApplicationExceptions("Clé primaire du type de contrat invalide : {$type_of_contract_key}. Clé attendue strictement positive.");
+        if(!is_null($type_key) && !DataFormatManager::isValidKey($type_key)) {
+            throw new ApplicationExceptions("Clé primaire du type de contrat invalide : {$type_key}. Clé attendue strictement positive.");
         }
 
         // The source's primary key
-        if($source_key <= 0) {
+        if(!DataFormatManager::isValidKey($source_key)) {
             throw new ApplicationExceptions("Clé primaire de la source invalide : {$source_key}. Clé attendue strictement positive.");
         }
 
         // The candidate's primary key
-        if(!empty($need_key) && $need_key <= 0) {
+        if(!is_null($need_key) && !DataFormatManager::isValidKey($need_key)) {
             throw new ApplicationExceptions("Clé primaire du besoin invalide : {$need_key}. Clé attendue strictement positive.");
         }
 
         // The candidate's primary key
-        if(!empty($establishment_key) && $establishment_key <= 0) {
+        if(!is_null($establishment_key) && !DataFormatManager::isValidKey($establishment_key)) {
             throw new ApplicationExceptions("Clé primaire de l'établissement invalide : {$establishment_key}. Clé attendue strictement positive.");
         }
 
         // The candidate's primary key
-        if(!empty($service_key) && $service_key <= 0) {
+        if(!is_null($service_key) && !DataFormatManager::isValidKey($service_key)) {
             throw new ApplicationExceptions("Clé primaire du service invalide : {$service_key}. Clé attendue strictement positive.");
         }
     }
@@ -87,7 +99,15 @@ class Application {
      * @param ?int $need 
      * @return Application
      */
-    public static function create(int $candidate, int $job, int $source, ?int $type = null, ?int $establishment = null, ?int $service = null, ?int $need = null): Application {
+    public static function create(
+        int $candidate, 
+        int $job, 
+        int $source, 
+        ?int $type = null, 
+        ?int $establishment = null, 
+        ?int $service = null, 
+        ?int $need = null
+    ): Application {
         return new Application(
             null, 
             false, 
@@ -145,7 +165,7 @@ class Application {
      * 
      * @return ?int
      */
-    public function getType(): ?int { return $this->type_of_contract_key; }
+    public function getType(): ?int { return $this->type_key; }
     /**
      * Public function returning the primary key of the source of the application
      * 
@@ -206,17 +226,17 @@ class Application {
      */
     public function toArray(): array {
         return array(
-            "id"          => $this->getId(),
-            "accepted" => $this->getAccepted(),
-            "refused" => $this->getRefused(),
-            "date" => $this->getDate(),
-            "candidate" => $this->getCandidate(),
-            "job" => $this->getJob(),
-            "type" => $this->getType(),
-            "source" => $this->getSource(),
-            "need" => $this->getNeed(),
+            "id"            => $this->getId(),
+            "accepted"      => $this->getAccepted(),
+            "refused"       => $this->getRefused(),
+            "date"          => $this->getDate(),
+            "candidate"     => $this->getCandidate(),
+            "job"           => $this->getJob(),
+            "type"          => $this->getType(),
+            "source"        => $this->getSource(),
+            "need"          => $this->getNeed(),
             "establishment" => $this->getEstablishment(),
-            "service" => $this->getService()
+            "service"       => $this->getService()
         );
     }
 
@@ -227,9 +247,9 @@ class Application {
      */
     public function toSQL(): array {
         $response = array(
-            "candidate" => $this->getCandidate(), 
-            "job"    => $this->getJob(),
-            "source" => $this->getSource()
+            "candidate" => $this->getCandidate(),
+            "job"       => $this->getJob(),
+            "source"    => $this->getSource()
         );
 
         if(!empty($this->getType())) {
