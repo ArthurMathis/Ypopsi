@@ -99,7 +99,7 @@ class ApplicationRepository extends Repository {
             app.IsRefused AS refusee, 
             s.titled AS source, 
             t.titled AS type_de_contrat,
-            app.TimeManager AS date,
+            app.Moment AS date,
             j.titled AS poste,
             j.titledFeminin AS posteFeminin,
             serv.titled AS service,

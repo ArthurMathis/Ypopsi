@@ -68,15 +68,14 @@ class CandidatesController extends Controller {
     public function displayCandidate(int $key_candidate): void {
         $can_repo = new CandidateRepository();
         $candidate = $can_repo->get($key_candidate);                                                                // Fetching the candidate 
-
-
+        
+        
         $cont_repo = new ContractRepository();
         $contracts = $cont_repo->getListFromCandidates($key_candidate);                                             // Fetching the candidate's contracts
-
-
+        
+        
         $app_repo = new ApplicationRepository();
         $applications = $app_repo->getListFromCandidates($key_candidate, $candidate->getGender());                                           // Fetching the candidate's applications
-
 
         $meet_repo = new MeetingRepository();
         $meetings = $meet_repo->getListFromCandidate($key_candidate);                                               // Fetching the candidate's meetings
