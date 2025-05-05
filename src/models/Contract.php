@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Exceptions\ContractExceptions;
+use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\TimeManager;
 
 /**
  * The contract class
@@ -51,32 +53,67 @@ class Contract {
         protected int $type_key
     ) {
         // The primary key
-        if(!empty($id) && $id <= 0) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new ContractExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
+        // The start date
+        if(!TimeManager::isDate($start_date)) {
+            throw new ContractExceptions("Date de début invalide : {$start_date}.");
+        }
+
+        // The end date
+        if(!is_null($end_date) && !TimeManager::isDate($end_date)) {
+            throw new ContractExceptions("Date de fin invalide : {$end_date}.");
+        }
+
+        // The proposition date
+        if(!is_null($proposition_date) && !TimeManager::isDate($proposition_date)) {
+            throw new ContractExceptions("Date de proposition invalide : {$proposition_date}.");
+        }
+
+        // The signature date
+        if(!is_null($signature_date) && !TimeManager::isDate($signature_date)) {
+            throw new ContractExceptions("Date de signature invalide : {$signature_date}.");
+        }
+
+        // The resignation date
+        if(!is_null($resignation_date) && !TimeManager::isDate($resignation_date)) {
+            throw new ContractExceptions("Date de démission invalide : {$resignation_date}.");
+        }
+
+        // The hourly rate
+        if(!is_null($hourly_rate) && !self::isValidHourlyRate($hourly_rate)) {
+            throw new ContractExceptions("Taux horaire invalide : {$hourly_rate}. Taux horaire attendu entre 0 et 48.");
+        }
+
+        // The salary
+        if(!is_null($salary) && !self::isValidSalary($salary)) {
+            throw new ContractExceptions("Salaire invalide : {$salary}. Salaire attendu strictement positif.");
+        }
+
         // The candidate's primary key
-        if($candidate_key <= 0) {
+        if(!DataFormatManager::isValidKey($candidate_key)) {
             throw new ContractExceptions("Clé primaire de l'utilisateur invalide : {$candidate_key}. Clé attendue strictement positive.");
         }
 
         // The primary key of the job
-        if($job_key <= 0) {
+        if(!DataFormatManager::isValidKey($job_key)) {
             throw new ContractExceptions("Clé primaire de l'utilisateur invalide : {$job_key}. Clé attendue strictement positive.");
         }
 
         // The primary key of the service
-        if($service_key <= 0) {
+        if(!DataFormatManager::isValidKey($service_key)) {
             throw new ContractExceptions("Clé primaire de l'utilisateur invalide : {$service_key}. Clé attendue strictement positive.");
         }
 
         // The primary key of the establishment
-        if($establishment_key <= 0) {
+        if(!DataFormatManager::isValidKey($establishment_key)) {
             throw new ContractExceptions("Clé primaire de l'utilisateur invalide : {$establishment_key}. Clé attendue strictement positive.");
         }
 
         // The primary key of the type
-        if($type_key <= 0) {
+        if(!DataFormatManager::isValidKey($type_key)) {
             throw new ContractExceptions("Clé primaire de l'utilisateur invalide : {$type_key}. Clé attendue strictement positive.");
         }
     }
@@ -237,7 +274,7 @@ class Contract {
      * @param string $signature The signature date
      * @return void
      */
-    public function addSignature(string $signature = null): void {
+    public function addSignature(?string $signature = null): void {
         if(empty($signature)) {
             $signature = date("Y-m-d");
         }
@@ -250,13 +287,14 @@ class Contract {
      * @param string $resignation The resignation date
      * @return void
      */
-    public function addResignation(string $resignation = null): void {
+    public function addResignation(?string $resignation = null): void {
         if(empty($resignation)) {
             $resignation = date("Y-m-d");
         }
 
         $this->resignation_date = $resignation;
     }
+
     // * CONVERT * //
     /**
      * Public static method returning an Contract building from an array
@@ -323,12 +361,12 @@ class Contract {
      */
     public function toSQL(): array {
         $response = array(
-            "start_date"     => $this->getStartDate(),
-            "candidate"      => $this->getCandidate(),
-            "job"            => $this->getJob(),
-            "service"        => $this->getService(),
+            "start_date"    => $this->getStartDate(),
+            "candidate"     => $this->getCandidate(),
+            "job"           => $this->getJob(),
+            "service"       => $this->getService(),
             "establishment" => $this->getEstbalishement(),
-            "type"           => $this->getType()
+            "type"          => $this->getType()
         );
 
         if(!empty($this->getEndDate())) {
@@ -352,5 +390,26 @@ class Contract {
         }
 
         return $response;
+    }
+
+    // * CHECK * //
+    /**
+     * public static method checking if the hourly rate is valid
+     *
+     * @param int $rate The hourly rate
+     * @return boolean
+     */
+    public static function isValidHourlyRate(int $rate): bool {
+        return 0 < $rate && $rate < 48;
+    }
+
+    /**
+     * public static method checking if the salary is valid
+     *
+     * @param int $salary The salary
+     * @return boolean
+     */
+    public static function isValidSalary(int $salary): bool {
+        return 0 < $salary;
     }
 }
