@@ -872,7 +872,7 @@ class CandidatesController extends Controller {
         $candidate = $can_repo->get($key_candidate);
 
         $candidate->setRating(max($_POST["rating"]));
-        $candidate->setDescrption($_POST["description"]);
+        $candidate->setDescription($_POST["description"]);
         $candidate->setA(isset($_POST["a"]));
         $candidate->setB(isset($_POST["b"]));
         $candidate->setC(isset($_POST["c"]));

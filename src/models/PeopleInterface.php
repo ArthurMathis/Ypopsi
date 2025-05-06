@@ -13,13 +13,13 @@ interface PeopleInterface {
      * 
      * @return string
      */
-    public function getName(): string;
+    public function getName(): ?string;
     /**
      * Public function returning the firstname of the candidate
      * 
      * @return string
      */
-    public function getFirstname(): string;
+    public function getFirstname(): ?string;
     /**
      * Public method erturning the complete candidate's name 
      *

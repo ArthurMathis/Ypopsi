@@ -462,7 +462,7 @@ class ContractModelTest extends TestCase {
      * @return void
      */
     public function testConstructorWithInvalidSalary(): void {
-        $salary = getenv("INVALID_SALARY");
+        $salary = getenv("WRONG_SALARY");
         $this->expectException(ContractExceptions::class);
         $this->expectExceptionMessage("Salaire invalide : {$salary}. Salaire attendu strictement positif.");
 
@@ -492,7 +492,7 @@ class ContractModelTest extends TestCase {
      * @return void
      */
     public function testConstructorWithInvalidHourlyRate(): void {
-        $hourlyRate = getenv("INVALID_HOURLY_RATE");
+        $hourlyRate = getenv("WRONG_HOURLY_RATE");
         $this->expectException(ContractExceptions::class);
         $this->expectExceptionMessage("Taux horaire invalide : {$hourlyRate}. Taux horaire attendu entre 0 et 48.");
 

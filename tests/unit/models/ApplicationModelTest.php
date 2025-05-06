@@ -794,7 +794,7 @@ class ApplicationModelTest extends TestCase {
             "Id"                     => getenv("VALID_KEY_1"),
             "IsAccepted"             => false,
             "IsRefused"              => false,
-            "TimeManager"            => getenv("VALID_FULL_DATE"),
+            "Moment"                 => getenv("VALID_FULL_DATE"),
             "Key_Candidates"         => getenv("VALID_KEY_1"),
             "Key_Jobs"               => getenv("VALID_KEY_1"),
             "Key_Types_of_contracts" => getenv("VALID_KEY_1"),

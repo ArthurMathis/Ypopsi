@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\PeopleInterface;
 use App\Core\Tools\DataFormatManager;
-use App\Core\Tools\PasswordManager;
+use App\Core\Tools\TimeManager;
 use App\Exceptions\CandidateExceptions;
 
 /**
@@ -56,7 +56,7 @@ class Candidate implements PeopleInterface {
     )
     {
         // The primary key
-        if(!is_null($id) & !DataFormatManager::isValidKey($id)) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new CandidateExceptions("La clé primaire : {$id} est invalide.");
         }
 
@@ -79,16 +79,34 @@ class Candidate implements PeopleInterface {
             throw new CandidateExceptions("L'email : {$email} est invalide.");
         }
 
+        // The phone
         if(!is_null($phone) && !DataFormatManager::isValidPhoneNumber($phone)) {
             throw new CandidateExceptions("Le numéro de téléphone : {$phone} est invalide.");
         }
 
+        // The city
         if(!is_null($city) && !DataFormatManager::isValidName($city)) {
             throw new CandidateExceptions("La ville : {$city} est invalide.");
         }
 
+        // The postcode
         if(!is_null($postcode) && !DataFormatManager::isValidPostCode($postcode)) {
             throw new CandidateExceptions("Le code postal : {$postcode} est invalide.");
+        }
+
+        // The rating
+        if(!is_null($rating) && !self::isValidRating($rating)) {
+            throw new CandidateExceptions("La notation : {$rating} est invalide.");
+        }
+
+        // The availability 
+        if(!is_null($availability) && !TimeManager::isDate($availability)) {
+            throw new CandidateExceptions("La date de disponibilité : {$availability} est invalide.");
+        }
+
+        // The visit
+        if(!is_null($visit) && !TimeManager::isDate($visit)) {
+            throw new CandidateExceptions("La date de visite médicale : {$visit} est invalide.");
         }
     }
 
@@ -156,21 +174,23 @@ class Candidate implements PeopleInterface {
      * 
      * @return string
      */
-    public function getName(): string { return $this->name; }
+    public function getName(): ?string { return $this->name; }
     /**
      * Public function returning the firstname of the candidate
      * 
      * @return string
      */
-    public function getFirstname(): string { return $this->firstname; }
+    public function getFirstname(): ?string { return $this->firstname; }
     /**
      * Public method erturning the complete candidate's name 
      *
      * @return string
      */
     public function getCompleteName(): string {
+        $name = !is_null($this->getName()) ? $this->getName() : "??";
+        $firstname = !is_null($this->getFirstname()) ? $this->getFirstname() : "??";
         $response = $this->getGender() ? "M" : "Mme";
-        $response .= ". " . strtoupper($this->getname()) . " " . $this->getFirstname();
+        $response .= ". " . strtoupper($name) . " " . $firstname;
         return $response;
     }
     /**
@@ -178,7 +198,7 @@ class Candidate implements PeopleInterface {
      * 
      * @return bool
      */
-    public function getGender(): bool { return $this->gender; }
+    public function getGender(): ?bool { return $this->gender; }
     /**
      * Public function returning the email of the candidate
      * 
@@ -267,7 +287,7 @@ class Candidate implements PeopleInterface {
      * @return void
      */
     public function setId(int $id): void {
-        if($id <= 0) {
+        if(!DataFormatManager::isValidKey($id)) {
             throw new CandidateExceptions("Clé primaire invalide : {$id}. Clé attendue strictement positive.");
         }
 
@@ -277,18 +297,28 @@ class Candidate implements PeopleInterface {
      * Public method setting candidate's name
      *
      * @param string $name The new name of the candidate
+     * @throws CandidateExceptions If the name is invalid
      * @return void
      */
     public function setName(string $name): void {
+        if(!DataFormatManager::isValidName($name)) {
+            throw new CandidateExceptions("Le nom : {$name} est invalide.");
+        }
+
         $this->name = $name;
     }
     /**
      * Public method setting candidate's firstname
      *
      * @param string $firstname The new firstname of the candidate
+     * @throws CandidateExceptions If the firstname is invalid
      * @return void
      */
     public function setFirstname(string $firstname): void {
+        if(!DataFormatManager::isValidName($firstname)) {
+            throw new CandidateExceptions("Le prénom : {$firstname} est invalide.");
+        }
+
         $this->firstname = $firstname;
     }
     /**
@@ -304,18 +334,28 @@ class Candidate implements PeopleInterface {
      * Public method setting candidate's email
      *
      * @param string $email The new email of the candidate
+     * @throws CandidateExceptions If the email is invalid
      * @return void
      */
     public function setEmail(string $email): void {
+        if(!DataFormatManager::isValidEmail($email)) {
+            throw new CandidateExceptions("L'email : {$email} est invalide.");
+        }
+
         $this->email = $email;
     }
     /**
      * Public method setting candidate's phone
      *
      * @param string $phone The new phone of the candidate
+     * @throws CandidateExceptions If the phone is invalid
      * @return void
      */
     public function setPhone(string $phone): void {
+        if(!DataFormatManager::isValidPhoneNumber($phone)) {
+            throw new CandidateExceptions("Le numéro de téléphone : {$phone} est invalide.");
+        }
+
         $this->phone = $phone;
     }
     /**
@@ -331,41 +371,78 @@ class Candidate implements PeopleInterface {
      * Public method setting candidate's city
      *
      * @param string $city The new city of the candidate
+     * @throws CandidateExceptions If the city is invalid
      * @return void
      */
     public function setCity(string $city): void {
+        if(!DataFormatManager::isValidName($city)) {
+            throw new CandidateExceptions("La ville : {$city} est invalide.");
+        }
+
         $this->city = $city;
     }
     /**
      * Public method setting candidate's postcode
      *
      * @param string $postcode The new postcode of the candidate
+     * @throws CandidateExceptions If the postcode is invalid
      * @return void
      */
     public function setPostcode(string $postcode): void {
+        if(!DataFormatManager::isValidPostCode($postcode)) {
+            throw new CandidateExceptions("Le code postal : {$postcode} est invalide.");
+        }
+
         $this->postcode = $postcode;
     }
 
+    /**
+     * Public function setteing the candidate's rate
+     *
+     * @param int $rate The candidate's rate
+     * @throws CandidateExceptions If the rate is invalid
+     * @return void
+     */
     public function setRating(int $rate): void {
-        if($rate <= 0) {
-            throw new CandidateExceptions("La notation doit être strictement positive. La valeur : {$rate} est invalide.");
-        }
-
-        if(5 < $rate) {
-            throw new CandidateExceptions("La notation doit être inférieure ou égale à 5. La valeur : {$rate} est invalide.");
+        if(!self::isValidRating($rate)) {
+            throw new CandidateExceptions("La notation  : {$rate} est invalide.");
         }
 
         $this->rating = $rate;
     }
-    public function setDescrption(?string $description): void {
+    /**
+     * Public function setting the candidate's description
+     *
+     * @param ?string $description The candidate's description
+     * @return void
+     */
+    public function setDescription(?string $description): void {
         $this->description = $description;
     }
+    /**
+     * Public function setting the the candidate A value
+     *
+     * @param boolean $present 
+     * @return void
+     */
     public function setA(bool $present): void {
         $this->a = $present;
     }
+    /**
+     * Public function setting the the candidate B value
+     *
+     * @param boolean $present 
+     * @return void
+     */
     public function setB(bool $present): void {
         $this->b = $present;
     }
+    /**
+     * Public function setting the the candidate C value
+     *
+     * @param boolean $present 
+     * @return void
+     */
     public function setC(bool $present): void {
         $this->c = $present;
     }
@@ -384,23 +461,23 @@ class Candidate implements PeopleInterface {
         }
 
         return new Candidate(
-            $data["Id"],
-            $data["Name"],
-            $data["Firstname"],
-            $data["Gender"],
-            $data["Email"],
-            $data["Phone"],
-            $data["Address"],
-            $data["City"],
-            $data["PostCode"],
-            $data["Availability"],
-            $data["MedicalVisit"],
-            $data["Rating"],
-            $data["Description"],
-            $data["Is_delete"],
-            $data["A"],
-            $data["B"],
-            $data["C"]
+            id          : $data["Id"],
+            name        : $data["Name"],
+            firstname   : $data["Firstname"],
+            gender      : $data["Gender"],
+            email       : $data["Email"],
+            phone       : $data["Phone"],
+            address     : $data["Address"],
+            city        : $data["City"],
+            postcode    : $data["PostCode"],
+            availability: $data["Availability"],
+            visit       : $data["MedicalVisit"],
+            rating      : $data["Rating"],
+            description : $data["Description"],
+            deleted     : $data["Is_delete"],
+            a           : $data["A"],
+            b           : $data["B"],
+            c           : $data["C"]
         );
     }
 
@@ -470,7 +547,7 @@ class Candidate implements PeopleInterface {
             $response["visit"] = $this->getVisit();
         }
 
-        if($completed) {                                                                                        // Ajout des paramètres manquants pour éviter les erreurs
+        if($completed) {                                                     // Ajout des paramètres manquants pour éviter les erreurs
             $response['email']        = $response['email'] ?? '';
             $response['phone']        = $response['phone'] ?? '';
             $response['address']      = $response['address'] ?? '';
@@ -483,5 +560,15 @@ class Candidate implements PeopleInterface {
         }
 
         return $response;
+    }
+
+    /**
+     * Public static method checking if the rate is valid
+     *
+     * @param int $rating
+     * @return boolean
+     */
+    public static function isValidRating(int $rating): bool {
+        return 0 < $rating && $rating <= 5;
     }
 }
