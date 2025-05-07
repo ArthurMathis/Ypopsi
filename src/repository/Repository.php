@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use \PDO;
-use \PDOException;
 use \Exception;
+use \PDOException;
+use App\Core\Database;
 use App\Core\Tools\AlertsManip;
 
 /**
@@ -15,13 +16,15 @@ use App\Core\Tools\AlertsManip;
 class Repository {
     /**
      * Private attribute containing the database connection
+     * 
+     * @var PDO
      */
     private $connection;
 
     /**
      * Class' constructor
      */
-    public function __construct() { $this->makeConnection(); }
+    public function __construct() { $this->connection = Database::getInstance()->getConnection(); }
 
 
     // * GET * //
@@ -29,36 +32,6 @@ class Repository {
      * Protected method returning the database connection
      */
     protected function getConnection() { return $this->connection; }
-
-
-    // * MAKE * //
-    /**
-     * Protected method connecting the application to the database
-     * 
-     * @return PDO The connection at the database
-     */
-    protected function makeConnection(): PDO {
-        try {
-            $db_connection  = getenv('DB_CONNEXION');
-            $db_host        = getenv('DB_HOST');
-            $db_port        = getenv('DB_PORT');
-            $db_name        = getenv('DB_NAME');
-            $db_user        = getenv('DB_USER');
-            $db_password    = getenv('DB_PASS');
-    
-            $db_host = str_replace('/', '', $db_host);
-    
-            $db_fetch = "$db_connection:host=$db_host;port=$db_port;dbname=$db_name";
-
-            $this->connection = new PDO($db_fetch, $db_user, $db_password, Array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            
-        } catch(PDOException $e) {
-            die("Connexion à la base de données réchouée. " . $e->getMessage());
-        }
-        return $this->connection;
-    }
-
     
     // * REQUEST * //
     /**
