@@ -48,6 +48,23 @@ class GetQualificationModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_1"), $get->getQualification(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $get->getQualification()));
         $this->assertEquals(getenv("VALID_DATE"), $get->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $get->getDate()));
     }
+    /**
+     * Public function testing GetQualification::__constructor
+     *
+     * @return void
+     */
+    public function testConstructorWithoutDate(): void {
+        $get = new GetQualification(
+            getenv("VALID_KEY_1"),
+            getenv("VALID_KEY_1"),
+            null
+        );
+
+        $this->assertInstanceOf(GetQualification::class, $get);
+        $this->assertEquals(getenv("VALID_KEY_1"), $get->getCandidate(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $get->getCandidate()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $get->getQualification(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $get->getQualification()));
+        $this->assertNull($get->getDate(), testErrorManager::cerr_null($get->getDate()));
+    }
 
     //// WITH INVALID ////
     /**

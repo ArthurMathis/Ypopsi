@@ -23,7 +23,7 @@ class getQualification {
     public function __construct(
         protected ?int $candidate,
         protected int $qualification,
-        protected string $date 
+        protected ?string $date 
     ) {
         // The primary key
         if(!is_null($candidate) && !DataFormatManager::isValidKey($candidate)) {
@@ -35,7 +35,8 @@ class getQualification {
             throw new GetQualificationExceptions("Clé primaire de la qualification invalide : {$qualification}. Clé attendue strictement positive.");
         }
 
-        if(!TimeManager::isDate($date)) {
+        // The get date
+        if(!is_null($date) && !TimeManager::isDate($date)) {
             throw new GetQualificationExceptions("Date de la qualification invalide : {$qualification}.");
         }
     }
@@ -58,7 +59,7 @@ class getQualification {
      *
      * @return string
      */
-    public function getDate(): string { return $this->date; }
+    public function getDate(): ?string { return $this->date; }
 
     // * SET * //
     /**

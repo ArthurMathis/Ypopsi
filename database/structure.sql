@@ -1,7 +1,7 @@
 -- Features Toggle --
 CREATE TABLE Features (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT, 
-  Titled VARCHAR(64) NOT NULL,
+  Titled VARCHAR(64) UNIQUE NOT NULL,
   Description VARCHAR(256) DEFAULT NULL, 
   Enable BOOLEAN DEFAULT False
 );
@@ -41,13 +41,13 @@ CREATE TABLE Belong_to (
 CREATE TABLE Jobs (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
   Titled VARCHAR(64) NOT NULL,
-  TitledFeminin VARCHAR(64) NOT NULL
+  TitledFeminin VARCHAR(64) UNIQUE NOT NULL
 );
 
 -- Users --
 CREATE TABLE Roles (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Titled VARCHAR(32) NOT NULL
+  Titled VARCHAR(32) UNIQUE NOT NULL 
 );
 CREATE TABLE Users (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -70,7 +70,7 @@ CREATE TABLE Users (
 -- Logs --
 CREATE TABLE Types_of_actions (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Titled VARCHAR(32) NOT NULL
+  Titled VARCHAR(32) UNIQUE NOT NULL
 );
 CREATE TABLE Actions (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -104,7 +104,7 @@ CREATE TABLE Candidates (
   B BOOLEAN DEFAULT FALSE, 
   C BOOLEAN DEFAULT FALSE,
 
-  CONSTRAINT chk_name_firstname CHECK (Name IS NOT NULL OR Firstname IS NOT NULL)
+  CHECK (Name IS NOT NULL OR Firstname IS NOT NULL)
 );
 CREATE TABLE Documents (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -119,14 +119,14 @@ CREATE TABLE Documents (
 -- Qualifications --
 CREATE TABLE Qualifications (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Titled VARCHAR(128) NOT NULL,
+  Titled VARCHAR(128) UNIQUE NOT NULL,
   MedicalStaff BOOLEAN DEFAULT FALSE, 
   Abreviation VARCHAR(12) DEFAULT NULL
 );
 CREATE TABLE Get_qualifications (
   Key_Candidates INTEGER NOT NULL,
   Key_Qualifications INTEGER NOT NULL,
-  Date TIMESTAMP NOT NULL, 
+  Date TIMESTAMP, 
 
   FOREIGN KEY (Key_Candidates) REFERENCES Candidates(Id),
   FOREIGN KEY (Key_Qualifications) REFERENCES Qualifications(Id),
@@ -137,7 +137,7 @@ CREATE TABLE Get_qualifications (
 -- Helps --
 CREATE TABLE Helps (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Titled VARCHAR(64) NOT NULL,
+  Titled VARCHAR(64) UNIQUE NOT NULL,
   Description TEXT DEFAULT NULL
 );
 CREATE TABLE Have_the_right_to (
@@ -155,7 +155,7 @@ CREATE TABLE Have_the_right_to (
 -- Contracts --
 CREATE TABLE Types_of_contracts (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Titled VARCHAR(64) NOT NULL,
+  Titled VARCHAR(64) UNIQUE NOT NULL,
   Description TEXT DEFAULT NULL
 );
 CREATE TABLE Contracts (
@@ -219,7 +219,7 @@ CREATE TABLE Involve (
 -- Applications --
 CREATE TABLE Types_of_sources (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  Titled VARCHAR(64) NOT NULL
+  Titled VARCHAR(64) UNIQUE NOT NULL
 );
 CREATE TABLE Sources (
   Id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -251,13 +251,10 @@ CREATE TABLE Applications (
   FOREIGN KEY (Key_Establishments) REFERENCES Establishments(Id),
   FOREIGN KEY (Key_Services) REFERENCES Services(Id),
 
-  CHECK (
-    (Key_Establishments IS NULL AND Key_Services IS NULL AND Key_Needs IS NULL) OR
-    (Key_Establishments IS NOT NULL AND Key_Services IS NULL AND Key_Needs IS NULL) OR
-    (Key_Establishments IS NULL AND Key_Services IS NOT NULL AND Key_Needs IS NULL) OR
-    (Key_Establishments IS NOT NULL AND Key_Services IS NOT NULL AND Key_Needs IS NULL) OR
-    (Key_Needs IS NOT NULL AND Key_Establishments IS NULL AND Key_Services IS NULL)
-  )  
+  CHECK(
+    (Key_Needs IS NOT NULL AND Key_Establishments IS NULL AND Key_Services IS NULL) OR
+    (Key_Needs IS NULL AND (Key_Establishments IS NOT NULL OR Key_Services IS NOT NULL))
+  )
 );
 
 -- Rendez-vous --
