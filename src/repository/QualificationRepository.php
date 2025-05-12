@@ -6,7 +6,7 @@ use App\Models\Qualification;
 use App\Repository\Repository;
 
 /**
- * Class representing a repository of qualifications 
+ * Class representing a repository of Qualifications 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */

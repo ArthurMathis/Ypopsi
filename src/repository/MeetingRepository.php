@@ -6,7 +6,7 @@ use App\Repository\Repository;
 use App\Models\Meeting;
 
 /**
- * Class representing a repository of meetings 
+ * Class representing a repository of Meetings 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */

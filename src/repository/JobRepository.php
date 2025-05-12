@@ -6,7 +6,7 @@ use App\Repository\Repository;
 use App\Models\Job;
 
 /**
- * Class representing a repository of jobs 
+ * Class representing a repository of Jobs 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
@@ -74,5 +74,22 @@ class JobRepository extends Repository {
         }
 
         return $response;
+    }
+
+    // * SEARCH * //
+    /**
+     * Public function searching and returning a job from its title
+     *
+     * @param string $job The job's title
+     * @return Job
+     */
+    public function search(string &$job): Job {
+        $request = "SELECT * FROM Jobs WHERE Titled = :titled";
+        
+        $params = [ "titled" => $job ];
+
+        $fetch = $this->get_request($request, $params, true, true);
+
+        return Job::fromArray($fetch);
     }
 }

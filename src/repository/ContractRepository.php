@@ -6,7 +6,7 @@ use App\Repository\Repository;
 use App\Models\Contract;
 
 /**
- * Class representing a repository of contracts 
+ * Class representing a repository of Contracts 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
@@ -146,7 +146,6 @@ class ContractRepository extends Repository {
 
         return $this->post_request($request, $contract->toSQL());
     }
-
     /**
      * Public method registering the signature date of a contract in the database 
      * 
@@ -192,5 +191,20 @@ class ContractRepository extends Repository {
         );
 
         return $this->post_request($request, $params);
+    }
+    /**
+     * Public method deleting a contract from the database
+     * 
+     * ! Use it only in the data loading process, not in the application process !
+     * 
+     * @param integer $contract_key The contract's primary key
+     * @return void
+     */
+    public function securityRemove(int $contract_key): void {
+        $request = "DELETE FROM Contracts WHERE Id = :key";
+
+        $params = [ "key" => $contract_key ];
+
+        $this->post_request($request, $params);
     }
 }

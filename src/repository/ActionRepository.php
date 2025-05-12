@@ -8,7 +8,7 @@ use App\Models\TypeOfActions;
 use App\Models\User;
 
 /**
- * Class representing a repository of actions 
+ * Class representing a repository of Actions 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */

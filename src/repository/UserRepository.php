@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Exceptions\LoginExceptions;
 
 /**
- * Class representing a repository of users 
+ * Class representing a repository of Users 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */

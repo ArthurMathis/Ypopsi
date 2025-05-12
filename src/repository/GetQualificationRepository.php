@@ -105,4 +105,19 @@ class GetQualificationRepository extends Repository {
 
         $this->post_request($request, $params);
     }
+    /**
+     * Public function deleting the candidate's list of GetQualification
+     * 
+     * ! Use it only in the data loading process, not in the application process !
+     *
+     * @param int $candidate_key The candidate's primary key
+     * @return void
+     */
+    public function securityRemove(int $candidate_key): void {
+        $request = "DELETE FROM Get_qualifications WHERE Key_Candidates = :candidate";
+
+        $params = [ "candidate" => $candidate_key ];
+
+        $this->post_request($request, $params);
+    }
 }

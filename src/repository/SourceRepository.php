@@ -5,6 +5,11 @@ namespace App\Repository;
 use App\Repository\Repository;
 use App\Models\Source;
 
+/**
+ * Class representing a repository of Sources
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
+ */
 class SourceRepository extends Repository {
     // * GET * //
     /**
@@ -58,5 +63,21 @@ class SourceRepository extends Repository {
         }, $fetch);
 
         return $response;
+    }
+    // * SEARCH * //
+    /**
+     * Public function searching and returning one source from his name
+     *
+     * @param string $source The source's name
+     * @return Source
+     */
+    public function search(string &$source): Source {
+        $request = "SELECT * FROM Sources WHERE Titled = :titled";
+
+        $params = array("titled" => $source);
+
+        $fetch = $this->get_request($request, $params, true, true);
+
+        return Source::fromArray($fetch);
     }
 }

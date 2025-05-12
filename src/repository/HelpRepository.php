@@ -7,7 +7,7 @@ use App\Repository\Repository;
 use App\Models\Help;
 
 /**
- * Class representing a repository of helps 
+ * Class representing a repository of hHlps 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
@@ -94,6 +94,27 @@ class HelpRepository extends Repository {
     }
 
     // * SEARCH * //
+    /**
+     * Public function searching and returning one help from its name
+     *
+     * @param string $help The help's name
+     * @return Help
+     */
+    public function search(string &$help): Help {
+        $request = "SELECT * FROM Helps WHERE Titled = :help";
+
+        $params = array("help" => $help);
+
+        $fetch = $this->get_request($request, $params, true, true);
+
+        return Help::fromArray($fetch);
+    }
+    /**
+     * Public function searching and returning the coopters' primary key
+     *
+     * @param integer $key_candidate The candidate's primary key
+     * @return integer
+     */
     public function searchCoopteurId(int $key_candidate): int {
         $request = "SELECT Key_Employee AS Id From Have_the_right_to WHERE Key_Candidates = :id AND Key_Employee IS NOT NULL";
 

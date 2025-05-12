@@ -6,7 +6,7 @@ use App\Repository\Repository;
 use App\Models\Role;
 
 /**
- * Class representing a repository of roles 
+ * Class representing a repository of Roles 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */

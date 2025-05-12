@@ -5,6 +5,11 @@ namespace App\Repository;
 use App\Repository\Repository;
 use App\Models\Feature;
 
+/**
+ * Class representing a repository of Features
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
+ */
 class FeatureRepository extends Repository {
     // * GET * //
     /**

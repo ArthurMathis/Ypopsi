@@ -6,7 +6,7 @@ use App\Repository\Repository;
 use App\Models\Candidate;
 
 /**
- * Class representing a repository of candidates 
+ * Class representing a repository of Candidates 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
@@ -183,6 +183,36 @@ class CandidateRepository extends Repository {
             WHERE Id = :id";
 
         $params = $candidate->toArray();
+
+        $this->post_request($request, $params);
+    }
+
+    // * DELETE * //
+    /**
+     * Public function deleting a candidate from the database
+     *
+     * @param Candidate $candidate
+     * @return void
+     */
+    public function delete(Candidate &$candidate): void {
+        $request = "UPDATE Candidates SET Is_delete = 1 WHERE Id = :key_candidate";
+
+        $params = [ "key_candidate" => $candidate->getId() ];
+
+        $this->post_request($request, $params);
+    }
+    /**
+     * Public method deleting a candidate from the database 
+     * 
+     * ! Use it only in the data loading process, not in the application process !
+     * 
+     * @param int $candidate The primary key of the candidate
+     * @return void
+     */
+    public function securityRemove(int $candidate): void {
+        $request = "DELETE FROM Candidates WHERE Id = :candidate";
+
+        $params = [ "candidate" => $candidate ];
 
         $this->post_request($request, $params);
     }

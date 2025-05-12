@@ -6,7 +6,7 @@ use App\Repository\Repository;
 use App\Models\Application;
 
 /**
- * Class representing a repository of applications 
+ * Class representing a repository of Applications 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
@@ -190,5 +190,22 @@ class ApplicationRepository extends Repository {
         $params = array("key_application" => $application->getId());
 
         return $this->post_request($request, $params);
+    }
+
+    // * DELETE * //
+    /**
+     * Public method deleting an application from the database 
+     * 
+     * ! Use it only in the data loading process, not in the application process !
+     * 
+     * @param int $key_application The primary key of the application
+     * @return void
+     */
+    public function securityRemove(int $application_key): void {
+        $request = "DELETE FROM Applications WHERE Id = :key_application";
+
+        $params = [ "key_application" => $application_key ];
+
+        $this->post_request($request, $params);
     }
 }

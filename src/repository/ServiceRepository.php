@@ -6,7 +6,7 @@ use App\Repository\Repository;
 use App\Models\Service;
 
 /**
- * Class representing a repository of services 
+ * Class representing a repository of Services 
  * 
  * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
@@ -61,6 +61,25 @@ class ServiceRepository extends Repository {
                 "text" => $c->getTitled()
             );
         }, $fetch);
+
+        return $response;
+    }
+
+    // * SEARCH * //
+    /**
+     * Public function searching and returning one service from its name
+     *
+     * @param string $service The service's name
+     * @return Service
+     */
+    public function search(string &$service): Service {
+        $request = "SELECT * FROM Services WHERE Titled LIKE :service";
+
+        $params = [ "service" => $service ];
+
+        $fetch = $this->get_request($request, $params, true, true);
+
+        $response = Service::fromArray($fetch);
 
         return $response;
     }

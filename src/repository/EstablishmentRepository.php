@@ -5,6 +5,11 @@ namespace App\Repository;
 use App\Repository\Repository;
 use App\Models\Establishment;
 
+/**
+ * Class representing a repository of Establishments
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
+ */
 class EstablishmentRepository extends Repository {
     // * GET * //
     /**
@@ -56,6 +61,25 @@ class EstablishmentRepository extends Repository {
                 "text" => $c->getTitled()
             );
         }, $fetch);
+
+        return $response;
+    }
+
+    // * SEARCH * //
+    /**
+     * Public method searching and returning the list of establishments from a name
+     *
+     * @param string $establishment The establishment's name
+     * @return Establishment
+     */
+    public function search(string &$establishment): Establishment {
+        $request = "SELECT * FROM Establishments WHERE Titled LIKE :establishment";
+
+        $params = array("establishment" => "%$establishment%");
+
+        $fetch = $this->get_request($request, $params, true, true);
+
+        $response = Establishment::fromArray($fetch);
 
         return $response;
     }
