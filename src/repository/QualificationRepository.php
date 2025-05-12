@@ -96,6 +96,30 @@ class QualificationRepository extends Repository {
     }
 
     // * SEARCH * //
+    /**
+     * Public function searching and returning the date of the qualification for a candidate
+     *
+     * @param string $qualification The qualification's name
+     * @return Qualification
+     */
+    public function search(string &$qualification): Qualification {
+        $request = "SELECT * FROM Qualifications WHERE Titled = :qualification";
+
+        $params = [ "qualification" => $qualification ];
+
+        $fetch = $this->get_request($request, $params, true, true);
+
+        return Qualification::fromArray($fetch);
+    }
+    /**
+     * Public function saerching and returning the date of the qualification for a candidate
+     * 
+     * todo : voir si remplçable par la méthode get
+     *
+     * @param integer $key_candidate 
+     * @param integer $key_qualification
+     * @return string
+     */
     public function searchDate(int $key_candidate, int $key_qualification): string {
         $request = "SELECT * FROM Get_qualifications WHERE Key_candidates = :key_candidate AND Key_Qualifications = :key_qualification";
 
