@@ -81,12 +81,6 @@ class Candidate implements PeopleInterface {
         }
 
         // The phone
-        // if(!is_null($phone)) {
-        //     $phone = DataFormatManager::phoneNumberFormat($phone);                                                      // Formating the phone number
-        //     if(!is_null($phone) && !DataFormatManager::isValidPhoneNumber($phone)) {
-        //         throw new CandidateExceptions("Le numéro de téléphone : {$phone} est invalide.");
-        //     }
-        // } 
         if(!is_null($phone)) {
             $this->phone = DataFormatManager::phoneNumberFormat($phone);                                                      // Formating the phone number
         }

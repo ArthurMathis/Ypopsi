@@ -126,146 +126,6 @@ class CandidatesController extends Controller {
         );
     }
 
-    // * MANAGE * //
-    /**
-     * Public method signing a contract
-     */
-    public function signContract(int $key_candidate, int $key_offer): void {
-        $cont_repo = new ContractRepository();
-        $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
-        $contract->addSignature();      
-
-        $cont_repo->sign($contract);                                                                            // Signing the contract
-
-        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
-
-        $job = (new JobRepository())->get($contract->getJob());                                                 // Fetching the job 
-        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
-
-        $act_repo = new ActionRepository();
-        $type = $act_repo->searchType("Nouveau contrat"); 
-        $desc = "Signature du contrat de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
-
-        $act = Action::create(                                                                                  // Creating the action
-            $_SESSION['user']->getId(), 
-            $type->getId(),
-            $desc
-        );          
-        
-        $act_repo->writeLogs($act);                                                                             // Registering the action in logs
-
-        AlertsManip::alert([
-            'title'     => 'Action enregistrée',
-            'msg'       => 'La signature a été enregistrée avec succès.',
-            'direction' => APP_PATH . "/candidates/" . $key_candidate
-        ]);
-    }
-    /**
-     * Public method dimissins to a contract
-     * 
-     * @param int $key_contract The primary key of the contract
-     * @return void
-     */
-    public function dismissContract(int $key_contract): void {$con_repo = new ContractRepository();
-        $contract = $con_repo->get($key_contract);                                                              // Fetching the contract
-        $contract->addResignation();
-
-        $con_repo->dismiss($contract);                                                                          // Dismissing the contract
-
-        $candidate = (new CandidateRepository())->get($contract->getCandidate());                               // Fetching the candidate
-
-        $job = (new JobRepository())->get($contract->getJob());                                                 // Fetching the job 
-        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
-
-        $act_repo = new ActionRepository();
-        $type = $act_repo->searchType("Démission"); 
-        $desc = "Refus de la proposition de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
-
-        $act = Action::create(                                                                                  // Creating the action
-            $_SESSION['user']->getId(), 
-            $type->getId(),
-            $desc
-        );          
-        
-        $act_repo->writeLogs($act);                                                                             // Registering the action in logs
-
-        AlertsManip::alert([
-            'title'     => 'Action enregistrée',
-            'msg'       => 'La démission a été enregistrée avec succès.',
-            'direction' => APP_PATH . "/candidates/" . $candidate->getId()
-        ]);
-    }
-    /**
-     * Public method refusing an offer
-     * 
-     * @param int $key_candidate The candidate's primary key
-     * @param int $key_offer The primary key of the offer
-     * @return void
-     */
-    public function rejectOffer(int $key_candidate, int $key_offer): void {
-        $cont_repo = new ContractRepository();
-        $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
-        $cont_repo->reject($contract);                                                                          // Rejecting the contract
-
-        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
-
-        $job = (new JobRepository())->get($contract->getJob());                                                 // Fetching the job 
-        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
-
-        $act_repo = new ActionRepository();                 
-        $type = $act_repo->searchType("Refus candidature"); 
-        $desc = "Refus de la proposition de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
-
-        $act = Action::create(                                                                                  // Creating the action
-            $_SESSION['user']->getId(), 
-            $type->getId(),
-            $desc
-        );          
-        
-        $act_repo->writeLogs($act);                                                                             // Registering the action in logs
-
-        AlertsManip::alert([
-            'title'     => 'Action enregistrée',
-            'msg'       => 'La candidature a été refusée avec succès.',
-            'direction' => APP_PATH . "/candidates/" . $key_candidate
-        ]);
-    }
-    /**
-     * Public method refusing an application
-     * 
-     * @param int $key_candidate The candidate's primary key
-     * @param int $key_application The primari key of the application
-     * @return void
-     */
-    public function rejectApplication(int $key_candidate, int $key_application): void {
-        $app_repo = new ApplicationRepository();
-        $application = $app_repo->get($key_application);                                                    // Fetching the application
-        $app_repo->reject($application);                                                                    // Refusing the application
-
-        $candidate = (new CandidateRepository())->get($key_candidate);                                      // Fetching the candidate
-
-        $job = (new JobRepository())->get($application->getJob());                                          // Fetching the job 
-        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
-
-        $act_repo = new ActionRepository();                 
-        $type = $act_repo->searchType("Refus candidature"); 
-        $desc = "Refus de la candidature de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
-
-        $act = Action::create(                                                                              // Creating the action
-            $_SESSION['user']->getId(), 
-            $type->getId(),
-            $desc
-        );          
-        
-        $act_repo->writeLogs($act);                                                                         // Registering the action in logs
-
-        AlertsManip::alert([
-            'title'     => 'Action enregistrée',
-            'msg'       => 'La candidature a été refusée avec succès.',
-            'direction' => APP_PATH . "/candidates/" . $key_candidate
-        ]);
-    }
-
     // * INPUT * //
     /**
      * Public method returning the HTML form of inputing a candidate
@@ -565,55 +425,66 @@ class CandidatesController extends Controller {
     public function inscriptApplication(?int $key_candidate = null): void {
         //// CANDIDATE ////
         $candidate = null;
-        if(is_null($key_candidate)) { 
-            $candidate = $_SESSION["candidate"];
-            // unset($_SESSION["candidate"]);   // todo 
+        $can_repo = new CandidateRepository();
+        switch(true) {
+            // Existing candidate
+            case isset($key_candidate): 
+                echo "Clé primaire détectée : $key_candidate.<br>"; // todo : remove after tests
+                $candidate = $can_repo->get($key_candidate);
+                break;
 
-            $candidate_id = (new CandidateRepository())->inscript($candidate);                                  // Registering the new candidate and his informations
-            $candidate->setId($candidate_id); 
+            // New candidate
+            case isset($_SESSION["candidate"]):
+                echo "Enregistrement du candidat en session détecté.<br>"; // todo : remove after tests
+                $candidate = $_SESSION["candidate"];
+                $candidate_id = (new CandidateRepository())->inscript($candidate);                                  // Registering the new candidate and his informations
+                $candidate->setId($candidate_id); 
 
-            if(isset($_SESSION["qualifications"])) {                                                           // Adding the qualifications to the candidate
-                $qua_repo = new GetQualificationRepository();
-                foreach($_SESSION["qualifications"] as $obj) {
-                    $obj->setCandidate($candidate->getId());
-                    $qua_repo->inscript($obj);
+                echo "Candidat enregistré avec la clé : $candidate_id.<br>"; // todo : remove after tests
+
+                if(isset($_SESSION["qualifications"])) {                                                            // Adding the qualifications to the candidate
+                    $qua_repo = new GetQualificationRepository();
+                    
+                    foreach($_SESSION["qualifications"] as $obj) {
+                        $obj->setCandidate($candidate->getId());
+                        $qua_repo->inscript($obj);
+                    }
+
+                    // unset($_SESSION["qualifications"]); // todo
                 }
 
-                // unset($_SESSION["qualifications"]); // todo
-            }
-            
-            if(isset($_SESSION["helps"])) {                                                                    // Adding the helps to the candidate
-                $help_repo = new HaveTheRightToRepository();
-                foreach($_SESSION["helps"] as $obj) {
-                    $obj->setCandidate($candidate->getId());
-                    $help_repo->inscript($obj);
+                if(isset($_SESSION["helps"])) {                                                                     // Adding the helps to the candidate
+                    $help_repo = new HaveTheRightToRepository();
+                    
+                    foreach($_SESSION["helps"] as $obj) {
+                        $obj->setCandidate($candidate->getId());
+                        $help_repo->inscript($obj);
+                    }
+
+                    // unset($_SESSION["helps"]); // todo
                 }
+                break;
 
-                // unset($_SESSION["helps"]); // todo
-            }
-
-        } else {                                                                                                // Fetching the candidate
-            $candidate = (new CandidateRepository())->get($key_candidate);
-        } 
-
-        if(isset($_SESSION["candidate"])) {                                                                     // Creating the candidate
-            $candidate = $_SESSION["candidate"];
-            $can_repo = new CandidateRepository();
-            $key_candidate = $can_repo->inscript($candidate);
-        } 
-
-        if(empty($candidate)) {
-            throw new Exception("Il est impossible d'inscrire une candidature sans candidat.");
+            // Error
+            default: throw new Exception("Il est impossible d'inscrire une candidature sans candidat.");
         }
-
+        
         //// APPLICATION ////
+        echo "On génère la candidature...<br>"; // todo : remove after tests
+        echo "Clé primaire du candidat : " . $candidate->getId() . "<br>"; // todo : remove after tests
+        echo "Clé primaire du poste : " . $_POST["job"] . "<br>"; // todo : remove after tests
+        echo "Clé primaire de la source " . $_POST["source"] . "<br>"; // todo : remove after tests
+        echo "Clé primaire du type " . $_POST["type_of_contract"] . "<br>"; // todo : remove after tests
+        echo "Clé primaire de l'établissement " . $_POST["establishment"] . "<br>"; // todo : remove after tests
+        echo "Clé primaire du service " . $_POST["service"] . "<br>"; // todo : remove after tests
+
         $application = Application::create(                                                                     // Creating the application
-            $key_candidate, 
-            (int) $_POST["job"],
-            (int) $_POST["source"],
-            (int) $_POST["type_of_contract"] ?? null, 
-            (int) $_POST["establishment"] ?? null, 
-            (int) $_POST["service"] ?? null
+            candidate    : $candidate->getId(),
+            job          : (int) $_POST["job"],
+            source       : (int) $_POST["source"],
+            type         : $_POST["type_of_contract"] ? (int) $_POST["type_of_contract"] : null,
+            establishment: $_POST["establishment"] ? (int) $_POST["establishment"] : null,
+            service      : $_POST["service"] ? (int) $_POST["service"] : null
         );
 
         (new ApplicationRepository())->inscript($application);                                                  // Registering the application
@@ -935,6 +806,145 @@ class CandidatesController extends Controller {
         ]);
     }
 
+    // * MANAGE * //
+    /**
+     * Public method signing a contract
+     */
+    public function signContract(int $key_candidate, int $key_offer): void {
+        $cont_repo = new ContractRepository();
+        $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
+        $contract->addSignature();      
+
+        $cont_repo->sign($contract);                                                                            // Signing the contract
+
+        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
+
+        $job = (new JobRepository())->get($contract->getJob());                                                 // Fetching the job 
+        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+        $act_repo = new ActionRepository();
+        $type = $act_repo->searchType("Nouveau contrat"); 
+        $desc = "Signature du contrat de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
+
+        $act = Action::create(                                                                                  // Creating the action
+            $_SESSION['user']->getId(), 
+            $type->getId(),
+            $desc
+        );          
+        
+        $act_repo->writeLogs($act);                                                                             // Registering the action in logs
+
+        AlertsManip::alert([
+            'title'     => 'Action enregistrée',
+            'msg'       => 'La signature a été enregistrée avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
+    /**
+     * Public method dimissins to a contract
+     * 
+     * @param int $key_contract The primary key of the contract
+     * @return void
+     */
+    public function dismissContract(int $key_contract): void {$con_repo = new ContractRepository();
+        $contract = $con_repo->get($key_contract);                                                              // Fetching the contract
+        $contract->addResignation();
+
+        $con_repo->dismiss($contract);                                                                          // Dismissing the contract
+
+        $candidate = (new CandidateRepository())->get($contract->getCandidate());                               // Fetching the candidate
+
+        $job = (new JobRepository())->get($contract->getJob());                                                 // Fetching the job 
+        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+        $act_repo = new ActionRepository();
+        $type = $act_repo->searchType("Démission"); 
+        $desc = "Refus de la proposition de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
+
+        $act = Action::create(                                                                                  // Creating the action
+            $_SESSION['user']->getId(), 
+            $type->getId(),
+            $desc
+        );          
+        
+        $act_repo->writeLogs($act);                                                                             // Registering the action in logs
+
+        AlertsManip::alert([
+            'title'     => 'Action enregistrée',
+            'msg'       => 'La démission a été enregistrée avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $candidate->getId()
+        ]);
+    }
+    /**
+     * Public method refusing an offer
+     * 
+     * @param int $key_candidate The candidate's primary key
+     * @param int $key_offer The primary key of the offer
+     * @return void
+     */
+    public function rejectOffer(int $key_candidate, int $key_offer): void {
+        $cont_repo = new ContractRepository();
+        $contract = $cont_repo->get($key_offer);                                                                // Fetching the contract
+        $cont_repo->reject($contract);                                                                          // Rejecting the contract
+
+        $candidate = (new CandidateRepository())->get($key_candidate);                                          // Fetching the candidate
+
+        $job = (new JobRepository())->get($contract->getJob());                                                 // Fetching the job 
+        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+        $act_repo = new ActionRepository();                 
+        $type = $act_repo->searchType("Refus candidature"); 
+        $desc = "Refus de la proposition de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
+
+        $act = Action::create(                                                                                  // Creating the action
+            $_SESSION['user']->getId(), 
+            $type->getId(),
+            $desc
+        );          
+        
+        $act_repo->writeLogs($act);                                                                             // Registering the action in logs
+
+        AlertsManip::alert([
+            'title'     => 'Action enregistrée',
+            'msg'       => 'La candidature a été refusée avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
+    /**
+     * Public method refusing an application
+     * 
+     * @param int $key_candidate The candidate's primary key
+     * @param int $key_application The primari key of the application
+     * @return void
+     */
+    public function rejectApplication(int $key_candidate, int $key_application): void {
+        $app_repo = new ApplicationRepository();
+        $application = $app_repo->get($key_application);                                                    // Fetching the application
+        $app_repo->reject($application);                                                                    // Refusing the application
+
+        $candidate = (new CandidateRepository())->get($key_candidate);                                      // Fetching the candidate
+
+        $job = (new JobRepository())->get($application->getJob());                                          // Fetching the job 
+        $str_job = $candidate->getGender() ? $job->getTitled() : $job->getTitledFeminin();
+
+        $act_repo = new ActionRepository();                 
+        $type = $act_repo->searchType("Refus candidature"); 
+        $desc = "Refus de la candidature de {$candidate->getFirstname()} {$candidate->getName()} au poste de {$str_job}";
+
+        $act = Action::create(                                                                              // Creating the action
+            $_SESSION['user']->getId(), 
+            $type->getId(),
+            $desc
+        );          
+        
+        $act_repo->writeLogs($act);                                                                         // Registering the action in logs
+
+        AlertsManip::alert([
+            'title'     => 'Action enregistrée',
+            'msg'       => 'La candidature a été refusée avec succès.',
+            'direction' => APP_PATH . "/candidates/" . $key_candidate
+        ]);
+    }
 
     // * DELETE * //
     /**

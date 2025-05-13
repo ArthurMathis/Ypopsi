@@ -85,6 +85,8 @@ class Application {
         if(!is_null($service_key) && !DataFormatManager::isValidKey($service_key)) {
             throw new ApplicationExceptions("Clé primaire du service invalide : {$service_key}. Clé attendue strictement positive.");
         }
+
+        // todo : tester la contrainte sql
     }
 
     /**
