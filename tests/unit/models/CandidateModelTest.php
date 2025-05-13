@@ -689,6 +689,149 @@ class CandidateModelTest extends TestCase {
         $this->assertEquals(getenv("CANDIDATE_TRUE_C"), $candidate->getC(), testErrorManager::cerr_eq(getenv("CANDIDATE_TRUE_C"), $candidate->getC()));
     }
 
+    //// WITH CORRIGED ////
+    /**
+     * Public function testing Candidate::__constructor with corriged phone number
+     *
+     * @return void
+     */
+    public function testConstructorWithCorrigedPhone1(): void {
+        $default_phone = getenv("TO_CORRECT_PHONE_1");
+        $corrected_phone = getenv("VALID_PHONE");
+        $candidate = new Candidate(
+            id          : getenv("VALID_KEY_1"),
+            name        : getenv("VALID_NAME"),
+            firstname   : getenv("VALID_FIRSTNAME_1"),
+            gender      : getenv("MALE_GENDER"),
+            email       : getenv("VALID_EMAIL_1"),
+            phone       : $default_phone,
+            address     : getenv("VALID_ADDRESS"),
+            city        : getenv("VALID_CITY"),
+            postcode    : getenv("VALID_POSTCODE"),
+            availability: getenv("VALID_DATE"),
+            visit       : getenv("VALID_DATE"),
+            rating      : getenv("VALID_RATING"),
+            description : getenv("CANDIDATE_DESCRIPTION"),
+            deleted     : getenv("CANDIDATE_FALSE_DELETED"),
+            a           : getenv("CANDIDATE_TRUE_A"),
+            b           : getenv("CANDIDATE_FALSE_B"),
+            c           : getenv("CANDIDATE_TRUE_C")
+        );
+
+        $this->assertInstanceOf(Candidate::class, $candidate);
+        $this->assertEquals(getenv("VALID_KEY_1"), $candidate->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $candidate->getId()));
+        $this->assertEquals(getenv("VALID_NAME"), $candidate->getName(), testErrorManager::cerr_eq(getenv("VALID_NAME"), $candidate->getName()));
+        $this->assertEquals(getenv("VALID_FIRSTNAME_1"), $candidate->getFirstname(), testErrorManager::cerr_eq(getenv("VALID_FIRSTNAME_1"), $candidate->getFirstname()));
+        $this->assertEquals(getenv("MALE_GENDER"), $candidate->getGender(), testErrorManager::cerr_eq(getenv("MALE_GENDER"), $candidate->getGender()));
+        $this->assertEquals(getenv("VALID_EMAIL_1"), $candidate->getEmail(), testErrorManager::cerr_eq(getenv("VALID_EMAIL_1"), $candidate->getEmail()));
+        $this->assertEquals($corrected_phone, $candidate->getPhone(), testErrorManager::cerr_eq($corrected_phone, $candidate->getPhone()));
+        $this->assertEquals(getenv("VALID_ADDRESS"), $candidate->getAddress(), testErrorManager::cerr_eq(getenv("VALID_ADDRESS"), $candidate->getAddress()));
+        $this->assertEquals(getenv("VALID_CITY"), $candidate->getCity(), testErrorManager::cerr_eq(getenv("VALID_CITY"), $candidate->getCity()));
+        $this->assertEquals(getenv("VALID_POSTCODE"), $candidate->getPostcode(), testErrorManager::cerr_eq(getenv("VALID_POSTCODE"), $candidate->getPostcode()));
+        $this->assertEquals(getenv("VALID_DATE"), $candidate->getAvailability(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $candidate->getAvailability()));
+        $this->assertEquals(getenv("VALID_DATE"), $candidate->getVisit(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $candidate->getVisit()));
+        $this->assertEquals(getenv("VALID_RATING"), $candidate->getRating(), testErrorManager::cerr_eq(getenv("VALID_RATING"), $candidate->getRating()));
+        $this->assertEquals(getenv("CANDIDATE_DESCRIPTION"), $candidate->getDescription(), testErrorManager::cerr_eq(getenv("CANDIDATE_DESCRIPTION"), $candidate->getDescription()));
+        $this->assertEquals(getenv("CANDIDATE_FALSE_DELETED"), $candidate->getDeleted(), testErrorManager::cerr_eq(getenv("CANDIDATE_FALSE_DELETED"), $candidate->getDeleted()));
+        $this->assertEquals(getenv("CANDIDATE_TRUE_A"), $candidate->getA(), testErrorManager::cerr_eq(getenv("CANDIDATE_TRUE_A"), $candidate->getA()));
+        $this->assertEquals(getenv("CANDIDATE_FALSE_B"), $candidate->getB(), testErrorManager::cerr_eq(getenv("CANDIDATE_FALSE_B"), $candidate->getB()));
+        $this->assertEquals(getenv("CANDIDATE_TRUE_C"), $candidate->getC(), testErrorManager::cerr_eq(getenv("CANDIDATE_TRUE_C"), $candidate->getC()));
+    }
+    /**
+     * Public function testing Candidate::__constructor with corriged phone number
+     *
+     * @return void
+     */
+    public function testConstructorWithCorrigedPhone2(): void {
+        $default_phone = getenv("TO_CORRECT_PHONE_2");
+        $corrected_phone = getenv("VALID_PHONE");
+        $candidate = new Candidate(
+            id          : getenv("VALID_KEY_1"),
+            name        : getenv("VALID_NAME"),
+            firstname   : getenv("VALID_FIRSTNAME_1"),
+            gender      : getenv("MALE_GENDER"),
+            email       : getenv("VALID_EMAIL_1"),
+            phone       : $default_phone,
+            address     : getenv("VALID_ADDRESS"),
+            city        : getenv("VALID_CITY"),
+            postcode    : getenv("VALID_POSTCODE"),
+            availability: getenv("VALID_DATE"),
+            visit       : getenv("VALID_DATE"),
+            rating      : getenv("VALID_RATING"),
+            description : getenv("CANDIDATE_DESCRIPTION"),
+            deleted     : getenv("CANDIDATE_FALSE_DELETED"),
+            a           : getenv("CANDIDATE_TRUE_A"),
+            b           : getenv("CANDIDATE_FALSE_B"),
+            c           : getenv("CANDIDATE_TRUE_C")
+        );
+
+        $this->assertInstanceOf(Candidate::class, $candidate);
+        $this->assertEquals(getenv("VALID_KEY_1"), $candidate->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $candidate->getId()));
+        $this->assertEquals(getenv("VALID_NAME"), $candidate->getName(), testErrorManager::cerr_eq(getenv("VALID_NAME"), $candidate->getName()));
+        $this->assertEquals(getenv("VALID_FIRSTNAME_1"), $candidate->getFirstname(), testErrorManager::cerr_eq(getenv("VALID_FIRSTNAME_1"), $candidate->getFirstname()));
+        $this->assertEquals(getenv("MALE_GENDER"), $candidate->getGender(), testErrorManager::cerr_eq(getenv("MALE_GENDER"), $candidate->getGender()));
+        $this->assertEquals(getenv("VALID_EMAIL_1"), $candidate->getEmail(), testErrorManager::cerr_eq(getenv("VALID_EMAIL_1"), $candidate->getEmail()));
+        $this->assertEquals($corrected_phone, $candidate->getPhone(), testErrorManager::cerr_eq($corrected_phone, $candidate->getPhone()));
+        $this->assertEquals(getenv("VALID_ADDRESS"), $candidate->getAddress(), testErrorManager::cerr_eq(getenv("VALID_ADDRESS"), $candidate->getAddress()));
+        $this->assertEquals(getenv("VALID_CITY"), $candidate->getCity(), testErrorManager::cerr_eq(getenv("VALID_CITY"), $candidate->getCity()));
+        $this->assertEquals(getenv("VALID_POSTCODE"), $candidate->getPostcode(), testErrorManager::cerr_eq(getenv("VALID_POSTCODE"), $candidate->getPostcode()));
+        $this->assertEquals(getenv("VALID_DATE"), $candidate->getAvailability(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $candidate->getAvailability()));
+        $this->assertEquals(getenv("VALID_DATE"), $candidate->getVisit(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $candidate->getVisit()));
+        $this->assertEquals(getenv("VALID_RATING"), $candidate->getRating(), testErrorManager::cerr_eq(getenv("VALID_RATING"), $candidate->getRating()));
+        $this->assertEquals(getenv("CANDIDATE_DESCRIPTION"), $candidate->getDescription(), testErrorManager::cerr_eq(getenv("CANDIDATE_DESCRIPTION"), $candidate->getDescription()));
+        $this->assertEquals(getenv("CANDIDATE_FALSE_DELETED"), $candidate->getDeleted(), testErrorManager::cerr_eq(getenv("CANDIDATE_FALSE_DELETED"), $candidate->getDeleted()));
+        $this->assertEquals(getenv("CANDIDATE_TRUE_A"), $candidate->getA(), testErrorManager::cerr_eq(getenv("CANDIDATE_TRUE_A"), $candidate->getA()));
+        $this->assertEquals(getenv("CANDIDATE_FALSE_B"), $candidate->getB(), testErrorManager::cerr_eq(getenv("CANDIDATE_FALSE_B"), $candidate->getB()));
+        $this->assertEquals(getenv("CANDIDATE_TRUE_C"), $candidate->getC(), testErrorManager::cerr_eq(getenv("CANDIDATE_TRUE_C"), $candidate->getC()));
+    }
+    /**
+     * Public function testing Candidate::__constructor with corriged phone number
+     *
+     * @return void
+     */
+    public function testConstructorWithCorrigedPhone3(): void {
+        $default_phone = getenv("TO_CORRECT_PHONE_3");
+        $corrected_phone = getenv("VALID_PHONE");
+        $candidate = new Candidate(
+            id          : getenv("VALID_KEY_1"),
+            name        : getenv("VALID_NAME"),
+            firstname   : getenv("VALID_FIRSTNAME_1"),
+            gender      : getenv("MALE_GENDER"),
+            email       : getenv("VALID_EMAIL_1"),
+            phone       : $default_phone,
+            address     : getenv("VALID_ADDRESS"),
+            city        : getenv("VALID_CITY"),
+            postcode    : getenv("VALID_POSTCODE"),
+            availability: getenv("VALID_DATE"),
+            visit       : getenv("VALID_DATE"),
+            rating      : getenv("VALID_RATING"),
+            description : getenv("CANDIDATE_DESCRIPTION"),
+            deleted     : getenv("CANDIDATE_FALSE_DELETED"),
+            a           : getenv("CANDIDATE_TRUE_A"),
+            b           : getenv("CANDIDATE_FALSE_B"),
+            c           : getenv("CANDIDATE_TRUE_C")
+        );
+
+        $this->assertInstanceOf(Candidate::class, $candidate);
+        $this->assertEquals(getenv("VALID_KEY_1"), $candidate->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $candidate->getId()));
+        $this->assertEquals(getenv("VALID_NAME"), $candidate->getName(), testErrorManager::cerr_eq(getenv("VALID_NAME"), $candidate->getName()));
+        $this->assertEquals(getenv("VALID_FIRSTNAME_1"), $candidate->getFirstname(), testErrorManager::cerr_eq(getenv("VALID_FIRSTNAME_1"), $candidate->getFirstname()));
+        $this->assertEquals(getenv("MALE_GENDER"), $candidate->getGender(), testErrorManager::cerr_eq(getenv("MALE_GENDER"), $candidate->getGender()));
+        $this->assertEquals(getenv("VALID_EMAIL_1"), $candidate->getEmail(), testErrorManager::cerr_eq(getenv("VALID_EMAIL_1"), $candidate->getEmail()));
+        $this->assertEquals($corrected_phone, $candidate->getPhone(), testErrorManager::cerr_eq($corrected_phone, $candidate->getPhone()));
+        $this->assertEquals(getenv("VALID_ADDRESS"), $candidate->getAddress(), testErrorManager::cerr_eq(getenv("VALID_ADDRESS"), $candidate->getAddress()));
+        $this->assertEquals(getenv("VALID_CITY"), $candidate->getCity(), testErrorManager::cerr_eq(getenv("VALID_CITY"), $candidate->getCity()));
+        $this->assertEquals(getenv("VALID_POSTCODE"), $candidate->getPostcode(), testErrorManager::cerr_eq(getenv("VALID_POSTCODE"), $candidate->getPostcode()));
+        $this->assertEquals(getenv("VALID_DATE"), $candidate->getAvailability(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $candidate->getAvailability()));
+        $this->assertEquals(getenv("VALID_DATE"), $candidate->getVisit(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $candidate->getVisit()));
+        $this->assertEquals(getenv("VALID_RATING"), $candidate->getRating(), testErrorManager::cerr_eq(getenv("VALID_RATING"), $candidate->getRating()));
+        $this->assertEquals(getenv("CANDIDATE_DESCRIPTION"), $candidate->getDescription(), testErrorManager::cerr_eq(getenv("CANDIDATE_DESCRIPTION"), $candidate->getDescription()));
+        $this->assertEquals(getenv("CANDIDATE_FALSE_DELETED"), $candidate->getDeleted(), testErrorManager::cerr_eq(getenv("CANDIDATE_FALSE_DELETED"), $candidate->getDeleted()));
+        $this->assertEquals(getenv("CANDIDATE_TRUE_A"), $candidate->getA(), testErrorManager::cerr_eq(getenv("CANDIDATE_TRUE_A"), $candidate->getA()));
+        $this->assertEquals(getenv("CANDIDATE_FALSE_B"), $candidate->getB(), testErrorManager::cerr_eq(getenv("CANDIDATE_FALSE_B"), $candidate->getB()));
+        $this->assertEquals(getenv("CANDIDATE_TRUE_C"), $candidate->getC(), testErrorManager::cerr_eq(getenv("CANDIDATE_TRUE_C"), $candidate->getC()));
+    }
+
     //// WITH INVALID ////
     /**
      * Public function testing Candidate::__constructor with invalid id
@@ -820,8 +963,8 @@ class CandidateModelTest extends TestCase {
      * @return void
      */
     public function testConstructorWithInvalidPhone(): void {
-        $phone = getenv("WRONG_PHONE");
-        $this->expectException(CandidateExceptions::class);
+        $phone = getenv("WRONG_PHONE_1");
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Le numéro de téléphone : {$phone} est invalide.");
 
         new Candidate(
