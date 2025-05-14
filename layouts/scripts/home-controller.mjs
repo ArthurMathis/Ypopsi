@@ -1,5 +1,5 @@
 // * IMPORTS * //
-import { List } from "./modules/List.mjs"; 
+import List from "./modules/List.mjs";
 import { listManipulation } from "./modules/listManipulation.mjs";
 
 // * LISTE DYNAMIQUE * //
@@ -37,30 +37,27 @@ entete.forEach((item, index) => {
     item.addEventListener('click', () => {
         method_tri = !method_tri;
 
-        if(item_clicked != index)
+        if(item_clicked != index) {
             method_tri = true;
+        }
+
         const candidatures_triees = listManipulation.sortBy(candidatures, index, method_tri);
         item_clicked = index;
 
-        if(candidatures_triees == null || candidatures_triees.length === 0)
+        if(candidatures_triees == null || candidatures_triees.length === 0) {
             alert("Alerte : Tri non executé.");
-        
-        else {
+        } else {
             listManipulation.listManipulation.destroyTable(document.querySelector('.liste_items .table-wrapper table tbody'));
             listManipulation.listManipulation.createTable(document.querySelector('.liste_items .table-wrapper table'), candidatures_triees);
 
             candidatures = listManipulation.recupApplications(source)
-
             entete.forEach(items => {
                 items.classList.remove('active');
                 items.classList.remove('reverse-tri');
             });
-            item.classList.add('active');
-            if(method_tri)
-                item.classList.add('reverse-tri');
-            else 
-                item.classList.remove('reverse-tri');
-        }
 
+            item.classList.add('active');
+            method_tri ? item.classList.add('reverse-tri') : item.classList.remove('reverse-tri');
+        }
     });
 });
