@@ -73,7 +73,7 @@ class TypeOfContractsRepository extends Repository {
      * @return TypeOfContracts
      */
     public function search(string &$type_of_contracts): TypeOfContracts {
-        $request = "SELECT * FROM Types_of_contracts WHERE Titled LIKE :search";
+        $request = "SELECT * FROM Types_of_contracts WHERE Titled = :search";
 
         $params = array("search" => $type_of_contracts);
 

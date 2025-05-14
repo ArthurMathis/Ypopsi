@@ -21,7 +21,7 @@ class JobRepository extends Repository {
     public function get(int $key_job): Job {
         $request = "SELECT * FROM Jobs WHERE Id = :id";
 
-        $params = array("id" => $key_job);
+        $params = ["id" => $key_job];
 
         $fetch = $this->get_request($request, $params, true, true);
 
@@ -83,13 +83,12 @@ class JobRepository extends Repository {
      * @param string $job The job's title
      * @return Job
      */
-    public function search(string &$job): Job {
-        $request = "SELECT * FROM Jobs WHERE Titled = :titled";
-        
+    public function search(string &$job, bool $gender = true): Job {
+        $gender_request = $gender ? "Titled" : "TitledFeminin";
+        $request = "SELECT * FROM Jobs WHERE $gender_request = :titled";
         $params = [ "titled" => $job ];
 
         $fetch = $this->get_request($request, $params, true, true);
-
         return Job::fromArray($fetch);
     }
 }

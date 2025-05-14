@@ -4,7 +4,6 @@ namespace App\Core\Tools\FileManager;
 
 use \Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use App\Core\Tools\FileManager;
 use App\Core\Tools\Registering;
 
 /**
@@ -44,20 +43,12 @@ class FileReader {
         ?string $registerLogsPath = null,
         ?string $errorsLogsPath = null
     ) {
-        echo "<h2>Lecture du fichier : " . $this->getPath() . "</h2>";
-
-        echo "<h3>Page : " . $this->getPage() . "</h3>";
         if($page < 0) {
             die("Il est impossble de lire une feuille d'indice négatif");
         }
 
         $this->logsRegister = new FilePrinter($registerLogsPath ?? FileReader::getBasedRegistersLogsPath());
-        
-        echo "<h3>Fichier de logs : " . $this->getLogsRegister()->getPath() . "</h3>";
-
         $this->errorsRegister = new FilePrinter($errorsLogsPath ?? FileReader::getBasedErrorsLogsPath());
-        
-        echo "<h3>Fichier d'erreurs : " . $this->getErrorsRegister()->getPath() . "</h3>";
     }
 
 
@@ -123,47 +114,49 @@ class FileReader {
      * @return void
      */
     public function readFile() {
-        $file = IOFactory::load($this->getPath());                                                      // Loading the file
-        $sheet = $file->getSheet($this->getPage());                                                     // Loading the page
+        $file = IOFactory::load($this->getPath());                                                          // Loading the file
+        $sheet = $file->getSheet($this->getPage());                                                         // Loading the page
         $size = $sheet->getHighestRow();
 
-        $this->getLogsRegister()->printRow(1, Registering::toXlsx());                                   // Writing the header
+        $this->getLogsRegister()->printRow(1, Registering::toXlsx());                                       // Writing the header
 
-        $rowStructure = (array) $this->readLine($sheet, 1);                                             // Reading header
+        $rowStructure = (array) $this->readLine($sheet, 1);                                                 // Reading header
         $this->interpreter = new FileInterpreter($rowStructure);
 
         $resgister_row = 2;
         $err_row = 1;
-        for($rowCount = 2; $rowCount <= $size; $rowCount++) {                                           // Reading the file
-            $registering = new Registering();
 
+        for($rowCount = 2; $rowCount <= $size; $rowCount++) {                                               // Reading the file
+            $registering = new Registering();
             $rowData = (array) $this->readLine($sheet, $rowCount);
 
-            if(!$this->isEmptyRow($rowData)) try {
-                $this->getInterpreter()->rowAnalyse($registering, $rowData);                           // Analyzing the row
+            if(!$this->isEmptyRow($rowData)){
+                try {
+                    $this->getInterpreter()->rowAnalyse($registering, $rowData);                           // Analyzing the row
+                    $this->getLogsRegister()->printRow($resgister_row, $registering->toArray());           // Writing the registration 
+                    $resgister_row++;
 
-                $this->getLogsRegister()->printRow($resgister_row, $registering->toArray());           // Writing the registration 
-                $resgister_row++;
+                } catch(Exception $e) {
+                    $rowData["Erreur"] = get_class($e);
+                    $rowData["Erreur description"] = $e->getMessage();
 
-            } catch(Exception $e) {
-                $rowData["Erreur"] = get_class($e);
-                $rowData["Erreur description"] = $e->getMessage();
-
-                $this->getInterpreter()->deleteRegistering($registering);                               // Deleting incompleted data
-
-                if($err_row == 1) {
-                    array_push($rowStructure, "Erreur");
-                    array_push($rowStructure, "Erreur description");
-
-                    $this->getErrorsRegister()->printRow($err_row, $rowStructure);
+                    if($err_row == 1) {
+                        array_push($rowStructure, "Erreur");
+                        array_push($rowStructure, "Erreur description");
+                        
+                        $this->getErrorsRegister()->printRow($err_row, $rowStructure);
+                        $err_row++;
+                    }
+                    
+                    $this->getErrorsRegister()->printRow($err_row, $rowData);                               // Registering the erreors logs
                     $err_row++;
+                    
+                    $this->getInterpreter()->deleteRegistering($registering);                               // Deleting incompleted data
                 }
-
-                $this->getErrorsRegister()->printRow($err_row, $rowData);                               // Registering the erreors logs
-                $err_row++;
             }
 
             unset($registering);
+            $this->saveWork();
         }
 
         $this->saveWork();
@@ -186,7 +179,8 @@ class FileReader {
         $cellIterator->setIterateOnlyExistingCells(false); 
 
         foreach ($cellIterator as $cell) {
-            $rowData[] = $cell->getValue();
+            $temp = $cell->getValue();
+            $rowData[] = isset($temp) ? trim($temp) : null;
         }
 
         return $rowData;
@@ -201,11 +195,8 @@ class FileReader {
      */
     protected function isEmptyRow(array $row): bool {
         $i = 0;
-
         $empty = true;
-
         $size = count($row);
-
         while($empty && $i < $size) {
             if(! is_null($row[$i]) || !empty($row[$i])) {
                 $empty = false;

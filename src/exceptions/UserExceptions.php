@@ -3,8 +3,9 @@
 namespace App\Exceptions;
 
 /**
- * Class representing one user's Exception
- * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
+ * Class representing one user's 
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class UserExceptions extends \Exception {
     public function __construct($message){

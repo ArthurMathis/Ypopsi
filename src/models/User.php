@@ -9,7 +9,7 @@ use App\Exceptions\UserExceptions;
 
 /**
  * Class representing one user
- * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class User implements PeopleInterface {
     /**

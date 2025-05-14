@@ -6,7 +6,8 @@ define('VIEWS_NAMESPACE', "App\\Views\\");
 
 /**
  * Abstract class representing a controller
- * @author Arthur MATHIS - arthur.mathis@uha.fr
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 abstract class Controller {
     /**

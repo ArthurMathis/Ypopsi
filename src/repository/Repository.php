@@ -41,35 +41,36 @@ class Repository {
      * @param array<string> $params The request data parameters
      * @param boolean $unique TRUE if the waiting result is one unique item, FALSE otherwise
      * @param boolean $present TRUE if if the waiting result can't be null, FALSE otherwise
-     * @return ?array
+     * @throws Exception
+     * @return array
      */
     protected function get_request(
         string $request, 
         ?array $params = [], 
         bool $unique = false,
         bool $present = false
-    ): ?array { 
+    ): array { 
         try {
             $query = $this->getConnection()->prepare($request);
             $query->execute($params);
             $result = $unique ? $query->fetch(PDO::FETCH_ASSOC) : $query->fetchAll(PDO::FETCH_ASSOC);
             $query->closeCursor();
 
-            if(!$result) {
-                if($present) {
-                    throw new Exception("Requête: " . $request ."\nAucun résultat correspondant");
-                } else {
-                    return [];
-                }
-            } else {
-                return $result;
-            }    
+            if(!$result && $present) {
+                throw new Exception("Requête: " . $request ."\nAucun résultat correspondant");
+            }
+
+            return $result;
+
         } catch(Exception $e){
-            AlertsManip::error_alert([
-                'title' => 'Erreur lors de la requête à la base de données',
-                'msg' => $e
-            ]);
-            return null;
+            $class = get_class($e);
+            throw new $class("Erreur lors de la requête à la base de données : " . $e->getMessage());
+
+            // AlertsManip::error_alert([
+            //     'title' => 'Erreur lors de la requête à la base de données',
+            //     'msg' => $e
+            // ]);
+            // return null;
         }
     }
     /**

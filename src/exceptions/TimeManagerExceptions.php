@@ -3,8 +3,9 @@
 namespace App\Exceptions;
 
 /**
- * Class representing one TimeManager's Exception
- * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
+ * Class representing one TimeManager's 
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class TimeManagerExceptions extends \Exception {
     public function __construct($message){

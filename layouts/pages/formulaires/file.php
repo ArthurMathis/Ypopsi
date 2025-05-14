@@ -20,7 +20,7 @@
             type="text" 
             name="file" 
             id="file" 
-            placeholder="./database/file.xlsx" 
+            placeholder="./database/assets/file.xlsx" 
             required
         >
     </div>

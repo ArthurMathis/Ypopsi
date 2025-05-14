@@ -8,7 +8,7 @@ use App\Exceptions\TimeManagerExceptions;
 
 /**
  * Class representing a TimeManager (time)
- * @author Arthur MATHIS - arthur.mathi@diaconat-mulhouse.fr
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class TimeManager {
     /**

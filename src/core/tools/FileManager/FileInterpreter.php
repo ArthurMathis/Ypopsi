@@ -3,6 +3,7 @@
 namespace App\Core\Tools\FileManager;
 
 use \Exception;
+use App\Exceptions\DataInsertionExceptions;
 use App\Core\Tools\Registering;
 use App\Core\Tools\TimeManager;
 use App\Models\Candidate;
@@ -129,12 +130,12 @@ class FileInterpreter {
     ): ?string {
         $index = $this->getIndex($column);
         if($index == FileInterpreter::$BASED_INDEX) {
-            throw new Exception("La colonne {$column} est introuvable");
+            throw new DataInsertionExceptions("La colonne {$column} est introuvable");
         }
 
         $response = $data[$index];
         if($present && empty($response)) {
-            throw new Exception("Impossible d'enregistrer un(e) nouveau(elle) {$table_err} sans {$column}.");
+            throw new DataInsertionExceptions("Impossible d'enregistrer un(e) nouveau(elle) {$table_err} sans {$column}.");
         }
 
         return $response;
@@ -148,15 +149,33 @@ class FileInterpreter {
      * @return void
      */
     public function rowAnalyse(registering &$registering, array &$data) {
-        echo "<h2>On enregistre un nouveau candidat</h2>";
+        echo "<p>On génère le profil candidat</p>";
         $registering->candidate = $this->makecandidate($data); 
+        var_dump($registering->candidate);
+        echo "<br>";
+
+        echo "<p>On génère la candidature</p>";
         $registering->application = $this->makeApplication($data, $registering->candidate);
+        var_dump($registering->candidate);
+        echo "<br>";
+
+        echo "<p>On génère le contrat</p>";
         $registering->contract = $this->makeContract($data, $registering->candidate, $registering->application);
+        var_dump($registering->candidate);
+        echo "<br>";
+
+        echo "<p>On ajoute la qualification</p>";
         $registering->qualification = $this->makeQualification($data, $registering->candidate);
+        var_dump($registering->candidate);
+        echo "<br>";
+
+        echo "<p>On ajoute les aides'</p>";
         $registering->helps = $this->makeHelps($data, $registering->candidate);
+        var_dump($registering->candidate);
+        echo "<br>";
     }
 
-    // * ANALYSE * //
+    // * MAKE * //
     /**
      * Protected method getting the candidate's information and register him in the database
      *
@@ -262,48 +281,12 @@ class FileInterpreter {
     }
 
     /**
-     * Protected method converting an Excel date to a string
-     * 
-     * 25569 est le nombre de jours entre le 1er janvier 1900 et le 1er janvier 1970
-     *
-     * @param int $excelDate The Excel date
-     * @return string
-     */
-    protected function excelToDate(int $excelDate): string {
-        $unixDate = ($excelDate - 25569) * 86400; 
-        return date('Y-m-d', $unixDate);
-    }
-
-    /**
-     * Protected method adapting the date format 
-     *
-     * @param string $date The date
-     * @return string
-     */
-    protected function completeDate(string $date): string {
-        switch($date) {
-            case TimeManager::isDate($date, 'Y-m-d'): 
-                return $date;
-
-            case TimeManager::isDate($date . '-01', 'Y-m-d'): 
-                return $date . '-01';
-
-            case TimeManager::isDate($date . '-01-01', 'Y-m-d'): 
-                return $date . '-01-01';
-
-            case (bool) preg_match('/^\d{5}$/', $date):
-                return $this->excelToDate((int) $date);
-
-            default: throw new InvalidArgumentException("Impossible d'enregistrer une date invalide : {$date}.");
-        }
-    }
-
-    /**
      * Protected method geeting the information of an application and register its in the database
      *
      * @param array $data The row 
      * @param int $key_candidate The candidate's primary key
-     * @throws Exception If the application is invalid
+     * @throws DataInsertionExceptions If the application is invalid
+     * @throws PDOException If any piece of the application's data is invalid
      * @return int The primary key of the application
      */
     protected function makeApplication(array &$data, int $key_candidate): int {
@@ -338,10 +321,12 @@ class FileInterpreter {
             FileInterpreter::$APPLICATION_TABLE
         );
 
+        $gender = (new CandidateRepository())->get($key_candidate)->getGender();
+
         $application = new Application(
             id               : null,
             candidate_key    : $key_candidate,
-            job_key          : (new JobRepository())->search($job)->getId(),
+            job_key          : (new JobRepository())->search($job, $gender)->getId(),
             establishment_key: is_string($estbablishment) ? (new EstablishmentRepository())->search($estbablishment)->getId() : null,
             service_key      : is_string($service) ? (new ServiceRepository())->search($service)->getId() : null,
             source_key       : (new SourceRepository())->search($source)->getId(),
@@ -361,6 +346,8 @@ class FileInterpreter {
      * @param array $data The row
      * @param int $key_candidate The candidate's primary key 
      * @param int $key_application The primary key of the application
+     * @throws DataInsertionExceptions If the contract is invalid
+     * @throws PDOException If any piece of the contract's data is invalid
      * @return ?int
      */
     protected function makeContract(array &$data, int $key_candidate, int $key_application): ?int {
@@ -414,6 +401,8 @@ class FileInterpreter {
      *
      * @param array $data The row
      * @param int $key_candidate The candidate's primary key 
+     * @throws DataInsertionExceptions If the qualification is invalid
+     * @throws PDOException If any piece of the qualification's data is invalid
      * @return ?int
      */
     protected function makeQualification(array $data, int $key_candidate): ?int {
@@ -446,12 +435,14 @@ class FileInterpreter {
 
     /**
      * Protected method geeting the information of helps and register them in the database
+     * 
+     * todo : gérer les primes de cooptations ?
      *
      * @param array $data The row
      * @param integer $key_candidate The candidate's primary key 
+     * @throws DataInsertionExceptions If the help is invalid
+     * @throws PDOException If any piece of the help's data is invalid
      * @return array
-     * 
-     * todo : gérer les primes de cooptations
      */
     protected function makeHelps(array $data, int $key_candidate): array {
         $helps_str = (string) $this->getColumnContent(                                                           // Getting the helps
@@ -513,6 +504,44 @@ class FileInterpreter {
 
         if(!empty($register->candidate)) {                                                              // Deleting the candidate
             (new CandidateRepository())->securityRemove($register->candidate);
+        }
+    }
+
+    // * CONVERT * //
+        /**
+     * Protected method converting an Excel date to a string
+     * 
+     * 25569 est le nombre de jours entre le 1er janvier 1900 et le 1er janvier 1970
+     *
+     * @param int $excelDate The Excel date
+     * @return string
+     */
+    protected function excelToDate(int $excelDate): string {
+        $unixDate = ($excelDate - 25569) * 86400; 
+        return date('Y-m-d', $unixDate);
+    }
+
+    /**
+     * Protected method adapting the date format 
+     *
+     * @param string $date The date
+     * @return string
+     */
+    protected function completeDate(string $date): string {
+        switch($date) {
+            case TimeManager::isDate($date, 'Y-m-d'): 
+                return $date;
+
+            case TimeManager::isDate($date . '-01', 'Y-m-d'): 
+                return $date . '-01';
+
+            case TimeManager::isDate($date . '-01-01', 'Y-m-d'): 
+                return $date . '-01-01';
+
+            case (bool) preg_match('/^\d{5}$/', $date):
+                return $this->excelToDate((int) $date);
+
+            default: throw new InvalidArgumentException("Impossible d'enregistrer une date invalide : {$date}.");
         }
     }
 }

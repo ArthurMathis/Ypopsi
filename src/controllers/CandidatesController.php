@@ -30,6 +30,11 @@ use App\Repository\SourceRepository;
 use App\Repository\TypeOfContractsRepository;
 use App\Repository\UserRepository;
 
+/**
+ * Class representing the candidate page controller
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
+ */
 class CandidatesController extends Controller {
     /**
      * Constructor class

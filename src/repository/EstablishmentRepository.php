@@ -73,9 +73,9 @@ class EstablishmentRepository extends Repository {
      * @return Establishment
      */
     public function search(string &$establishment): Establishment {
-        $request = "SELECT * FROM Establishments WHERE Titled LIKE :establishment";
+        $request = "SELECT * FROM Establishments WHERE Titled = :establishment";
 
-        $params = array("establishment" => "%$establishment%");
+        $params = array("establishment" => $establishment);
 
         $fetch = $this->get_request($request, $params, true, true);
 

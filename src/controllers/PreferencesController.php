@@ -13,6 +13,11 @@ use App\Repository\EstablishmentRepository;
 use App\Core\Tools\FileManager\FileReader;
 use Exception;
 
+/**
+ * Class representing the preferences page controller
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
+ */
 class PreferencesController extends Controller {
     /**
      * Constructor class

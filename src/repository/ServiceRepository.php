@@ -73,7 +73,7 @@ class ServiceRepository extends Repository {
      * @return Service
      */
     public function search(string &$service): Service {
-        $request = "SELECT * FROM Services WHERE Titled LIKE :service";
+        $request = "SELECT * FROM Services WHERE Titled = :service";
 
         $params = [ "service" => $service ];
 
