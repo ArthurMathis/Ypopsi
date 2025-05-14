@@ -429,18 +429,14 @@ class CandidatesController extends Controller {
         switch(true) {
             // Existing candidate
             case isset($key_candidate): 
-                echo "Clé primaire détectée : $key_candidate.<br>"; // todo : remove after tests
                 $candidate = $can_repo->get($key_candidate);
                 break;
 
             // New candidate
             case isset($_SESSION["candidate"]):
-                echo "Enregistrement du candidat en session détecté.<br>"; // todo : remove after tests
                 $candidate = $_SESSION["candidate"];
                 $candidate_id = (new CandidateRepository())->inscript($candidate);                                  // Registering the new candidate and his informations
                 $candidate->setId($candidate_id); 
-
-                echo "Candidat enregistré avec la clé : $candidate_id.<br>"; // todo : remove after tests
 
                 if(isset($_SESSION["qualifications"])) {                                                            // Adding the qualifications to the candidate
                     $qua_repo = new GetQualificationRepository();
@@ -470,14 +466,6 @@ class CandidatesController extends Controller {
         }
         
         //// APPLICATION ////
-        echo "On génère la candidature...<br>"; // todo : remove after tests
-        echo "Clé primaire du candidat : " . $candidate->getId() . "<br>"; // todo : remove after tests
-        echo "Clé primaire du poste : " . $_POST["job"] . "<br>"; // todo : remove after tests
-        echo "Clé primaire de la source " . $_POST["source"] . "<br>"; // todo : remove after tests
-        echo "Clé primaire du type " . $_POST["type_of_contract"] . "<br>"; // todo : remove after tests
-        echo "Clé primaire de l'établissement " . $_POST["establishment"] . "<br>"; // todo : remove after tests
-        echo "Clé primaire du service " . $_POST["service"] . "<br>"; // todo : remove after tests
-
         $application = Application::create(                                                                     // Creating the application
             candidate    : $candidate->getId(),
             job          : (int) $_POST["job"],

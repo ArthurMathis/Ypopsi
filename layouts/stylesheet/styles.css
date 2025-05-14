@@ -211,7 +211,10 @@ form {
   border-radius: var(--gap);
   background-color: var(--light-white);
 }
-form p {
+form p, 
+form i, 
+form b, 
+form label {
   color: var(--white);
 }
 form h3 {
@@ -228,7 +231,8 @@ form section {
   width: 100%;
 }
 form input, 
-form select {
+form select,
+.custom-file-upload {
   /*width: 520px;*/
   width: 100%;
   height: fit-content;
@@ -246,11 +250,13 @@ form select {
 }
 form input::placeholder,
 form select::placeholder,
-form textarea::placeholder {
+form textarea::placeholder,
+.custom-file-upload {
   color: #d8d8d8;
 }
 form input:is(:hover, :focus),
-form select:is(:hover, :focus) {
+form select:is(:hover, :focus),
+.custom-file-upload:is(:hover, :focus) {
   border: none;
   box-shadow: 0 0 0 5px rgba(254, 254, 254, 0.2);
 }
@@ -593,6 +599,7 @@ button.form_button:is(:hover, :focus),
   margin: 0;
 
   color: var(--black);
+  text-align: left !important;
   font-size: var(--font-size-standard);
   font-family: "Roboto", sans-serif;
 }

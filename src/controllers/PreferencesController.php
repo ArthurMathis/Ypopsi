@@ -10,6 +10,7 @@ use App\Repository\ActionRepository;
 use App\Repository\UserRepository;
 use App\Repository\RoleRepository;
 use App\Repository\EstablishmentRepository;
+use App\Core\Tools\FileManager\FileReader;
 use Exception;
 
 class PreferencesController extends Controller {
@@ -277,5 +278,56 @@ class PreferencesController extends Controller {
             'msg' => 'La mot de passe a été réinitialisé avec succès.',
             'direction' => APP_PATH . "/preferences/users/profile/" . $key_user
         ]);
+    }
+
+    // * OTHERS * //
+    /**
+     * Public method displaying the input file html form
+     *
+     * @return void
+     */
+    public function displayXlsxLoader(): void {
+        $extensions = explode(',', getenv("ACCEPTED_FILE_EXTENSIONS"));
+        $formattedExtensions = array_map(function($ext) { return '.' . trim($ext); }, $extensions);
+        $accepted_files = implode(', ', $formattedExtensions);
+
+        $this->View->displayInputFile($accepted_files);
+    }
+    
+    /**
+     * Public method inserting the data in the database
+     *
+     * @throws Exception If the file does not exist or is not valid
+     * @return void
+     */
+    public function importFile(): void {
+        $filename = $_POST['file'];
+        if(file_exists($filename) && self::isValidPathExtension($filename)) {
+            $file_reader = new FileReader($filename);
+            $response = $file_reader->readFile();
+
+            AlertsManip::alert([
+                'title'     => 'Importation réussie',
+                'msg'       => "La procédure d'importation s'est terimnée avec <b>" . $response["registerings"] . " succès</b> et <b>" . $response["errors"] 
+                                . " erreurs</b>. Vous pouvez consulter les logs pour plus de détails dans le dossier : <b>" . FileReader::getBasedLogsPath() . ".",
+                'confirm'   => "Retourner à la page de préférences",
+                'confirmButton' => "Retourner",
+                'direction' => APP_PATH . "/preferences"
+            ]);
+        } else {
+            throw new Exception("Le fichier : <b>" . $filename . "</b>, n'existe pas ou n'est pas au bon format.");
+        }
+    }
+
+    /**
+     * Protected static method checking if the file is valid
+     *
+     * @param string $type The file's type
+     * @return boolean
+     */
+    protected static function isValidPathExtension(string $type): bool {
+        $accepted_files = explode(",", getenv("ACCEPTED_FILE_EXTENSIONS"));
+        $extension = pathinfo($type, PATHINFO_EXTENSION);
+        return in_array($extension, $accepted_files);
     }
 }

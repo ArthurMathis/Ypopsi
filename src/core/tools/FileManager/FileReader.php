@@ -44,13 +44,20 @@ class FileReader {
         ?string $registerLogsPath = null,
         ?string $errorsLogsPath = null
     ) {
+        echo "<h2>Lecture du fichier : " . $this->getPath() . "</h2>";
+
+        echo "<h3>Page : " . $this->getPage() . "</h3>";
         if($page < 0) {
             die("Il est impossble de lire une feuille d'indice négatif");
         }
 
         $this->logsRegister = new FilePrinter($registerLogsPath ?? FileReader::getBasedRegistersLogsPath());
         
+        echo "<h3>Fichier de logs : " . $this->getLogsRegister()->getPath() . "</h3>";
+
         $this->errorsRegister = new FilePrinter($errorsLogsPath ?? FileReader::getBasedErrorsLogsPath());
+        
+        echo "<h3>Fichier d'erreurs : " . $this->getErrorsRegister()->getPath() . "</h3>";
     }
 
 
@@ -90,17 +97,23 @@ class FileReader {
     public function getInterpreter(): FileInterpreter { return $this->interpreter; }
 
     /**
+     * Public static method returning the based path for the file
+     *
+     * @return string
+     */
+    public static function getBasedLogsPath(): string { return "./database/logs"; }
+    /**
      * Public static method returning the based path for logs of registerings
      *
      * @return string
      */
-    public static function getBasedRegistersLogsPath(): string { return "./database/logs/registerings_logs.xlsx"; }
+    public static function getBasedRegistersLogsPath(): string { return FileReader::getBasedLogsPath() . "/registerings_logs.xlsx"; }
     /**
      * Public static method returning the based path for logs of errors
      *
      * @return string
      */
-    public static function getBasedErrorsLogsPath(): string { return "./database/logs/errors_logs.xlsx"; }
+    public static function getBasedErrorsLogsPath(): string { return FileReader::getBasedLogsPath() . "/errors_logs.xlsx"; }
 
 
     // * READ * //
@@ -129,21 +142,12 @@ class FileReader {
             if(!$this->isEmptyRow($rowData)) try {
                 $this->getInterpreter()->rowAnalyse($registering, $rowData);                           // Analyzing the row
 
-                echo "On a enregistré la ligne : ";
-                print_r($registering);
-                echo "<br>";
-
                 $this->getLogsRegister()->printRow($resgister_row, $registering->toArray());           // Writing the registration 
                 $resgister_row++;
 
             } catch(Exception $e) {
                 $rowData["Erreur"] = get_class($e);
                 $rowData["Erreur description"] = $e->getMessage();
-
-                echo "Erreur : " . $e->getMessage() . "<br>";
-                echo "On supprime : ";
-                print_r($registering);
-                echo "<br><br>";
 
                 $this->getInterpreter()->deleteRegistering($registering);                               // Deleting incompleted data
 
@@ -163,6 +167,10 @@ class FileReader {
         }
 
         $this->saveWork();
+        return [
+            "registerings" => $resgister_row - 2,
+            "errors"       => $err_row - 2,
+        ];
     }
 
     /**
@@ -174,7 +182,6 @@ class FileReader {
      */
     protected function readLine($sheet, int $row) {
         $rowData = [];
-
         $cellIterator = $sheet->getRowIterator($row)->current()->getCellIterator();
         $cellIterator->setIterateOnlyExistingCells(false); 
 
@@ -217,7 +224,6 @@ class FileReader {
      */
     protected function saveWork() {
         $this->getLogsRegister()->save();
-
         $this->getErrorsRegister()->save();
     }
 }

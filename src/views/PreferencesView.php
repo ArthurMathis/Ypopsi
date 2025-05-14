@@ -225,6 +225,21 @@ class PreferencesView extends View {
         $this->displayUserForm($establishments_list, $role_list);
     }  
 
+    /**
+     * Public function displaying the input file HTML form page
+     *
+     * @param string $accepted_files The accepted files types
+     * @return void
+     */
+    public function displayInputFile(string $accepted_files = ""): void {
+        $this->generateCommonHeader('Préférences', [FORMS_STYLES.DS.'small-form.css']);
+        $this->generateMenu(true, null);
+
+        include(FORMULAIRES.DS.'file.php');
+
+        $this->generateCommonFooter();
+    }
+
     // * DISPLAY EDIT * //
     /**
      * Public function displaying the edit user HTML form page

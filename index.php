@@ -136,7 +136,8 @@ try {
     $router->addRoute("/preferences/hubs/update/{hub}", PreferencesController::class, "updateHub", [FeatureMiddleware::$EDIT_HUBS], AuthMiddleware::$MODERATOR);                                                    // todo
 
     //// OTHERS ////
-    $router->addRoute("/preferences/xlsxLoader", PreferencesController::class, "dispalyXlsxLoader", null, AuthMiddleware::$OWNER);                                                                                  // todo
+    $router->addRoute("/preferences/xlsxLoader", PreferencesController::class, "displayXlsxLoader", null, AuthMiddleware::$OWNER);                                                                                  // todo
+    $router->addRoute("/prefrences/xlsxLoader/import", PreferencesController::class, "importFile", null, AuthMiddleware::$OWNER);                                                                                      // todo
     $router->addRoute("/prefrences/xlsxLoader/run", PreferencesController::class, "insertData", null, AuthMiddleware::$OWNER);                                                                                      // todo
     $router->addRoute("/preferences/features_toggles", PreferencesController::class, "displayFeaturesToggles", null, AuthMiddleware::$OWNER);                                                                       // todo
     $router->addRoute("/preferences/features_toggles/update/{feature}", PreferencesController::class, "updateFeature", null, AuthMiddleware::$OWNER);                                                               // todo

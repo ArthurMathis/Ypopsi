@@ -16,5 +16,8 @@
     "minimum-stability": "stable",
     "require-dev": {
         "phpunit/phpunit": "^11.5"
+    },
+    "require": {
+        "phpoffice/phpspreadsheet": "^4.2"
     }
 }

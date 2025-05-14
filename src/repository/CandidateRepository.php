@@ -113,37 +113,47 @@ class CandidateRepository extends Repository {
 
         $values_request = " VALUES (:name, :firstname, :gender";
 
-        if(!empty($candidate->getEmail())) {
+        if(!is_null($candidate->getEmail())) {
             $request .= ", Email";
             $values_request .= ", :email";
         }
 
-        if(!empty($candidate->getPhone())) {
+        if(!is_null($candidate->getPhone())) {
             $request .= ", Phone";
             $values_request .= ", :phone";
         }
 
-        if(!empty($candidate->getAddress()) && !empty($candidate->getCity()) && !empty($candidate->getPostcode())) {
-            $request .= ", Address, City, Postcode";
-            $values_request .= ", :address, :city, :postcode";
+        if(!is_null($candidate->getAddress())) {
+            $request .= ", Address";
+            $values_request .= ", :address";
         }
 
-        if(!empty($candidate->getDescription())) {
+        if(!is_null($candidate->getCity())) {
+            $request .= ", City";
+            $values_request .= ", :city";
+        }
+
+        if(!is_null($candidate->getPostcode())) {
+            $request .= ", Postcode";
+            $values_request .= ", :postcode";
+        }
+
+        if(!is_null($candidate->getDescription())) {
             $request .= ", Description";
             $values_request .= ", :description";
         }
 
-        if(!empty($candidate->getRating())) {
+        if(!is_null($candidate->getRating())) {
             $request .= ", Rating";
             $values_request .= ", :rating";
         }
 
-        if(!empty($candidate->getAvailability())) {
+        if(!is_null($candidate->getAvailability())) {
             $request .= ", Availability";
             $values_request .= ", :availability";
         }
 
-        if(!empty($candidate->getVisit())) {
+        if(!is_null($candidate->getVisit())) {
             $request .= ", MedicalVisit";
             $values_request .= ", :visit";
         }
@@ -151,7 +161,7 @@ class CandidateRepository extends Repository {
         $request .= ")" . $values_request . ")";
         unset($values_request);
     
-        return $this->post_request($request, $candidate->toSQL());
+        return $this->post_request($request, $candidate->toSQL(completed: false));
     }
 
     // * UPDATE * //

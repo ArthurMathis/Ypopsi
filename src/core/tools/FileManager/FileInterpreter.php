@@ -4,6 +4,7 @@ namespace App\Core\Tools\FileManager;
 
 use \Exception;
 use App\Core\Tools\Registering;
+use App\Core\Tools\TimeManager;
 use App\Models\Candidate;
 use App\Models\Application;
 use App\Models\Contract;
@@ -21,6 +22,7 @@ use App\Repository\QualificationRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\SourceRepository;
 use App\Repository\TypeOfContractsRepository;
+use InvalidArgumentException;
 
 /**
  * Class analzing an arrray and making a database request 
@@ -119,9 +121,13 @@ class FileInterpreter {
      * @param string $table_err The name of the table 
      * @return void
      */
-    protected function getColumnContent(array &$data, string $column, string $table_err, bool $present = false) {
+    protected function getColumnContent(
+        array &$data, 
+        string $column, 
+        string $table_err, 
+        bool $present = false
+    ): ?string {
         $index = $this->getIndex($column);
-
         if($index == FileInterpreter::$BASED_INDEX) {
             throw new Exception("La colonne {$column} est introuvable");
         }
@@ -177,8 +183,15 @@ class FileInterpreter {
                             . FileInterpreter::$MALE . " - pour homme et " . FileInterpreter::$FEMALE . " - pour femme.");
         }
 
+        $availability = $this->getColumnContent(
+            $data, 
+            FileInterpreter::$STARTING_DATE_ROW, 
+            FileInterpreter::$CANDIDATE_TABLE
+        );
+        $availability = $availability ? $this->completeDate($availability) : null;
+
         $candidate = new Candidate(
-            id: null, 
+            id  : null,
             name: (string) $this->getColumnContent(
                     $data, 
                     FileInterpreter::$NAME_ROW, 
@@ -190,7 +203,7 @@ class FileInterpreter {
                     FileInterpreter::$CANDIDATE_TABLE
                 ),
             gender: $gender,
-            email: $this->getColumnContent(
+            email : $this->getColumnContent(
                     $data, 
                     FileInterpreter::$EMAIL_ROW, 
                     FileInterpreter::$CANDIDATE_TABLE
@@ -225,18 +238,14 @@ class FileInterpreter {
                     FileInterpreter::$DESCRIPTION_ROW, 
                     FileInterpreter::$CANDIDATE_TABLE
                 ),
-            availability: $this->getColumnContent(
-                    $data, 
-                    FileInterpreter::$STARTING_DATE_ROW, 
-                    FileInterpreter::$CANDIDATE_TABLE
-                ),
+            availability: $availability,
             a: (bool) !empty($this->getColumnContent(
                     $data, 
                     FileInterpreter::$BL_A_ROW, 
                     FileInterpreter::$CANDIDATE_TABLE
                 )), 
             b: (bool) !empty($this->getColumnContent(
-                    $data, 
+                    $data,
                     FileInterpreter::$BL_B_ROW, 
                     FileInterpreter::$CANDIDATE_TABLE
                 )), 
@@ -245,11 +254,24 @@ class FileInterpreter {
                     FileInterpreter::$BL_C_ROW, 
                     FileInterpreter::$CANDIDATE_TABLE
                 )), 
-            visit: null,
+            visit  : null,
             deleted: false
         );
 
         return (new CandidateRepository())->inscript($candidate);
+    }
+
+    /**
+     * Protected method converting an Excel date to a string
+     * 
+     * 25569 est le nombre de jours entre le 1er janvier 1900 et le 1er janvier 1970
+     *
+     * @param int $excelDate The Excel date
+     * @return string
+     */
+    protected function excelToDate(int $excelDate): string {
+        $unixDate = ($excelDate - 25569) * 86400; 
+        return date('Y-m-d', $unixDate);
     }
 
     /**
@@ -259,15 +281,21 @@ class FileInterpreter {
      * @return string
      */
     protected function completeDate(string $date): string {
-        if (preg_match('/^\d{2}\/\d{4}$/', $date)) {
-            return $date . "-01";
+        switch($date) {
+            case TimeManager::isDate($date, 'Y-m-d'): 
+                return $date;
+
+            case TimeManager::isDate($date . '-01', 'Y-m-d'): 
+                return $date . '-01';
+
+            case TimeManager::isDate($date . '-01-01', 'Y-m-d'): 
+                return $date . '-01-01';
+
+            case (bool) preg_match('/^\d{5}$/', $date):
+                return $this->excelToDate((int) $date);
+
+            default: throw new InvalidArgumentException("Impossible d'enregistrer une date invalide : {$date}.");
         }
-    
-        if (preg_match('/^\d{4}$/', $date)) {
-            return $date . "-01-01";
-        }
-    
-        return $date;
     }
 
     /**
@@ -286,12 +314,12 @@ class FileInterpreter {
             FileInterpreter::$REQUIRED
         );
 
-        $service = (string) $this->getColumnContent(
+        $service = $this->getColumnContent(
             $data, 
             FileInterpreter::$SERVICE_ROW, 
             FileInterpreter::$APPLICATION_TABLE
         );
-        $estbablishment = (string) $this->getColumnContent(
+        $estbablishment = $this->getColumnContent(
             $data, 
             FileInterpreter::$ESTABLISHMENT_ROW, 
             FileInterpreter::$APPLICATION_TABLE
@@ -304,7 +332,7 @@ class FileInterpreter {
             FileInterpreter::$REQUIRED
         );
 
-        $type = (string) $this->getColumnContent(
+        $type = $this->getColumnContent(
             $data, 
             FileInterpreter::$TYPE_OF_CONTRACTS_ROW, 
             FileInterpreter::$APPLICATION_TABLE
@@ -314,16 +342,15 @@ class FileInterpreter {
             id               : null,
             candidate_key    : $key_candidate,
             job_key          : (new JobRepository())->search($job)->getId(),
-            establishment_key: $estbablishment ?? (new EstablishmentRepository())->search($estbablishment)->getId(),
-            service_key      : $service ?? (new ServiceRepository())->search($service)->getId(),
+            establishment_key: is_string($estbablishment) ? (new EstablishmentRepository())->search($estbablishment)->getId() : null,
+            service_key      : is_string($service) ? (new ServiceRepository())->search($service)->getId() : null,
             source_key       : (new SourceRepository())->search($source)->getId(),
-            type_key         : $type ?? (new TypeOfContractsRepository())->search($type)->getId(),
+            type_key         : is_string($type) ? (new TypeOfContractsRepository())->search($type)->getId() : null,
             need_key         : null,
             date             : null,
             is_accepted      : false,
             is_refused       : false,
         );
-
 
         return (new ApplicationRepository())->inscript($application);
     }
@@ -358,7 +385,7 @@ class FileInterpreter {
             FileInterpreter::$ENDING_DATE_ROW, 
             FileInterpreter::$CONTRACT_TABLE
         );
-        $end_date = $this->completeDate($end_date);
+        $end_date = $end_date ? $this->completeDate($end_date) : null;
 
         $contract = new Contract(
             id               : null,
@@ -379,7 +406,7 @@ class FileInterpreter {
             type_key         : $application->getType()
         );
 
-        return (new ContractRepository())->inscript($contract);                                                                     // Registering the contract
+        return (new ContractRepository())->inscript(contract: $contract, data_insert: true);                                                                     // Registering the contract
     }
 
     /**
@@ -395,12 +422,13 @@ class FileInterpreter {
             FileInterpreter::$QUALIFICATIONS_ROW,
             FileInterpreter::$QUALIFICATION_TABLE
         );
+
         $qualification_date = (string) $this->getColumnContent(                                                       // Getting the qualifications' date
             $data, 
             FileInterpreter::$QUALIFICATIONS_DATE_ROW,
             FileInterpreter::$QUALIFICATION_TABLE
         );
-        $qualification_date = $this->completeDate($qualification_date);
+        $qualification_date = $qualification_date ? $this->completeDate($qualification_date) : null;
 
         if(empty($qualification) && empty($qualification_date)) {                                                     // Testing if the qualifications are empty
             return null;

@@ -57,56 +57,56 @@ class Candidate implements PeopleInterface {
     )
     {
         // The primary key
-        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
+        if(!empty($id) && !DataFormatManager::isValidKey($id)) {
             throw new CandidateExceptions("La clé primaire : {$id} est invalide.");
         }
 
         // The name 
-        if(!is_null($name) && !DataFormatManager::isValidName($name)) {
+        if(!empty($name) && !DataFormatManager::isValidName($name)) {
             throw new CandidateExceptions("Le nom : {$name} est invalide.");
         }
 
         // The firstname 
-        if(!is_null($firstname) && !DataFormatManager::isValidName($firstname)) {
+        if(!empty($firstname) && !DataFormatManager::isValidName($firstname)) {
             throw new CandidateExceptions("Le prénom : {$firstname} est invalide.");
         }
 
-        if(is_null($name) && is_null($firstname)) {
+        if(empty($name) && empty($firstname)) {
             throw new CandidateExceptions("Impossible de générer un candidat sans nom et sans prénom.");
         }
 
         // The email
-        if(!is_null($email) && !DataFormatManager::isValidEmail($email)) {
+        if(!empty($email) && !DataFormatManager::isValidEmail($email)) {
             throw new CandidateExceptions("L'email : {$email} est invalide.");
         }
 
         // The phone
-        if(!is_null($phone)) {
+        if(!empty($phone)) {
             $this->phone = DataFormatManager::phoneNumberFormat($phone);                                                      // Formating the phone number
         }
 
         // The city
-        if(!is_null($city) && !DataFormatManager::isValidName($city)) {
+        if(!empty($city) && !DataFormatManager::isValidName($city)) {
             throw new CandidateExceptions("La ville : {$city} est invalide.");
         }
 
         // The postcode
-        if(!is_null($postcode) && !DataFormatManager::isValidPostCode($postcode)) {
+        if(!empty($postcode) && !DataFormatManager::isValidPostCode($postcode)) {
             throw new CandidateExceptions("Le code postal : {$postcode} est invalide.");
         }
 
         // The rating
-        if(!is_null($rating) && !self::isValidRating($rating)) {
+        if(!empty($rating) && !self::isValidRating($rating)) {
             throw new CandidateExceptions("La notation : {$rating} est invalide.");
         }
 
         // The availability 
-        if(!is_null($availability) && !TimeManager::isDate($availability)) {
+        if(!empty($availability) && !TimeManager::isDate($availability)) {
             throw new CandidateExceptions("La date de disponibilité : {$availability} est invalide.");
         }
 
         // The visit
-        if(!is_null($visit) && !TimeManager::isDate($visit)) {
+        if(!empty($visit) && !TimeManager::isDate($visit)) {
             throw new CandidateExceptions("La date de visite médicale : {$visit} est invalide.");
         }
     }
@@ -426,27 +426,21 @@ class Candidate implements PeopleInterface {
      * @param boolean $present 
      * @return void
      */
-    public function setA(bool $present): void {
-        $this->a = $present;
-    }
+    public function setA(bool $present): void { $this->a = $present; }
     /**
      * Public function setting the the candidate B value
      *
      * @param boolean $present 
      * @return void
      */
-    public function setB(bool $present): void {
-        $this->b = $present;
-    }
+    public function setB(bool $present): void { $this->b = $present; }
     /**
      * Public function setting the the candidate C value
      *
      * @param boolean $present 
      * @return void
      */
-    public function setC(bool $present): void {
-        $this->c = $present;
-    }
+    public function setC(bool $present): void { $this->c = $present; }
 
     // * CONVERT * //
     /**
@@ -457,7 +451,7 @@ class Candidate implements PeopleInterface {
      * @return Candidate The candidate
      */
     public static function fromArray(array $data): ?Candidate {
-        if(empty($data)) {
+        if(is_null($data)) {
             throw new CandidateExceptions("Erreur lors de la génération du candidat. Tableau de données absent.");
         }
 
@@ -515,22 +509,28 @@ class Candidate implements PeopleInterface {
      * @return array The candidate
      */
     public function toSQL(bool $completed = false): array {
-        $response = array(
+        $response = [
             "name"      => $this->getName(),
             "firstname" => $this->getFirstname(),
             "gender"    => $this->getGender()
-        );
+        ];
 
-        if(!empty($this->getEmail())) {
+        if(!is_null($this->getEmail())) {
             $response["email"] = $this->getEmail();
         }
-        if(!empty($this->getPhone())) {
+        if(!is_null($this->getPhone())) {
             $response["phone"] = $this->getPhone();
         }
 
-        if(!empty($this->getAddress()) && !empty($this->getCity()) && !empty($this->getPostcode())) {
+        if(!is_null($this->getAddress())) {
             $response["address"]  = $this->getAddress();
+        }
+
+        if(!is_null($this->getCity())) {
             $response["city"]     = $this->getCity();
+        }
+
+        if(!is_null($this->getPostcode())) {
             $response["postcode"] = $this->getPostcode();
         }
 
@@ -542,7 +542,7 @@ class Candidate implements PeopleInterface {
         }
 
         if($this->getAvailability()) {
-            $reponse["availability"] = $this->getAvailability();
+            $response["availability"] = $this->getAvailability();
         }
         if($this->getVisit()) {
             $response["visit"] = $this->getVisit();

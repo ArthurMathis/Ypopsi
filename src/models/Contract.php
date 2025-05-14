@@ -357,35 +357,41 @@ class Contract {
     /**
      * Public function returning the action into an array  for SQL registering
      * 
+     * @param boolean $data_insert Boolean showing if, false: it's a classic registering (from the application) or, true : a data insert from xlsx
      * @return array The Contract
      */
-    public function toSQL(): array {
-        $response = array(
+    public function toSQL(bool $data_insert = false): array {
+        $response = [
             "start_date"    => $this->getStartDate(),
             "candidate"     => $this->getCandidate(),
             "job"           => $this->getJob(),
             "service"       => $this->getService(),
             "establishment" => $this->getEstbalishement(),
             "type"          => $this->getType()
-        );
+        ];
 
-        if(!empty($this->getEndDate())) {
+        if($data_insert) {
+            $response["proposition_date"] = $this->getStartDate();
+            $response["signature_date"]   = $this->getStartDate();
+        }
+
+        if(!is_null($this->getEndDate())) {
             $response["end_date"] = $this->getEndDate();
         }
 
-        if(!empty($this->getSalary())) {
+        if(!is_null($this->getSalary())) {
             $response["salary"] = $this->getSalary();
         }
 
-        if(!empty($this->getHourlyRate())) {
+        if(!is_null($this->getHourlyRate())) {
             $response["hourly_rate"] = $this->getHourlyRate();
         }
 
-        if(!empty($this->getNightWork())) {
+        if($this->getNightWork() == true) {
             $response["night_work"] = $this->getNightWork();
         }
 
-        if(!empty($this->getWkWork())) {
+        if($this->getWkWork() == true) {
             $response["wk_work"] = $this->getWkWork();
         }
 

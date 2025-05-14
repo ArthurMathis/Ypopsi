@@ -30,12 +30,8 @@ class FilePrinter {
      * @param string $path The path of the file
      */
     public function __construct(protected string $path) {
-        if(file_exists($this->getPath())) {
-            $this->sheet = IOFactory::load($this->getpath());                                                           // Opening the file
-        } else {
-            $this->sheet = new Spreadsheet();                                                                           // Creating new file
-        }
-
+        $this->sheet = file_exists($this->getPath()) ? IOFactory::load($this->getpath()) : $this->sheet = new Spreadsheet(); 
+        
         $this->writer = new Xlsx($this->getSheet());                                                                    // Opening the writer
 
         $title = "Insertion du " . date('d/m/Y');
@@ -85,13 +81,12 @@ class FilePrinter {
      */
     public function printRow(int $row, array $data) {
         $sheet = $this->getSheet()->getActiveSheet();
-
         $column = FilePrinter::getBasedColumn();
-
         foreach($data as $obj) {
             $sheet->setCellValue($column . $row, $obj);
             $column++;
         }
+        $this->save();
     }
 
     // * MANIPULATION * //

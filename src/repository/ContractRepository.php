@@ -111,40 +111,46 @@ class ContractRepository extends Repository {
      * Public method registering a new contract in the database
      * 
      * @param Contract $contract The contract to registering
+     * @param boolean $data_insert Boolean showing if, false: it's a classic registering (from the application) or, true : a data insert from xlsx
      * @return int The primary key of the new contract
      */
-    public function inscript(Contract &$contract) {
+    public function inscript(Contract &$contract, bool $data_insert = false) {
         $request = "INSERT INTO Contracts (StartDate, Key_Candidates, Key_Jobs, Key_Services, Key_Establishments, Key_Types_of_contracts";
         $values_request = " VALUES (:start_date, :candidate, :job, :service, :establishment, :type";
 
-        if(!empty($contract->getEndDate())) {
+        if($data_insert) {
+            $request .= ", PropositionDate, SignatureDate";
+            $values_request .= ", :proposition_date, :signature_date";
+        }
+
+        if(!is_null($contract->getEndDate())) {
             $request .= ", EndDate";
             $values_request .= ", :end_date";
         }
 
-        if(!empty($contract->getSalary())) {
+        if(!is_null($contract->getSalary())) {
             $request .= ", Salary";
             $values_request .= ", :salary";
         }
 
-        if(!empty($contract->getHourlyRate())) {
+        if(!is_null($contract->getHourlyRate())) {
             $request .= ", HourlyRate";
             $values_request .= ", :hourly_rate";
         }
 
-        if(!empty($contract->getNightWork())) {
+        if((bool) $contract->getNightWork()) {
             $request .= ", NightWork";
             $values_request .= ", :night_work";
         }
 
-        if(!empty($contract->getWkWork())) {
+        if((bool) $contract->getWkWork()) {
             $request .= ", WeekEndWork";
             $values_request .= ", :week_end_work";
         }
 
         $request .= ")" . $values_request . ")";
-
-        return $this->post_request($request, $contract->toSQL());
+        
+        return $this->post_request($request, $contract->toSQL(data_insert: $data_insert));
     }
     /**
      * Public method registering the signature date of a contract in the database 
