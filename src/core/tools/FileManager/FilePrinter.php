@@ -6,6 +6,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 /**
  * Class writing in a file
@@ -40,10 +41,11 @@ class FilePrinter {
     public function __construct(protected string $path) {
         $this->sheet = file_exists($this->getPath()) ? IOFactory::load($this->getpath()) : new Spreadsheet(); 
         $this->writer = new Xlsx($this->getSheet());                                                                               // Opening the writer
-        $this->work_sheet = $this->getSheet()->getActiveSheet();
         
         $title = "Insertion du " . date('d/m/Y');
         $title = $this->addSheet($title);                                                                               // Creating the new sheet 
+
+        $this->work_sheet = $this->getSheet()->getActiveSheet();
     }
 
     // * GET * //
@@ -93,7 +95,7 @@ class FilePrinter {
      * @param array $data The data to write
      * @return void
      */
-    public function printRow(int $row, array $data) {
+    public function printRow(int $row, array &$data) {
         $work_sheet = $this->getWorkSheet();
         $column = FilePrinter::getBasedColumn();
 
@@ -109,7 +111,11 @@ class FilePrinter {
      *
      * @return void
      */
-    public function save() { $this->getWriter()->save($this->getPath()); }
+    public function save() { $this->getWriter()->save($this->getPath()); 
+    
+        $file = basename($this->getPath());
+        echo "Sauvegarde du fichier <b>$file</b> effectuée.";
+    }
 
     // * SHEET MANAGEMENT * //
     /**

@@ -311,6 +311,8 @@ class PreferencesController extends Controller {
             $file_reader = new FileReader($filename);
             $response = $file_reader->readFile();
 
+            exit; // todo : remove after tests
+
             AlertsManip::alert([
                 'title'     => 'Importation réussie',
                 'msg'       => "La procédure d'importation s'est terimnée avec <b>" . $response["registerings"] . " succès</b> et <b>" . $response["errors"] 
