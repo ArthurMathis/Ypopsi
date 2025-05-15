@@ -149,30 +149,11 @@ class FileInterpreter {
      * @return void
      */
     public function rowAnalyse(registering &$registering, array &$data) {
-        echo "<p>On génère le profil candidat</p>";
         $registering->candidate = $this->makecandidate($data); 
-        var_dump($registering->candidate);
-        echo "<br>";
-
-        echo "<p>On génère la candidature</p>";
         $registering->application = $this->makeApplication($data, $registering->candidate);
-        var_dump($registering->candidate);
-        echo "<br>";
-
-        echo "<p>On génère le contrat</p>";
         $registering->contract = $this->makeContract($data, $registering->candidate, $registering->application);
-        var_dump($registering->candidate);
-        echo "<br>";
-
-        echo "<p>On ajoute la qualification</p>";
         $registering->qualification = $this->makeQualification($data, $registering->candidate);
-        var_dump($registering->candidate);
-        echo "<br>";
-
-        echo "<p>On ajoute les aides'</p>";
         $registering->helps = $this->makeHelps($data, $registering->candidate);
-        var_dump($registering->candidate);
-        echo "<br>";
     }
 
     // * MAKE * //

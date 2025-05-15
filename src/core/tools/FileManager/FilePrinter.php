@@ -30,10 +30,10 @@ class FilePrinter {
      * @param string $path The path of the file
      */
     public function __construct(protected string $path) {
-        $this->sheet = file_exists($this->getPath()) ? IOFactory::load($this->getpath()) : $this->sheet = new Spreadsheet(); 
+        $this->sheet = file_exists($this->getPath()) ? IOFactory::load($this->getpath()) : new Spreadsheet(); 
         
         $this->writer = new Xlsx($this->getSheet());                                                                    // Opening the writer
-
+        
         $title = "Insertion du " . date('d/m/Y');
         $title = $this->addSheet($title);                                                                               // Creating the new sheet 
     }
@@ -110,20 +110,16 @@ class FilePrinter {
 
         $originalSheetname = $sheetname;
         $index = 1;
-
         while ($this->sheetNameExists($sheetname)) {
             $sheetname = substr($originalSheetname, 0, 31 - strlen(" - $index")) . " - $index";
             $index++;
         }
 
-        $worksheet = new Worksheet($this->getSheet(), $sheetname); // Creating the new sheet
-        $this->getSheet()->addSheet($worksheet); // Adding the new sheet
-        $worksheet->setTitle($sheetname); // Setting the title
+        $worksheet = new Worksheet($this->getSheet(), $sheetname);
+        $this->getSheet()->addSheet($worksheet);
+        $worksheet->setTitle($sheetname);
 
-        // Définir la nouvelle feuille comme feuille active
         $this->getSheet()->setActiveSheetIndexByName($sheetname);
-
-        // Supprimer la feuille par défaut si elle existe
         $this->removeDefaultSheet();
 
         return $sheetname;

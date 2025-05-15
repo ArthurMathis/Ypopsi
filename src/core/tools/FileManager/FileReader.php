@@ -5,6 +5,7 @@ namespace App\Core\Tools\FileManager;
 use \Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Core\Tools\Registering;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 /**
  * Class reading a file 
@@ -22,12 +23,6 @@ class FileReader {
      * @var FilePrinter
      */
     protected FilePrinter $errorsRegister;
-    /**
-     * Protected attribute containing the FileInterpreter wich analizes data
-     *
-     * @var FileInterpreter
-     */
-    protected FileInterpreter $interpreter;
 
     /**
      * Constructor class
@@ -67,6 +62,7 @@ class FileReader {
      */
     public function getPage(): int { return $this->page; }
 
+    //// FILE MANAGER ////
     /**
      * Public method returning the FilePrinter for registerings
      *
@@ -80,13 +76,8 @@ class FileReader {
      */
     public function getErrorsRegister(): FilePrinter { return $this->errorsRegister; }
 
-    /**
-     * Public method returning the FileInterpreter
-     *
-     * @return FileInterpreter
-     */
-    public function getInterpreter(): FileInterpreter { return $this->interpreter; }
-
+    //// BASED DATA ////
+    public static function getBasedBatchCount(): int { return 1; }
     /**
      * Public static method returning the based path for the file
      *
@@ -113,56 +104,61 @@ class FileReader {
      *
      * @return void
      */
-    public function readFile() {
-        $file = IOFactory::load($this->getPath());                                                          // Loading the file
-        $sheet = $file->getSheet($this->getPage());                                                         // Loading the page
-        $size = $sheet->getHighestRow();
+    public function readFile(string $type = "Xlsx") {
+        $reader = IOFactory::createReader($type);                                                           // Creating the reader
+        $reader->setReadDataOnly(true);
+        $reader->setReadEmptyCells(false); 
+        $file = $reader->load($this->getPath());                                                            // Loading the file
 
-        $this->getLogsRegister()->printRow(1, Registering::toXlsx());                                       // Writing the header
+        try {
+            $sheet = $file->getSheet($this->getPage());                                                     // Loading the page
+            $file_size = $sheet->getHighestRow();
 
-        $rowStructure = (array) $this->readLine($sheet, 1);                                                 // Reading header
-        $this->interpreter = new FileInterpreter($rowStructure);
+            $row_structure = (array) $this->readLine($sheet, 1);                                            // Reading header
 
-        $resgister_row = 2;
-        $err_row = 1;
-
-        for($rowCount = 2; $rowCount <= $size; $rowCount++) {                                               // Reading the file
-            $registering = new Registering();
-            $rowData = (array) $this->readLine($sheet, $rowCount);
-
-            if(!$this->isEmptyRow($rowData)){
-                try {
-                    $this->getInterpreter()->rowAnalyse($registering, $rowData);                           // Analyzing the row
-                    $this->getLogsRegister()->printRow($resgister_row, $registering->toArray());           // Writing the registration 
-                    $resgister_row++;
-
-                } catch(Exception $e) {
-                    $rowData["Erreur"] = get_class($e);
-                    $rowData["Erreur description"] = $e->getMessage();
-
-                    if($err_row == 1) {
-                        array_push($rowStructure, "Erreur");
-                        array_push($rowStructure, "Erreur description");
-                        
-                        $this->getErrorsRegister()->printRow($err_row, $rowStructure);
-                        $err_row++;
-                    }
-                    
-                    $this->getErrorsRegister()->printRow($err_row, $rowData);                               // Registering the erreors logs
-                    $err_row++;
-                    
-                    $this->getInterpreter()->deleteRegistering($registering);                               // Deleting incompleted data
-                }
+            $batch_file = [];
+            for($row_count = 2; $row_count <= $file_size; $row_count++) {                                   // Reading the file
+                $row_data = (array) $this->readLine($sheet, $row_count);
+                array_push($batch_file, $row_data);
             }
 
-            unset($registering);
-            $this->saveWork();
+        } finally {
+            if (isset($file)) {                                                                             // Close the file and remove the cache
+                $file->disconnectWorksheets();
+                unset($file);
+                gc_collect_cycles();
+            }
         }
 
-        $this->saveWork();
+        $registers_logs = [];
+        $errors_logs = [];
+        $resgister_row = FileReader::getBasedBatchCount();
+        $error_row = FileReader::getBasedBatchCount();
+
+        $interperter = new FileInterpreter($row_structure);
+        array_push($row_structure, "Erreur");
+        array_push($row_structure, "Erreur description");
+
+        foreach(array_chunk($batch_file, getenv("FILE_CACHE_SIZE")) as $batch) {                            // Analyse data
+            echo "<h3>Nouveau groupe de données</h3>";
+            var_dump($batch);
+            echo "<br>";
+
+            $this->processBatch($interperter, $batch, $registers_logs, $errors_logs);
+
+            if(isset($registers_logs)) {
+                $registering_structure = Registering::toXlsx();
+                $this->writeRegistersLogs($registers_logs, $resgister_row, $registering_structure);
+            }
+            
+            if(isset($errors_logs)) {
+                $this->writeErrorsLogs($errors_logs, $error_row, $row_structure);
+            }
+        }
+
         return [
             "registerings" => $resgister_row - 2,
-            "errors"       => $err_row - 2,
+            "errors"       => $error_row - 2,
         ];
     }
 
@@ -186,14 +182,102 @@ class FileReader {
         return $rowData;
     }
 
-    // * OTHER * //
+    /**
+     * Protected function that analyse the file's pieces of data, register it ine the data base and save these logs
+     *
+     * @param FileInterpreter $interpreter The FileInterpreter that read and analyse the file content
+     * @param array $batch_file The file's content 
+     * @param array $registers_logs The array that is gonna to contain the registers logs
+     * @param array $errors_logs The array that is gonna to contain the errors logs
+     * @return void
+     */
+    protected function processBatch(FileINterpreter &$interpreter, array &$batch_file, array &$registers_logs, array &$errors_logs): void {
+        foreach($batch_file as $index => $obj) {
+            try {
+                echo "<p>Item numéro : <b>$index</b>.";
+
+                $registering = new Registering();
+                $interpreter->rowAnalyse($registering, $obj);                                // Analyzing the row
+                array_push($registers_logs, $registering);
+
+            } catch(Exception $e) {
+                $obj["Erreur"] = get_class($e);
+                $obj["Erreur description"] = $e->getMessage();
+                array_push($errors_logs, $obj);
+
+                $interpreter->deleteRegistering($registering);                               // Deleting incompleted data
+            }
+        }
+    }
+
+    // * WRITE * //
+    /**
+     * Protected static method that write an action in a log 
+     *
+     * @param FilePrinter $printer The FilePrinter that writes
+     * @param array $log The action to write
+     * @param integer $row_count The row in which to write
+     * @return void
+     */
+    static protected function writeLogs(FilePrinter &$printer, array &$log, int &$row_count): void {
+        $printer->printRow($row_count, $log);
+        unset($log);
+        $row_count++;
+    }
+
+    /**
+     * Protected method that write the registrations in the logs
+     *
+     * @param array $registers The registrations the save 
+     * @param integer $row_count The row in which to write
+     * @param array $row_structure The table header
+     * @return void
+     */
+    protected function writeRegistersLogs(array &$registers, int &$row_count, array &$row_structure): void {
+        $printer = $this->getLogsRegister();
+        if($row_count == FileReader::getBasedBatchCount()) {
+            FileReader::writeLogs($printer, $row_structure, $row_count);
+        }
+
+        foreach($registers as $obj) {
+            $temp = $obj->toArray();
+            FileReader::writeLogs($printer, $temp, $row_count);
+        }
+
+        $registers = [];
+        $this->getLogsRegister()->save();
+    }
+    /**
+     * Protected method that write the failures in the logs
+     *
+     * @param array $errors The failures the save 
+     * @param integer $row_count The row in which to write
+     * @param array $row_structure The table header
+     * @return void
+     */
+    protected function writeErrorsLogs(array &$errors, int &$row_count, array &$row_structure): void {
+        $printer = $this->getErrorsRegister();
+        if($row_count == FileReader::getBasedBatchCount()) {
+            FileReader::writeLogs($printer, $row_structure, $row_count);
+        }
+
+        foreach($errors as $obj) {
+            FileReader::writeLogs($printer, $obj, $row_count);
+        }
+
+        $errors = [];
+        $this->getErrorsRegister()->save();
+    }
+
+
+    // * TOOLS * //
     /**
      * Peotected method testing if a row is empty or not
      *
      * @param array $row The rom
      * @return boolean 
      */
-    protected function isEmptyRow(array $row): bool {
+    protected function isEmptyRow(array &$row): bool {
         $i = 0;
         $empty = true;
         $size = count($row);
@@ -206,15 +290,5 @@ class FileReader {
         }
 
         return $empty;
-    }
-
-    /**
-     * Protected method registering the changements with FilePrinters
-     *
-     * @return void
-     */
-    protected function saveWork() {
-        $this->getLogsRegister()->save();
-        $this->getErrorsRegister()->save();
     }
 }
