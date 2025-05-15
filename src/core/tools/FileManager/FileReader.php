@@ -140,10 +140,6 @@ class FileReader {
         array_push($row_structure, "Erreur description");
 
         foreach(array_chunk($batch_file, getenv("FILE_CACHE_SIZE")) as $batch) {                            // Analyse data
-            echo "<h3>Nouveau groupe de données</h3>";
-            var_dump($batch);
-            echo "<br>";
-
             $this->processBatch($interperter, $batch, $registers_logs, $errors_logs);
 
             if(isset($registers_logs)) {

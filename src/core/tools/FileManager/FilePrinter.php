@@ -9,20 +9,28 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * Class writing in a file
+ * 
+ * @author Arthur MATHIS <arthur.mathis@diaconat-mulhouse.fr>
  */
 class FilePrinter {
-    /**
-     * Protected attribute containing the file
-     *
-     * @var Spreadsheet
-     */
-    protected Spreadsheet $sheet; 
     /**
      * Protected attribute containing the writer
      *
      * @var Xlsx
      */
     protected Xlsx $writer; 
+    /**
+     * Protected attribute containing the file
+     *
+     * @var SpreadSheet
+     */
+    protected SpreadSheet $sheet; 
+    /**
+     * Protected attribute containing the page
+     *
+     * @var Worksheet
+     */
+    protected Worksheet $work_sheet; 
 
     /**
      * Constructor class 
@@ -31,8 +39,8 @@ class FilePrinter {
      */
     public function __construct(protected string $path) {
         $this->sheet = file_exists($this->getPath()) ? IOFactory::load($this->getpath()) : new Spreadsheet(); 
-        
-        $this->writer = new Xlsx($this->getSheet());                                                                    // Opening the writer
+        $this->writer = new Xlsx($this->getSheet());                                                                               // Opening the writer
+        $this->work_sheet = $this->getSheet()->getActiveSheet();
         
         $title = "Insertion du " . date('d/m/Y');
         $title = $this->addSheet($title);                                                                               // Creating the new sheet 
@@ -48,9 +56,15 @@ class FilePrinter {
     /**
      * Public method returning the file
      *
-     * @return Spreadsheet
+     * @return SpreadSheet
      */
-    public function getSheet(): Spreadsheet { return $this->sheet; }
+    public function getSheet(): SpreadSheet { return $this->sheet; }
+    /**
+     * Public method returning the page
+     *
+     * @return Worksheet
+     */
+    public function getWorkSheet(): Worksheet { return $this->work_sheet; }
     /**
      * Public method returning the writer
      *
@@ -80,16 +94,16 @@ class FilePrinter {
      * @return void
      */
     public function printRow(int $row, array $data) {
-        $sheet = $this->getSheet()->getActiveSheet();
+        $work_sheet = $this->getWorkSheet();
         $column = FilePrinter::getBasedColumn();
+
         foreach($data as $obj) {
-            $sheet->setCellValue($column . $row, $obj);
+            $work_sheet->setCellValue($column . $row, $obj);
             $column++;
         }
-        $this->save();
     }
 
-    // * MANIPULATION * //
+    // * SAVING * //
     /**
      * Public method registering the modifications
      *
@@ -97,6 +111,7 @@ class FilePrinter {
      */
     public function save() { $this->getWriter()->save($this->getPath()); }
 
+    // * SHEET MANAGEMENT * //
     /**
      * Protected method adding a new Sheet in the file
      *
