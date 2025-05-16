@@ -192,30 +192,17 @@ class FileReader {
                 $registering = new Registering();
                 $interpreter->rowAnalyse($registering, $obj);                                // Analyzing the row
 
-                echo "Nouveau candidat généré : ";
-                var_dump($registering);
-                echo "<br>";
-                
                 array_push($registers_logs, $registering);
 
             } catch(Exception $e) {
                 $obj["Erreur"] = get_class($e);
                 $obj["Erreur description"] = $e->getMessage();
 
-                echo "Nouvelle erreur générée<br>";
-
                 array_push($errors_logs, $obj);
 
                 $interpreter->deleteRegistering($registering);                               // Deleting incompleted data
             }
         }
-
-        echo "<h2>Bilan</h2>";
-        $registerins_count = count($registers_logs);
-        echo "<h3>Enregistrements valides : $registerins_count</h3>";
-        $errors_count = count($errors_logs);
-        echo "<h3>Enregistrements invalides : $errors_count</h3>";
-        echo "<br>";
     }
 
     // * WRITE * //
@@ -242,25 +229,18 @@ class FileReader {
      * @return void
      */
     protected function writeRegistersLogs(array &$registers, int &$row_count, array &$row_structure): void {
-        echo "<h2>On enregistre les logs de réussites</h2>";
-
         $printer = $this->getLogsRegister();
         if($row_count == FileReader::getBasedBatchCount()) {
-            echo "<h3>On enregistre l'entête de fichier</h3>";
             FileReader::writeLogs($printer, $row_structure, $row_count);
         }
 
         foreach($registers as $obj) {
             $temp = $obj->toArray();
-            echo "On inscript la <b>$row_count</b>ème ligne : ";
-            var_dump($temp);
-            echo "<br>";
             FileReader::writeLogs($printer, $temp, $row_count);
         }
 
         $registers = [];
         $this->getLogsRegister()->save();
-        echo "<h2>Logs enregistrés</h2>";
     }
     /**
      * Protected method that write the failures in the logs
@@ -271,11 +251,8 @@ class FileReader {
      * @return void
      */
     protected function writeErrorsLogs(array &$errors, int &$row_count, array &$row_structure): void {
-        echo "<h2>On enregistre les logs d'échecs</h2>";
-
         $printer = $this->getErrorsRegister();
         if($row_count == FileReader::getBasedBatchCount()) {
-            echo "<h3>On enregistre l'entête de fichier</h3>";
             FileReader::writeLogs($printer, $row_structure, $row_count);
         }
 
@@ -285,7 +262,6 @@ class FileReader {
 
         $errors = [];
         $this->getErrorsRegister()->save();
-        echo "<h2>Logs enregistrés</h2>";
     }
 
 

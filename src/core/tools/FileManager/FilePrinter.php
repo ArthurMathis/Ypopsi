@@ -111,11 +111,7 @@ class FilePrinter {
      *
      * @return void
      */
-    public function save() { $this->getWriter()->save($this->getPath()); 
-    
-        $file = basename($this->getPath());
-        echo "Sauvegarde du fichier <b>$file</b> effectuée.";
-    }
+    public function save() { $this->getWriter()->save($this->getPath()); }
 
     // * SHEET MANAGEMENT * //
     /**

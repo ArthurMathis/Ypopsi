@@ -33,11 +33,11 @@ INSERT INTO Features (Id, Titled, Description, Enable) VALUES
     -- Users --
     (24, "Affichage utilisateur", "Fonctionnalité permettant la consultation des profils utilisateur.", 0),                        -- new --
     (25, "Affichage utilisateurs", "Fonctionnalité permettant la consultation de la liste des utilisateur.", 0),                   -- new --
-    (26, "Affiche journal connexions", "Fonctionnalité permettant la consultation des journaux de connexions.", 0),                -- new --
-    (27, "Affiche journal actions", "Fonctionnalité permettant la consultation des journaux d'actions.", 0),                       -- new --
+    (26, "Affiche journal connexions", "Fonctionnalité permettant la consultation des journaux de connexions.", 1),                -- new --
+    (27, "Affiche journal actions", "Fonctionnalité permettant la consultation des journaux d'actions.", 1),                       -- new --
     
-    (28, "Inscription utilisateur", "Fonctionnalité permettant l'ajout de nouveaux utilisateurs.", 0),                             -- new --
-    (29, "Edition utilisateur", "Fonctionnalité permettant la mise à jour des utilisateurs.", 0),                                  -- new --
+    (28, "Inscription utilisateur", "Fonctionnalité permettant l'ajout de nouveaux utilisateurs.", 1),                             -- new --
+    (29, "Edition utilisateur", "Fonctionnalité permettant la mise à jour des utilisateurs.", 1),                                  -- new --
     (30, "Suppression utilisateur", "Fonctionnalité permettant la suppression des utilisateurs.", 0),                              -- new --
 
     -- Recruitement --
@@ -642,7 +642,7 @@ INSERT INTO Belong_to (Key_Services, Key_Establishments) VALUES
 ;
 INSERT INTO Jobs (Titled, TitledFeminin) VALUES
     ("A.SOCIAL SPEC.ENFANCE INADAPT.", "ASSISTANTE SOCIALE SPEC.ENFANCE INADAPT."),
-    ("ACCOMPAGNANT EDUCATIF SOCIAL", "ACCOMPAGNANTE EDUCATIVE ET SOCIAL"),
+    ("ACCOMPAGNANT EDUCATIF SOCIAL", "ACCOMPAGNANTE EDUCATIVE ET SOCIALE"),
     ("ACCUEILLANT SOCIAL", "ACCUEILLANTE SOCIALE"),
     ("ADJ. RESPONSABLE SERV. ECONOM.", "ADJOINTE RESPONSABLE DES SERVICES ECONOMIQUES"),
     ("AGENT ADMINISTRATIF", "AGENTE ADMINISTRATIVE"),

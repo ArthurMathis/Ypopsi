@@ -35,7 +35,7 @@ class Action {
         }
 
         // The date
-        if(!is_null($date) && !TimeManager::isDate($date)) {
+        if(!is_null($date) && !TimeManager::isFullDate($date)) {
             throw new ActionExceptions("La date invalide : {$date}.");
         }
 
@@ -117,7 +117,7 @@ class Action {
         return new Action(
             $data['Id'],
             $data['Description'], 
-            $data['TimeManager'], 
+            $data['Moment'], 
             $data['Key_Users'], 
             $data['Key_Types_of_actions']
         );

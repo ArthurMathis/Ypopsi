@@ -84,10 +84,10 @@ class MeetingRepository extends Repository {
     public function inscript(Meeting $meeting): int {
         $request = "INSERT INTO Meetings (Date, Key_Users, Key_Candidates, Key_Establishments";
 
-        $request_values =  " VALUES (:TimeManager, :key_user, :key_candidate, :key_establishment";
+        $request_values =  " VALUES (:moment, :key_user, :key_candidate, :key_establishment";
         
         $params = array(
-            "TimeManager"            => $meeting->getDate(),
+            "moment"            => $meeting->getDate(),
             "key_user"          => $meeting->getUser(),
             "key_candidate"     => $meeting->getCandidate(),
             "key_establishment" => $meeting->getEstablishment()

@@ -44,8 +44,8 @@ class ActionRepository extends Repository {
             type.Titled AS Intitulé,
             r.Titled AS Role,
             CONCAT(UPPER(u.name), ' ', u.firstname) AS Utilisateur,
-            Date(act.TimeManager) AS Date,
-            Time(act.TimeManager) AS Heure
+            Date(act.Moment) AS Date,
+            Time(act.Moment) AS Heure
 
 
             FROM Actions AS act
@@ -73,8 +73,8 @@ class ActionRepository extends Repository {
             type.Titled AS Intitulé,
             r.Titled AS Role,
             CONCAT(UPPER(u.name), ' ', u.firstname) AS Utilisateur,
-            Date(act.TimeManager) AS Date,
-            Time(act.TimeManager) AS Heure
+            Date(act.Moment) AS Date,
+            Time(act.Moment) AS Heure
 
 
             FROM Actions AS act
@@ -101,8 +101,8 @@ class ActionRepository extends Repository {
         $request = "SELECT 
             act.Id AS Cle,
             type.Titled AS Intitulé,
-            Date(act.TimeManager) AS Date,
-            Time(act.TimeManager) AS Heure
+            Date(act.Moment) AS Date,
+            Time(act.Moment) AS Heure
             
             FROM Actions AS act
             INNER JOIN Types_of_actions AS type ON act.Key_Types_of_actions = type.Id
@@ -130,8 +130,8 @@ class ActionRepository extends Repository {
         $request = "SELECT 
             act.Id AS Cle,
             type.Titled AS Intitulé,
-            Date(act.TimeManager) AS Date,
-            Time(act.TimeManager) AS Heure
+            Date(act.Moment) AS Date,
+            Time(act.Moment) AS Heure
             
             FROM Actions AS act
             INNER JOIN Types_of_actions AS type ON act.Key_Types_of_actions = type.Id
@@ -165,7 +165,7 @@ class ActionRepository extends Repository {
             FROM Types_of_actions
             WHERE Titled IN ('Connexion')
         ) 
-        ORDER BY TimeManager 
+        ORDER BY Moment 
         LIMIT 1";
 
         $params = [
@@ -192,7 +192,7 @@ class ActionRepository extends Repository {
             FROM Types_of_actions
             WHERE Titled IN ('Connexion')
         ) 
-        ORDER BY TimeManager DESC
+        ORDER BY Moment DESC
         LIMIT 1";
 
         $params = [
@@ -219,7 +219,7 @@ class ActionRepository extends Repository {
             FROM Types_of_actions
             WHERE Titled IN ('Mise à jour mot de passe')
         ) 
-        ORDER BY TimeManager 
+        ORDER BY Moment 
         LIMIT 1";
 
         $params = [
@@ -245,7 +245,7 @@ class ActionRepository extends Repository {
             FROM Types_of_actions
             WHERE Titled IN ('Mise à jour mot de passe')
         ) 
-        ORDER BY TimeManager DESC
+        ORDER BY Moment DESC
         LIMIT 1";
 
         $params = [

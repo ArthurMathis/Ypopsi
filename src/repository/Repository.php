@@ -56,8 +56,12 @@ class Repository {
             $result = $unique ? $query->fetch(PDO::FETCH_ASSOC) : $query->fetchAll(PDO::FETCH_ASSOC);
             $query->closeCursor();
 
-            if(!$result && $present) {
-                throw new Exception("Requête: " . $request ."\nAucun résultat correspondant");
+            if(!$result) {
+                if($present) {
+                    throw new Exception("Requête: <b>$request</b>.<br>Aucun résultat correspondant");
+                }
+
+                return [];
             }
 
             return $result;
@@ -65,12 +69,6 @@ class Repository {
         } catch(Exception $e){
             $class = get_class($e);
             throw new $class("Erreur lors de la requête à la base de données : " . $e->getMessage());
-
-            // AlertsManip::error_alert([
-            //     'title' => 'Erreur lors de la requête à la base de données',
-            //     'msg' => $e
-            // ]);
-            // return null;
         }
     }
     /**

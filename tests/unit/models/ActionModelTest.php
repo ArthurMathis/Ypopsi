@@ -306,7 +306,7 @@ class ActionModelTest extends TestCase {
         $data = [
             "Id"                  => getenv("VALID_KEY_1"),
             "Description"         => getenv("ACTION_DESCRIPTION"),
-            "TimeManager"              => getenv("VALID_DATE"),
+            "Moment"              => getenv("VALID_DATE"),
             "Key_Users"           => getenv("VALID_KEY_2"),
             "Key_Types_of_actions"=> getenv("VALID_KEY_3")
         ];

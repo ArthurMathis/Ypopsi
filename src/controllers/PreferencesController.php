@@ -22,9 +22,7 @@ class PreferencesController extends Controller {
     /**
      * Constructor class
      */
-    public function __construct() {
-        $this->loadView('PreferencesView');
-    }
+    public function __construct() { $this->loadView('PreferencesView'); }
 
     // * DISPLAY * //
     /**
@@ -32,9 +30,7 @@ class PreferencesController extends Controller {
      *
      * @return void
      */
-    public function display(): void {
-        $this->View->display();
-    }
+    public function display(): void { $this->View->display(); }
 
     /**
      * Public method displaying the user's profile page
@@ -310,8 +306,6 @@ class PreferencesController extends Controller {
         if(file_exists($filename) && self::isValidPathExtension($filename)) {
             $file_reader = new FileReader($filename);
             $response = $file_reader->readFile();
-
-            exit; // todo : remove after tests
 
             AlertsManip::alert([
                 'title'     => 'Importation réussie',
