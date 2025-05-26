@@ -338,8 +338,8 @@ class Candidate implements PeopleInterface {
      * @throws CandidateExceptions If the email is invalid
      * @return void
      */
-    public function setEmail(string $email): void {
-        if(!DataFormatManager::isValidEmail($email)) {
+    public function setEmail(?string $email = null): void {
+        if(!is_null($email) && !DataFormatManager::isValidEmail($email)) {
             throw new CandidateExceptions("L'email : {$email} est invalide.");
         }
 
@@ -352,9 +352,9 @@ class Candidate implements PeopleInterface {
      * @throws CandidateExceptions If the phone is invalid
      * @return void
      */
-    public function setPhone(string $phone): void {
-        if(!DataFormatManager::isValidPhoneNumber($phone)) {
-            throw new CandidateExceptions("Le numéro de téléphone : {$phone} est invalide.");
+    public function setPhone(?string $phone = null): void {
+        if(!is_null($phone)) {
+            $phone = DataFormatManager::phoneNumberFormat($phone);
         }
 
         $this->phone = $phone;
@@ -362,21 +362,21 @@ class Candidate implements PeopleInterface {
     /**
      * Public method setting candidate's address
      *
-     * @param string $address The new address of the candidate
+     * @param ?string $address The new address of the candidate
      * @return void
      */
-    public function setAddress(string $address): void {
+    public function setAddress(?string $address = null): void {
         $this->address = $address;
     }
     /**
      * Public method setting candidate's city
      *
-     * @param string $city The new city of the candidate
+     * @param ?string $city The new city of the candidate
      * @throws CandidateExceptions If the city is invalid
      * @return void
      */
-    public function setCity(string $city): void {
-        if(!DataFormatManager::isValidName($city)) {
+    public function setCity(?string $city = null): void {
+        if(!is_null($city) && !DataFormatManager::isValidName($city)) {
             throw new CandidateExceptions("La ville : {$city} est invalide.");
         }
 
@@ -385,12 +385,12 @@ class Candidate implements PeopleInterface {
     /**
      * Public method setting candidate's postcode
      *
-     * @param string $postcode The new postcode of the candidate
+     * @param ?string $postcode The new postcode of the candidate
      * @throws CandidateExceptions If the postcode is invalid
      * @return void
      */
-    public function setPostcode(string $postcode): void {
-        if(!DataFormatManager::isValidPostCode($postcode)) {
+    public function setPostcode(?string $postcode = null): void {
+        if(!is_null($postcode) && !DataFormatManager::isValidPostCode($postcode)) {
             throw new CandidateExceptions("Le code postal : {$postcode} est invalide.");
         }
 

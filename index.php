@@ -54,7 +54,7 @@ try {
 
     //// APPLICATIONS ////
     $router->addRoute("/candidates/applications/input", CandidatesController::class, "inputApplication", [FeatureMiddleware::$INSCRIPT_APPLICATIPON], AuthMiddleware::$USER);
-    $router->addRoute("/can!didates/applications/input/{candidate}", CandidatesController::class, "inputApplication", [FeatureMiddleware::$INSCRIPT_APPLICATIPON], AuthMiddleware::$USER);       
+    $router->addRoute("/candidates/applications/input/{candidate}", CandidatesController::class, "inputApplication", [FeatureMiddleware::$INSCRIPT_APPLICATIPON], AuthMiddleware::$USER);       
     $router->addRoute("/candidates/applications/inscript", CandidatesController::class, "inscriptApplication", [FeatureMiddleware::$INSCRIPT_APPLICATIPON], AuthMiddleware::$USER);
     $router->addRoute("/candidates/applications/inscript/{candidate}", CandidatesController::class, "inscriptApplication", [FeatureMiddleware::$INSCRIPT_APPLICATIPON], AuthMiddleware::$USER);
     $router->addRoute("/candidates/applications/reject/{candidate}/{application}", CandidatesController::class, "rejectApplication", [FeatureMiddleware::$MANAGE_APPLICATIPON], AuthMiddleware::$USER);     

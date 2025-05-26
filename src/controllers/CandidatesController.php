@@ -654,11 +654,11 @@ class CandidatesController extends Controller {
         $candidate->setFirstname($_POST["firstname"]);
         $candidate->setGender($_POST["gender"]);
         $candidate->setEmail($_POST["email"] ?? null);
-        $candidate->setPhone($_POST["phone"] ?? null);
+        $candidate->setPhone(!empty($_POST["phone"]) ? $_POST["phone"] : null);
         
-        $candidate->setAddress($_POST["address"] ?? null);
-        $candidate->setCity($_POST["city"] ?? null);
-        $candidate->setPostcode($_POST["postcode"] ?? null);
+        $candidate->setAddress(!empty($_POST["address"]) ? $_POST["address"] : null);
+        $candidate->setCity(!empty($_POST["city"]) ? $_POST["city"] : null);
+        $candidate->setPostcode(!empty($_POST["postcode"]) ? $_POST["postcode"] : null);
         
         $can_repo->update($candidate);
 
@@ -698,7 +698,8 @@ class CandidatesController extends Controller {
         $have_repo = new HaveTheRightToRepository();
         $helps = $have_repo->getListFromcandidate($key_candidate);
 
-        if(count($helps) !== count($_POST["helps"])) {                                                   // Checking if data have changed
+        $nb_helps = isset($_POST["helps"]) ? count($_POST["helps"]) : 0;                                 // Getting the number of helps
+        if(count($helps) !== $nb_helps) {                                                   // Checking if data have changed
             $changed = true;
         } elseif(!empty($_POST["helps"])) {
             foreach($_POST["helps"] as $index => $obj) {
