@@ -515,7 +515,7 @@ class CandidatesController extends Controller {
         $candidate = $can_repo->get($key_candidate);                                        // Fetching the candidate 
 
         $meeting = Meeting::create(                                                         // Creating the meeting
-            $_POST['date'] . " " . $_POST['time'], 
+            $_POST['date'] . " " . $_POST['time'] . ":00", 
             (int) $_POST['recruiter'], 
             $key_candidate, 
             (int) $_POST['establishment'],
@@ -699,7 +699,7 @@ class CandidatesController extends Controller {
         $helps = $have_repo->getListFromcandidate($key_candidate);
 
         $nb_helps = isset($_POST["helps"]) ? count($_POST["helps"]) : 0;                                 // Getting the number of helps
-        if(count($helps) !== $nb_helps) {                                                   // Checking if data have changed
+        if(count($helps) !== $nb_helps) {                                                               // Checking if data have changed
             $changed = true;
         } elseif(!empty($_POST["helps"])) {
             foreach($_POST["helps"] as $index => $obj) {

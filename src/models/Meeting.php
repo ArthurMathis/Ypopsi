@@ -36,7 +36,7 @@ class Meeting {
         }
 
         // The date 
-        if(!TimeManager::isDate($date)) {
+        if(!TimeManager::isFullDate($date)) {
             throw new MeetingExceptions("Date invalide : {$date}.");
         }
 
