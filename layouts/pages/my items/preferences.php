@@ -120,7 +120,7 @@ use App\Core\Middleware\AuthMiddleware;
             
             <content>
                 <a 
-                    href="<?= APP_PATH ?>/prefrences/jobs"
+                    href="<?= APP_PATH ?>/preferences/jobs"
                     
                     <?php if($tab === "jobs"): ?>
                         class="selected"
