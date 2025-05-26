@@ -1,6 +1,7 @@
 <?php
 
-use App\Core\Tools\FomsManip;
+use App\Core\Tools\DataFormatManager;
+use App\Core\Middleware\AuthMiddleware;
 
 ?>
 
@@ -30,7 +31,7 @@ use App\Core\Tools\FomsManip;
         <?php endif?>    
     </content>
     <footer>
-        <?php if (isUserOrMore()): ?>
+        <?php if(AuthMiddleware::isUserOrMore()): ?>
             <?php if(time() < strtotime($item['date'] . ' ' . $item['heure'])): ?>
                 <a 
                     class="action_button grey_color" 
@@ -38,7 +39,7 @@ use App\Core\Tools\FomsManip;
                 >
                     <p>Annuler</p>
                     <img 
-                        src="<?= APP_PATH ?>\layouts\assets\img\logo\trash.svg" 
+                        src="<?= APP_PATH ?>\layouts\assets\img\trash\black.svg" 
                         alt="supprimer"
                     >
                 </a>    
