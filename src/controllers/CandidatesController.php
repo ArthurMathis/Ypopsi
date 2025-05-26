@@ -388,9 +388,9 @@ class CandidatesController extends Controller {
             (int) $_POST["establishment"],
             (int) $_POST["type_of_contrat"],
             $_POST["start_date"],
-            $_POST["end_date"] ?? null,
-            (int) $_POST["salary"] ?? null,
-            (int) $_POST["hourly_rate"] ?? null,
+            !empty($_POST["end_date"]) ? $_POST["end_date"] : null,
+            !empty($_POST["salary"]) ? (int) $_POST["salary"] : null,
+            !empty($_POST["hourly_rate"]) ? (int) $_POST["hourly_rate"] : null,
             (bool) !empty($_POST["night_work"]) ?? false,
             (bool) !empty($_POST["wk_work"]) ?? false
         );
