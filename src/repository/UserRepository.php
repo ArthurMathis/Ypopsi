@@ -57,7 +57,7 @@ class UserRepository extends Repository {
         $response = array_map(function($c) {
             return array(
                 "id" => $c->getId(), 
-                "text" => $c->getName() . " " . $c->getFirstname()
+                "text" => strtoupper($c->getName()) . " " . $c->getFirstname()
             );
         }, $fetch);
 
