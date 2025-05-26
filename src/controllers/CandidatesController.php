@@ -559,10 +559,10 @@ class CandidatesController extends Controller {
         $qualifications_list = (new QualificationRepository())->getAutoCompletion();                                // Fetching the list of qualifications
         $helps_list = (new HelpRepository())->getAutoCompletion();                                                  // Fetching the list of helps
         $employee_list = (new CandidateRepository())->getAutoCompletion();                                          // Fetching the list of employees
-
+        
         $can_repo = new CandidateRepository();
         $candidate = $can_repo->get($key_candidate);                                                                // fetching the candidate
-
+        
         $users_qualifications = null;
         $fetch_qualifications = (new QualificationRepository())->getListFromCandidate($key_candidate);              // Fetching the candidate's qualifications
         if(!empty($fetch_qualifications)) {

@@ -36,7 +36,7 @@ class getQualification {
         }
 
         // The get date
-        if(!is_null($date) && !TimeManager::isDate($date)) {
+        if(!is_null($date) && !(TimeManager::isDate($date) || TimeManager::isFullDate($date))) {
             throw new GetQualificationExceptions("Date de la qualification invalide : {$qualification}.");
         }
     }
