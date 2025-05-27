@@ -77,17 +77,21 @@
                     </p>
                 <?php endif ?>
 
-                <?php if($item['nuit']): ?>
-                    <p>
-                        Emploi de nuit
-                    </p>
-                <?php endif ?>  
-                
-                <?php if($item['week_end']): ?>
-                    <p>
-                        Emploi de week-end
-                    </p>
-                <?php endif ?>  
+                <?php 
+                    switch($item) {
+                        case $item['nuit'] && $item['week_end']:
+                            echo "<p>Emploi de nuit et de week-end</p>";
+                            break;
+
+                        case $item['nuit']:
+                            echo "<p>Emploi de nuit</p>";
+                            break;
+
+                        case $item['week_end']:
+                            echo "<p>Emploi de week-end</p>";
+                            break;
+                    } 
+                ?>
             </article>
         </div>
 
