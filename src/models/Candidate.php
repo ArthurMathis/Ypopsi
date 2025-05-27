@@ -496,10 +496,10 @@ class Candidate implements PeopleInterface {
             "visit"        => $this->getVisit(),
             "rating"       => $this->getRating(),
             "description"  => $this->getDescription(),
-            "deleted"      => $this->getDeleted(),
-            "a"            => $this->getA(),
-            "b"            => $this->getB(),
-            "c"            => $this->getC()
+            "deleted"      => $this->getDeleted() ? 1 : 0,
+            "a"            => $this->getA() ? 1 : 0,
+            "b"            => $this->getB() ? 1 : 0,
+            "c"            => $this->getC() ? 1 : 0
         );
     }
 
