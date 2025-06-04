@@ -392,7 +392,7 @@ class Contract {
         }
 
         if($this->getWkWork() == true) {
-            $response["wk_work"] = $this->getWkWork();
+            $response["week_end_work"] = $this->getWkWork();
         }
 
         return $response;

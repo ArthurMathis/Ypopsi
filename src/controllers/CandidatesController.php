@@ -746,7 +746,7 @@ class CandidatesController extends Controller {
 
         $act_repo = new ActionRepository();                 
         $type = $act_repo->searchType("Mise à jour notation"); 
-        $desc = "Mise à jour dla notation de " . $candidate->getCompleteName();
+        $desc = "Mise à jour de la notation de " . $candidate->getCompleteName();
 
         $act = Action::create(                                                              // Creating the action
             $_SESSION['user']->getId(), 
