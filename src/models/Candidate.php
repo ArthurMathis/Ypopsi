@@ -57,56 +57,56 @@ class Candidate implements PeopleInterface {
     )
     {
         // The primary key
-        if(!empty($id) && !DataFormatManager::isValidKey($id)) {
+        if(!is_null($id) && !DataFormatManager::isValidKey($id)) {
             throw new CandidateExceptions("La clé primaire : {$id} est invalide.");
         }
 
         // The name 
-        if(!empty($name) && !DataFormatManager::isValidName($name)) {
+        if(!is_null($name) && !DataFormatManager::isValidName($name)) {
             throw new CandidateExceptions("Le nom : {$name} est invalide.");
         }
 
         // The firstname 
-        if(!empty($firstname) && !DataFormatManager::isValidName($firstname)) {
+        if(!is_null($firstname) && !DataFormatManager::isValidName($firstname)) {
             throw new CandidateExceptions("Le prénom : {$firstname} est invalide.");
         }
 
-        if(empty($name) && empty($firstname)) {
+        if(is_null($name) && is_null($firstname)) {
             throw new CandidateExceptions("Impossible de générer un candidat sans nom et sans prénom.");
         }
 
         // The email
-        if(!empty($email) && !DataFormatManager::isValidEmail($email)) {
+        if(!is_null($email) && !DataFormatManager::isValidEmail($email)) {
             throw new CandidateExceptions("L'email : {$email} est invalide.");
         }
 
         // The phone
-        if(!empty($phone)) {
+        if(!is_null($phone)) {
             $this->phone = DataFormatManager::phoneNumberFormat($phone);                                                      // Formating the phone number
         }
 
         // The city
-        if(!empty($city) && !DataFormatManager::isValidName($city)) {
+        if(!is_null($city) && !DataFormatManager::isValidName($city)) {
             throw new CandidateExceptions("La ville : {$city} est invalide.");
         }
 
         // The postcode
-        if(!empty($postcode) && !DataFormatManager::isValidPostCode($postcode)) {
+        if(!is_null($postcode) && !DataFormatManager::isValidPostCode($postcode)) {
             throw new CandidateExceptions("Le code postal : {$postcode} est invalide.");
         }
 
         // The rating
-        if(!empty($rating) && !self::isValidRating($rating)) {
+        if(!is_null($rating) && !self::isValidRating($rating)) {
             throw new CandidateExceptions("La notation : {$rating} est invalide.");
         }
 
         // The availability 
-        if(!empty($availability) && !TimeManager::isYmdDate($availability)) {
+        if(!is_null($availability) && !TimeManager::isYmdDate($availability)) {
             throw new CandidateExceptions("La date de disponibilité : {$availability} est invalide.");
         }
 
         // The visit
-        if(!empty($visit) && !TimeManager::isYmdDate($visit)) {
+        if(!is_null($visit) && !TimeManager::isYmdDate($visit)) {
             throw new CandidateExceptions("La date de visite médicale : {$visit} est invalide.");
         }
     }

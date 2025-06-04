@@ -27,7 +27,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -40,9 +40,43 @@ class ApplicationModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getJob(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getJob()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getSource(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getSource()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getType()));
-        $this->assertEquals(getenv("VALID_KEY_1"), $application->getNeed(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getNeed()));
+        $this->assertNull($application->getNeed(), testErrorManager::cerr_null($application->getNeed()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getService(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getService()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getEstablishment()));
+    }
+
+    //// WITH ////
+    /**
+     * Public function testing Application::__constructor with need
+     * 
+     * @return void
+     */
+    public function testConstructorWithNeed(): void {
+        $application = new Application(
+            id               : getenv("VALID_KEY_1"),
+            is_accepted      : false,
+            is_refused       : false,
+            date             : getenv("VALID_FULL_DATE"),
+            candidate_key    : getenv("VALID_KEY_1"),
+            job_key          : getenv("VALID_KEY_1"),
+            source_key       : getenv("VALID_KEY_1"),
+            type_key         : getenv("VALID_KEY_1"),
+            need_key         : getenv("VALID_KEY_1"),
+            service_key      : null,
+            establishment_key: null
+        );
+
+        $this->assertInstanceOf(Application::class, $application);
+        $this->assertEquals(getenv("VALID_KEY_1"), $application->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getId()));
+        $this->assertEquals(false, $application->getAccepted(), testErrorManager::cerr_eq(false, $application->getAccepted()));
+        $this->assertEquals(false, $application->getRefused(), testErrorManager::cerr_eq(false, $application->getRefused()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $application->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $application->getDate()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $application->getJob(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getJob()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $application->getSource(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getSource()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $application->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getType()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $application->getNeed(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getNeed()));
+        $this->assertNull($application->getService(), testErrorManager::cerr_null($application->getService()));
+        $this->assertNull($application->getEstablishment(), testErrorManager::cerr_null($application->getEstablishment()));
     }
 
     //// WITHOUT ////
@@ -61,7 +95,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -74,7 +108,7 @@ class ApplicationModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getJob(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getJob()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getSource(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getSource()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getType()));
-        $this->assertEquals(getenv("VALID_KEY_1"), $application->getNeed(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getNeed()));
+        $this->assertNull($application->getNeed(), testErrorManager::cerr_null($application->getNeed()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getService(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getService()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getEstablishment()));
     }
@@ -94,7 +128,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -107,7 +141,7 @@ class ApplicationModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getJob(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getJob()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getSource(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getSource()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getType()));
-        $this->assertEquals(getenv("VALID_KEY_1"), $application->getNeed(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getNeed()));
+        $this->assertNull($application->getNeed(), testErrorManager::cerr_null($application->getNeed()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getService(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getService()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getEstablishment()));
     }
@@ -127,7 +161,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : null,
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -140,7 +174,7 @@ class ApplicationModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getJob(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getJob()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getSource(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getSource()));
         $this->assertNull($application->getType(), testErrorManager::cerr_null($application->getType()));
-        $this->assertEquals(getenv("VALID_KEY_1"), $application->getNeed(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getNeed()));
+        $this->assertNull($application->getNeed(), testErrorManager::cerr_null($application->getNeed()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getService(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getService()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getEstablishment()));
     }
@@ -193,13 +227,22 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : null,
             establishment_key: getenv("VALID_KEY_1")
         );
 
         $this->assertInstanceOf(Application::class, $application);
+        $this->assertEquals(getenv("VALID_KEY_1"), $application->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getId()));
+        $this->assertEquals(false, $application->getAccepted(), testErrorManager::cerr_eq(false, $application->getAccepted()));
+        $this->assertEquals(false, $application->getRefused(), testErrorManager::cerr_eq(false, $application->getRefused()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $application->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $application->getDate()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $application->getJob(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getJob()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $application->getSource(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getSource()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $application->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getType()));
+        $this->assertNull($application->getNeed(), testErrorManager::cerr_null($application->getNeed()));
         $this->assertNull($application->getService(), testErrorManager::cerr_null($application->getService()));
+        $this->assertEquals(getenv("VALID_KEY_1"), $application->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getEstablishment()));
     }
 
     /**
@@ -217,7 +260,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: null
         );
@@ -230,7 +273,7 @@ class ApplicationModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getJob(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getJob()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getSource(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getSource()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getType()));
-        $this->assertEquals(getenv("VALID_KEY_1"), $application->getNeed(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getNeed()));
+        $this->assertNull($application->getNeed(), testErrorManager::cerr_null($application->getNeed()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getService(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getService()));
         $this->assertNull($application->getEstablishment(), testErrorManager::cerr_null($application->getEstablishment()));
     }
@@ -255,7 +298,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -280,7 +323,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -305,7 +348,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -330,7 +373,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : $job,
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -355,7 +398,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : $type,
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -380,7 +423,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : $source,
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -406,8 +449,8 @@ class ApplicationModelTest extends TestCase {
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
             need_key         : $needKey,
-            service_key      : getenv("VALID_KEY_1"),
-            establishment_key: getenv("VALID_KEY_1")
+            service_key      : null, 
+            establishment_key: null
         );
     }
 
@@ -430,7 +473,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : $service,
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -455,7 +498,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: $establishment
         );
@@ -477,7 +520,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -500,7 +543,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -523,7 +566,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -546,7 +589,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -569,7 +612,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -592,7 +635,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -615,7 +658,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -638,7 +681,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -662,8 +705,8 @@ class ApplicationModelTest extends TestCase {
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
             need_key         : getenv("VALID_KEY_1"),
-            service_key      : getenv("VALID_KEY_1"),
-            establishment_key: getenv("VALID_KEY_1")
+            service_key      : null,
+            establishment_key: null
         );
 
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getNeed(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getNeed()));
@@ -684,7 +727,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -707,7 +750,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -729,7 +772,7 @@ class ApplicationModelTest extends TestCase {
             type         : getenv("VALID_KEY_1"),
             establishment: getenv("VALID_KEY_1"),
             service      : getenv("VALID_KEY_1"),
-            need         : getenv("VALID_KEY_1")
+            need         : null
         );
 
         $this->assertInstanceOf(Application::class, $application);
@@ -741,7 +784,7 @@ class ApplicationModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getJob(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getJob()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getSource(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getSource()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getType()));
-        $this->assertEquals(getenv("VALID_KEY_1"), $application->getNeed(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getNeed()));
+        $this->assertNull($application->getNeed(), testErrorManager::cerr_null($application->getNeed()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getService(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getService()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getEstablishment()));
     }
@@ -762,7 +805,7 @@ class ApplicationModelTest extends TestCase {
             job_key          : getenv("VALID_KEY_1"),
             source_key       : getenv("VALID_KEY_1"),
             type_key         : getenv("VALID_KEY_1"),
-            need_key         : getenv("VALID_KEY_1"),
+            need_key         : null,
             service_key      : getenv("VALID_KEY_1"),
             establishment_key: getenv("VALID_KEY_1")
         );
@@ -776,7 +819,7 @@ class ApplicationModelTest extends TestCase {
             "job"           => getenv("VALID_KEY_1"),
             "type"          => getenv("VALID_KEY_1"),
             "source"        => getenv("VALID_KEY_1"),
-            "need"          => getenv("VALID_KEY_1"),
+            "need"          => null,
             "establishment" => getenv("VALID_KEY_1"),
             "service"       => getenv("VALID_KEY_1")
         ];
@@ -799,7 +842,7 @@ class ApplicationModelTest extends TestCase {
             "Key_Jobs"               => getenv("VALID_KEY_1"),
             "Key_Types_of_contracts" => getenv("VALID_KEY_1"),
             "Key_Sources"            => getenv("VALID_KEY_1"),
-            "Key_Needs"              => getenv("VALID_KEY_1"),
+            "Key_Needs"              => null,
             "Key_Establishments"     => getenv("VALID_KEY_1"),
             "Key_Services"           => getenv("VALID_KEY_1")
         ];
@@ -815,7 +858,7 @@ class ApplicationModelTest extends TestCase {
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getJob(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getJob()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getSource(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getSource()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getType()));
-        $this->assertEquals(getenv("VALID_KEY_1"), $application->getNeed(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getNeed()));
+        $this->assertNull($application->getNeed(), testErrorManager::cerr_null($application->getNeed()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getService(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getService()));
         $this->assertEquals(getenv("VALID_KEY_1"), $application->getEstablishment(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $application->getEstablishment()));
     }

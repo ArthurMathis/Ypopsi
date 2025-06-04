@@ -86,19 +86,22 @@ class Application {
             throw new ApplicationExceptions("Clé primaire du service invalide : {$service_key}. Clé attendue strictement positive.");
         }
 
-        // todo : tester la contrainte sql
+        // SQL Constraint
+        if(!is_null($need_key) && (!is_null($establishment_key) || !is_null($service_key))) {
+            throw new ApplicationExceptions("Contrainte SQL non respectée. Il est impossible de cumuler le besoin avec l'établissement ou le service.");
+        }
     }
 
     /**
      * Public static method building and returning a new Application
      * 
-     * @param int $candidate
-     * @param int $job 
-     * @param int $source
-     * @param ?int $type
-     * @param ?int $establishment
-     * @param ?int $service
-     * @param ?int $need 
+     * @param int $candidate The candidate's primary key
+     * @param int $job The job's primary key
+     * @param int $source The source's primary key
+     * @param ?int $type The type's primary key
+     * @param ?int $establishment The establishemnt's primary key
+     * @param ?int $service The service's primary key
+     * @param ?int $need The need's primary key
      * @return Application
      */
     public static function create(
@@ -111,17 +114,17 @@ class Application {
         ?int $need = null
     ): Application {
         return new Application(
-            null, 
-            false, 
-            false, 
-            null, 
-            $candidate,
-            $job, 
-            $type, 
-            $source, 
-            $need, 
-            $establishment, 
-            $service
+            id               : null,
+            is_accepted      : false,
+            is_refused       : false,
+            date             : null,
+            candidate_key    : $candidate,
+            job_key          : $job,
+            type_key         : $type,
+            source_key       : $source,
+            need_key         : $need,
+            establishment_key: $establishment,
+            service_key      : $service
         );
     }
 

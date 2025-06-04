@@ -35,8 +35,9 @@ class getQualification {
             throw new GetQualificationExceptions("Clé primaire de la qualification invalide : {$qualification}. Clé attendue strictement positive.");
         }
 
-        // The get date
-        if(!is_null($date) && !(TimeManager::isYmdDate($date) || TimeManager::isFullDate($date))) {
+        // The get date 
+        // todo : regarder pourquoi les dates sont stockées au format "Y-m-d H:i:s" dans la base de données, utile ? 
+        if(!is_null($date) && !TimeManager::isDate($date)) {
             throw new GetQualificationExceptions("Date de la qualification invalide : {$qualification}.");
         }
     }

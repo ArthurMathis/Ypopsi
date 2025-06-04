@@ -21,7 +21,7 @@ class ActionModelTest extends TestCase {
         $action = new Action(
             getenv("VALID_KEY_1"),
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3")
         );
@@ -29,7 +29,7 @@ class ActionModelTest extends TestCase {
         $this->assertInstanceOf(Action::class, $action);
         $this->assertEquals(getenv("VALID_KEY_1"), $action->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $action->getId()));
         $this->assertEquals(getenv("ACTION_DESCRIPTION"), $action->getDescription(), testErrorManager::cerr_eq(getenv("ACTION_DESCRIPTION"), $action->getDescription()));
-        $this->assertEquals(getenv("VALID_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $action->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $action->getDate()));
         $this->assertEquals(getenv("VALID_KEY_2"), $action->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $action->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $action->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $action->getType()));
     }
@@ -44,7 +44,7 @@ class ActionModelTest extends TestCase {
         $action = new Action(
             null, 
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3")
         );
@@ -52,7 +52,7 @@ class ActionModelTest extends TestCase {
         $this->assertInstanceOf(Action::class, $action);
         $this->assertNull($action->getId(), testErrorManager::cerr_null($action->getId()));
         $this->assertEquals(getenv("ACTION_DESCRIPTION"), $action->getDescription(), testErrorManager::cerr_eq(getenv("ACTION_DESCRIPTION"), $action->getDescription()));
-        $this->assertEquals(getenv("VALID_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $action->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $action->getDate()));
         $this->assertEquals(getenv("VALID_KEY_2"), $action->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $action->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $action->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $action->getType()));
     }
@@ -66,7 +66,7 @@ class ActionModelTest extends TestCase {
         $action = new Action(
             getenv("VALID_KEY_1"),
             null,
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3")
         );
@@ -74,7 +74,7 @@ class ActionModelTest extends TestCase {
         $this->assertInstanceOf(Action::class, $action);
         $this->assertEquals(getenv("VALID_KEY_1"), $action->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $action->getId()));
         $this->assertNull($action->getDescription(), testErrorManager::cerr_null($action->getDescription()));
-        $this->assertEquals(getenv("VALID_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $action->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $action->getDate()));
         $this->assertEquals(getenv("VALID_KEY_2"), $action->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $action->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $action->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $action->getType()));
     }
@@ -116,7 +116,7 @@ class ActionModelTest extends TestCase {
         new Action(
             $id,
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3")
         );
@@ -154,7 +154,7 @@ class ActionModelTest extends TestCase {
         new Action(
             getenv("VALID_KEY_1"),
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             $key,
             getenv("VALID_KEY_3")
         );
@@ -173,7 +173,7 @@ class ActionModelTest extends TestCase {
         new Action(
             getenv("VALID_KEY_1"),
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             $key
         );
@@ -187,7 +187,7 @@ class ActionModelTest extends TestCase {
         $action = new Action(
             getenv("VALID_KEY_1"),
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3")
         );
@@ -202,7 +202,7 @@ class ActionModelTest extends TestCase {
         $action = new Action(
             getenv("VALID_KEY_1"),
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3")
         );
@@ -217,12 +217,12 @@ class ActionModelTest extends TestCase {
         $action = new Action(
             getenv("VALID_KEY_1"),
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3")
         );
 
-        $this->assertEquals(getenv("VALID_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $action->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $action->getDate()));
     }
 
     /**
@@ -232,7 +232,7 @@ class ActionModelTest extends TestCase {
         $action = new Action(
             getenv("VALID_KEY_1"),
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3")
         );
@@ -247,7 +247,7 @@ class ActionModelTest extends TestCase {
         $action = new Action(
             getenv("VALID_KEY_1"),
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3")
         );
@@ -306,7 +306,7 @@ class ActionModelTest extends TestCase {
         $data = [
             "Id"                  => getenv("VALID_KEY_1"),
             "Description"         => getenv("ACTION_DESCRIPTION"),
-            "Moment"              => getenv("VALID_DATE"),
+            "Moment"              => getenv("VALID_FULL_DATE"),
             "Key_Users"           => getenv("VALID_KEY_2"),
             "Key_Types_of_actions"=> getenv("VALID_KEY_3")
         ];
@@ -316,7 +316,7 @@ class ActionModelTest extends TestCase {
         $this->assertInstanceOf(Action::class, $action);
         $this->assertEquals(getenv("VALID_KEY_1"), $action->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $action->getId()));
         $this->assertEquals(getenv("ACTION_DESCRIPTION"), $action->getDescription(), testErrorManager::cerr_eq(getenv("ACTION_DESCRIPTION"), $action->getDescription()));
-        $this->assertEquals(getenv("VALID_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $action->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $action->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $action->getDate()));
         $this->assertEquals(getenv("VALID_KEY_2"), $action->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $action->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $action->getType(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $action->getType()));
     }
@@ -342,7 +342,7 @@ class ActionModelTest extends TestCase {
         $action = new Action(
             getenv("VALID_KEY_1"),
             getenv("ACTION_DESCRIPTION"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3")
         );
@@ -350,7 +350,7 @@ class ActionModelTest extends TestCase {
         $expectedArray = [
             "id"          => getenv("VALID_KEY_1"),
             "description" => getenv("ACTION_DESCRIPTION"),
-            "date"        => getenv("VALID_DATE"),
+            "date"        => getenv("VALID_FULL_DATE"),
             "user"        => getenv("VALID_KEY_2"),
             "type"        => getenv("VALID_KEY_3")
         ];

@@ -20,7 +20,7 @@ class MeetingModelTest extends TestCase {
     public function testConstructor(): void {
         $meeting = new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -29,7 +29,7 @@ class MeetingModelTest extends TestCase {
 
         $this->assertInstanceOf(Meeting::class, $meeting);
         $this->assertEquals(getenv("VALID_KEY_1"), $meeting->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $meeting->getId()));
-        $this->assertEquals(getenv("VALID_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $meeting->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $meeting->getDate()));
         $this->assertEquals(getenv("MEETING_DESCRIPTION"), $meeting->getDescription(), testErrorManager::cerr_eq(getenv("MEETING_DESCRIPTION"), $meeting->getDescription()));
         $this->assertEquals(getenv("VALID_KEY_2"), $meeting->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $meeting->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $meeting->getCandidate(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $meeting->getCandidate()));
@@ -45,7 +45,7 @@ class MeetingModelTest extends TestCase {
     public function testConstructorWithoutId(): void {
         $meeting = new Meeting(
             null,
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -54,7 +54,7 @@ class MeetingModelTest extends TestCase {
 
         $this->assertInstanceOf(Meeting::class, $meeting);
         $this->assertNull($meeting->getId(), testErrorManager::cerr_null($meeting->getId()));
-        $this->assertEquals(getenv("VALID_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $meeting->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $meeting->getDate()));
         $this->assertEquals(getenv("MEETING_DESCRIPTION"), $meeting->getDescription(), testErrorManager::cerr_eq(getenv("MEETING_DESCRIPTION"), $meeting->getDescription()));
         $this->assertEquals(getenv("VALID_KEY_2"), $meeting->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $meeting->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $meeting->getCandidate(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $meeting->getCandidate()));
@@ -69,7 +69,7 @@ class MeetingModelTest extends TestCase {
     public function testConstructorWithoutDescription(): void {
         $meeting = new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             null,
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -78,7 +78,7 @@ class MeetingModelTest extends TestCase {
 
         $this->assertInstanceOf(Meeting::class, $meeting);
         $this->assertEquals(getenv("VALID_KEY_1"), $meeting->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $meeting->getId()));
-        $this->assertEquals(getenv("VALID_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $meeting->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $meeting->getDate()));
         $this->assertNull($meeting->getDescription(), testErrorManager::cerr_null($meeting->getDescription()));
         $this->assertEquals(getenv("VALID_KEY_2"), $meeting->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $meeting->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $meeting->getCandidate(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $meeting->getCandidate()));
@@ -97,7 +97,7 @@ class MeetingModelTest extends TestCase {
 
         new Meeting(
             getenv("WRONG_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -136,7 +136,7 @@ class MeetingModelTest extends TestCase {
 
         new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             $key,
             getenv("VALID_KEY_3"),
@@ -156,7 +156,7 @@ class MeetingModelTest extends TestCase {
 
         new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             $key,
@@ -176,7 +176,7 @@ class MeetingModelTest extends TestCase {
 
         new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -191,7 +191,7 @@ class MeetingModelTest extends TestCase {
     public function testGetId(): void {
         $meeting = new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -207,14 +207,14 @@ class MeetingModelTest extends TestCase {
     public function testGetDate(): void {
         $meeting = new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
             getenv("VALID_KEY_1")
         );
 
-        $this->assertEquals(getenv("VALID_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $meeting->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $meeting->getDate()));
     }
 
     /**
@@ -223,7 +223,7 @@ class MeetingModelTest extends TestCase {
     public function testGetDescription(): void {
         $meeting = new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -239,7 +239,7 @@ class MeetingModelTest extends TestCase {
     public function testGetUser(): void {
         $meeting = new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -255,7 +255,7 @@ class MeetingModelTest extends TestCase {
     public function testGetCandidate(): void {
         $meeting = new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -271,7 +271,7 @@ class MeetingModelTest extends TestCase {
     public function testGetEstablishment(): void {
         $meeting = new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -289,7 +289,7 @@ class MeetingModelTest extends TestCase {
      */
     public function testCreate(): void {
         $meeting = Meeting::create(
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
             getenv("VALID_KEY_1"),
@@ -298,7 +298,7 @@ class MeetingModelTest extends TestCase {
 
         $this->assertInstanceOf(Meeting::class, $meeting);
         $this->assertNull($meeting->getId(), testErrorManager::cerr_null($meeting->getId()));
-        $this->assertEquals(getenv("VALID_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $meeting->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $meeting->getDate()));
         $this->assertEquals(getenv("MEETING_DESCRIPTION"), $meeting->getDescription(), testErrorManager::cerr_eq(getenv("MEETING_DESCRIPTION"), $meeting->getDescription()));
         $this->assertEquals(getenv("VALID_KEY_2"), $meeting->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $meeting->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $meeting->getCandidate(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $meeting->getCandidate()));
@@ -312,7 +312,7 @@ class MeetingModelTest extends TestCase {
      */
     public function testCreateWithoutDescriptin(): void {
         $meeting = Meeting::create(
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
             getenv("VALID_KEY_1"),
@@ -321,7 +321,7 @@ class MeetingModelTest extends TestCase {
 
         $this->assertInstanceOf(Meeting::class, $meeting);
         $this->assertNull($meeting->getId(), testErrorManager::cerr_null($meeting->getId()));
-        $this->assertEquals(getenv("VALID_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $meeting->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $meeting->getDate()));
         $this->assertNull($meeting->getDescription(), testErrorManager::cerr_null($meeting->getDescription()));
         $this->assertEquals(getenv("VALID_KEY_2"), $meeting->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $meeting->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $meeting->getCandidate(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $meeting->getCandidate()));
@@ -337,7 +337,7 @@ class MeetingModelTest extends TestCase {
     public function testFromArray(): void {
         $data = [
             "Id"                => getenv("VALID_KEY_1"),
-            "Date"              => getenv("VALID_DATE"),
+            "Date"              => getenv("VALID_FULL_DATE"),
             "Description"       => getenv("MEETING_DESCRIPTION"),
             "Key_Users"         => getenv("VALID_KEY_2"),
             "Key_Candidates"    => getenv("VALID_KEY_3"),
@@ -348,7 +348,7 @@ class MeetingModelTest extends TestCase {
 
         $this->assertInstanceOf(Meeting::class, $meeting);
         $this->assertEquals(getenv("VALID_KEY_1"), $meeting->getId(), testErrorManager::cerr_eq(getenv("VALID_KEY_1"), $meeting->getId()));
-        $this->assertEquals(getenv("VALID_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_DATE"), $meeting->getDate()));
+        $this->assertEquals(getenv("VALID_FULL_DATE"), $meeting->getDate(), testErrorManager::cerr_eq(getenv("VALID_FULL_DATE"), $meeting->getDate()));
         $this->assertEquals(getenv("MEETING_DESCRIPTION"), $meeting->getDescription(), testErrorManager::cerr_eq(getenv("MEETING_DESCRIPTION"), $meeting->getDescription()));
         $this->assertEquals(getenv("VALID_KEY_2"), $meeting->getUser(), testErrorManager::cerr_eq(getenv("VALID_KEY_2"), $meeting->getUser()));
         $this->assertEquals(getenv("VALID_KEY_3"), $meeting->getCandidate(), testErrorManager::cerr_eq(getenv("VALID_KEY_3"), $meeting->getCandidate()));
@@ -375,7 +375,7 @@ class MeetingModelTest extends TestCase {
     public function testToArray(): void {
         $meeting = new Meeting(
             getenv("VALID_KEY_1"),
-            getenv("VALID_DATE"),
+            getenv("VALID_FULL_DATE"),
             getenv("MEETING_DESCRIPTION"),
             getenv("VALID_KEY_2"),
             getenv("VALID_KEY_3"),
@@ -384,7 +384,7 @@ class MeetingModelTest extends TestCase {
 
         $expectedArray = [
             "id"            => getenv("VALID_KEY_1"),
-            "date"          => getenv("VALID_DATE"),
+            "date"          => getenv("VALID_FULL_DATE"),
             "description"   => getenv("MEETING_DESCRIPTION"),
             "user"          => getenv("VALID_KEY_2"),
             "candidate"     => getenv("VALID_KEY_3"),
