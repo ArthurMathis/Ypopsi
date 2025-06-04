@@ -1,7 +1,7 @@
 <?php
 
 use App\Core\Middleware\AuthMiddleware;
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\TimeManager;
 
 ?>
 

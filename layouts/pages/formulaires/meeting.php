@@ -1,6 +1,6 @@
 <?php 
 
-use App\Core\Tools\TimeManager; 
+use App\Core\Tools\DataFormat\TimeManager; 
 
 ?>
 
@@ -83,7 +83,7 @@ use App\Core\Tools\TimeManager;
                     <?php endif ?>
 
                     <?php if($editable): ?>
-                        min="<?= TimeManager::dayFromDate(TimeManager::currentTimeManager()->getDate()) ?>"
+                        min="<?= TimeManager::dayFromDate(TimeManager::currentTime()->getDate()) ?>"
                     <?php else: ?>
                         readonly
                     <?php endif ?>

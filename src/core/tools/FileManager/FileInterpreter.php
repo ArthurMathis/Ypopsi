@@ -5,7 +5,7 @@ namespace App\Core\Tools\FileManager;
 use \Exception;
 use App\Exceptions\DataInsertionExceptions;
 use App\Core\Tools\Registering;
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\TimeManager;
 use App\Models\Candidate;
 use App\Models\Application;
 use App\Models\Contract;
@@ -510,13 +510,13 @@ class FileInterpreter {
      */
     protected function completeDate(string $date): string {
         switch($date) {
-            case TimeManager::isDate($date, 'Y-m-d'): 
+            case TimeManager::isYmdDate($date, 'Y-m-d'): 
                 return $date;
 
-            case TimeManager::isDate($date . '-01', 'Y-m-d'): 
+            case TimeManager::isYmdDate($date . '-01', 'Y-m-d'): 
                 return $date . '-01';
 
-            case TimeManager::isDate($date . '-01-01', 'Y-m-d'): 
+            case TimeManager::isYmdDate($date . '-01-01', 'Y-m-d'): 
                 return $date . '-01-01';
 
             case (bool) preg_match('/^\d{5}$/', $date):

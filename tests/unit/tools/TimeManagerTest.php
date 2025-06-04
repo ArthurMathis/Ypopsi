@@ -1,7 +1,7 @@
 <?php 
 
 use PHPUnit\Framework\TestCase;
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\TimeManager;
 use App\Exceptions\TimeManagerExceptions;
 use App\Core\Tools\testErrorManager;
 

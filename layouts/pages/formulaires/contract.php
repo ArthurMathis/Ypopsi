@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\TimeManager;
 
 ?>
 
@@ -121,7 +121,7 @@ use App\Core\Tools\TimeManager;
                     type="date" 
                     name="start_date" 
                     id="start_date" 
-                    min="<?= TimeManager::dayFromDate(TimeManager::currentTimeManager()->getDate()) ?>"
+                    min="<?= TimeManager::dayFromDate(TimeManager::currentTime()->getDate()) ?>"
                     required
                 >
             </div>

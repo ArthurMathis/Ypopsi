@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\TypeOfContractsExceptions;
-use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
 
 /**
  * Class representing a type of contracts

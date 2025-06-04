@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\Controller;
 use App\Core\Tools\AlertsManip;
-use App\Core\Tools\PasswordManager;
+use App\Core\Tools\DataFormat\PasswordManager;
 use App\Models\Action;
 use App\Repository\ActionRepository;
 use App\Repository\UserRepository;

@@ -1,6 +1,6 @@
 <?php
 
-    use App\Core\Tools\TimeManager;
+    use App\Core\Tools\DataFormat\TimeManager;
     use App\Core\Middleware\AuthMiddleware;
     
 ?>
@@ -108,7 +108,7 @@
         <?php endif ?>
     </content>
 
-    <?php if(empty($item['signature']) && empty($item['statut']) && ($item['date_fin'] == null || TimeManager::dayFromDate(TimeManager::currentTimeManager()->getDate()) < $item['date_fin'])): ?>
+    <?php if(empty($item['signature']) && empty($item['statut']) && ($item['date_fin'] == null || TimeManager::dayFromDate(TimeManager::currentTime()->getDate()) < $item['date_fin'])): ?>
         <footer>
             <?php if(AuthMiddleware::isUserOrMore()): ?>
                 <a 

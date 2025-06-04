@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
 use App\Exceptions\FeatureExceptions;
 
 /**

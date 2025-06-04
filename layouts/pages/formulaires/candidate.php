@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Tools\TimeManager; 
+use App\Core\Tools\DataFormat\TimeManager; 
 
 ?>
 

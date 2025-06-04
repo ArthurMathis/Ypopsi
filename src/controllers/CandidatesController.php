@@ -5,8 +5,8 @@ namespace App\Controllers;
 use Exception;
 use App\Controllers\Controller;
 use App\Core\Tools\AlertsManip;
-use App\Core\Tools\DataFormatManager;
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
+use App\Core\Tools\DataFormat\TimeManager;
 use App\Models\Action;
 use App\Models\Application;
 use App\Models\Candidate;
@@ -340,7 +340,7 @@ class CandidatesController extends Controller {
             (int) $_POST["hourly_rate"] ?? null,
             (bool) !empty($_POST["night_work"]) ?? false,
             (bool) !empty($_POST["wk_work"]) ?? false,
-            TimeManager::currentTimeManager()->getDate()
+            TimeManager::currentTime()->getDate()
         );
 
         (new ContractRepository())->inscript($contract);                                        // Registering the offer

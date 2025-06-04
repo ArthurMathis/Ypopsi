@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\TimeManager;
 
 $completed = !empty($candidate);
 
@@ -101,7 +101,7 @@ $completed = !empty($candidate);
                     type="Date" 
                     id="availability" 
                     name="availability" 
-                    min="<?php echo TimeManager::currentTimeManager()->getDate(); ?>"
+                    min="<?php echo TimeManager::currentTime()->getDate(); ?>"
                 >
             </div>
 

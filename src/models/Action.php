@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Core\Tools\DataFormatManager;
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
+use App\Core\Tools\DataFormat\TimeManager;
 use App\Exceptions\ActionExceptions;
 
 /**

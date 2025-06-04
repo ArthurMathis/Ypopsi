@@ -2,9 +2,9 @@
 
 namespace App\models;
 
-use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
 use App\Exceptions\GetQualificationExceptions;
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\TimeManager;
 
 /**
  * Class representing a getQualification
@@ -36,7 +36,7 @@ class getQualification {
         }
 
         // The get date
-        if(!is_null($date) && !(TimeManager::isDate($date) || TimeManager::isFullDate($date))) {
+        if(!is_null($date) && !(TimeManager::isYmdDate($date) || TimeManager::isFullDate($date))) {
             throw new GetQualificationExceptions("Date de la qualification invalide : {$qualification}.");
         }
     }

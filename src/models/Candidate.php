@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\PeopleInterface;
-use App\Core\Tools\DataFormatManager;
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
+use App\Core\Tools\DataFormat\TimeManager;
 use App\Exceptions\CandidateExceptions;
 use Exception;
 
@@ -101,12 +101,12 @@ class Candidate implements PeopleInterface {
         }
 
         // The availability 
-        if(!empty($availability) && !TimeManager::isDate($availability)) {
+        if(!empty($availability) && !TimeManager::isYmdDate($availability)) {
             throw new CandidateExceptions("La date de disponibilité : {$availability} est invalide.");
         }
 
         // The visit
-        if(!empty($visit) && !TimeManager::isDate($visit)) {
+        if(!empty($visit) && !TimeManager::isYmdDate($visit)) {
             throw new CandidateExceptions("La date de visite médicale : {$visit} est invalide.");
         }
     }

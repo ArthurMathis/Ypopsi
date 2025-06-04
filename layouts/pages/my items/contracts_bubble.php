@@ -1,9 +1,9 @@
 <?php
 
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\TimeManager;
 use App\Core\Middleware\AuthMiddleware;
 
-$date = TimeManager::currentTimeManager()->getDate();
+$date = TimeManager::currentTime()->getDate();
 
 ?>
 

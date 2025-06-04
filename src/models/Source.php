@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\SourceExceptions;
-use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
 
 class Source {
     /**

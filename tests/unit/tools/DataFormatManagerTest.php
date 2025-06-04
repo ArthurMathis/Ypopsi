@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
 use App\Core\Tools\testErrorManager;
 
 /**

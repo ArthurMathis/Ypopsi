@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="CLI Arguments" tests="15" assertions="87" errors="0" failures="0" skipped="0" time="0.014458">
-    <testsuite name="DataFormatManagerTest" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" tests="9" assertions="60" errors="0" failures="0" skipped="0" time="0.011700">
-      <testcase name="testIsValidKey" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="17" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="5" time="0.003800"/>
-      <testcase name="testIsValidIdentifier" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="31" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="5" time="0.000186"/>
-      <testcase name="testIsValidName" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="50" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="9" time="0.000163"/>
-      <testcase name="testIsValidEmail" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="77" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="17" time="0.000401"/>
-      <testcase name="testIsValidPhoneNumber" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="120" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="9" time="0.000158"/>
+  <testsuite name="CLI Arguments" tests="15" assertions="87" errors="0" failures="0" skipped="0" time="0.010297">
+    <testsuite name="DataFormatManagerTest" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" tests="9" assertions="60" errors="0" failures="0" skipped="0" time="0.008267">
+      <testcase name="testIsValidKey" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="17" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="5" time="0.002074"/>
+      <testcase name="testIsValidIdentifier" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="31" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="5" time="0.000171"/>
+      <testcase name="testIsValidName" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="50" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="9" time="0.000160"/>
+      <testcase name="testIsValidEmail" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="77" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="17" time="0.000442"/>
+      <testcase name="testIsValidPhoneNumber" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="120" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="9" time="0.000155"/>
       <testcase name="testIsValidPostCode" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="147" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="9" time="0.000151"/>
-      <testcase name="testNameFormat" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="175" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="2" time="0.005310"/>
-      <testcase name="testMajusculeFormat" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="186" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="2" time="0.000153"/>
-      <testcase name="testPhoneNumberFormat" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="197" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="2" time="0.001378"/>
+      <testcase name="testNameFormat" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="175" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="2" time="0.004183"/>
+      <testcase name="testMajusculeFormat" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="186" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="2" time="0.000142"/>
+      <testcase name="testPhoneNumberFormat" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/DataFormatManagerTest.php" line="197" class="DataFormatManagerTest" classname="DataFormatManagerTest" assertions="2" time="0.000788"/>
     </testsuite>
     <testsuite name="PasswordManagerTest" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/PasswordManagerTest.php" tests="2" assertions="21" errors="0" failures="0" skipped="0" time="0.000685">
-      <testcase name="testIsValidPassword" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/PasswordManagerTest.php" line="16" class="PasswordManagerTest" classname="PasswordManagerTest" assertions="15" time="0.000378"/>
-      <testcase name="testRandomPassword" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/PasswordManagerTest.php" line="40" class="PasswordManagerTest" classname="PasswordManagerTest" assertions="6" time="0.000307"/>
+      <testcase name="testIsValidPassword" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/PasswordManagerTest.php" line="16" class="PasswordManagerTest" classname="PasswordManagerTest" assertions="15" time="0.000369"/>
+      <testcase name="testRandomPassword" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/PasswordManagerTest.php" line="40" class="PasswordManagerTest" classname="PasswordManagerTest" assertions="6" time="0.000316"/>
     </testsuite>
-    <testsuite name="TimeManagerTest" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/TimeManagerTest.php" tests="4" assertions="6" errors="0" failures="0" skipped="0" time="0.002073">
-      <testcase name="testConstructorWithValidDate" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/TimeManagerTest.php" line="13" class="TimeManagerTest" classname="TimeManagerTest" assertions="2" time="0.000815"/>
-      <testcase name="testConstructorWithInvalidDate" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/TimeManagerTest.php" line="24" class="TimeManagerTest" classname="TimeManagerTest" assertions="2" time="0.000699"/>
-      <testcase name="testGetDate" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/TimeManagerTest.php" line="53" class="TimeManagerTest" classname="TimeManagerTest" assertions="1" time="0.000146"/>
-      <testcase name="testGetTimestamp" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/TimeManagerTest.php" line="63" class="TimeManagerTest" classname="TimeManagerTest" assertions="1" time="0.000414"/>
+    <testsuite name="TimeManagerTest" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/TimeManagerTest.php" tests="4" assertions="6" errors="0" failures="0" skipped="0" time="0.001345">
+      <testcase name="testConstructorWithValidDate" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/TimeManagerTest.php" line="13" class="TimeManagerTest" classname="TimeManagerTest" assertions="2" time="0.000508"/>
+      <testcase name="testConstructorWithInvalidDate" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/TimeManagerTest.php" line="24" class="TimeManagerTest" classname="TimeManagerTest" assertions="2" time="0.000557"/>
+      <testcase name="testGetDate" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/TimeManagerTest.php" line="53" class="TimeManagerTest" classname="TimeManagerTest" assertions="1" time="0.000136"/>
+      <testcase name="testGetTimestamp" file="/Applications/XAMPP/xamppfiles/htdocs/Ypopsi/tests/unit/tools/TimeManagerTest.php" line="63" class="TimeManagerTest" classname="TimeManagerTest" assertions="1" time="0.000144"/>
     </testsuite>
   </testsuite>
 </testsuites>

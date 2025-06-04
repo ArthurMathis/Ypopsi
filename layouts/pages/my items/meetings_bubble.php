@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Tools\DataFormatManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
 use App\Core\Middleware\AuthMiddleware;
 
 ?>

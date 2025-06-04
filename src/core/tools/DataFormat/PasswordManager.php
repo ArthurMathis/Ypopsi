@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Tools;
+namespace App\Core\Tools\DataFormat;
 
 /**
  * Class creating random password

@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\PeopleInterface;
-use App\Core\Tools\DataFormatManager;
-use App\Core\Tools\PasswordManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
+use App\Core\Tools\DataFormat\PasswordManager;
 use App\Exceptions\UserExceptions;
 
 /**

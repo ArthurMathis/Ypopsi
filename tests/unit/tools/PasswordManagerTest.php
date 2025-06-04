@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use App\Core\Tools\PasswordManager;
+use App\Core\Tools\DataFormat\PasswordManager;
 use App\Core\Tools\testErrorManager;
 
 /**

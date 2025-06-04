@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Exceptions\ContractExceptions;
-use App\Core\Tools\DataFormatManager;
-use App\Core\Tools\TimeManager;
+use App\Core\Tools\DataFormat\DataFormatManager;
+use App\Core\Tools\DataFormat\TimeManager;
 
 /**
  * The contract class
@@ -58,27 +58,27 @@ class Contract {
         }
 
         // The start date
-        if(!TimeManager::isDate($start_date)) {
+        if(!TimeManager::isYmdDate($start_date)) {
             throw new ContractExceptions("Date de début invalide : {$start_date}.");
         }
 
         // The end date
-        if(!is_null($end_date) && !TimeManager::isDate($end_date)) {
+        if(!is_null($end_date) && !TimeManager::isYmdDate($end_date)) {
             throw new ContractExceptions("Date de fin invalide : {$end_date}.");
         }
 
         // The proposition date
-        if(!is_null($proposition_date) && !TimeManager::isDate($proposition_date)) {
+        if(!is_null($proposition_date) && !TimeManager::isYmdDate($proposition_date)) {
             throw new ContractExceptions("Date de proposition invalide : {$proposition_date}.");
         }
 
         // The signature date
-        if(!is_null($signature_date) && !TimeManager::isDate($signature_date)) {
+        if(!is_null($signature_date) && !TimeManager::isYmdDate($signature_date)) {
             throw new ContractExceptions("Date de signature invalide : {$signature_date}.");
         }
 
         // The resignation date
-        if(!is_null($resignation_date) && !TimeManager::isDate($resignation_date)) {
+        if(!is_null($resignation_date) && !TimeManager::isYmdDate($resignation_date)) {
             throw new ContractExceptions("Date de démission invalide : {$resignation_date}.");
         }
 
