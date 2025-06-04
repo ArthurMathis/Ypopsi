@@ -37,7 +37,7 @@ class DataFormatManager {
      * @return boolean
      */
     public static function isValidName(string &$str): bool {
-        $pattern = '/^[a-zA-Zà-ÿÀ-Ÿ\s\-]+$/u';
+        $pattern = '/^[a-zA-Zà-ÿÀ-Ÿ\s\-\\\']+$/u';
         return (bool) preg_match($pattern, $str);
     }
 

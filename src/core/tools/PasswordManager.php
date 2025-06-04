@@ -42,7 +42,7 @@ class PasswordManager {
      * @return bool True if the password is valid, false otherwise
      */
     public static function isValidPassword(string $password): bool {
-        return !(strlen($password) < 12 || 
+        return !(strlen($password) < getenv("PASSWORD_GENERATOR_LENGTH") || 
                 !(bool) strpbrk($password, PasswordManager::$minuscules) || 
                 !(bool) strpbrk($password, PasswordManager::$majuscules) || 
                 !(bool) strpbrk($password, PasswordManager::$chiffres)   || 
@@ -63,7 +63,7 @@ class PasswordManager {
         $password .= PasswordManager::$specials[rand(0, strlen(PasswordManager::$specials) - 1)];
 
         $all = PasswordManager::$majuscules . PasswordManager::$minuscules . PasswordManager::$chiffres;
-        for ($i = 4; $i < 12; $i++) {
+        for ($i = 4; $i < getenv("PASSWORD_GENERATOR_LENGTH"); $i++) {
             $password .= $all[rand(0, strlen($all) - 1)];
         }
         return str_shuffle($password);

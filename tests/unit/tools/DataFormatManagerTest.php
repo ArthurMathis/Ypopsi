@@ -52,9 +52,11 @@ class DataFormatManagerTest extends TestCase {
         $name_1 = getenv("VALID_FIRSTNAME_1");
         $name_2 = getenv("VALID_FIRSTNAME_2");
         $name_3 = getenv("VALID_NAME");
+        $name_4 = getenv("VALID_NAME_2");
         $this->assertTrue(DataFormatManager::isValidName($name_1), testErrorManager::cerr($name_1, true));
         $this->assertTrue(DataFormatManager::isValidName($name_2), testErrorManager::cerr($name_2, true));
         $this->assertTrue(DataFormatManager::isValidName($name_3), testErrorManager::cerr($name_3, true));
+        $this->assertTrue(DataFormatManager::isValidName($name_4), testErrorManager::cerr($name_4, true));
 
         // False
         $false_name_1 = getenv("WRONG_NAME_1");
