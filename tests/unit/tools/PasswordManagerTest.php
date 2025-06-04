@@ -25,7 +25,7 @@ class PasswordManagerTest extends TestCase {
         $this->assertTrue(PasswordManager::isValidPassword(getenv("VALID_PASSWORD_8")), testErrorManager::cerr(getenv("VALID_PASSWORD_8"), true));
         $this->assertTrue(PasswordManager::isValidPassword(getenv("VALID_PASSWORD_9")), testErrorManager::cerr(getenv("VALID_PASSWORD_9"), true));
 
-        // False
+        // // False
         $this->assertFalse(PasswordManager::isValidPassword(getenv("WRONG_PASSWORD_1")), testErrorManager::cerr(getenv("WRONG_PASSWORD_1"), true));
         $this->assertFalse(PasswordManager::isValidPassword(getenv("WRONG_PASSWORD_2")), testErrorManager::cerr(getenv("WRONG_PASSWORD_2"), true));
         $this->assertFalse(PasswordManager::isValidPassword(getenv("WRONG_PASSWORD_3")), testErrorManager::cerr(getenv("WRONG_PASSWORD_3"), true));
@@ -40,11 +40,11 @@ class PasswordManagerTest extends TestCase {
     public function testRandomPassword() {
         $password = PasswordManager::random_password();
 
-        $this->assertTrue(PasswordManager::isValidPassword($password), "Failed asserting that the generated password '{$password}' is valid.");
-        $this->assertEquals(12, strlen($password), "Failed asserting that the generated password has a length of 12.");
-        $this->assertMatchesRegularExpression('/[A-Z]/', $password, "Failed asserting that the generated password contains an uppercase letter.");
-        $this->assertMatchesRegularExpression('/[a-z]/', $password, "Failed asserting that the generated password contains a lowercase letter.");
-        $this->assertMatchesRegularExpression('/\d/', $password, "Failed asserting that the generated password contains a number.");
-        $this->assertMatchesRegularExpression('/[(){}[\]&#_@+!*?:;,.<>-]/', $password, "Failed asserting that the generated password contains a special character.");
+        $this->assertTrue(PasswordManager::isValidPassword($password), "Le mot de passe : '{$password}'ne respecte pas les normes de sécurité.");
+        $this->assertEquals(12, strlen($password), "Le mot de passe : {$password} ne mesure pas 12 caractères.");
+        $this->assertMatchesRegularExpression('/[A-Z]/', $password, "Le mot de passe : {$password} ne contient pas au moins une majuscule.");
+        $this->assertMatchesRegularExpression('/[a-z]/', $password, "Le mot de passe : {$password} ne contient pas au moins une minuscule.");
+        $this->assertMatchesRegularExpression('/\d/', $password, "Le mot de passe : {$password} ne contient pas au moins un chiffre.");
+        $this->assertMatchesRegularExpression('/[(){}[\]&#_@+!*?:;,.<>-]/', $password, "Le mot de passe : {$password} ne contient pas au moins un caractère spécial.");
     }
 }

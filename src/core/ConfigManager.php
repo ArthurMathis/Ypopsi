@@ -4,7 +4,7 @@ namespace App\Core;
 
 /**
  * Class initializing the piece software configuration
- * @author Arthur MATHIS - arthur.mathis@diaocnat-mulhouse.fr
+ * @author Arthur MATHIS <arthur.mathis@diaocnat-mulhouse.fr>
  */
 class ConfigManager {
     /**
@@ -12,9 +12,17 @@ class ConfigManager {
      * 
      * @param string $str The file's path 
      * @return void 
-     * @author Clément STUTZ - clement.stutz@diaconat-mulhouse.fr
+     * @author Clément STUTZ <clement.stutz@diaconat-mulhouse.fr>
      */
     public static function envLoad(string $str = ".env"): void {
+        if(!file_exists($str)) {
+            throw new \Exception("The file '$str' does not exist.");
+        }
+
+        if(!is_readable($str)) {
+            throw new \Exception("The file '$str' is not readable.");
+        }
+        
         $env = parse_ini_file($str);
         foreach ($env as $key => $value) {
             putenv("$key=$value");
